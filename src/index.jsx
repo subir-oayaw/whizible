@@ -1,5 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.css";
+// import "./index.css";
 
 import * as serviceWorker from "./serviceWorker";
 import App from "./app/App";
