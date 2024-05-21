@@ -1,0 +1,17 @@
+{
+  "collaborate_with_cross_teams": "Collaborate with cross teams",
+  "username_label": "Username*",
+  "enter_username_placeholder": "Enter your username",
+  "email_label": "Email ID*",
+  "email_placeholder": "you@company.com",
+  "reset_button": "Reset",
+  "cancel_button": "Cancel",
+  "password_label": "Password*",
+  "password_placeholder": "Enter Password",
+  "forgot_password_link": "Forgot Password?",
+  "sign_in_button": "Sign In",
+  "two_fa_otp_link": "2FA-OTP",
+  "master_link": "Master",
+  "footer_link": "www.winitiative.com",
+  "lorem_ipsum": " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+}

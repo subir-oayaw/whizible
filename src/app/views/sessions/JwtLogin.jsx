@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Carousel } from "react-bootstrap";
+import { Container, Row, Col, Form, Carousel, Dropdown } from "react-bootstrap";
 import { Input, Button as FluentButton, Link } from "@fluentui/react-components";
 import ReCAPTCHA from "react-google-recaptcha";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,12 +11,14 @@ import girlImage from "../../../assets/Images/gril1.png";
 import lmsImage from "../../../assets/Images/lms_mandatory.png";
 import loginFrameImage from "../../../assets/Images/Loginframe.png";
 import developerImage from "../../../assets/Images/developerrr.png";
+import { useTranslation } from "react-i18next";
 
 function LoginPage() {
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [captchaValue, setCaptchaValue] = useState(null);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showChangePassword, setChangePassword] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -39,9 +41,22 @@ function LoginPage() {
   const onCaptchaChange = (value) => {
     setCaptchaValue(value);
   };
-
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
   return (
     <Container fluid className="p-0 login-container" style={{ width: "100%", height: "100vh" }}>
+      <Row className="w-100 m-0">
+        <Dropdown className="position-absolute top-0 start-0 mt-2 ml-3">
+          <Dropdown.Toggle variant="success" id="language-dropdown">
+            {t("language")}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={() => changeLanguage("en")}>{t("english")}</Dropdown.Item>
+            <Dropdown.Item onClick={() => changeLanguage("fr")}>{t("french")}</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </Row>
       <Row className="w-100 m-0">
         <Col
           md={6}
@@ -61,12 +76,8 @@ function LoginPage() {
                     className="mb-4 img-fluid carousel-image"
                   />
                 </div>
-                <h3>Collaborate with cross teams</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
+                <h3>{t("collaborate_with_cross_teams")}</h3>
+                <p>{t("lorem_ipsum")}</p>
               </div>
             </Carousel.Item>
             <Carousel.Item>
@@ -74,12 +85,8 @@ function LoginPage() {
                 <div className="image-container">
                   <img src={girlImage} alt="Girl" className="mb-4 img-fluid carousel-image" />
                 </div>
-                <h3>Collaborate with cross teams</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
+                <h3>{t("collaborate_with_cross_teams")}</h3>
+                <p>{t("lorem_ipsum")}</p>
               </div>
             </Carousel.Item>
             <Carousel.Item>
@@ -91,12 +98,8 @@ function LoginPage() {
                     className="mb-4 img-fluid carousel-image"
                   />
                 </div>
-                <h3>Collaborate with cross teams</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
+                <h3>{t("collaborate_with_cross_teams")}</h3>
+                <p>{t("lorem_ipsum")}</p>
               </div>
             </Carousel.Item>
             <Carousel.Item>
@@ -108,12 +111,8 @@ function LoginPage() {
                     className="mb-4 img-fluid carousel-image"
                   />
                 </div>
-                <h3>Collaborate with cross teams</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
+                <h3>{t("collaborate_with_cross_teams")}</h3>
+                <p>{t("lorem_ipsum")}</p>
               </div>
             </Carousel.Item>
             <Carousel.Item>
@@ -125,12 +124,8 @@ function LoginPage() {
                     className="mb-4 img-fluid carousel-image"
                   />
                 </div>
-                <h3>Collaborate with cross teams</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
+                <h3>{t("collaborate_with_cross_teams")}</h3>
+                <p>{t("lorem_ipsum")}</p>
               </div>
             </Carousel.Item>
           </Carousel>
@@ -159,9 +154,9 @@ function LoginPage() {
             {showForgotPassword ? (
               <Form onSubmit={handleForgotPassword}>
                 <Form.Group controlId="formBasicUsername" className="mb-3">
-                  <Form.Label>Username*</Form.Label>
+                  <Form.Label>{t("username_label")}</Form.Label>
                   <Input
-                    placeholder="Enter your username"
+                    placeholder={t("enter_username_placeholder")}
                     className="w-100"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
@@ -169,7 +164,7 @@ function LoginPage() {
                 <Form.Group controlId="formBasicEmail" className="mb-3">
                   <Form.Label>Email ID*</Form.Label>
                   <Input
-                    placeholder="you@company.com"
+                    placeholder={t("email_placeholder")}
                     className="w-100"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
@@ -191,9 +186,9 @@ function LoginPage() {
             ) : showChangePassword ? (
               <Form onSubmit={handleForgotPassword}>
                 <Form.Group controlId="formBasicUsername" className="mb-3">
-                  <Form.Label>User Name**</Form.Label>
+                  <Form.Label>{t("username_label")}</Form.Label>
                   <Input
-                    placeholder="you@company.com"
+                    placeholder={t("enter_username_placeholder")}
                     className="w-100"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
@@ -239,18 +234,18 @@ function LoginPage() {
             ) : (
               <Form onSubmit={handleLogin}>
                 <Form.Group controlId="formBasicEmail" className="mb-3">
-                  <Form.Label>Username*</Form.Label>
+                  <Form.Label>{t("username_label")}</Form.Label>
                   <Input
-                    placeholder="you@company.com"
+                    placeholder={t("enter_username_placeholder")}
                     className="w-100"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword" className="mb-3">
-                  <Form.Label>Password*</Form.Label>
+                  <Form.Label>{t("password_label")}</Form.Label>
                   <Input
                     type="password"
-                    placeholder="Enter Password"
+                    placeholder={t("password_placeholder")}
                     className="w-100"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
@@ -273,8 +268,8 @@ function LoginPage() {
               </Form>
             )}
             <div className="d-flex justify-content-between mt-3">
-              <Link>2FA-OTP</Link>
-              <Link>Master</Link>
+              <Link>{t("two_fa_otp_link")}</Link>
+              <Link>{t("master_link")}</Link>
             </div>
             <div className="footer-link mt-auto">
               <a href="https://www.winitiative.com" target="_blank" rel="noopener noreferrer">

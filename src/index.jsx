@@ -6,12 +6,30 @@ import "@fortawesome/fontawesome-free/css/all.css";
 
 import * as serviceWorker from "./serviceWorker";
 import App from "./app/App";
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
 
+// Import translations
+import translations_en from "./locales/en/translation.json"; // English translations
+import translations_fr from "./locales/fr/translation.json";
 // third party style
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 const root = createRoot(document.getElementById("root"));
-
+i18n
+  .use(initReactI18next) // passes i18n down to react-i18next
+  .init({
+    resources: {
+      en: { translation: translations_en },
+      fr: { translation: translations_fr }
+      // Add resources for other languages here
+    },
+    lng: "en", // default language
+    fallbackLng: "en", // fallback language if a translation is missing
+    interpolation: {
+      escapeValue: false // react already safes from xss
+    }
+  });
 root.render(
   <BrowserRouter>
     <App />
