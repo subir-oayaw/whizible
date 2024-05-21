@@ -137,18 +137,18 @@ function LoginPage() {
           className="d-flex align-items-center justify-content-center p-4 mobile-background login-form-container"
         >
           <div className="w-100" style={{ maxWidth: "400px" }}>
-            <div className="text-center mb-4">
+            <div className="text-center mb-4 ">
               <img
                 src={logo}
                 alt="Winsights Logo"
                 className="mb-2 img-fluid"
-                style={{ maxWidth: "150px", borderRight: "1px solid #ccc", paddingRight: "10px" }}
+                style={{ maxWidth: "250px", borderRight: "1px solid #ccc", paddingRight: "10px" }}
               />
               <img
                 src={logo1}
                 alt="Another Logo"
                 className="mb-2 img-fluid"
-                style={{ maxWidth: "100px" }}
+                style={{ maxWidth: "250px" }}
               />
             </div>
             {showForgotPassword ? (

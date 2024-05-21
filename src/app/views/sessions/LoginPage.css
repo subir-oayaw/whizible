@@ -15,7 +15,10 @@
   height: 300px; /* Adjust this value as needed */
   overflow: hidden;
 }
-
+.logo-container {
+  width: 200px;
+  height: 200px; /* Adjust this value as needed */
+}
 .image-container img {
   width: 100%;
   height: auto;
