@@ -37,8 +37,8 @@ const routes = [
 
   // session pages route
   { path: "/session/404", element: <NotFound /> },
-  { path: "/session/signin", element: <JwtLogin /> },
-  { path: "/session/signup", element: <JwtRegister /> },
+  { path: "/signin", element: <JwtLogin /> },
+  { path: "/signup", element: <JwtRegister /> },
   { path: "/session/forgot-password", element: <ForgotPassword /> },
 
   { path: "/", element: <Navigate to="dashboard/default" /> },
