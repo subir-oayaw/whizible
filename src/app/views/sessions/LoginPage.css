@@ -34,13 +34,12 @@
 .custom-signin-button {
   background-color: #348ccb !important; /* Apply the color with higher priority */
   border-color: hsl(205, 59%, 50%);
-  border-radius: 4px !important; /* Rounded edges */
+  border-radius: 4px; /* Rounded edges */
 }
 
 .custom-signin-button:hover {
   background-color: #2678a9 !important; /* Apply the hover color with higher priority */
   border-color: #2678a9 !important;
-  border-radius: 4px !important; /* Rounded edges on hover */
 }
 
 @media (max-width: 767px) {

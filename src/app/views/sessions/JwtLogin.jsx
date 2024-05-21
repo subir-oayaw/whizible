@@ -1,5 +1,3 @@
-// LoginPage.js
-
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Carousel } from "react-bootstrap";
 import { Input, Button as FluentButton, Link } from "@fluentui/react-components";
@@ -17,6 +15,8 @@ import developerImage from "../../../assets/Images/developerrr.png";
 function LoginPage() {
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [captchaValue, setCaptchaValue] = useState(null);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showChangePassword, setChangePassword] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -29,6 +29,11 @@ function LoginPage() {
     } else {
       setLoginAttempts((prev) => prev + 1);
     }
+  };
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    // Handle forgot password logic here
   };
 
   const onCaptchaChange = (value) => {
@@ -151,40 +156,122 @@ function LoginPage() {
                 style={{ maxWidth: "100px" }}
               />
             </div>
-            <Form onSubmit={handleLogin}>
-              <Form.Group controlId="formBasicEmail" className="mb-3">
-                <Form.Label>Username*</Form.Label>
-                <Input
-                  placeholder="you@company.com"
-                  className="w-100"
-                  style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
-                />
-              </Form.Group>
-              <Form.Group controlId="formBasicPassword" className="mb-3">
-                <Form.Label>Password*</Form.Label>
-                <Input
-                  type="password"
-                  placeholder="Enter Password"
-                  className="w-100"
-                  style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
-                />
-              </Form.Group>
-              {loginAttempts > 0 && (
-                <Form.Group controlId="formBasicCaptcha" className="mb-3">
-                  <ReCAPTCHA
-                    sitekey="your-recaptcha-site-key" // Replace with your actual site key
-                    onChange={onCaptchaChange}
+            {showForgotPassword ? (
+              <Form onSubmit={handleForgotPassword}>
+                <Form.Group controlId="formBasicUsername" className="mb-3">
+                  <Form.Label>Username*</Form.Label>
+                  <Input
+                    placeholder="Enter your username"
+                    className="w-100"
+                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
                 </Form.Group>
-              )}
-              <div className="d-flex justify-content-between mb-4">
-                <Link>Change Password</Link>
-                <Link>Forgot Password?</Link>
-              </div>
-              <FluentButton className="w-100 custom-signin-button" size="large" type="submit">
-                Sign In
-              </FluentButton>
-            </Form>
+                <Form.Group controlId="formBasicEmail" className="mb-3">
+                  <Form.Label>Email ID*</Form.Label>
+                  <Input
+                    placeholder="you@company.com"
+                    className="w-100"
+                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                  />
+                </Form.Group>
+                <div className="d-flex justify-content-between mb-4">
+                  <FluentButton className="custom-signin-button" size="large">
+                    Reset
+                  </FluentButton>
+                  <FluentButton
+                    onClick={() => setShowForgotPassword(false)}
+                    className="custom-signin-button"
+                    size="large"
+                    type="submit"
+                  >
+                    Cancel
+                  </FluentButton>
+                </div>
+              </Form>
+            ) : showChangePassword ? (
+              <Form onSubmit={handleForgotPassword}>
+                <Form.Group controlId="formBasicUsername" className="mb-3">
+                  <Form.Label>User Name**</Form.Label>
+                  <Input
+                    placeholder="you@company.com"
+                    className="w-100"
+                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicEmail" className="mb-3">
+                  <Form.Label>Old Password*</Form.Label>
+                  <Input
+                    placeholder="*****"
+                    className="w-100"
+                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicEmail" className="mb-3">
+                  <Form.Label>New Password*</Form.Label>
+                  <Input
+                    placeholder="*****"
+                    className="w-100"
+                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicEmail" className="mb-3">
+                  <Form.Label>Confirm Password*</Form.Label>
+                  <Input
+                    placeholder="*****"
+                    className="w-100"
+                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                  />
+                </Form.Group>
+                <div className="d-flex justify-content-between mb-4">
+                  <FluentButton className="custom-signin-button" size="large">
+                    Reset
+                  </FluentButton>
+                  <FluentButton
+                    onClick={() => setChangePassword(false)}
+                    className="custom-signin-button"
+                    size="large"
+                    type="submit"
+                  >
+                    Cancel
+                  </FluentButton>
+                </div>
+              </Form>
+            ) : (
+              <Form onSubmit={handleLogin}>
+                <Form.Group controlId="formBasicEmail" className="mb-3">
+                  <Form.Label>Username*</Form.Label>
+                  <Input
+                    placeholder="you@company.com"
+                    className="w-100"
+                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicPassword" className="mb-3">
+                  <Form.Label>Password*</Form.Label>
+                  <Input
+                    type="password"
+                    placeholder="Enter Password"
+                    className="w-100"
+                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                  />
+                </Form.Group>
+                {loginAttempts > 0 && (
+                  <Form.Group controlId="formBasicCaptcha" className="mb-3">
+                    <ReCAPTCHA
+                      sitekey="your-recaptcha-site-key" // Replace with your actual site key
+                      onChange={onCaptchaChange}
+                    />
+                  </Form.Group>
+                )}
+                <div className="d-flex justify-content-between mb-4">
+                  <Link onClick={() => setChangePassword(true)}>Change Password</Link>
+                  <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
+                </div>
+                <FluentButton className="w-100 custom-signin-button" size="large" type="submit">
+                  Sign In
+                </FluentButton>
+              </Form>
+            )}
             <div className="d-flex justify-content-between mt-3">
               <Link>2FA-OTP</Link>
               <Link>Master</Link>
