@@ -18,6 +18,7 @@ function LoginPage() {
   const [captchaValue, setCaptchaValue] = useState(null);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showChangePassword, setChangePassword] = useState(false);
+  const [show2FA, set2FA] = useState(false);
   const { t, i18n } = useTranslation();
 
   const handleLogin = (e) => {
@@ -46,17 +47,17 @@ function LoginPage() {
   };
   return (
     <Container fluid className="p-0 login-container" style={{ width: "100%", height: "100vh" }}>
-      <Row className="w-100 m-0">
+      {/* <Row className="w-100 m-0">
         <Dropdown className="position-absolute top-0 start-0 mt-2 ml-3">
           <Dropdown.Toggle variant="success" id="language-dropdown">
             {t("language")}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => changeLanguage("en")}>{t("english")}</Dropdown.Item>
-            <Dropdown.Item onClick={() => changeLanguage("fr")}>{t("french")}</Dropdown.Item>
+            <Dropdown.Item onClick={() => changeLanguage("f")}>{t("french")}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-      </Row>
+      </Row> */}
       <Row className="w-100 m-0">
         <Col
           md={6}
@@ -157,7 +158,7 @@ function LoginPage() {
                   <Form.Label>{t("username_label")}</Form.Label>
                   <Input
                     placeholder={t("enter_username_placeholder")}
-                    className="w-100"
+                    className="w-100 custom-grey-input"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
                 </Form.Group>
@@ -165,7 +166,7 @@ function LoginPage() {
                   <Form.Label>Email ID*</Form.Label>
                   <Input
                     placeholder={t("email_placeholder")}
-                    className="w-100"
+                    className="w-100 custom-grey-input"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
                 </Form.Group>
@@ -189,7 +190,7 @@ function LoginPage() {
                   <Form.Label>{t("username_label")}</Form.Label>
                   <Input
                     placeholder={t("enter_username_placeholder")}
-                    className="w-100"
+                    className="w-100 custom-grey-input"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
                 </Form.Group>
@@ -197,7 +198,7 @@ function LoginPage() {
                   <Form.Label>Old Password*</Form.Label>
                   <Input
                     placeholder="*****"
-                    className="w-100"
+                    className="w-100 custom-grey-input"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
                 </Form.Group>
@@ -205,7 +206,7 @@ function LoginPage() {
                   <Form.Label>New Password*</Form.Label>
                   <Input
                     placeholder="*****"
-                    className="w-100"
+                    className="w-100 custom-grey-input"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
                 </Form.Group>
@@ -213,7 +214,7 @@ function LoginPage() {
                   <Form.Label>Confirm Password*</Form.Label>
                   <Input
                     placeholder="*****"
-                    className="w-100"
+                    className="w-100 custom-grey-input"
                     style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                   />
                 </Form.Group>
@@ -231,47 +232,75 @@ function LoginPage() {
                   </FluentButton>
                 </div>
               </Form>
+            ) : show2FA ? (
+              <Form onSubmit={handleForgotPassword}>
+                <Form.Group controlId="formBasicUsername" className="mb-3">
+                  <Form.Label>{t("Enter_OTP")}</Form.Label>
+                  <Input
+                    placeholder={t("1234")}
+                    className="w-100 custom-grey-input"
+                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                  />
+                </Form.Group>
+
+                <div className="d-flex justify-content-between mb-4">
+                  <FluentButton className="custom-signin-button" size="large">
+                    Submit
+                  </FluentButton>
+                  <FluentButton
+                    onClick={() => set2FA(false)}
+                    className="custom-signin-button"
+                    size="large"
+                    type="submit"
+                  >
+                    Cancel
+                  </FluentButton>
+                </div>
+              </Form>
             ) : (
-              <Form onSubmit={handleLogin}>
-                <Form.Group controlId="formBasicEmail" className="mb-3">
-                  <Form.Label>{t("username_label")}</Form.Label>
-                  <Input
-                    placeholder={t("enter_username_placeholder")}
-                    className="w-100"
-                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formBasicPassword" className="mb-3">
-                  <Form.Label>{t("password_label")}</Form.Label>
-                  <Input
-                    type="password"
-                    placeholder={t("password_placeholder")}
-                    className="w-100"
-                    style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
-                  />
-                </Form.Group>
-                {loginAttempts > 0 && (
-                  <Form.Group controlId="formBasicCaptcha" className="mb-3">
-                    <ReCAPTCHA
-                      sitekey="your-recaptcha-site-key" // Replace with your actual site key
-                      onChange={onCaptchaChange}
+              <>
+                <Form onSubmit={handleLogin}>
+                  <Form.Group controlId="formBasicEmail" className="mb-3">
+                    <Form.Label>{t("username_label")}</Form.Label>
+                    <Input
+                      placeholder={t("enter_username_placeholder")}
+                      className="w-100 custom-grey-input"
+                      style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
                     />
                   </Form.Group>
-                )}
-                <div className="d-flex justify-content-between mb-4">
-                  <Link onClick={() => setChangePassword(true)}>Change Password</Link>
-                  <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
-                </div>
-                <FluentButton className="w-100 custom-signin-button" size="large" type="submit">
-                  Sign In
-                </FluentButton>
-              </Form>
+                  <Form.Group controlId="formBasicPassword" className="mb-3">
+                    <Form.Label>{t("password_label")}</Form.Label>
+                    <Input
+                      type="password"
+                      placeholder={t("password_placeholder")}
+                      className="w-100 custom-grey-input"
+                      style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                    />
+                  </Form.Group>
+                  {loginAttempts > 0 && (
+                    <Form.Group controlId="formBasicCaptcha" className="mb-3">
+                      <ReCAPTCHA
+                        sitekey="your-recaptcha-site-key" // Replace with your actual site key
+                        onChange={onCaptchaChange}
+                      />
+                    </Form.Group>
+                  )}
+                  <div className="d-flex justify-content-between mb-4">
+                    <Link onClick={() => setChangePassword(true)}>Change Password</Link>
+                    <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
+                  </div>
+                  <FluentButton className="w-100 custom-signin-button" size="large" type="submit">
+                    Sign In
+                  </FluentButton>
+                </Form>
+
+                {/* <div className="d-flex justify-content-between mt-3">
+                  <Link onClick={() => set2FA(true)}>{t("two_fa_otp_link")}</Link>
+                  <Link>{t("master_link")}</Link>
+                </div> */}
+              </>
             )}
-            <div className="d-flex justify-content-between mt-3">
-              <Link>{t("two_fa_otp_link")}</Link>
-              <Link>{t("master_link")}</Link>
-            </div>
-            <div className="footer-link mt-auto">
+            <div className="footer-link">
               <a href="https://www.winitiative.com" target="_blank" rel="noopener noreferrer">
                 www.winitiative.com
               </a>

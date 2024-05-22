@@ -6,6 +6,15 @@
 .login-container {
   background-color: #fff; /* White background for outer container */
 }
+::placeholder {
+  color: grey;
+}
+
+/* Optional: Additional styles for input fields */
+input::placeholder,
+textarea::placeholder {
+  color: grey; /* Ensure grey color for all input types */
+}
 .carousel-image {
   max-width: 100%;
   max-height: 100vh;
@@ -49,4 +58,12 @@
   .mobile-background {
     background: #348ccb !important;
   }
+}
+
+.footer-link {
+  position: relative;
+  top: 100px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
 }
