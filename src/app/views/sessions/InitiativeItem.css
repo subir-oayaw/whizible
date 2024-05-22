@@ -1,0 +1,68 @@
+.initiative-item {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.initiative-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.initiative-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.initiative-details {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.initiative-progress-container {
+  margin-top: 16px;
+}
+
+.initiative-progress {
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar-container {
+  flex-grow: 1;
+  margin-right: 8px;
+}
+
+.progress-bar {
+  height: 10px;
+  border-radius: 5px;
+}
+
+.progress-bar-warning {
+  background-color: #ffa726 !important; /* Orange */
+}
+
+.progress-bar-normal {
+  background-color: #4caf50 !important; /* Green */
+}
+
+.progress-text {
+  min-width: 80px;
+  text-align: right;
+}
+
+.current-stage {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.due-in {
+  font-weight: bold;
+}
+
+.initiative-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
