@@ -1,7 +1,6 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Scrollbar from "react-perfect-scrollbar";
-
 import { MatxVerticalNav } from "app/components";
 import useSettings from "app/hooks/useSettings";
 import { navigations } from "app/navigations";
@@ -27,6 +26,8 @@ const SideNavMobile = styled("div")(({ theme }) => ({
 
 export default function Sidenav({ children }) {
   const { settings, updateSettings } = useSettings();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredNavigations, setFilteredNavigations] = useState(navigations);
 
   const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
@@ -44,13 +45,46 @@ export default function Sidenav({ children }) {
     });
   };
 
+  const handleSearch = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+
+    if (term === "") {
+      setFilteredNavigations(navigations);
+    } else {
+      const filtered = navigations
+        .map((navItem) => {
+          const filteredChildren = navItem.children.filter((child) =>
+            child.name.toLowerCase().includes(term)
+          );
+
+          if (filteredChildren.length > 0) {
+            return {
+              ...navItem,
+              children: filteredChildren
+            };
+          }
+          return null;
+        })
+        .filter((item) => item !== null);
+
+      setFilteredNavigations(filtered);
+    }
+  };
+
   return (
     <Fragment>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={handleSearch}
+        style={{ margin: "1rem", padding: "0.5rem", width: "calc(100% - 2rem)" }}
+      />
       <StyledScrollBar options={{ suppressScrollX: true }}>
+        <MatxVerticalNav items={filteredNavigations} />
         {children}
-        <MatxVerticalNav items={navigations} />
       </StyledScrollBar>
-
       <SideNavMobile onClick={() => updateSidebarMode({ mode: "close" })} />
     </Fragment>
   );
