@@ -4,14 +4,18 @@ import Scrollbar from "react-perfect-scrollbar";
 import { MatxVerticalNav } from "app/components";
 import useSettings from "app/hooks/useSettings";
 import { navigations } from "app/navigations";
-
+import { Span } from "app/components/Typography";
 // STYLED COMPONENTS
 const StyledScrollBar = styled(Scrollbar)(() => ({
   paddingLeft: "1rem",
   paddingRight: "1rem",
   position: "relative"
 }));
-
+const StyledSpan = styled(Span)(({ mode }) => ({
+  fontSize: 18,
+  marginLeft: ".5rem",
+  display: mode === "compact" ? "none" : "block"
+}));
 const SideNavMobile = styled("div")(({ theme }) => ({
   position: "fixed",
   top: 0,
@@ -27,8 +31,9 @@ const SideNavMobile = styled("div")(({ theme }) => ({
 export default function Sidenav({ children }) {
   const { settings, updateSettings } = useSettings();
   const [searchTerm, setSearchTerm] = useState("");
+  const leftSidebar = settings.layout1Settings.leftSidebar;
   const [filteredNavigations, setFilteredNavigations] = useState(navigations);
-
+  const { mode } = leftSidebar;
   const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
     let activeLayoutSettings = settings[activeLayoutSettingsName];
@@ -74,13 +79,15 @@ export default function Sidenav({ children }) {
 
   return (
     <Fragment>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={handleSearch}
-        style={{ margin: "1rem", padding: "0.5rem", width: "calc(100% - 2rem)" }}
-      />
+      <StyledSpan mode={mode} className="sidenavHoverShow">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearch}
+          style={{ margin: "1rem", padding: "0.5rem", width: "calc(100% - 2rem)" }}
+        />
+      </StyledSpan>
       <StyledScrollBar options={{ suppressScrollX: true }}>
         <MatxVerticalNav items={filteredNavigations} />
         {children}

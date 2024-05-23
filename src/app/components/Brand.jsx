@@ -26,13 +26,16 @@ export default function Brand({ children }) {
   return (
     <BrandRoot>
       <Box display="flex" alignItems="center">
-        <MatxLogo />
         <StyledSpan mode={mode} className="sidenavHoverShow">
-          Whizible
+          <MatxLogo />
         </StyledSpan>
       </Box>
 
-      <Box className="sidenavHoverShow" sx={{ display: mode === "compact" ? "none" : "block" }}>
+      <Box
+        className="sidenavHoverShow"
+        mode={mode}
+        sx={{ display: mode === "compact" ? "none" : "block" }}
+      >
         {children || null}
       </Box>
     </BrandRoot>
