@@ -1,0 +1,44 @@
+.progress-container {
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar-wrapper {
+  display: flex;
+  flex-grow: 1;
+  margin-right: 8px;
+  height: 10px; /* Increased height for the segments */
+  border-radius: 15px; /* Updated radius to match the height */
+  overflow: hidden;
+}
+
+.progress-segment {
+  flex: 1;
+  height: 100%;
+  background-color: #e0e0e0; /* Default gray background */
+  border-right: 1px solid white; /* Add separation between segments */
+}
+
+.progress-segment.completed {
+  background-color: #4caf50; /* Green for completed */
+}
+
+.progress-segment.current {
+  background-color: #ffa726;
+  /* Yellow for current */
+}
+
+.progress-segment.next {
+  background-color: #f44336; /* Red for next */
+}
+
+.progress-segment.not-completed {
+  background-color: #e0e0e0; /* Gray for not completed */
+}
+
+.progress-text {
+  padding: 2px 8px;
+  background-color: #ffa726;
+  border-radius: 10px;
+  font-size: 12px;
+}
