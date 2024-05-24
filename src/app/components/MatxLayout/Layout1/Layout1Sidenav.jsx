@@ -11,7 +11,7 @@ import { convertHexToRGB } from "app/utils/utils";
 import { sidenavCompactWidth, sideNavWidth } from "app/utils/constant";
 
 // STYLED COMPONENTS
-const SidebarNavRoot = styled(Box)(({ theme, width, bg, image }) => ({
+const SidebarNavRoot = styled(Box)(({ theme, width }) => ({
   position: "fixed",
   top: 0,
   left: 0,
@@ -25,7 +25,7 @@ const SidebarNavRoot = styled(Box)(({ theme, width, bg, image }) => ({
   overflow: "hidden",
   color: theme.palette.text.primary,
   transition: "all 250ms ease-in-out",
-  backgroundImage: `linear-gradient(to bottom, rgba(${bg}, 0.96), rgba(${bg}, 0.96)), url(${image})`,
+  backgroundImage: `linear-gradient(to top, #2b56a5, #236db7, #2283c8, #2e9ad6, #42b0e3)`,
   "&:hover": {
     width: sideNavWidth,
     "& .sidenavHoverShow": { display: "block" },
@@ -48,7 +48,7 @@ const Layout1Sidenav = () => {
   const theme = useTheme();
   const { settings, updateSettings } = useSettings();
   const leftSidebar = settings.layout1Settings.leftSidebar;
-  const { mode, bgImgURL } = leftSidebar;
+  const { mode } = leftSidebar;
 
   const getSidenavWidth = () => {
     switch (mode) {
@@ -60,8 +60,6 @@ const Layout1Sidenav = () => {
     }
   };
 
-  const primaryRGB = convertHexToRGB(theme.palette.primary.main);
-
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
@@ -71,7 +69,7 @@ const Layout1Sidenav = () => {
   };
 
   return (
-    <SidebarNavRoot image={bgImgURL} bg={primaryRGB} width={getSidenavWidth()}>
+    <SidebarNavRoot width={getSidenavWidth()}>
       <NavListBox>
         <Brand>
           <Hidden smDown>

@@ -91,7 +91,8 @@ export default function JwtRegister() {
               <Formik
                 onSubmit={handleFormSubmit}
                 initialValues={initialValues}
-                validationSchema={validationSchema}>
+                validationSchema={validationSchema}
+              >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                   <form onSubmit={handleSubmit}>
                     <TextField
@@ -157,15 +158,17 @@ export default function JwtRegister() {
                       color="primary"
                       loading={loading}
                       variant="contained"
-                      sx={{ mb: 2, mt: 3 }}>
+                      sx={{ mb: 2, mt: 3 }}
+                    >
                       Register
                     </LoadingButton>
 
                     <Paragraph>
                       Already have an account?
                       <NavLink
-                        to="/session/signin"
-                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}>
+                        to="/signin"
+                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}
+                      >
                         Login
                       </NavLink>
                     </Paragraph>

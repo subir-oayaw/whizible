@@ -8,7 +8,7 @@ const NotificationDB = {
       heading: "Message",
       icon: { name: "chat", color: "primary" },
       timestamp: 1570702802573,
-      title: "New message from Devid",
+      title: "New message from SAJI",
       subtitle: "Hello, Any progress...",
       path: "chat"
     },
@@ -26,7 +26,7 @@ const NotificationDB = {
       heading: "Message",
       icon: { name: "chat", color: "primary" },
       timestamp: 1570502502573,
-      title: "New message from Goustove",
+      title: "New message from Murugan",
       subtitle: "Hello, send me details",
       path: "chat"
     }

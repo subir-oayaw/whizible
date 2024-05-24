@@ -85,7 +85,7 @@ export default function Sidenav({ children }) {
           placeholder="Search..."
           value={searchTerm}
           onChange={handleSearch}
-          style={{ margin: "1rem", padding: "0.5rem", width: "calc(100% - 2rem)" }}
+          style={{ margin: "1rem", padding: "0.005rem", width: "calc(100% - 2rem)" }}
         />
       </StyledSpan>
       <StyledScrollBar options={{ suppressScrollX: true }}>
