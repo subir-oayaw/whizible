@@ -10,7 +10,7 @@ export default function DoughnutChart({ height, color = [] }) {
       itemGap: 20,
       icon: "circle",
       bottom: 0,
-      textStyle: { color: theme.palette.text.secondary, fontSize: 13, fontFamily: "roboto" }
+      textStyle: { color: theme.palette.text.secondary, fontSize: 13, fontFamily: "Poppins" }
     },
     tooltip: { show: false, trigger: "item", formatter: "{a} <br/>{b}: {c} ({d}%)" },
     xAxis: [{ axisLine: { show: false }, splitLine: { show: false } }],
@@ -29,7 +29,7 @@ export default function DoughnutChart({ height, color = [] }) {
           normal: {
             show: false,
             position: "center", // shows the description data to center, turn off to show in right side
-            textStyle: { color: theme.palette.text.secondary, fontSize: 13, fontFamily: "roboto" },
+            textStyle: { color: theme.palette.text.secondary, fontSize: 13, fontFamily: "Poppins" },
             formatter: "{a}"
           },
           emphasis: {

@@ -20,10 +20,7 @@ import BadgeSelected from "./BadgeSelected";
 import { themeColors, themeShadows } from "../MatxTheme/themeColors";
 import { mainSidebarThemes, topbarThemes } from "./customizerOptions";
 
-const sidebarBG = [
-  "/assets/images/sidebar/sidebar-bg-dark.jpg",
-  "/assets/images/sidebar/sidebar-bg-light.jpg"
-];
+const sidebarBG = ["linear-gradient(to top, #2b56a5, #236db7, #2283c8, #2e9ad6, #42b0e3)"];
 
 // STYLED COMPONENTS
 const ThemeName = styled("div")(({ theme }) => ({
@@ -50,10 +47,12 @@ const ToolbarContent = styled("div")(({ color }) => ({
   background: themeColors[color].palette.primary.main
 }));
 
-const IMG = styled("img")({
+const IMG = styled("div")({
   width: "100%",
-  maxHeight: 152,
-  display: "block"
+  height: 152,
+  display: "block",
+  backgroundImage: sidebarBG[0],
+  backgroundSize: "cover"
 });
 
 export default function Layout1Customizer({ settings, handleChange, handleControlChange }) {
@@ -66,7 +65,8 @@ export default function Layout1Customizer({ settings, handleChange, handleContro
             <Tooltip key={i} title={color} placement="top">
               <ToolbarContent
                 color={color}
-                onClick={() => handleChange("layout1Settings.leftSidebar.theme", color)}>
+                onClick={() => handleChange("layout1Settings.leftSidebar.theme", color)}
+              >
                 {settings.layout1Settings.leftSidebar.theme === color && <Icon>done</Icon>}
                 <div className={settings.themes[color].palette.type}></div>
               </ToolbarContent>
@@ -82,7 +82,8 @@ export default function Layout1Customizer({ settings, handleChange, handleContro
             <Tooltip key={i} title={color} placement="top">
               <ToolbarContent
                 color={color}
-                onClick={() => handleChange("layout1Settings.topbar.theme", color)}>
+                onClick={() => handleChange("layout1Settings.topbar.theme", color)}
+              >
                 {settings.layout1Settings.topbar.theme === color && <Icon>done</Icon>}
                 <div className={settings.themes[color].palette.type}></div>
               </ToolbarContent>
@@ -98,7 +99,8 @@ export default function Layout1Customizer({ settings, handleChange, handleContro
             aria-label="Sidebar"
             name="leftSidebar"
             value={settings.layout1Settings.leftSidebar.mode}
-            onChange={handleControlChange("layout1Settings.leftSidebar.mode")}>
+            onChange={handleControlChange("layout1Settings.leftSidebar.mode")}
+          >
             <FormControlLabel value="full" control={<Radio />} label="Full" />
             <FormControlLabel value="close" control={<Radio />} label="Close" />
             <FormControlLabel value="compact" control={<Radio />} label="Compact" />
@@ -116,7 +118,8 @@ export default function Layout1Customizer({ settings, handleChange, handleContro
                   color="primary"
                   badgeContent={<Icon>done</Icon>}
                   invisible={settings.layout1Settings.leftSidebar.bgImgURL !== bg}
-                  sx={{ width: "100%", height: "100%", cursor: "pointer" }}>
+                  sx={{ width: "100%", height: "100%", cursor: "pointer" }}
+                >
                   <Paper onClick={() => handleChange("layout1Settings.leftSidebar.bgImgURL", bg)}>
                     <IMG src={bg} alt="" />
                   </Paper>

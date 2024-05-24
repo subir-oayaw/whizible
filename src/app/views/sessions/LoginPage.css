@@ -1,4 +1,10 @@
 /* LoginPage.css */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 .login-form-container {
   background-color: #f2f2f2; /* Grey background for inner content area */
 }
@@ -54,15 +60,36 @@ textarea::placeholder {
   border-color: #2678a9 !important;
 }
 
+.inner-box {
+  background-color: white; /* Inner box color */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
 @media (max-width: 767px) {
   .mobile-background {
     background: #348ccb !important;
   }
 }
-
+@media (max-width: 767.98px) {
+  .login-form-container {
+    height: auto;
+    min-height: 100vh;
+    padding: 20px;
+  }
+}
+.custom-progress-bar {
+  height: 4px; /* Adjust the height as needed */
+}
+.custom-grey-input {
+  color: grey;
+}
 .footer-link {
   position: relative;
-  top: 100px; /* Adjust as needed */
+  top: 50px; /* Adjust as needed */
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

@@ -18,7 +18,8 @@ export default function SettingsProvider({ settings, children }) {
 
   return (
     <SettingsContext.Provider
-      value={{ settings: currentSettings, updateSettings: handleUpdateSettings }}>
+      value={{ settings: currentSettings, updateSettings: handleUpdateSettings }}
+    >
       {children}
     </SettingsContext.Provider>
   );

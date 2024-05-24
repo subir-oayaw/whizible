@@ -38,7 +38,7 @@ export default function Footer() {
 
   return (
     <ThemeProvider theme={footerTheme}>
-      <AppBar color="primary" position="static" sx={{ zIndex: 96 }}>
+      {/* <AppBar color="primary" position="static" sx={{ zIndex: 96 }}>
         <AppFooter>
           <FooterContent>
             <a href="https://ui-lib.com/downloads/matx-pro-react-admin/">
@@ -54,7 +54,7 @@ export default function Footer() {
             </Paragraph>
           </FooterContent>
         </AppFooter>
-      </AppBar>
+      </AppBar> */}
     </ThemeProvider>
   );
 }

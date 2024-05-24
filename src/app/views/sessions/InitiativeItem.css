@@ -1,0 +1,40 @@
+.initiative-item {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.initiative-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.initiative-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.initiative-details {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.initiative-progress-container {
+  margin-top: 16px;
+}
+
+.current-stage {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.due-in {
+  font-weight: bold;
+}
+
+.initiative-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
