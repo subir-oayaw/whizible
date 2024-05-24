@@ -3,6 +3,7 @@ import { ButtonBase, Icon, Box, styled } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import clsx from "clsx";
+import ss from "../../../assets/img/e-dashboard.svg";
 
 // STYLED COMPONENTS
 const NavExpandRoot = styled("div")(({ theme }) => ({
@@ -112,7 +113,8 @@ export default function MatxVerticalNavExpansionPanel({ item, children, mode }) 
       }
     }
   }, [pathname, calculateHeight]);
-
+  console.log("iconText", icon);
+  console.log("iconText1", icon);
   return (
     <NavExpandRoot>
       <BaseButton
@@ -121,9 +123,17 @@ export default function MatxVerticalNavExpansionPanel({ item, children, mode }) 
           compactNavItem: mode === "compact",
           open: !collapsed
         })}
-        onClick={handleClick}>
+        onClick={handleClick}
+      >
         <Box display="flex" alignItems="center">
-          {icon && <Icon className="icon">{icon}</Icon>}
+          {icon && (
+            <img
+              src={require("../../../assets/img/e-dashboard.svg")}
+              alt="icon"
+              className="icon"
+              style={{ width: "60px", height: "60px", fill: "white" }} // Adjust the size and color here
+            />
+          )}
           {iconText && <BulletIcon />}
           <ItemText className="sidenavHoverShow">{name}</ItemText>
         </Box>
@@ -135,7 +145,8 @@ export default function MatxVerticalNavExpansionPanel({ item, children, mode }) 
             sidenavHoverShow: true,
             collapseIcon: collapsed,
             expandIcon: !collapsed
-          })}>
+          })}
+        >
           <ChevronRight fontSize="small" sx={{ verticalAlign: "middle" }} />
         </div>
       </BaseButton>
@@ -143,7 +154,8 @@ export default function MatxVerticalNavExpansionPanel({ item, children, mode }) 
       <div
         ref={elementRef}
         className="expansion-panel submenu"
-        style={collapsed ? { maxHeight: "0px" } : { maxHeight: componentHeight.current + "px" }}>
+        style={collapsed ? { maxHeight: "0px" } : { maxHeight: componentHeight.current + "px" }}
+      >
         {children}
       </div>
     </NavExpandRoot>

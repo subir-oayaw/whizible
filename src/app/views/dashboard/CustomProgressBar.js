@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import "./CustomProgressBar.css";
+import "../dashboard/shared/customProgressBar.css";
 
 const CustomProgressBar = ({ stagesCompleted, totalStages }) => {
   const progressPercentage = (stagesCompleted / totalStages) * 100;

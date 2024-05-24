@@ -9,7 +9,7 @@ const InitiativeManagement = () => {
       title: "Metro Small",
       type: "Budget",
       date: "07 Aug 2022",
-      stagesCompleted: 3,
+      stagesCompleted: 6,
       totalStages: 10,
       currentStage: "CEO Approval",
       dueIn: 14

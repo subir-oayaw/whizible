@@ -2,17 +2,16 @@ export const navigations = [
   {
     name: "e-Dashboard",
     path: "/dashboard/default",
-    icon: "dashboard",
+    icon: "assets/img/e-dashboard.svg",
     children: [
       { name: "Initiative Dashboard", path: "/initiative/initiatives", iconText: "I" },
       { name: "Business User Tracking", path: "/initiative/converted-initiatives", iconText: "CI" },
       { name: "Initiative Progress", path: "/initiative/completed-initiatives", iconText: "CI" }
     ]
   },
-
   {
     name: "Initiative Management",
-    icon: "dashboard",
+    icon: "../../../assets/img/e-dashboard.svg",
     children: [
       { name: "Initiatives", path: "/initiative/initiatives", iconText: "I" },
       { name: "Converted Initiatives", path: "/initiative/converted-initiatives", iconText: "CI" },
@@ -45,7 +44,7 @@ export const navigations = [
   },
   {
     name: "Program",
-    icon: "dashboard",
+    icon: "../../../assets/img/e-dashboard.svg",
     children: [
       { name: "Program List", path: "/program/program-list", iconText: "PL" },
       { name: "Project List", path: "/program/project-list", iconText: "PJ" },
@@ -54,7 +53,7 @@ export const navigations = [
   },
   {
     name: "Project",
-    icon: "dashboard",
+    icon: "../../../assets/img/e-dashboard.svg",
     children: [
       { name: "Project List", path: "/project/project-list", iconText: "PL" },
       { name: "Create Project", path: "/project/create-project", iconText: "CP" },
@@ -69,7 +68,7 @@ export const navigations = [
   },
   {
     name: "Initiative Tracking",
-    icon: "dashboard",
+    icon: "../../../assets/img/e-dashboard.svg",
     children: [
       { name: "Initiative Progress", path: "/tracking/initiative-progress", iconText: "IP" },
       { name: "Initiative Conversion", path: "/tracking/initiative-conversion", iconText: "IC" },
@@ -84,7 +83,7 @@ export const navigations = [
   },
   {
     name: "Reports",
-    icon: "reports",
+    icon: "../../../assets/img/e-dashboard.svg",
     children: [
       { name: "Initiative Report", path: "/reports/initiative-report", iconText: "IR" },
       { name: "Action Items Report", path: "/reports/action-items-report", iconText: "AIR" },
@@ -105,7 +104,7 @@ export const navigations = [
   },
   {
     name: "Favorite",
-    icon: "favorite",
+    icon: "../../../assets/img/e-dashboard.svg",
     children: [
       { name: "Favorite page one", path: "/favorite/favorite-page-one", iconText: "FP1" },
       { name: "Favorite page Two", path: "/favorite/favorite-page-two", iconText: "FP2" },

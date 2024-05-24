@@ -13,9 +13,9 @@ import materialRoutes from "app/views/material-kit/MaterialRoutes";
 const NotFound = Loadable(lazy(() => import("app/views/sessions/NotFound")));
 const JwtLogin = Loadable(lazy(() => import("app/views/sessions/JwtLogin")));
 const JwtRegister = Loadable(lazy(() => import("app/views/sessions/JwtRegister")));
-const InitiativeManagement = Loadable(
-  lazy(() => import("app/views/sessions/InitiativeManagement"))
-);
+// const InitiativeManagement = Loadable(
+//   lazy(() => import("app/views/dashboard/InitiativeManagement"))
+// );
 // E-CHART PAGE
 const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart")));
 // DASHBOARD PAGE
@@ -41,7 +41,7 @@ const routes = [
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
-  { path: "/InitiativeManagement", element: <InitiativeManagement /> },
+  // { path: "/InitiativeManagement", element: <InitiativeManagement /> },
 
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
