@@ -1,11 +1,16 @@
 .initiative-item {
+  display: flex;
+  flex-direction: column;
   padding: 16px;
+  /* border: 1px solid #e0e0e0; */
+  border-radius: 8px;
   margin-bottom: 16px;
 }
 
 .initiative-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .initiative-title {
@@ -18,23 +23,30 @@
   flex-direction: column;
   text-align: right;
 }
-
 .initiative-progress-container {
-  margin-top: 16px;
+  margin-top: 16px; /* Add spacing before the progress container */
+  /* existing styles */
+}
+
+.current-stage-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .current-stage {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 8px;
-}
-
-.due-in {
-  font-weight: bold;
 }
 
 .initiative-actions {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
+  align-items: center;
+}
+.due-in-actions {
+  display: flex;
+  align-items: center;
 }

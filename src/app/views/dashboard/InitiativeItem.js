@@ -33,24 +33,26 @@ const InitiativeItem = ({ initiative }) => {
           totalStages={totalStages}
           stages={stages}
         />
-        <Box className="current-stage">
-          <Typography variant="body2">{currentStage}</Typography>
-          <Typography variant="body2" className="due-in">
-            Due in: {dueIn} Days
+        <Box className="current-stage-container">
+          <Typography variant="body2" className="current-stage">
+            Current Stage: {currentStage}
           </Typography>
+          <Box className="due-in-actions">
+            <Typography variant="body2" className="due-in">
+              Due in: {dueIn} Days
+            </Typography>
+            <Tooltip title="Delay">
+              <IconButton>
+                <AccessTimeIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Flag">
+              <IconButton>
+                <FlagIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
-      </Box>
-      <Box className="initiative-actions">
-        <Tooltip title="Delay">
-          <IconButton>
-            <AccessTimeIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Flag">
-          <IconButton>
-            <FlagIcon />
-          </IconButton>
-        </Tooltip>
       </Box>
     </Box>
   );

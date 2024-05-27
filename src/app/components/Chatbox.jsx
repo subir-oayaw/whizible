@@ -245,7 +245,8 @@ export default function Chatbox({ togglePopup }) {
             key={ind}
             p="20px"
             display="flex"
-            sx={{ justifyContent: currentUserId === item.contactId && "flex-end" }}>
+            sx={{ justifyContent: currentUserId === item.contactId && "flex-end" }}
+          >
             {currentUserId !== item.contactId && <Avatar src={item.avatar} />}
             <Box ml="12px">
               {currentUserId !== item.contactId && (
