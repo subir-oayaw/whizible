@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CircleIcon from "@mui/icons-material/Circle";
-import "./customProgressBar.css";
+import "./CustomProgressBar.css";
 
 const CustomProgressBar = ({ stagesCompleted, totalStages, stages }) => {
   return (

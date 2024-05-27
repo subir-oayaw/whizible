@@ -7,7 +7,7 @@ import StatCards2 from "./shared/StatCards2";
 import DoughnutChart from "./shared/Doughnut";
 import UpgradeCard from "./shared/UpgradeCard";
 import TopSellingTable from "./shared/TopSellingTable";
-
+import InitiativeManagement from "./InitiativeManagement";
 // STYLED COMPONENTS
 const ContentBox = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -48,6 +48,7 @@ export default function Analytics() {
 
             <H4>Ongoing Projects</H4>
             <RowCards /> */}
+            <InitiativeManagement />
           </Grid>
 
           {/* <Grid item lg={4} md={4} sm={12} xs={12}>
