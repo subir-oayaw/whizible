@@ -12,7 +12,19 @@ const InitiativeManagement = () => {
       stagesCompleted: 3,
       totalStages: 10,
       currentStage: "CEO Approval",
-      dueIn: 14
+      dueIn: 14,
+      stages: [
+        "Initiation",
+        "Planning",
+        "Execution",
+        "Monitoring",
+        "Control",
+        "Closure",
+        "Review",
+        "Approval",
+        "Implementation",
+        "Completion"
+      ]
     },
     {
       id: "CR-023",
@@ -22,7 +34,19 @@ const InitiativeManagement = () => {
       stagesCompleted: 3,
       totalStages: 10,
       currentStage: "CEO Approval",
-      dueIn: 14
+      dueIn: 14,
+      stages: [
+        "Initiation",
+        "Planning",
+        "Execution",
+        "Monitoring",
+        "Control",
+        "Closure",
+        "Review",
+        "Approval",
+        "Implementation",
+        "Completion"
+      ]
     }
   ]);
 

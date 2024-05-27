@@ -1,16 +1,16 @@
 import React from "react";
-import { Box, Typography, Paper, IconButton, Tooltip } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import { Box, Typography, IconButton, Tooltip } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FlagIcon from "@mui/icons-material/Flag";
 import CustomProgressBar from "./CustomProgressBar";
 import "./InitiativeItem.css";
 
 const InitiativeItem = ({ initiative }) => {
-  const { title, id, type, date, stagesCompleted, totalStages, currentStage, dueIn } = initiative;
+  const { title, id, type, date, stagesCompleted, totalStages, currentStage, dueIn, stages } =
+    initiative;
 
   return (
-    <Paper elevation={3} className="initiative-item">
+    <Box className="initiative-item list-view">
       <Box className="initiative-header">
         <Box className="initiative-title">
           <Typography variant="h6">{title}</Typography>
@@ -28,7 +28,11 @@ const InitiativeItem = ({ initiative }) => {
         </Box>
       </Box>
       <Box className="initiative-progress-container">
-        <CustomProgressBar stagesCompleted={stagesCompleted} totalStages={totalStages} />
+        <CustomProgressBar
+          stagesCompleted={stagesCompleted}
+          totalStages={totalStages}
+          stages={stages}
+        />
         <Box className="current-stage">
           <Typography variant="body2">{currentStage}</Typography>
           <Typography variant="body2" className="due-in">
@@ -48,7 +52,7 @@ const InitiativeItem = ({ initiative }) => {
           </IconButton>
         </Tooltip>
       </Box>
-    </Paper>
+    </Box>
   );
 };
 

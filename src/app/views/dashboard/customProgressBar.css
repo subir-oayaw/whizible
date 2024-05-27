@@ -1,0 +1,84 @@
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.progress-bar-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.progress-segment-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.progress-segment {
+  width: 100%;
+  height: 10px;
+  background-color: transparent;
+  position: relative;
+}
+
+.progress-segment.completed {
+  background-color: transparent;
+}
+
+.completed-icon {
+  position: absolute;
+  top: -10px;
+  color: #76c7c0;
+  font-size: 16px;
+}
+
+.completed-icon:hover {
+  opacity: 0.7;
+}
+
+.completed-line {
+  position: absolute;
+  top: 4px;
+  height: 1px;
+  background-color: #76c7c0;
+  width: calc(100% - 16px);
+  left: 16px;
+}
+
+.not-completed-icon {
+  position: absolute;
+  top: -5px;
+  color: #e0e0e0;
+  font-size: 16px;
+}
+
+.not-completed-icon:hover {
+  opacity: 0.7;
+}
+
+.not-completed-line {
+  position: absolute;
+  top: 4px;
+  height: 1px;
+  background-color: #e0e0e0;
+  width: calc(100% - 16px);
+  left: 16px;
+}
+
+.stage-name {
+  font-size: 12px;
+  color: #555;
+  text-align: center;
+  margin-top: 5px;
+  opacity: 0; /* Initially hide stage name */
+  transition: opacity 0.3s ease; /* Add transition effect */
+}
+
+.progress-segment-container:hover .stage-name {
+  opacity: 1; /* Show stage name on hover */
+}

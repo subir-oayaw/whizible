@@ -41,7 +41,7 @@ export default function Analytics() {
     <Fragment>
       <ContentBox className="analytics">
         <Grid container spacing={3}>
-          <Grid item lg={8} md={8} sm={12} xs={12}>
+          <Grid item xs={12}>
             {/* <StatCards />
             <TopSellingTable />
             <StatCards2 />

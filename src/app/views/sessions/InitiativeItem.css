@@ -1,40 +1,40 @@
-.initiative-item {
-  padding: 16px;
-  margin-bottom: 16px;
+.initiative-item.list-view {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
 .initiative-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .initiative-title {
-  display: flex;
-  flex-direction: column;
+  flex: 1;
 }
 
 .initiative-details {
-  display: flex;
-  flex-direction: column;
+  flex: 1;
   text-align: right;
 }
 
 .initiative-progress-container {
-  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .current-stage {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 8px;
-}
-
-.due-in {
-  font-weight: bold;
+  flex: 1;
+  text-align: right;
 }
 
 .initiative-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
 }
