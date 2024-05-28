@@ -5,6 +5,8 @@ import { MatxVerticalNav } from "app/components";
 import useSettings from "app/hooks/useSettings";
 import { navigations } from "app/navigations";
 import { Span } from "app/components/Typography";
+import eDashboardIcon from "../../assets/img/e-dashboard.svg"; // Import the SVG icon
+
 // STYLED COMPONENTS
 const StyledScrollBar = styled(Scrollbar)(() => ({
   paddingLeft: "1rem",

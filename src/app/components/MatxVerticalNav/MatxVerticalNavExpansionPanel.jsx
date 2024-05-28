@@ -3,6 +3,14 @@ import { ButtonBase, Icon, Box, styled } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import clsx from "clsx";
+import EDashboardIcon from "../../../assets/img/e-dashboard.svg";
+import InitiativeDashboardIcon from "../../../assets/img/initiative-management-icn.svg";
+import BusinessUserTrackingIcon from "../../../assets/img/program.svg";
+import Project from "../../../assets/img/project.svg";
+import InitiativeTracking from "../../../assets/img/initiative-tracking.svg";
+import Reports from "../../../assets/img/reports.svg";
+import Favorite from "../../../assets/img/favorite.svg";
+import { initializeIcons } from "@fluentui/react";
 
 // STYLED COMPONENTS
 const NavExpandRoot = styled("div")(({ theme }) => ({
@@ -74,7 +82,16 @@ const BadgeValue = styled("div")(() => ({
   overflow: "hidden",
   borderRadius: "300px"
 }));
-
+const iconMappings = {
+  "e-Dashboard": "../../../assets/img/e-dashboard.svg",
+  "Initiative Management": "../../../assets/img/initiative-management.svg",
+  Program: "../../../assets/img/program.svg",
+  Project: "../../../assets/img/project.svg",
+  "Initiative Tracking": "../../../assets/img/initiative-tracking.svg",
+  Reports: "../../../assets/img/reports.svg",
+  Favorite: "../../../assets/img/favorite.svg"
+  // Add mappings for other icons as needed
+};
 export default function MatxVerticalNavExpansionPanel({ item, children, mode }) {
   const [collapsed, setCollapsed] = useState(true);
   const elementRef = useRef(null);
@@ -112,6 +129,26 @@ export default function MatxVerticalNavExpansionPanel({ item, children, mode }) 
       }
     }
   }, [pathname, calculateHeight]);
+  const getIconPath = (name) => {
+    switch (name) {
+      case "e-Dashboard":
+        return EDashboardIcon;
+      case "Initiative Management":
+        return InitiativeDashboardIcon;
+      case "Program":
+        return BusinessUserTrackingIcon;
+      case "Project":
+        return Project;
+      case "Initiative Tracking":
+        return InitiativeTracking;
+      case "Reports":
+        return Reports;
+      case "Favorite":
+        return Favorite;
+      default:
+        return null;
+    }
+  };
 
   return (
     <NavExpandRoot>
@@ -121,11 +158,13 @@ export default function MatxVerticalNavExpansionPanel({ item, children, mode }) 
           compactNavItem: mode === "compact",
           open: !collapsed
         })}
-        onClick={handleClick}>
+        onClick={handleClick}
+      >
         <Box display="flex" alignItems="center">
-          {icon && <Icon className="icon">{icon}</Icon>}
+          {icon && <img src={getIconPath(name)} alt={name} style={{ fill: "white" }} />}
           {iconText && <BulletIcon />}
           <ItemText className="sidenavHoverShow">{name}</ItemText>
+          {/* New Icon */}
         </Box>
 
         {badge && <BadgeValue className="sidenavHoverShow itemIcon">{badge.value}</BadgeValue>}
@@ -135,7 +174,8 @@ export default function MatxVerticalNavExpansionPanel({ item, children, mode }) 
             sidenavHoverShow: true,
             collapseIcon: collapsed,
             expandIcon: !collapsed
-          })}>
+          })}
+        >
           <ChevronRight fontSize="small" sx={{ verticalAlign: "middle" }} />
         </div>
       </BaseButton>
@@ -143,7 +183,8 @@ export default function MatxVerticalNavExpansionPanel({ item, children, mode }) 
       <div
         ref={elementRef}
         className="expansion-panel submenu"
-        style={collapsed ? { maxHeight: "0px" } : { maxHeight: componentHeight.current + "px" }}>
+        style={collapsed ? { maxHeight: "0px" } : { maxHeight: componentHeight.current + "px" }}
+      >
         {children}
       </div>
     </NavExpandRoot>

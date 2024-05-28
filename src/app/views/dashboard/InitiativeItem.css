@@ -1,0 +1,26 @@
+.initiative-item {
+  display: flex;
+  justify-content: space-between; /* Ensure alignment with the table header */
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  /* Add any additional styles as needed */
+}
+
+.initiative-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.initiative-details {
+  text-align: right;
+}
+
+.initiative-actions {
+  display: flex;
+  align-items: center;
+}
+
+.due-in {
+  margin-right: 8px; /* Add spacing between dueIn and icons */
+}
