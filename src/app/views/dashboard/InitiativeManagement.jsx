@@ -14,14 +14,54 @@ const InitiativeManagement = () => {
       currentStage: "Approval",
       dueIn: 14,
       stages: [
-        "Initiation",
-        "Planning",
-        "Execution",
-        "Monitoring",
-        "Control",
-        "Approval",
-        "Control",
-        "Approval"
+        {
+          name: "Stage 1",
+          completed: true,
+          approver: "Admin",
+          completedOn: "10 Aug 2022 11:00:00",
+          comments: "",
+          delayedBy: "2 days"
+        },
+        {
+          name: "Stage 2",
+          completed: true,
+          approver: "Admin",
+          completedOn: "10 Aug 2022 13:00:00",
+          comments: "",
+          delayedBy: "-"
+        },
+        {
+          name: "Stage 3",
+          completed: true,
+          approver: "Admin",
+          completedOn: "10 Aug 2022 10:00:00",
+          comments: "",
+          delayedBy: "-"
+        },
+        {
+          name: "CEOs",
+          completed: false,
+          approver: "Admin",
+          completedOn: "",
+          comments: "",
+          delayedBy: "-"
+        },
+        {
+          name: "Stage 4",
+          completed: true,
+          approver: "Admin",
+          completedOn: "10 Aug 2022 10:00:00",
+          comments: "",
+          delayedBy: "-"
+        },
+        {
+          name: "CEOw",
+          completed: false,
+          approver: "Admin",
+          completedOn: "",
+          comments: "",
+          delayedBy: "-"
+        }
       ]
     },
     {

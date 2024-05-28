@@ -36,6 +36,7 @@ const InitiativeItem = ({ initiative }) => {
           stagesCompleted={stagesCompleted}
           totalStages={totalStages}
           stages={stages}
+          initiative={initiative}
         />
         <Typography variant="body2" color="textSecondary">
           {stagesCompleted} stages completed
