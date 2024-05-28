@@ -9,9 +9,9 @@ const InitiativeManagement = () => {
       title: "Metro Small",
       type: "Budget",
       date: "07 Aug 2022",
-      stagesCompleted: 6,
-      totalStages: 10,
-      currentStage: "CEO Approval",
+      stagesCompleted: 2,
+      totalStages: 6,
+      currentStage: "Approval",
       dueIn: 14,
       stages: [
         "Initiation",
@@ -19,21 +19,19 @@ const InitiativeManagement = () => {
         "Execution",
         "Monitoring",
         "Control",
-        "CEO Approval",
-        "Review",
         "Approval",
-        "Implementation",
-        "Completion"
+        "Control",
+        "Approval"
       ]
     },
     {
       id: "CR-023",
-      title: "Init lorem ipsum title",
+      title: "Init lorem",
       type: "Organizational Approval",
       date: "07 Oct 2023",
       stagesCompleted: 3,
-      totalStages: 10,
-      currentStage: "CEO Approval",
+      totalStages: 6,
+      currentStage: "Approval",
       dueIn: 14,
       stages: [
         "Initiation",
@@ -41,65 +39,43 @@ const InitiativeManagement = () => {
         "Execution",
         "Monitoring",
         "Control",
-        "CEO Approval",
-        "Review",
         "Approval",
-        "Implementation",
-        "Completion"
-      ]
-    },
-    {
-      id: "CR-023",
-      title: "Init lorem ipsum title",
-      type: "Organizational Approval",
-      date: "07 Oct 2023",
-      stagesCompleted: 9,
-      totalStages: 10,
-      currentStage: "Execution",
-      dueIn: 14,
-      stages: [
-        "Initiation",
         "Planning",
         "Execution",
-        "Monitoring",
-        "Control",
-        "CEO Approval",
-        "Review",
-        "Approval",
-        "Implementation",
-        "Completion"
+        "Monitoring"
       ]
     },
     {
       id: "CR-023",
-      title: "Init lorem ipsum title",
-      type: "Organizational Approval",
-      date: "07 Oct 2023",
-      stagesCompleted: 5,
-      totalStages: 10,
-      currentStage: "CEO Approval",
-      dueIn: 14,
-      stages: [
-        "Initiation",
-        "Planning",
-        "Execution",
-        "Monitoring",
-        "Control",
-        "CEO Approval",
-        "Review",
-        "Approval",
-        "Implementation",
-        "Completion"
-      ]
-    },
-    {
-      id: "CR-023",
-      title: "Init lorem ipsum title",
+      title: "Init lorem",
       type: "Organizational Approval",
       date: "07 Oct 2023",
       stagesCompleted: 6,
-      totalStages: 10,
-      currentStage: "CEO Approval",
+      totalStages: 6,
+      currentStage: "Execution",
+      dueIn: 14,
+      stages: ["Initiation", "Planning", "Execution", "Monitoring", "Control", "Approval"]
+    },
+
+    {
+      id: "CR-023",
+      title: "Init lorem",
+      type: "Organizational Approval",
+      date: "07 Oct 2023",
+      stagesCompleted: 3,
+      totalStages: 6,
+      currentStage: "Execution",
+      dueIn: 14,
+      stages: ["Initiation", "Planning", "Execution", "Monitoring", "Control", "Approval"]
+    },
+    {
+      id: "CR-034",
+      title: "Metro Small",
+      type: "Budget",
+      date: "07 Aug 2022",
+      stagesCompleted: 2,
+      totalStages: 6,
+      currentStage: "Approval",
       dueIn: 14,
       stages: [
         "Initiation",
@@ -107,11 +83,30 @@ const InitiativeManagement = () => {
         "Execution",
         "Monitoring",
         "Control",
-        "CEO Approval",
-        "Review",
         "Approval",
-        "Implementation",
-        "Completion"
+        "Control",
+        "Approval"
+      ]
+    },
+    {
+      id: "CR-023",
+      title: "Init lorem",
+      type: "Organizational Approval",
+      date: "07 Oct 2023",
+      stagesCompleted: 3,
+      totalStages: 6,
+      currentStage: "Approval",
+      dueIn: 14,
+      stages: [
+        "Initiation",
+        "Planning",
+        "Execution",
+        "Monitoring",
+        "Control",
+        "Approval",
+        "Planning",
+        "Execution",
+        "Monitoring"
       ]
     }
   ]);

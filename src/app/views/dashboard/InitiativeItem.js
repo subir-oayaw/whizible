@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, IconButton, Tooltip } from "@mui/material";
+import { Typography, IconButton, Tooltip } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FlagIcon from "@mui/icons-material/Flag";
 import CustomProgressBar from "./CustomProgressBar";
@@ -10,51 +10,56 @@ const InitiativeItem = ({ initiative }) => {
     initiative;
 
   return (
-    <Box className="initiative-item list-view">
-      <Box className="initiative-header">
-        <Box className="initiative-title">
-          <Typography variant="h6">{title}</Typography>
+    <tr>
+      <td>
+        <div className="initiative-title">
+          <Typography variant="body1">{title}</Typography>
           <Typography variant="body2" color="textSecondary">
             {id}
           </Typography>
-        </Box>
-        <Box className="initiative-details">
-          <Typography variant="body2" color="textSecondary">
-            {type}
+        </div>
+      </td>
+      <td style={{ textAlign: "start" }}>
+        <Typography variant="body2">{type}</Typography>
+        <Typography variant="body2" color="textSecondary">
+          {date}
+        </Typography>
+      </td>
+      <td>
+        <div className="left-side">
+          <Typography variant="body2" className="due-in" color="textSecondary">
+            {dueIn} Days
           </Typography>
-          <Typography variant="body2" color="textSecondary">
-            {date}
-          </Typography>
-        </Box>
-      </Box>
-      <Box className="initiative-progress-container">
+        </div>
+
         <CustomProgressBar
           stagesCompleted={stagesCompleted}
           totalStages={totalStages}
           stages={stages}
         />
-        <Box className="current-stage-container">
-          <Typography variant="body2" className="current-stage">
-            Current Stage: {currentStage}
-          </Typography>
-          <Box className="due-in-actions">
-            <Typography variant="body2" className="due-in">
-              Due in: {dueIn} Days
-            </Typography>
-            <Tooltip title="Delay">
-              <IconButton>
-                <AccessTimeIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Flag">
-              <IconButton>
-                <FlagIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+        <Typography variant="body2" color="textSecondary">
+          {stagesCompleted} stages completed
+        </Typography>
+      </td>
+      <td>
+        <div className="current-stage-container">
+          <div className="current-stage">
+            <div className="initiative-actions">
+              <Tooltip title="Delay">
+                <IconButton>
+                  <AccessTimeIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Flag">
+                <IconButton>
+                  <FlagIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
   );
 };
 

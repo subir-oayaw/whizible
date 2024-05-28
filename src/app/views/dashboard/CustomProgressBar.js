@@ -1,47 +1,43 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CircleIcon from "@mui/icons-material/Circle";
-import ScheduleIcon from "@mui/icons-material/Schedule";
+import { Box, Tooltip } from "@mui/material";
 import "./customProgressBar.css";
 
 const CustomProgressBar = ({ stagesCompleted, totalStages, stages }) => {
+  const getStageClass = (index) => {
+    const stageIndex = index + 1; // Adjust index to start from 1
+    if (stageIndex < stagesCompleted) return "sbar sbar-green sbar-small";
+    if (stageIndex === stagesCompleted) return "sbar sbar-orange sbar-large sbar-current";
+    if (stageIndex === stagesCompleted + 1) return "sbar sbar-red sbar-small";
+    return "sbar sbar-gray sbar-small";
+  };
+
   return (
     <Box className="progress-container">
       <Box className="progress-bar-wrapper">
         {stages.map((stage, index) => (
-          <Box key={index} className="progress-segment-container">
-            <Box className={`progress-segment ${index < stagesCompleted ? "completed" : ""}`}>
-              {index < stagesCompleted ? (
-                <React.Fragment>
-                  <CheckCircleIcon className="completed-icon" style={{ fontSize: 30 }} />
-                  {index < stages.length - 1 && <div className="completed-line" />}
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  {index === stagesCompleted ? (
-                    <ScheduleIcon
-                      className="not-completed-icon"
-                      style={{ top: "-9px", color: "#f5c330", fontSize: 30 }}
-                    />
-                  ) : (
-                    <CircleIcon
-                      className="not-completed-icon"
-                      style={{ top: "-9px", fontSize: 30 }}
-                    />
-                  )}
-                  {index < stages.length - 1 && <div className="not-completed-line" />}
-                </React.Fragment>
+          <Tooltip key={index} title={`Stage ${index + 1}`}>
+            <div
+              id={`stg-bar-${index + 1}`}
+              className={getStageClass(index)}
+              data-bs-toggle="tooltip"
+              aria-label={`Stage ${index + 1}`}
+            >
+              {index === stagesCompleted - 1 && (
+                <a
+                  href="javascript:;"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#IniMDetailsOffcanvas"
+                  data-bs-placement="top"
+                  style={{ zIndex: 2, position: "relative", fontSize: "smaller" }}
+                  className="progress-text"
+                >
+                  {`${((stagesCompleted / totalStages) * 100).toFixed(0)}% Completed`}
+                </a>
               )}
-            </Box>
-            <Typography className="stage-name">{stage}</Typography>
-          </Box>
+            </div>
+          </Tooltip>
         ))}
       </Box>
-      <Typography className="progress-text">
-        {((stagesCompleted / totalStages) * 100).toFixed(0)}% Completed [{stagesCompleted}/
-        {totalStages}]
-      </Typography>
     </Box>
   );
 };
