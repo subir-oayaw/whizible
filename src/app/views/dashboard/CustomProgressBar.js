@@ -3,7 +3,7 @@ import { Box, Tooltip } from "@mui/material";
 import InitiativeDetailsModal from "./InitiativeDetailsModal";
 import "./customProgressBar.css";
 
-const CustomProgressBar = ({ stagesCompleted, totalStages, stages, initiative }) => {
+const CustomProgressBar = ({ stagesCompleted, totalStages, stages, initiative, stagesLegend }) => {
   const [openModal, setOpenModal] = useState(false);
   console.log("initiative", initiative);
   const handleClick = () => {
@@ -51,7 +51,12 @@ const CustomProgressBar = ({ stagesCompleted, totalStages, stages, initiative })
           ))}
         </Box>
       </Box>
-      <InitiativeDetailsModal open={openModal} handleClose={handleClose} initiative={initiative} />
+      <InitiativeDetailsModal
+        open={openModal}
+        handleClose={handleClose}
+        initiative={initiative}
+        stagesLegend={stagesLegend}
+      />
     </>
   );
 };

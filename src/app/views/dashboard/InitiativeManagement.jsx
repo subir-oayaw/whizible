@@ -13,54 +13,66 @@ const InitiativeManagement = () => {
       totalStages: 6,
       currentStage: "Approval",
       dueIn: 14,
+      businessGroup: "Finance",
+      deliveryUnit: "Project Management",
+      code: "MS-001",
+      category: "Public Transport",
+      organizationUnit: "Operations",
+      deliveryTeam: "Metro Team",
       stages: [
         {
-          name: "Stage 1",
-          completed: true,
+          from: "Stage 1",
+          to: "Stage 2",
+          actionTaken: "Reviewed and approved",
           approver: "Admin",
           completedOn: "10 Aug 2022 11:00:00",
           comments: "",
           delayedBy: "2 days"
         },
         {
-          name: "Stage 2",
-          completed: true,
+          from: "Stage 2",
+          to: "Stage 3",
+          actionTaken: "Reviewed and approved",
           approver: "Admin",
-          completedOn: "10 Aug 2022 13:00:00",
+          completedOn: "10 Aug 2022 11:00:00",
           comments: "",
-          delayedBy: "-"
+          delayedBy: "2 days"
         },
         {
-          name: "Stage 3",
-          completed: true,
+          from: "Stage 3",
+          to: "Stage 4",
+          actionTaken: "Reviewed and approved",
           approver: "Admin",
-          completedOn: "10 Aug 2022 10:00:00",
+          completedOn: "10 Aug 2022 11:00:00",
           comments: "",
-          delayedBy: "-"
+          delayedBy: "2 days"
         },
         {
-          name: "CEOs",
-          completed: false,
+          from: "Stage 4",
+          to: "Stage 5",
+          actionTaken: "Reviewed and approved",
           approver: "Admin",
-          completedOn: "",
+          completedOn: "10 Aug 2022 11:00:00",
           comments: "",
-          delayedBy: "-"
+          delayedBy: "2 days"
         },
         {
-          name: "Stage 4",
-          completed: true,
+          from: "Stage 5",
+          to: "Stage 6",
+          actionTaken: "Reviewed and approved",
           approver: "Admin",
-          completedOn: "10 Aug 2022 10:00:00",
+          completedOn: "10 Aug 2022 11:00:00",
           comments: "",
-          delayedBy: "-"
+          delayedBy: "2 days"
         },
         {
-          name: "CEOw",
-          completed: false,
+          from: "Stage 6",
+          to: "Stage 6",
+          actionTaken: "Reviewed and approved",
           approver: "Admin",
-          completedOn: "",
+          completedOn: "10 Aug 2022 11:00:00",
           comments: "",
-          delayedBy: "-"
+          delayedBy: "2 days"
         }
       ]
     },

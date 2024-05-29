@@ -54,7 +54,11 @@ const InitiativeList = ({ initiatives, page }) => {
         </TableHead>
         <tbody>
           {initiativesToShow.map((initiative) => (
-            <InitiativeItem key={initiative.id} initiative={initiative} />
+            <InitiativeItem
+              key={initiative.id}
+              initiative={initiative}
+              stagesLegend={stagesLegend}
+            />
           ))}
         </tbody>
       </Table>

@@ -5,7 +5,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import CustomProgressBar from "./CustomProgressBar";
 import "./InitiativeItem.css";
 
-const InitiativeItem = ({ initiative }) => {
+const InitiativeItem = ({ initiative, stagesLegend }) => {
   const { title, id, type, date, stagesCompleted, totalStages, currentStage, dueIn, stages } =
     initiative;
 
@@ -37,6 +37,7 @@ const InitiativeItem = ({ initiative }) => {
           totalStages={totalStages}
           stages={stages}
           initiative={initiative}
+          stagesLegend={stagesLegend}
         />
         <Typography variant="body2" color="textSecondary">
           {stagesCompleted} stages completed
