@@ -374,7 +374,7 @@ const InitiativeManagement = () => {
       <Typography variant="h4" gutterBottom>
         Initiative Management
       </Typography>
-      <div class="container-fluid">
+      <div class="container-fluid pb-3">
         <div class="row align-items-end">
           <div class="col-12 col-sm-7">
             <div id="intFilters" class="init_filters ps-2">

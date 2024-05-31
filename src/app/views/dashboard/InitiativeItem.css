@@ -164,3 +164,14 @@ span.commentdate {
 .circle-bgyellow {
   background: #f9e143;
 }
+
+.usrimg + .form-group {
+  flex-grow: 1;
+}
+.card-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%; /* Adjust width based on your layout needs */
+  padding: 10px; /* Adjust padding as needed */
+  background-color: #f8f9fa; /* Example background color */
+}

@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import InitiativeItem from "./InitiativeItem";
 import { Box, Table, TableHead, TableRow, TableCell } from "@mui/material";
 import "./InitiativeList.css"; // Import your CSS file for styles
+import SearchIcon from "../../../assets/img/search-icn.svg";
 
 const ITEMS_PER_PAGE = 4;
 
 const InitiativeList = ({ initiatives, page }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredInitiatives = initiatives.filter((initiative) =>
+    initiative.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const initiativesToShow = initiatives.slice(startIndex, endIndex);
+  const initiativesToShow = filteredInitiatives.slice(startIndex, endIndex);
 
   // Legend for stages with colored boxes
   const stagesLegend = (
@@ -37,10 +48,31 @@ const InitiativeList = ({ initiatives, page }) => {
       <Table className="table table-bordered">
         <TableHead>
           <TableRow>
-            <TableCell className="thOuter col-sm-1">
-              <div className="igph_title position-relative">Initiative Title</div>
+            <TableCell className="thOuter custom-col-width">
+              <div className="igph_title position-relative">
+                Initiative Title
+                <div className="search-box position-absolute top-50 end-0 translate-middle-y me-2">
+                  <input
+                    id="InitMangntSrchInput"
+                    className="search-text"
+                    type="text"
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                  <a id="initgrid-srch-title" className="search-btn" href="javascript:void(0);">
+                    <img
+                      src={SearchIcon}
+                      alt="Search"
+                      data-bs-toggle="tooltip"
+                      aria-label="Search"
+                      data-bs-original-title="Search"
+                    />
+                  </a>
+                </div>
+              </div>
             </TableCell>
-            <TableCell className="thOuter col-sm-2">
+            <TableCell className="thOuter col-sm-1">
               <div className="igph_title position-relative">Nature of Initiative</div>
             </TableCell>
             <TableCell className="thOuter col-sm-5">
