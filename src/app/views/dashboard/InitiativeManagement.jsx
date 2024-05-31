@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import InitiativeList from "./InitiativeList";
 import { Container, Typography, Button, Box } from "@mui/material";
 import "./InitiativeManagement.css";
+import SearchIcon from "../../../assets/img/searchlist-red-icn.svg";
+import SearchList from "./SearchList";
 const InitiativeManagement = () => {
   const [initiatives, setInitiatives] = useState([
     {
@@ -287,10 +289,18 @@ const InitiativeManagement = () => {
       ]
     }
   ]);
+
   const [finitiatives, setfInitiatives] = useState(initiatives);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFilter, setCurrentFilter] = useState("inbox"); // Default filter is Inbox
+  const [showForm, setShowForm] = useState(false);
 
+  const handleShowForm = () => {
+    setShowForm(true);
+  };
+  const handleCloseForm = () => {
+    setShowForm(false);
+  };
   // Function to calculate filter counts based on current state of initiatives
   const calculateFilterCounts = () => {
     const counts = {
@@ -435,9 +445,28 @@ const InitiativeManagement = () => {
               </ul>
             </div>
           </div>
+          <div className="col-12 col-sm-5 d-flex justify-content-end">
+            <div class="searchList" id="searching" onClick={handleShowForm}>
+              <a
+                href="#InitMangntAdvancedSearch"
+                id="intAdvancedSearch"
+                data-bs-toggle="collapse"
+                class="collapsed"
+                aria-expanded="false"
+              >
+                <img
+                  src={SearchIcon}
+                  alt=""
+                  data-bs-toggle="tooltip"
+                  aria-label="Search List"
+                  data-bs-original-title="Search List"
+                />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-
+      {showForm && <SearchList onClose={handleCloseForm} />}
       <InitiativeList initiatives={finitiatives} page={currentPage} />
       {initiatives.length > 2 && (
         <Box display="flex" justifyContent="center" alignItems="center">

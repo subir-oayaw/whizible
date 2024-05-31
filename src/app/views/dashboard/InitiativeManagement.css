@@ -65,4 +65,10 @@ span.fltrtitle {
   padding: 10px;
 }
 
-/*End Top Filters*/
+.searchList {
+  width: 24px;
+  height: 24px;
+}
+.searchList {
+  top: 81.5px;
+}
