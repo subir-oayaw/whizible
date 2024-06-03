@@ -86,7 +86,7 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
       boxShadow: "none"
     }
   };
-  console.log("stages", stages);
+
   return (
     <tr>
       <td>
@@ -126,37 +126,33 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
           <div className="current-stage">
             <div className="initiative-actions">
               {/* Edit Icon */}
-              <div className="row">
-                <div className="col">
-                  <Tooltip title="Edit">
-                    <IconButton onClick={startEditing}>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                </div>
-                <div className="col">
-                  <Tooltip title="Comment">
-                    <IconButton onClick={openCommentDrawer}>
-                      <CommentIcon />
-                    </IconButton>
-                  </Tooltip>
-                </div>
+              <div className="icon-button-container">
+                <Tooltip title="Edit">
+                  <IconButton onClick={startEditing}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
               </div>
-              <div className="row ">
-                <div className="col">
-                  <Tooltip title="Delay">
-                    <IconButton>
-                      <AccessTimeIcon />
-                    </IconButton>
-                  </Tooltip>
-                </div>
-                <div className="col">
-                  <Tooltip title="Flag">
-                    <IconButton>
-                      <FlagIcon />
-                    </IconButton>
-                  </Tooltip>
-                </div>
+              <div className="icon-button-container">
+                <Tooltip title="Comment">
+                  <IconButton onClick={openCommentDrawer}>
+                    <CommentIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className="icon-button-container">
+                <Tooltip title="Delay">
+                  <IconButton>
+                    <AccessTimeIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className="icon-button-container">
+                <Tooltip title="Flag">
+                  <IconButton>
+                    <FlagIcon />
+                  </IconButton>
+                </Tooltip>
               </div>
             </div>
           </div>
@@ -170,14 +166,14 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
             All Conversation
           </Typography>
           <Divider />
-          <div class="container">
-            <div class="row justify-content-end">
-              <div class="col-auto">
-                <strong>Initiative Code:</strong> <span class="text-danger">{id}</span>
+          <div className="container">
+            <div className="row justify-content-end">
+              <div className="col-auto">
+                <strong>Initiative Code:</strong> <span className="text-danger">{id}</span>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
+            <div className="row">
+              <div className="col">
                 <Divider />
               </div>
             </div>

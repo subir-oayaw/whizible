@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import InitiativeList from "./InitiativeList";
-import { Container, Typography, Button, Box } from "@mui/material";
+import { Container, Typography, Box, Pagination } from "@mui/material";
 import "./InitiativeManagement.css";
-import SearchIcon from "../../../assets/img/searchlist-red-icn.svg";
+import SearchIcon from "../../../assets/img/serachlist-icn.svg";
 import SearchList from "./SearchList";
+
 const InitiativeManagement = () => {
   const [initiatives, setInitiatives] = useState([
     {
@@ -357,23 +358,18 @@ const InitiativeManagement = () => {
   };
 
   // Calculate total pages based on initiatives length
-  const totalPages = Math.ceil(initiatives.length / 2);
+  const totalPages = Math.ceil(finitiatives.length / 5);
 
   // Handlers for pagination
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
   // On component mount, filter by default filter (Inbox)
   useEffect(() => {
     filterInitiatives("Inbox");
   }, []); // Empty dependency array to run this effect only once after the initial render
-  console.log("draft1", finitiatives);
-  console.log("draft2", initiatives);
+
   return (
     <Container>
       <div className="container-fluid">
@@ -446,39 +442,33 @@ const InitiativeManagement = () => {
             </div>
           </div>
           <div className="col-12 col-sm-5 d-flex justify-content-end">
-            <div class="searchList" id="searching" onClick={handleShowForm}>
-              <a
-                href="#InitMangntAdvancedSearch"
-                id="intAdvancedSearch"
-                data-bs-toggle="collapse"
-                class="collapsed"
-                aria-expanded="false"
-              >
-                <img
-                  src={SearchIcon}
-                  alt=""
-                  data-bs-toggle="tooltip"
-                  aria-label="Search List"
-                  data-bs-original-title="Search List"
-                />
-              </a>
+            <div class="" onClick={handleShowForm}>
+              <img
+                src={SearchIcon}
+                alt=""
+                data-bs-toggle="tooltip"
+                aria-label="Search List"
+                data-bs-original-title="Search List"
+              />
             </div>
           </div>
         </div>
       </div>
       {showForm && <SearchList onClose={handleCloseForm} />}
-      <InitiativeList initiatives={finitiatives} page={currentPage} />
-      {initiatives.length > 2 && (
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Button variant="outlined" onClick={handlePrevPage} disabled={currentPage === 1}>
-            Previous Page
-          </Button>
-          <Typography variant="body1" sx={{ margin: "0 16px" }}>
-            Page {currentPage} of {totalPages}
-          </Typography>
-          <Button variant="outlined" onClick={handleNextPage} disabled={currentPage === totalPages}>
-            Next Page
-          </Button>
+      <InitiativeList
+        initiatives={finitiatives.slice((currentPage - 1) * 5, currentPage * 5)}
+        page={currentPage}
+      />
+      {finitiatives.length > 5 && (
+        <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            variant="outlined"
+            shape="rounded"
+          />
         </Box>
       )}
     </Container>

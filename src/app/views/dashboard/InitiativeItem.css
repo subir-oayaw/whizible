@@ -16,11 +16,6 @@
   text-align: right;
 }
 
-.initiative-actions {
-  display: flex;
-  align-items: center;
-}
-
 .due-in {
   margin-right: 8px; /* Add spacing between dueIn and icons */
 }
@@ -174,4 +169,22 @@ span.commentdate {
   width: 100%; /* Adjust width based on your layout needs */
   padding: 10px; /* Adjust padding as needed */
   background-color: #f8f9fa; /* Example background color */
+}
+.initiative-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 17px;
+}
+
+.icon-button-container .MuiIconButton-root {
+  padding: 2px; /* Adjust padding to make icons smaller */
+}
+
+.icon-button-container .MuiSvgIcon-root {
+  font-size: 18px; /* Adjust font size to make icons smaller */
+}
+
+.icon-button-container .MuiSvgIcon-root {
+  font-size: 17px; /* Adjust font size to make icons smaller */
 }

@@ -1,25 +1,37 @@
 import React, { useState } from "react";
 import InitiativeItem from "./InitiativeItem";
-import { Box, Table, TableHead, TableRow, TableCell } from "@mui/material";
+import { Box, Table, TableHead, TableRow, TableCell, Pagination, Stack } from "@mui/material";
 import "./InitiativeList.css"; // Import your CSS file for styles
 import SearchIcon from "../../../assets/img/search-icn.svg";
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 5; // Number of items per page
 
 const InitiativeList = ({ initiatives, page }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(page); // State for current page
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to first page when search term changes
   };
 
+  // Filter initiatives based on search term
   const filteredInitiatives = initiatives.filter((initiative) =>
     initiative.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  // Pagination Logic
+  const totalItems = filteredInitiatives.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const initiativesToShow = filteredInitiatives.slice(startIndex, endIndex);
+
+  // Handle page change
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   // Legend for stages with colored boxes
   const stagesLegend = (
@@ -72,7 +84,7 @@ const InitiativeList = ({ initiatives, page }) => {
                 </div>
               </div>
             </TableCell>
-            <TableCell className="thOuter col-sm-1">
+            <TableCell className="thOuter col-sm-2">
               <div className="igph_title position-relative">Nature of Initiative</div>
             </TableCell>
             <TableCell className="thOuter col-sm-5">
