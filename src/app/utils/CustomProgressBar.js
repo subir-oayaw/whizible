@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Tooltip } from "@mui/material";
-import InitiativeDetailsModal from "./InitiativeDetailsModal";
+import InitiativeDetailsModal from "../views/InitiativeManagement/InitiativeDetailsModal";
 import "./customProgressBar.css";
 
 const CustomProgressBar = ({ stagesCompleted, totalStages, stages, initiative, stagesLegend }) => {

@@ -17,7 +17,7 @@ const JwtRegister = Loadable(lazy(() => import("app/views/sessions/JwtRegister")
 // E-CHART PAGE
 const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart")));
 // DASHBOARD PAGE
-const Analytics = Loadable(lazy(() => import("app/views/dashboard/Analytics")));
+const Analytics = Loadable(lazy(() => import("app/utils/Analytics")));
 
 const routes = [
   {

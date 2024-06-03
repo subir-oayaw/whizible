@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Typography, IconButton, Tooltip, Drawer, Box, Divider, TextField } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import CustomProgressBar from "./CustomProgressBar";
+import CustomProgressBar from "../../utils/CustomProgressBar";
 import { PrimaryButton, DefaultButton } from "@fluentui/react/lib/Button";
 import FlagIcon from "@mui/icons-material/Flag";
 import EditIcon from "@mui/icons-material/Edit";

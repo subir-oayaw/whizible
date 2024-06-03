@@ -3,7 +3,7 @@ import InitiativeList from "./InitiativeList";
 import { Container, Typography, Box, Pagination } from "@mui/material";
 import "./InitiativeManagement.css";
 import SearchIcon from "../../../assets/img/serachlist-icn.svg";
-import SearchList from "./SearchList";
+import SearchList from "../../utils/SearchList";
 
 const InitiativeManagement = () => {
   const [initiatives, setInitiatives] = useState([
