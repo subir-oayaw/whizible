@@ -1,90 +1,58 @@
 import { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Box,
-  Card,
-  Icon,
   Badge,
-  Button,
-  Drawer,
-  styled,
   IconButton,
-  ThemeProvider
+  ThemeProvider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Button,
+  Typography,
+  Select,
+  MenuItem
 } from "@mui/material";
 import { Clear, Notifications } from "@mui/icons-material";
-
 import useSettings from "app/hooks/useSettings";
-import useNotification from "app/hooks/useNotification";
-import { getTimeDifference } from "app/utils/utils.js";
-import { sideNavWidth, topBarHeight } from "app/utils/constant";
-import { themeShadows } from "../MatxTheme/themeColors";
-import { Paragraph, Small } from "../Typography";
-
-const Notification = styled("div")(() => ({
-  padding: "16px",
-  marginBottom: "16px",
-  display: "flex",
-  alignItems: "center",
-  height: topBarHeight,
-  boxShadow: themeShadows[6],
-  "& h5": {
-    marginLeft: "8px",
-    marginTop: 0,
-    marginBottom: 0,
-    fontWeight: "500"
-  }
-}));
-
-const NotificationCard = styled(Box)(({ theme }) => ({
-  position: "relative",
-  "&:hover": {
-    "& .messageTime": {
-      display: "none"
-    },
-    "& .deleteButton": {
-      opacity: "1"
-    }
+import "./Notification.css";
+const notifications = [
+  {
+    flagColor: "yellowColor",
+    status: "Today",
+    title: "Core Title",
+    nature: "Budget",
+    createdDate: "05 Jul 2022",
+    dueDate: "10 Aug 2022",
+    link: "Initiative_Information.aspx"
   },
-  "& .messageTime": {
-    color: theme.palette.text.secondary
+  {
+    flagColor: "redColor",
+    status: "Delayed",
+    title: "Re-Implementation of Whiz",
+    nature: "Organizational Approval",
+    createdDate: "02 Sep 2022",
+    dueDate: "12 Sep 2022",
+    link: "Initiative_Information.aspx"
   },
-  "& .icon": { fontSize: "1.25rem" }
-}));
-
-const DeleteButton = styled(IconButton)(({ theme }) => ({
-  opacity: "0",
-  position: "absolute",
-  right: 5,
-  marginTop: 9,
-  marginRight: "24px",
-  background: "rgba(0, 0, 0, 0.01)"
-}));
-
-const CardLeftContent = styled("div")(({ theme }) => ({
-  padding: "12px 8px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  background: "rgba(0, 0, 0, 0.01)",
-  "& small": {
-    fontWeight: "500",
-    marginLeft: "16px",
-    color: theme.palette.text.secondary
+  {
+    flagColor: "greenColor",
+    status: "Future",
+    title: "Metro Small",
+    nature: "Budget",
+    createdDate: "18 Apr 2022",
+    dueDate: "10 May 2022",
+    link: "Initiative_Information.aspx"
   }
-}));
+  // ... Add other notifications here
+];
 
-const Heading = styled("span")(({ theme }) => ({
-  fontWeight: "500",
-  marginLeft: "16px",
-  color: theme.palette.text.secondary
-}));
-
-export default function NotificationBar({ container }) {
+export default function NotificationBar() {
   const { settings } = useSettings();
   const [panelOpen, setPanelOpen] = useState(false);
-  const { deleteNotification, clearNotifications, notifications } = useNotification();
+  const [duration, setDuration] = useState("");
 
   const handleDrawerToggle = () => setPanelOpen(!panelOpen);
+  const handleDurationChange = (event) => setDuration(event.target.value);
 
   return (
     <Fragment>
@@ -95,64 +63,154 @@ export default function NotificationBar({ container }) {
       </IconButton>
 
       <ThemeProvider theme={settings.themes[settings.activeTheme]}>
-        <Drawer
-          width={"100px"}
-          container={container}
-          variant="temporary"
-          anchor={"right"}
-          open={panelOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}>
-          <Box sx={{ width: sideNavWidth }}>
-            <Notification>
-              <Notifications color="primary" />
-              <h5>Notifications</h5>
-            </Notification>
-
-            {notifications?.map((notification) => (
-              <NotificationCard key={notification.id}>
-                <DeleteButton
-                  size="small"
-                  className="deleteButton"
-                  onClick={() => deleteNotification(notification.id)}>
-                  <Clear className="icon" />
-                </DeleteButton>
-
-                <Link
-                  to={`/${notification.path}`}
-                  onClick={handleDrawerToggle}
-                  style={{ textDecoration: "none" }}>
-                  <Card sx={{ mx: 2, mb: 3 }} elevation={3}>
-                    <CardLeftContent>
-                      <Box display="flex">
-                        <Icon className="icon" color={notification.icon.color}>
-                          {notification.icon.name}
-                        </Icon>
-                        <Heading>{notification.heading}</Heading>
-                      </Box>
-
-                      <Small className="messageTime">
-                        {getTimeDifference(new Date(notification.timestamp))}
-                        ago
-                      </Small>
-                    </CardLeftContent>
-
-                    <Box px={2} pt={1} pb={2}>
-                      <Paragraph m={0}>{notification.title}</Paragraph>
-                      <Small color="text.secondary">{notification.subtitle}</Small>
-                    </Box>
-                  </Card>
-                </Link>
-              </NotificationCard>
-            ))}
-
-            {!!notifications?.length && (
-              <Box color="text.secondary">
-                <Button onClick={clearNotifications}>Clear Notifications</Button>
+        <Dialog open={panelOpen} onClose={handleDrawerToggle} maxWidth="lg" fullWidth>
+          <DialogTitle>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <Typography variant="h6">Alert</Typography>
+              <IconButton onClick={handleDrawerToggle}>
+                <Clear />
+              </IconButton>
+            </Box>
+          </DialogTitle>
+          <DialogContent>
+            <Box>
+              <Box mb={3}>
+                <Box display="flex" alignItems="center">
+                  <Typography variant="h6" component="h6">
+                    Alerts
+                  </Typography>
+                  <Notifications color="action" sx={{ ml: 1, mt: 0.5 }} />
+                </Box>
+                <Box mt={2} display="flex" alignItems="center">
+                  <Typography variant="body1">Duration</Typography>
+                  <Select
+                    value={duration}
+                    onChange={handleDurationChange}
+                    displayEmpty
+                    inputProps={{ "aria-label": "Select your Duration" }}
+                    sx={{ ml: 2 }}
+                  >
+                    <MenuItem value="">Select your Duration</MenuItem>
+                    <MenuItem value="future">Future</MenuItem>
+                    <MenuItem value="today">Today</MenuItem>
+                    <MenuItem value="yesterday">Yesterday</MenuItem>
+                    <MenuItem value="thisWeek">This Week</MenuItem>
+                    <MenuItem value="lastWeek">Last Week</MenuItem>
+                    <MenuItem value="older">Older</MenuItem>
+                  </Select>
+                </Box>
               </Box>
-            )}
-          </Box>
-        </Drawer>
+              <hr />
+              <Box>
+                <Typography variant="subtitle1">
+                  <strong>Note:</strong> The Symbols Represents Entities as Below
+                </Typography>
+                <Box display="flex" justifyContent="space-between" mb={2}>
+                  <Box display="flex" alignItems="center">
+                    <i className="fa-solid fa-flag redColor"></i>
+                    <Typography variant="body2" sx={{ ml: 1 }}>
+                      Delayed
+                    </Typography>
+                  </Box>
+                  <Box display="flex" alignItems="center">
+                    <i className="fa-solid fa-flag yellowColor"></i>
+                    <Typography variant="body2" sx={{ ml: 1 }}>
+                      Today
+                    </Typography>
+                  </Box>
+                  <Box display="flex" alignItems="center">
+                    <i className="fa-solid fa-flag greenColor"></i>
+                    <Typography variant="body2" sx={{ ml: 1 }}>
+                      Future
+                    </Typography>
+                  </Box>
+                  <Box display="flex" alignItems="center">
+                    <i className="fas fa-stopwatch redColor"></i>
+                    <Typography variant="body2" sx={{ ml: 1 }}>
+                      Delayed Initiative
+                    </Typography>
+                  </Box>
+                  <Box display="flex" alignItems="center">
+                    <i className="fa-solid fa-warehouse"></i>
+                    <Typography variant="body2" sx={{ ml: 1 }}>
+                      Warehouse Delayed Initiative
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+              <hr />
+              <Box>
+                <Box style={{ height: 235, overflowY: "auto" }} className="main-alert-div">
+                  <table className="table-striped table-hover table-bordered init-stickytable alert_table mb-0">
+                    <thead>
+                      <tr className="table-title">
+                        <th className="text-center">Flag</th>
+                        <th className="active">Initiative Title</th>
+                        <th>Nature of Initiative</th>
+                        <th>Created Date</th>
+                        <th>Due Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {notifications.map((notification, index) => (
+                        <tr key={index}>
+                          <td className="text-center">
+                            <i
+                              className={`fa-solid fa-flag ${notification.flagColor}`}
+                              data-bs-toggle="tooltip"
+                              data-bs-original-title={notification.status}
+                            ></i>
+                          </td>
+                          <td>
+                            <a href={notification.link}>{notification.title}</a>
+                          </td>
+                          <td>{notification.nature}</td>
+                          <td>{notification.createdDate}</td>
+                          <td>{notification.dueDate}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </Box>
+              </Box>
+              <Box
+                mt={3}
+                textAlign="center"
+                className="Init_pagination light-theme simple-pagination"
+              >
+                <ul>
+                  <li className="active">
+                    <span className="current prev">«</span>
+                  </li>
+                  <li className="active">
+                    <span className="current">1</span>
+                  </li>
+                  <li>
+                    <a href="#page-2" className="page-link">
+                      2
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#page-3" className="page-link">
+                      3
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#page-2" className="page-link next">
+                      »
+                    </a>
+                  </li>
+                </ul>
+              </Box>
+              <hr />
+              <Box textAlign="right" className="modal-footer">
+                <Button variant="outlined" color="primary" onClick={handleDrawerToggle}>
+                  Close
+                </Button>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Dialog>
       </ThemeProvider>
     </Fragment>
   );
