@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Scrollbar from "react-perfect-scrollbar";
-import { MatxVerticalNav } from "app/components";
+import { WhizVerticalNav } from "app/components";
 import useSettings from "app/hooks/useSettings";
 import { navigations } from "app/navigations";
 import { Span } from "app/components/Typography";
@@ -91,7 +91,7 @@ export default function Sidenav({ children }) {
         />
       </StyledSpan>
       <StyledScrollBar options={{ suppressScrollX: true }}>
-        <MatxVerticalNav items={filteredNavigations} />
+        <WhizVerticalNav items={filteredNavigations} />
         {children}
       </StyledScrollBar>
       <SideNavMobile onClick={() => updateSidebarMode({ mode: "close" })} />
