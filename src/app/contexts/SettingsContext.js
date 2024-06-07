@@ -1,15 +1,15 @@
 import { createContext, useState } from "react";
 import merge from "lodash/merge";
 // CUSTOM COMPONENT
-import { MatxLayoutSettings } from "app/components/MatxLayout/settings";
+import { WhizLayoutSettings } from "app/components/WhizLayout/settings";
 
 export const SettingsContext = createContext({
-  settings: MatxLayoutSettings,
+  settings: WhizLayoutSettings,
   updateSettings: () => {}
 });
 
 export default function SettingsProvider({ settings, children }) {
-  const [currentSettings, setCurrentSettings] = useState(settings || MatxLayoutSettings);
+  const [currentSettings, setCurrentSettings] = useState(settings || WhizLayoutSettings);
 
   const handleUpdateSettings = (update = {}) => {
     const marged = merge({}, currentSettings, update);

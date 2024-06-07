@@ -17,7 +17,7 @@ import useSettings from "app/hooks/useSettings";
 import { H5, Span } from "../Typography";
 import BadgeSelected from "./BadgeSelected";
 
-import { themeShadows } from "../MatxTheme/themeColors";
+import { themeShadows } from "../WhizTheme/themeColors";
 import { Close, Settings } from "@mui/icons-material";
 
 // STYLED COMPONENTS
@@ -89,7 +89,7 @@ const StyledScrollBar = styled(Scrollbar)(() => ({
   paddingRight: "16px"
 }));
 
-export default function MatxCustomizer() {
+export default function WhizCustomizer() {
   const [open, setOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const { settings, updateSettings } = useSettings();

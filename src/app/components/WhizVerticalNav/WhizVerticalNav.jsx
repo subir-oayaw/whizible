@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Box, ButtonBase, Icon, styled } from "@mui/material";
 import useSettings from "app/hooks/useSettings";
 import { Paragraph, Span } from "../Typography";
-import MatxVerticalNavExpansionPanel from "./MatxVerticalNavExpansionPanel";
+import WhizVerticalNavExpansionPanel from "./WhizVerticalNavExpansionPanel";
 
 // Styled components
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
@@ -75,7 +75,7 @@ const BadgeValue = styled("div")(() => ({
   borderRadius: "300px"
 }));
 
-export default function MatxVerticalNav({ items }) {
+export default function WhizVerticalNav({ items }) {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
 
@@ -91,9 +91,9 @@ export default function MatxVerticalNav({ items }) {
 
       if (item.children) {
         return (
-          <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index}>
+          <WhizVerticalNavExpansionPanel mode={mode} item={item} key={index}>
             {renderLevels(item.children)}
-          </MatxVerticalNavExpansionPanel>
+          </WhizVerticalNavExpansionPanel>
         );
       }
 

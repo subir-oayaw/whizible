@@ -5,7 +5,7 @@ import useSettings from "app/hooks/useSettings";
 
 import Brand from "app/components/Brand";
 import Sidenav from "app/components/Sidenav";
-import { themeShadows } from "app/components/MatxTheme/themeColors";
+import { themeShadows } from "app/components/WhizTheme/themeColors";
 
 import { convertHexToRGB } from "app/utils/utils";
 import { sidenavCompactWidth, sideNavWidth } from "app/utils/constant";

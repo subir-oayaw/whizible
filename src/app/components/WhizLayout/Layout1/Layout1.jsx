@@ -9,9 +9,9 @@ import Layout1Topbar from "./Layout1Topbar";
 import Layout1Sidenav from "./Layout1Sidenav";
 
 import Footer from "app/components/Footer";
-import { MatxSuspense } from "app/components";
+import { WhizSuspense } from "app/components";
 // import { SecondarySidebar } from "app/components/SecondarySidebar";
-import SidenavTheme from "app/components/MatxTheme/SidenavTheme/SidenavTheme";
+import SidenavTheme from "app/components/WhizTheme/SidenavTheme/SidenavTheme";
 
 import { sidenavCompactWidth, sideNavWidth } from "app/utils/constant";
 
@@ -112,9 +112,9 @@ const Layout1 = () => {
               </ThemeProvider>
             )}
             <Box flexGrow={1} position="relative">
-              <MatxSuspense>
+              <WhizSuspense>
                 <Outlet />
-              </MatxSuspense>
+              </WhizSuspense>
             </Box>
 
             {settings.footer.show && !settings.footer.fixed && <Footer />}
@@ -130,9 +130,9 @@ const Layout1 = () => {
             )}
 
             <Box flexGrow={1} position="relative">
-              <MatxSuspense>
+              <WhizSuspense>
                 <Outlet />
-              </MatxSuspense>
+              </WhizSuspense>
             </Box>
 
             {settings.footer.show && !settings.footer.fixed && <Footer />}

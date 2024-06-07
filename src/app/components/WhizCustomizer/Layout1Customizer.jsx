@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 
 import BadgeSelected from "./BadgeSelected";
-import { themeColors, themeShadows } from "../MatxTheme/themeColors";
+import { themeColors, themeShadows } from "../WhizTheme/themeColors";
 import { mainSidebarThemes, topbarThemes } from "./customizerOptions";
 
 const sidebarBG = ["linear-gradient(to top, #2b56a5, #236db7, #2283c8, #2e9ad6, #42b0e3)"];

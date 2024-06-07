@@ -24,7 +24,7 @@ const SideNavOverlay = styled("div")(() => ({
   background: "rgba(0, 0, 0, 0.74)"
 }));
 
-export default function MatxSidenav({ sx, open, children, toggleSidenav, width = "220px" }) {
+export default function WhizSidenav({ sx, open, children, toggleSidenav, width = "220px" }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 

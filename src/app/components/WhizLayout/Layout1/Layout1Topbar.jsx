@@ -18,9 +18,9 @@ import useSettings from "app/hooks/useSettings";
 
 import { Span } from "app/components/Typography";
 import ShoppingCart from "app/components/ShoppingCart";
-import { MatxMenu, MatxSearchBox } from "app/components";
+import { WhizMenu, WhizSearchBox } from "app/components";
 import { NotificationBar } from "app/components/NotificationBar";
-import { themeShadows } from "app/components/MatxTheme/themeColors";
+import { themeShadows } from "app/components/WhizTheme/themeColors";
 
 import { topBarHeight } from "app/utils/constant";
 
@@ -133,7 +133,7 @@ const Layout1Topbar = () => {
         </Box>
 
         <Box display="flex" alignItems="center">
-          {/* <MatxSearchBox /> */}
+          {/* <WhizSearchBox /> */}
 
           <NotificationProvider>
             <NotificationBar />
@@ -141,7 +141,7 @@ const Layout1Topbar = () => {
 
           {/* <ShoppingCart /> */}
 
-          <MatxMenu
+          <WhizMenu
             menuButton={
               <UserMenu>
                 <Hidden xsDown>
@@ -177,7 +177,7 @@ const Layout1Topbar = () => {
               <PowerSettingsNew />
               <Span>Logout</Span>
             </StyledItem>
-          </MatxMenu>
+          </WhizMenu>
         </Box>
       </TopbarContainer>
     </TopbarRoot>

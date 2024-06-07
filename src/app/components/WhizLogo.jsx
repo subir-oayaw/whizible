@@ -1,6 +1,6 @@
 import useSettings from "app/hooks/useSettings";
 import logo from "../../assets/Images/winitiative-logo.svg";
-export default function MatxLogo({ className }) {
+export default function WhizLogo({ className }) {
   const { settings } = useSettings();
   const theme = settings.themes[settings.activeTheme];
 

@@ -10,7 +10,7 @@ const MenuButton = styled("div")(({ theme }) => ({
   "& div:hover": { backgroundColor: theme.palette.action.hover }
 }));
 
-export default function MatxMenu(props) {
+export default function WhizMenu(props) {
   const { settings } = useSettings();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -31,7 +31,8 @@ export default function MatxMenu(props) {
           onClose={handleClose}
           getContentAnchorEl={null}
           anchorOrigin={{ vertical: "bottom", horizontal: horizontalPosition }}
-          transformOrigin={{ vertical: "top", horizontal: horizontalPosition }}>
+          transformOrigin={{ vertical: "top", horizontal: horizontalPosition }}
+        >
           {children.map((child, index) => (
             <div onClick={shouldCloseOnItemClick ? handleClose : () => {}} key={index}>
               {child}

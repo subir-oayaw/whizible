@@ -92,7 +92,7 @@ const iconMappings = {
   Favorite: "../../../assets/img/favorite.svg"
   // Add mappings for other icons as needed
 };
-export default function MatxVerticalNavExpansionPanel({ item, children, mode }) {
+export default function WhizVerticalNavExpansionPanel({ item, children, mode }) {
   const [collapsed, setCollapsed] = useState(true);
   const elementRef = useRef(null);
   const componentHeight = useRef(0);

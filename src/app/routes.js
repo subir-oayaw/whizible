@@ -5,7 +5,7 @@ import AuthGuard from "./auth/AuthGuard";
 import { authRoles } from "./auth/authRoles";
 
 import Loadable from "./components/Loadable";
-import MatxLayout from "./components/MatxLayout/MatxLayout";
+import WhizLayout from "./components/WhizLayout/WhizLayout";
 
 import materialRoutes from "app/views/material-kit/MaterialRoutes";
 
@@ -23,7 +23,7 @@ const routes = [
   {
     element: (
       <AuthGuard>
-        <MatxLayout />
+        <WhizLayout />
       </AuthGuard>
     ),
     children: [

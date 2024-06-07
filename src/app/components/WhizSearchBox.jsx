@@ -32,7 +32,7 @@ const SearchInput = styled("input")(({ theme }) => ({
   "&::placeholder": { color: theme.palette.text.primary }
 }));
 
-export default function MatxSearchBox() {
+export default function WhizSearchBox() {
   const [open, setOpen] = useState(false);
 
   const toggle = () => setOpen(!open);

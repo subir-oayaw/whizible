@@ -4,7 +4,7 @@ import Comment from "@mui/icons-material/Comment";
 import { Chatbox, ChatHead } from "app/components";
 import { Span } from "../Typography";
 import ShoppingCart from "../ShoppingCart";
-import MatxCustomizer from "../MatxCustomizer/MatxCustomizer";
+import WhizCustomizer from "../WhizCustomizer/WhizCustomizer";
 
 // STYLED COMPONENTS
 const SidebarRoot = styled("div")(({ theme, width }) => ({
@@ -43,7 +43,7 @@ export default function SecondarySidebarContent() {
   return (
     <SidebarRoot width={"50px"} className="secondary-sidebar">
       <Span m="auto" />
-      <MatxCustomizer />
+      <WhizCustomizer />
       <ShoppingCart />
 
       <ChatHead

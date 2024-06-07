@@ -7,7 +7,7 @@ const CustomLinearProgress = styled(LinearProgress)({
   background: "rgba(0, 0, 0, 0.1)"
 });
 
-export default function MatxProgressBar({
+export default function WhizProgressBar({
   text = "",
   value = 75,
   spacing = 2,

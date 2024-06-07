@@ -1,7 +1,7 @@
 import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 // CUSTOM COMPONENT
-import { MatxLoading } from "app/components";
+import { WhizLoading } from "app/components";
 
 const initialState = {
   user: null,
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // SHOW LOADER
-  if (!state.isInitialized) return <MatxLoading />;
+  if (!state.isInitialized) return <WhizLoading />;
 
   return (
     <AuthContext.Provider value={{ ...state, method: "JWT", login, logout, register }}>
