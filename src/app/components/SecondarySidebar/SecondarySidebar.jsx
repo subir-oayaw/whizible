@@ -1,7 +1,7 @@
 import useSettings from "app/hooks/useSettings";
 import SecondarySidebarToggle from "./SecondarySidebarToggle";
 import SecondarySidebarContent from "./SecondarySidebarContent";
-import { SecondarySidenavTheme } from "../MatxTheme/SecondarySidenavTheme";
+import { SecondarySidenavTheme } from "../WhizTheme/SecondarySidenavTheme";
 
 export default function SecondarySidebar() {
   const { settings } = useSettings();

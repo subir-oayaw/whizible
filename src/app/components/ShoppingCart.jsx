@@ -5,7 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 import { H6, Small } from "./Typography";
 import useSettings from "app/hooks/useSettings";
-import { themeShadows } from "./MatxTheme/themeColors";
+import { themeShadows } from "./WhizTheme/themeColors";
 
 import { sideNavWidth, topBarHeight } from "app/utils/constant";
 
@@ -118,7 +118,8 @@ export default function ShoppingCart({ container }) {
           variant="temporary"
           container={container}
           onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}>
+          ModalProps={{ keepMounted: true }}
+        >
           <MiniCart>
             <CartBox>
               <ShoppingCartIcon color="primary" />
@@ -136,7 +137,8 @@ export default function ShoppingCart({ container }) {
                     <IconButton
                       onClick={() => handleRemoveQty(product.id)}
                       disabled={!(product.qty - 1)}
-                      size="small">
+                      size="small"
+                    >
                       <KeyboardArrowDown />
                     </IconButton>
                   </Box>
@@ -163,7 +165,8 @@ export default function ShoppingCart({ container }) {
               color="primary"
               variant="contained"
               onClick={handleCheckoutClick}
-              sx={{ width: "100%", borderRadius: 0 }}>
+              sx={{ width: "100%", borderRadius: 0 }}
+            >
               Checkout (${totalCost.toFixed(2)})
             </Button>
           </MiniCart>

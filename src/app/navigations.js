@@ -12,6 +12,7 @@ export const navigations = [
 
   {
     name: "Initiative Management",
+
     icon: "dashboard",
     children: [
       { name: "Initiatives", path: "/initiative/initiatives", iconText: "I" },

@@ -5,7 +5,7 @@ import AuthGuard from "./auth/AuthGuard";
 import { authRoles } from "./auth/authRoles";
 
 import Loadable from "./components/Loadable";
-import MatxLayout from "./components/MatxLayout/MatxLayout";
+import WhizLayout from "./components/WhizLayout/WhizLayout";
 
 import materialRoutes from "app/views/material-kit/MaterialRoutes";
 
@@ -17,13 +17,13 @@ const JwtRegister = Loadable(lazy(() => import("app/views/sessions/JwtRegister")
 // E-CHART PAGE
 const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart")));
 // DASHBOARD PAGE
-const Analytics = Loadable(lazy(() => import("app/views/dashboard/Analytics")));
+const Analytics = Loadable(lazy(() => import("app/utils/Analytics")));
 
 const routes = [
   {
     element: (
       <AuthGuard>
-        <MatxLayout />
+        <WhizLayout />
       </AuthGuard>
     ),
     children: [
