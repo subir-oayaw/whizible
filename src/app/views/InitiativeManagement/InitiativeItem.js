@@ -21,11 +21,13 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
     comments: initialComments
   } = initiative;
 
-  // State for managing drawer and editing
+  // State for managing drawers and editing
   const [commentDrawerOpen, setCommentDrawerOpen] = useState(false);
+  const [flagDrawerOpen, setFlagDrawerOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [expandedCommentIndex, setExpandedCommentIndex] = useState(-1);
   const [comments, setComments] = useState(initialComments || []); // Initialize comments with initialComments from props
+  const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false); // State for InitiativeHistoryDrawer
 
   // Function to open comment drawer
   const openCommentDrawer = () => {
@@ -35,6 +37,24 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
   // Function to close comment drawer
   const closeCommentDrawer = () => {
     setCommentDrawerOpen(false);
+  };
+
+  // Function to open flag drawer
+  const openFlagDrawer = () => {
+    setFlagDrawerOpen(true);
+  };
+
+  // Function to close flag drawer
+  const closeHistory = () => {
+    setHistoryDrawerOpen(false);
+  };
+  const openHistory = () => {
+    setHistoryDrawerOpen(true);
+  };
+
+  // Function to close flag drawer
+  const closeFlagDrawer = () => {
+    setFlagDrawerOpen(false);
   };
 
   // Function to start editing
@@ -143,13 +163,13 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
               <div className="icon-button-container">
                 <Tooltip title="Delay">
                   <IconButton>
-                    <AccessTimeIcon />
+                    <AccessTimeIcon onClick={() => setHistoryDrawerOpen(true)} />
                   </IconButton>
                 </Tooltip>
               </div>
               <div className="icon-button-container">
                 <Tooltip title="Flag">
-                  <IconButton>
+                  <IconButton onClick={openFlagDrawer}>
                     <FlagIcon />
                   </IconButton>
                 </Tooltip>
@@ -257,16 +277,18 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
               <div className="row">
                 <div className="col-md-12 col-12 d-flex mb-3">
                   <div className="usrimg">
-                    <span className="usernameshort circle-bggreen">AA</span>
+                    <span className="usernameshort circle-bgorange pull-left name_initials">
+                      UN
+                    </span>
                   </div>
-                  <div className="form-group py-2 px-sm-3 mb-2">
+                  <div className="d-flex flex-column commentbox flex-grow-1">
                     <textarea
+                      className="form-control border-0 textareaautosize"
                       name="commentContent"
-                      placeholder="Please Enter your Comment Here"
-                      id="enter_comment_sec"
-                      className="form-control"
+                      id="commentContent"
+                      rows="3"
+                      placeholder="Add a comment"
                       onKeyDown={handleKeyDown}
-                      required
                     ></textarea>
                   </div>
                 </div>
@@ -276,21 +298,201 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
         </Box>
       </Drawer>
 
-      {/* Blank Page for Editing */}
-      {isEditing && (
-        <div className="edit-page">
-          <Typography variant="h6">Edit Initiative</Typography>
-          <Box sx={{ padding: 2 }}>
-            {/* Your editing form can go here */}
-            <TextField label="Title" fullWidth />
-            <TextField label="Type" fullWidth />
-            {/* Add other fields as needed */}
-            <PrimaryButton onClick={() => {}} styles={{ root: { marginTop: 10 } }}>
-              Save
-            </PrimaryButton>
+      {/* Drawer for Flag Tracking Details */}
+      <Drawer anchor="right" open={flagDrawerOpen} onClose={closeFlagDrawer}>
+        <Box sx={{ width: 600, padding: 2 }}>
+          <div id="init_flag_Sec" className="container bg-light">
+            <div className="row">
+              <div
+                style={{
+                  background: "#E7EDF0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between"
+                }}
+              >
+                <h5 className="offcanvasTitle" style={{ margin: 0 }}>
+                  Flag Tracking Details
+                </h5>
+                <div className="col-2 text-end">
+                  <i className="fa-solid fa-xmark"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-2 mb-2 init_history">
+            <div className="row">
+              <div className="col-7"></div>
+              <div className="col-5 d-flex justify-content-end gap-3">
+                <button type="button" className="btn borderbtnbgblue">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            <strong>Maha Metro Pune</strong>
+          </p>
+          <div className="init_borderedbox p-3 mb-5">
+            Flagging marks an item to remind you that it needs to be followed up. After it has been
+            followed up, you can mark it complete
+          </div>
+
+          <div className="row mb-3">
+            <div className="col-4">
+              <label htmlFor="Selflagto" className="form-label">
+                Flag To
+              </label>
+              <select id="Selflagto" className="form-select">
+                <option>Follow Up</option>
+                <option>Review</option>
+              </select>
+            </div>
+            <div className="col-4">
+              <label htmlFor="date_IntKBFromDate" className="form-label">
+                Due by
+              </label>
+              <div className="input-group date" id="datepicker">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="date_IntKBFromDate"
+                  placeholder="Select Date"
+                />
+                <span className="input-group-text bg-light">
+                  <i className="bi bi-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div className="col-4">
+              <div className="form-check mt-4">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flagcheckcomplete"
+                />
+                <label className="form-check-label" htmlFor="flagcheckcomplete">
+                  Complete
+                </label>
+              </div>
+            </div>
+          </div>
+        </Box>
+      </Drawer>
+      <Drawer anchor="right" open={historyDrawerOpen} onClose={closeHistory}>
+        <Box sx={{ width: 600, p: 2 }}>
+          <Typography variant="h6" gutterBottom style={{ background: "#E7EDF0", width: "100%" }}>
+            Initiative History
+          </Typography>
+          <Divider />
+          <Box className="inithistDetails graybg">
+            <div className="row mt-2 mb-2 ">
+              <div className="col-sm-8">
+                <div className="row">
+                  <div className="col-sm-8">
+                    <label htmlFor="inputPassword6" className="col-form-label text-end">
+                      Action Taken
+                    </label>
+                  </div>
+                  <div className="col-sm-7">
+                    <div className="dropdown bootstrap-select">
+                      <select
+                        className="selectpicker"
+                        data-live-search="true"
+                        id="ActionType"
+                        // onChange={() => changActionType()}
+                      >
+                        <option>Approved</option>
+                        <option>Rejected</option>
+                        <option>Submitted</option>
+                        <option>System</option>
+                      </select>
+
+                      <div className="dropdown-menu">
+                        <div className="bs-searchbox">
+                          <input
+                            type="search"
+                            className="form-control"
+                            autoComplete="off"
+                            role="combobox"
+                            aria-label="Search"
+                            aria-controls="bs-select-10"
+                            aria-autocomplete="list"
+                          />
+                        </div>
+                        <div className="inner show" role="listbox" id="bs-select-10" tabIndex="-1">
+                          <ul className="dropdown-menu inner show" role="presentation"></ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-sm-7"></div>
+            </div>
+            <div className="historyHeight" style={{ height: "290px", overflowY: "auto" }}>
+              <div className="table-responsive offTable_wrapper">
+                <table className="table table-striped table-hover mb-0" id="inithistoryTbl">
+                  <thead>
+                    <tr>
+                      <th>Event Time</th>
+                      <th>Action Taken</th>
+                      <th>From Stage</th>
+                      <th>To Stage</th>
+                      <th>Approver</th>
+                      <th>Comments</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>08/06/2022 1:03:53 PM</td>
+                      <td>Approved</td>
+                      <td>Deployment</td>
+                      <td>Completed</td>
+                      <td>Admin</td>
+                      <td>Approved</td>
+                    </tr>
+                    <tr>
+                      <td>08/06/2022 12:38:53 PM</td>
+                      <td>Approved</td>
+                      <td>CFO Approval</td>
+                      <td>Deployment</td>
+                      <td>Admin</td>
+                      <td>Approved</td>
+                    </tr>
+                    <tr>
+                      <td>21/04/2022 12:01:37 PM</td>
+                      <td>Approved</td>
+                      <td>CEO Approval</td>
+                      <td>CFO Approval</td>
+                      <td>Admin</td>
+                      <td>Approved</td>
+                    </tr>
+                    <tr>
+                      <td>08/06/2022 1:03:53 PM</td>
+                      <td>Approved</td>
+                      <td>Deployment</td>
+                      <td>Completed</td>
+                      <td>Admin</td>
+                      <td>Ok</td>
+                    </tr>
+                    <tr style={{ display: "none" }}>
+                      <td>08/06/2022 1:03:53 PM</td>
+                      <td>Approved</td>
+                      <td>CEO Approval</td>
+                      <td>Deployment</td>
+                      <td>Admin</td>
+                      <td>Ok</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </Box>
-        </div>
-      )}
+        </Box>
+      </Drawer>
     </tr>
   );
 };
