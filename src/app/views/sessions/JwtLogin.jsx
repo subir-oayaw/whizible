@@ -13,6 +13,9 @@ import loginFrameImage from "../../../assets/Images/Loginframe.png";
 import developerImage from "../../../assets/Images/developerrr.png";
 import { useTranslation } from "react-i18next";
 import { FaCheckCircle } from "react-icons/fa";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+
 function LoginPage() {
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [captchaValue, setCaptchaValue] = useState(null);
@@ -34,7 +37,7 @@ function LoginPage() {
   const [confirmPasswordValid, setConfirmPasswordValid] = useState(false);
   const [otpValid, setOtpValid] = useState(false);
   const { t, i18n } = useTranslation();
-
+  const navigate = useNavigate(); // Initialize useNavigate
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
     setUsernameValid(e.target.value.length > 0); // Validation logic for username
@@ -88,8 +91,8 @@ function LoginPage() {
     // Handle forgot password logic here
   };
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
+  const signin = () => {
+    navigate("/dashboard/default");
   };
   const calculatePasswordStrength = () => {
     const strength = {
@@ -403,7 +406,12 @@ function LoginPage() {
                       <Link onClick={() => setChangePassword(true)}>Change Password</Link>
                       <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
                     </div>
-                    <FluentButton className="w-100 custom-signin-button" size="large" type="submit">
+                    <FluentButton
+                      className="w-100 custom-signin-button"
+                      size="large"
+                      type="submit"
+                      onClick={() => navigate("/dashboard/default")}
+                    >
                       Sign In
                     </FluentButton>
                   </Form>
