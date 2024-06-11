@@ -78,7 +78,7 @@ const BadgeValue = styled("div")(() => ({
 export default function WhizVerticalNav({ items }) {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
-
+  console.log("WhizVerticalNav22", items);
   const renderLevels = (data) => {
     return data.map((item, index) => {
       if (item.type === "label") {
@@ -97,38 +97,13 @@ export default function WhizVerticalNav({ items }) {
         );
       }
 
-      if (item.type === "extLink") {
-        return (
-          <ExternalLink
-            key={index}
-            href={item.path}
-            className={mode === "compact" ? "compactNavItem" : ""}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <ButtonBase key={item.name} name="child" sx={{ width: "100%" }}>
-              {item.icon ? (
-                <Icon className="icon">{item.icon}</Icon>
-              ) : (
-                <span className="item-icon icon-text">{item.iconText}</span>
-              )}
-              <StyledText mode={mode} className="sidenavHoverShow">
-                {item.name}
-              </StyledText>
-              <Box mx="auto"></Box>
-              {item.badge && <BadgeValue>{item.badge.value}</BadgeValue>}
-            </ButtonBase>
-          </ExternalLink>
-        );
-      }
-
       return (
         <InternalLink key={index}>
           <NavLink
             to={item.path}
             className={`navItem ${mode === "compact" ? "compactNavItem" : ""}`}
           >
-            <ButtonBase key={item.name} name="child" sx={{ width: "100%" }}>
+            <ButtonBase key={item.tagName} name="child" sx={{ width: "100%" }}>
               {item.icon ? (
                 <Icon className="icon" sx={{ width: 36 }}>
                   {item.icon}
@@ -152,7 +127,7 @@ export default function WhizVerticalNav({ items }) {
                 </Fragment>
               )}
               <StyledText mode={mode} className="sidenavHoverShow">
-                {item.name}
+                {item.tagName}
               </StyledText>
               <Box mx="auto" />
               {item.badge && (

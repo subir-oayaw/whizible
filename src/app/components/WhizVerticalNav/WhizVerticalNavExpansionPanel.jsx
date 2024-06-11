@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ButtonBase, Icon, Box, styled } from "@mui/material";
+import { ButtonBase, Box, styled } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import clsx from "clsx";
@@ -10,7 +10,6 @@ import Project from "../../../assets/img/project.svg";
 import InitiativeTracking from "../../../assets/img/initiative-tracking.svg";
 import Reports from "../../../assets/img/reports.svg";
 import Favorite from "../../../assets/img/favorite.svg";
-import { initializeIcons } from "@fluentui/react";
 
 // STYLED COMPONENTS
 const NavExpandRoot = styled("div")(({ theme }) => ({
@@ -24,7 +23,8 @@ const NavExpandRoot = styled("div")(({ theme }) => ({
   },
   "& .expansion-panel": {
     overflow: "hidden",
-    transition: "max-height 0.3s cubic-bezier(0, 0, 0.2, 1)"
+    transition: "max-height 0.3s cubic-bezier(0, 0, 0.2, 1)",
+    marginLeft: "20px" // Add margin for nested children
   },
   "& .highlight": {
     background: theme.palette.primary.main
@@ -67,7 +67,6 @@ const BulletIcon = styled("div")(({ theme }) => ({
   marginLeft: "20px",
   marginRight: "8px",
   borderRadius: "300px !important",
-  // background: theme.palette.primary.contrastText,
   background: theme.palette.text.primary
 }));
 
@@ -82,22 +81,23 @@ const BadgeValue = styled("div")(() => ({
   overflow: "hidden",
   borderRadius: "300px"
 }));
+
 const iconMappings = {
-  "e-Dashboard": "../../../assets/img/e-dashboard.svg",
-  "Initiative Management": "../../../assets/img/initiative-management.svg",
-  Program: "../../../assets/img/program.svg",
-  Project: "../../../assets/img/project.svg",
-  "Initiative Tracking": "../../../assets/img/initiative-tracking.svg",
-  Reports: "../../../assets/img/reports.svg",
-  Favorite: "../../../assets/img/favorite.svg"
-  // Add mappings for other icons as needed
+  Dashboard: EDashboardIcon,
+  "Initiative Management": InitiativeDashboardIcon,
+  Program: BusinessUserTrackingIcon,
+  Projects: Project,
+  "Initiative Tracking": InitiativeTracking,
+  Reports: Reports,
+  Favorite: Favorite
 };
+
 export default function WhizVerticalNavExpansionPanel({ item, children, mode }) {
   const [collapsed, setCollapsed] = useState(true);
   const elementRef = useRef(null);
   const componentHeight = useRef(0);
   const { pathname } = useLocation();
-  const { name, icon, iconText, badge } = item;
+  const { tagName, icon, iconText, badge, isExpanded } = item;
 
   const handleClick = () => {
     componentHeight.current = 0;
@@ -113,7 +113,7 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
     }
 
     if (node.name === "child") componentHeight.current += node.scrollHeight;
-    else componentHeight.current += 44; //here 44 is node height
+    else componentHeight.current += 44; // here 44 is node height
     return;
   }, []);
 
@@ -129,25 +129,10 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
       }
     }
   }, [pathname, calculateHeight]);
+
   const getIconPath = (name) => {
-    switch (name) {
-      case "e-Dashboard":
-        return EDashboardIcon;
-      case "Initiative Management":
-        return InitiativeDashboardIcon;
-      case "Program":
-        return BusinessUserTrackingIcon;
-      case "Project":
-        return Project;
-      case "Initiative Tracking":
-        return InitiativeTracking;
-      case "Reports":
-        return Reports;
-      case "Favorite":
-        return Favorite;
-      default:
-        return null;
-    }
+    console.log("Dashboard", name);
+    return iconMappings[name] || null;
   };
 
   return (
@@ -161,23 +146,24 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
         onClick={handleClick}
       >
         <Box display="flex" alignItems="center">
-          {icon && <img src={getIconPath(name)} alt={name} style={{ fill: "white" }} />}
+          <img src={getIconPath(tagName)} style={{ fill: "white" }} />
           {iconText && <BulletIcon />}
-          <ItemText className="sidenavHoverShow">{name}</ItemText>
-          {/* New Icon */}
+          <ItemText className="sidenavHoverShow">{tagName}</ItemText>
         </Box>
 
         {badge && <BadgeValue className="sidenavHoverShow itemIcon">{badge.value}</BadgeValue>}
 
-        <div
-          className={clsx({
-            sidenavHoverShow: true,
-            collapseIcon: collapsed,
-            expandIcon: !collapsed
-          })}
-        >
-          <ChevronRight fontSize="small" sx={{ verticalAlign: "middle" }} />
-        </div>
+        {isExpanded && (
+          <div
+            className={clsx({
+              sidenavHoverShow: true,
+              collapseIcon: collapsed,
+              expandIcon: !collapsed
+            })}
+          >
+            <ChevronRight fontSize="small" sx={{ verticalAlign: "middle" }} />
+          </div>
+        )}
       </BaseButton>
 
       <div

@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import Scrollbar from "react-perfect-scrollbar";
 import { WhizVerticalNav } from "app/components";
 import useSettings from "app/hooks/useSettings";
-import { navigations } from "app/navigations";
+import useSidebar from "../hooks/useSidebar"; // Import the custom hook
 import { Span } from "app/components/Typography";
 import eDashboardIcon from "../../assets/img/e-dashboard.svg"; // Import the SVG icon
 
@@ -13,11 +13,13 @@ const StyledScrollBar = styled(Scrollbar)(() => ({
   paddingRight: "1rem",
   position: "relative"
 }));
+
 const StyledSpan = styled(Span)(({ mode }) => ({
   fontSize: 18,
   marginLeft: ".5rem",
   display: mode === "compact" ? "none" : "block"
 }));
+
 const SideNavMobile = styled("div")(({ theme }) => ({
   position: "fixed",
   top: 0,
@@ -34,8 +36,17 @@ export default function Sidenav({ children }) {
   const { settings, updateSettings } = useSettings();
   const [searchTerm, setSearchTerm] = useState("");
   const leftSidebar = settings.layout1Settings.leftSidebar;
-  const [filteredNavigations, setFilteredNavigations] = useState(navigations);
   const { mode } = leftSidebar;
+
+  const { SidebarData: navigations, loading, error } = useSidebar();
+  const [filteredNavigations, setFilteredNavigations] = useState([]);
+  console.log("navigations", navigations);
+  useEffect(() => {
+    if (navigations) {
+      setFilteredNavigations(navigations);
+    }
+  }, [navigations]);
+
   const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
     let activeLayoutSettings = settings[activeLayoutSettingsName];
@@ -53,7 +64,7 @@ export default function Sidenav({ children }) {
   };
 
   const handleSearch = (event) => {
-    const term = event.target.value.toLowerCase();
+    const term = event?.target?.value?.toLowerCase();
     setSearchTerm(term);
 
     if (term === "") {
@@ -62,7 +73,7 @@ export default function Sidenav({ children }) {
       const filtered = navigations
         .map((navItem) => {
           const filteredChildren = navItem.children.filter((child) =>
-            child.name.toLowerCase().includes(term)
+            child.tagName.toLowerCase().includes(term)
           );
 
           if (filteredChildren.length > 0) {
@@ -78,6 +89,9 @@ export default function Sidenav({ children }) {
       setFilteredNavigations(filtered);
     }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <Fragment>
