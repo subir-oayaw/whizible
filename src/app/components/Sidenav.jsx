@@ -6,7 +6,7 @@ import useSettings from "app/hooks/useSettings";
 import useSidebar from "../hooks/useSidebar"; // Import the custom hook
 import { Span } from "app/components/Typography";
 import eDashboardIcon from "../../assets/img/e-dashboard.svg"; // Import the SVG icon
-
+import { Search20Regular as SearchIcon } from "@fluentui/react-icons";
 // STYLED COMPONENTS
 const StyledScrollBar = styled(Scrollbar)(() => ({
   paddingLeft: "1rem",
@@ -40,7 +40,7 @@ export default function Sidenav({ children }) {
 
   const { SidebarData: navigations, loading, error } = useSidebar();
   const [filteredNavigations, setFilteredNavigations] = useState([]);
-  console.log("navigations", navigations);
+
   useEffect(() => {
     if (navigations) {
       setFilteredNavigations(navigations);
@@ -64,7 +64,7 @@ export default function Sidenav({ children }) {
   };
 
   const handleSearch = (event) => {
-    const term = event?.target?.value?.toLowerCase();
+    const term = event.target.value.toLowerCase();
     setSearchTerm(term);
 
     if (term === "") {
@@ -73,7 +73,7 @@ export default function Sidenav({ children }) {
       const filtered = navigations
         .map((navItem) => {
           const filteredChildren = navItem.children.filter((child) =>
-            child.tagName.toLowerCase().includes(term)
+            child.name.toLowerCase().includes(term)
           );
 
           if (filteredChildren.length > 0) {

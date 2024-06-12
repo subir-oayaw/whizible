@@ -146,7 +146,7 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
         onClick={handleClick}
       >
         <Box display="flex" alignItems="center">
-          <img src={getIconPath(tagName)} style={{ fill: "white" }} />
+          {/* <img src={getIconPath(tagName)} style={{ fill: "white" }} /> */}
           {iconText && <BulletIcon />}
           <ItemText className="sidenavHoverShow">{tagName}</ItemText>
         </Box>

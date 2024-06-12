@@ -94,3 +94,6 @@ textarea::placeholder {
   transform: translateX(-50%);
   text-align: center;
 }
+.text-white {
+  color: white;
+}

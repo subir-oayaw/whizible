@@ -406,14 +406,16 @@ function LoginPage() {
                       <Link onClick={() => setChangePassword(true)}>Change Password</Link>
                       <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
                     </div>
-                    <FluentButton
-                      className="w-100 custom-signin-button"
-                      size="large"
-                      type="submit"
-                      onClick={() => navigate("/dashboard/default")}
-                    >
-                      Sign In
-                    </FluentButton>
+                    <div class="d-flex justify-content-center">
+                      <FluentButton
+                        className="custom-signin-button"
+                        size="large"
+                        type="submit"
+                        onClick={() => navigate("/dashboard/default")}
+                      >
+                        <span class="text-white">Sign In</span>
+                      </FluentButton>
+                    </div>
                   </Form>
 
                   {/* <div className="d-flex justify-content-between mt-3">
