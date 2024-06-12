@@ -71,9 +71,10 @@ const BulletIcon = styled("div")(({ theme }) => ({
 }));
 
 const ItemText = styled("span")(() => ({
-  fontSize: "0.875rem",
+  fontSize: "12px", // Font size set to 12px
   paddingLeft: "0.8rem",
-  verticalAlign: "middle"
+  verticalAlign: "middle",
+  color: "#e7e7e7"
 }));
 
 const BadgeValue = styled("div")(() => ({
