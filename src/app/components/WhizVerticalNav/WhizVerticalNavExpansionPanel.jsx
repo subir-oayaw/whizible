@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ButtonBase, Box, styled } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import EDashboardIcon from "../../../assets/img/e-dashboard.svg";
 import InitiativeDashboardIcon from "../../../assets/img/initiative-management-icn.svg";
@@ -98,12 +98,19 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
   const elementRef = useRef(null);
   const componentHeight = useRef(0);
   const { pathname } = useLocation();
-  const { tagName, icon, iconText, badge, isExpanded } = item;
+  const navigate = useNavigate();
+  const { tagName, icon, iconText, badge, isExpanded, pageName } = item;
 
   const handleClick = () => {
-    componentHeight.current = 0;
-    calculateHeight(elementRef.current);
-    setCollapsed(!collapsed);
+    if (!isExpanded) {
+      const cleanedPageName = pageName.endsWith(".aspx") ? pageName.slice(0, -5) : pageName;
+      console.log("path", cleanedPageName);
+      navigate(cleanedPageName);
+    } else {
+      componentHeight.current = 0;
+      calculateHeight(elementRef.current);
+      setCollapsed(!collapsed);
+    }
   };
 
   const calculateHeight = useCallback((node) => {

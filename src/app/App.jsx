@@ -10,6 +10,7 @@ import routes from "./routes";
 // FAKE SERVER
 import "../fake-db";
 
+import "./app.css";
 export default function App() {
   const content = useRoutes(routes);
 
