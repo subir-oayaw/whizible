@@ -9,13 +9,12 @@ const BrandRoot = styled(Box)(() => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  padding: "20px 18px 20px 29px"
+  padding: "20px 18px 20px 10px"
 }));
 
 const StyledSpan = styled(Span)(({ mode }) => ({
   fontSize: 18,
-  marginLeft: ".5rem",
-  display: mode === "compact" ? "none" : "block"
+  marginLeft: ".5rem"
 }));
 
 export default function Brand({ children }) {
@@ -27,7 +26,7 @@ export default function Brand({ children }) {
     <BrandRoot>
       <Box display="flex" alignItems="center">
         <StyledSpan mode={mode} className="sidenavHoverShow">
-          <WhizLogo />
+          <WhizLogo mode={mode} />
         </StyledSpan>
       </Box>
 

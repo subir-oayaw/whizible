@@ -21,6 +21,7 @@ import {
   Pagination
 } from "@mui/material";
 import { Clear, Notifications } from "@mui/icons-material";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import useSettings from "app/hooks/useSettings";
 import "./Notification.css";
 
@@ -129,7 +130,7 @@ export default function NotificationBar() {
     <Fragment>
       <IconButton onClick={handleDrawerToggle}>
         <Badge color="secondary" badgeContent={notifications?.length}>
-          <Notifications sx={{ color: "text.primary" }} />
+          <NotificationsNoneIcon sx={{ color: "text.primary" }} />
         </Badge>
       </IconButton>
 
@@ -155,7 +156,7 @@ export default function NotificationBar() {
           <DialogContent>
             <Box>
               <Box mb={3} display="flex" alignItems="center">
-                <Notifications color="action" sx={{ color: "#fd7e14", mr: 1 }} />
+                <NotificationsNoneIcon color="action" sx={{ color: "#fd7e14", mr: 1 }} />
                 <Typography variant="h6" component="h6">
                   Alerts
                 </Typography>

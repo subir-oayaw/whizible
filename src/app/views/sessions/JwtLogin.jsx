@@ -258,7 +258,7 @@ function LoginPage() {
               {showForgotPassword ? (
                 <Form onSubmit={handleForgotPassword}>
                   <Form.Group controlId="formBasicUsername" className="mb-2">
-                    <Form.Label>{t("username_label")}</Form.Label>
+                    <Form.Label>User Name</Form.Label>
                     <Input
                       placeholder={t("enter_username_placeholder")}
                       className={`w-100 custom-grey-input ${usernameValid ? "is-valid" : ""}`}
@@ -269,7 +269,8 @@ function LoginPage() {
                     {usernameValid && <FaCheckCircle className="text-success" />}{" "}
                   </Form.Group>
                   <Form.Group controlId="formBasicEmail" className="mb-2">
-                    <Form.Label>Email ID*</Form.Label>
+                    <Form.Label>Email ID</Form.Label>
+
                     <Input
                       placeholder={t("email_placeholder")}
                       className="w-100 custom-grey-input"
@@ -278,7 +279,7 @@ function LoginPage() {
                   </Form.Group>
                   <div className="d-flex justify-content-between mb-4">
                     <FluentButton className="custom-signin-button" size="large">
-                      Reset
+                      <span class="text-white">Reset</span>
                     </FluentButton>
                     <FluentButton
                       onClick={() => setShowForgotPassword(false)}
@@ -286,7 +287,7 @@ function LoginPage() {
                       size="large"
                       type="submit"
                     >
-                      Cancel
+                      <span class="text-white">Cancel</span>
                     </FluentButton>
                   </div>
                 </Form>
@@ -301,7 +302,7 @@ function LoginPage() {
                     />
                   </Form.Group>
                   <Form.Group controlId="formBasicEmail" className="mb-2">
-                    <Form.Label>Old Password*</Form.Label>
+                    <Form.Label>Old Password</Form.Label>
                     <Input
                       placeholder="*****"
                       className="w-100 custom-grey-input"
@@ -309,7 +310,7 @@ function LoginPage() {
                     />
                   </Form.Group>
                   <Form.Group controlId="formBasicEmail" className="mb-2">
-                    <Form.Label>New Password*</Form.Label>
+                    <Form.Label>New Password</Form.Label>
                     <Input
                       placeholder="*****"
                       className="w-100 custom-grey-input"
@@ -328,7 +329,7 @@ function LoginPage() {
                     </div>
                   </Form.Group>
                   <Form.Group controlId="formBasicEmail" className="mb-2">
-                    <Form.Label>Confirm Password*</Form.Label>
+                    <Form.Label>Confirm Password</Form.Label>
                     <Input
                       placeholder="*****"
                       className="w-100 custom-grey-input"
@@ -337,7 +338,7 @@ function LoginPage() {
                   </Form.Group>
                   <div className="d-flex justify-content-between mb-4">
                     <FluentButton className="custom-signin-button" size="large">
-                      Reset
+                      <span class="text-white"> Reset</span>
                     </FluentButton>
                     <FluentButton
                       onClick={() => setChangePassword(false)}
@@ -345,7 +346,7 @@ function LoginPage() {
                       size="large"
                       type="submit"
                     >
-                      Cancel
+                      <span class="text-white"> Cancel</span>
                     </FluentButton>
                   </div>
                 </Form>
@@ -378,7 +379,7 @@ function LoginPage() {
                 <>
                   <Form onSubmit={handleLogin}>
                     <Form.Group controlId="formBasicEmail" className="mb-2">
-                      <Form.Label>{t("username_label")}</Form.Label>
+                      <Form.Label>User Name</Form.Label>
                       <Input
                         placeholder={t("enter_username_placeholder")}
                         className="w-100 custom-grey-input"
@@ -386,7 +387,7 @@ function LoginPage() {
                       />
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword" className="mb-2">
-                      <Form.Label>{t("password_label")}</Form.Label>
+                      <Form.Label>Password</Form.Label>
                       <Input
                         type="password"
                         placeholder={t("password_placeholder")}
@@ -406,14 +407,16 @@ function LoginPage() {
                       <Link onClick={() => setChangePassword(true)}>Change Password</Link>
                       <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
                     </div>
-                    <FluentButton
-                      className="w-100 custom-signin-button"
-                      size="large"
-                      type="submit"
-                      onClick={() => navigate("/dashboard/default")}
-                    >
-                      Sign In
-                    </FluentButton>
+                    <div class="d-flex justify-content-center">
+                      <FluentButton
+                        className="custom-signin-button"
+                        size="large"
+                        type="submit"
+                        onClick={() => navigate("/dashboard/default")}
+                      >
+                        <span class="text-white">Sign In</span>
+                      </FluentButton>
+                    </div>
                   </Form>
 
                   {/* <div className="d-flex justify-content-between mt-3">

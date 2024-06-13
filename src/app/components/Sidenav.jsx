@@ -3,21 +3,23 @@ import { styled } from "@mui/material/styles";
 import Scrollbar from "react-perfect-scrollbar";
 import { WhizVerticalNav } from "app/components";
 import useSettings from "app/hooks/useSettings";
-import { navigations } from "app/navigations";
+import useSidebar from "../hooks/useSidebar"; // Import the custom hook
 import { Span } from "app/components/Typography";
 import eDashboardIcon from "../../assets/img/e-dashboard.svg"; // Import the SVG icon
-
+import { Search20Regular as SearchIcon } from "@fluentui/react-icons";
 // STYLED COMPONENTS
 const StyledScrollBar = styled(Scrollbar)(() => ({
   paddingLeft: "1rem",
   paddingRight: "1rem",
   position: "relative"
 }));
+
 const StyledSpan = styled(Span)(({ mode }) => ({
   fontSize: 18,
   marginLeft: ".5rem",
   display: mode === "compact" ? "none" : "block"
 }));
+
 const SideNavMobile = styled("div")(({ theme }) => ({
   position: "fixed",
   top: 0,
@@ -34,8 +36,17 @@ export default function Sidenav({ children }) {
   const { settings, updateSettings } = useSettings();
   const [searchTerm, setSearchTerm] = useState("");
   const leftSidebar = settings.layout1Settings.leftSidebar;
-  const [filteredNavigations, setFilteredNavigations] = useState(navigations);
   const { mode } = leftSidebar;
+
+  const { SidebarData: navigations, loading, error } = useSidebar();
+  const [filteredNavigations, setFilteredNavigations] = useState([]);
+
+  useEffect(() => {
+    if (navigations) {
+      setFilteredNavigations(navigations);
+    }
+  }, [navigations]);
+
   const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
     let activeLayoutSettings = settings[activeLayoutSettingsName];
@@ -78,6 +89,9 @@ export default function Sidenav({ children }) {
       setFilteredNavigations(filtered);
     }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <Fragment>

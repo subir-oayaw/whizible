@@ -11,14 +11,18 @@ import "./InitiativeItem.css";
 const InitiativeItem = ({ initiative, stagesLegend }) => {
   const {
     title,
-    id,
-    type,
-    date,
-    stagesCompleted,
-    totalStages,
-    dueIn,
-    stages,
-    comments: initialComments
+    instanceId,
+    userId,
+    originator,
+
+    processName,
+    stageName,
+    createdOn,
+    actionType,
+    initiativeCode,
+    stageOrder,
+    maxStage,
+    comments
   } = initiative;
 
   // State for managing drawers and editing
@@ -26,7 +30,7 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
   const [flagDrawerOpen, setFlagDrawerOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [expandedCommentIndex, setExpandedCommentIndex] = useState(-1);
-  const [comments, setComments] = useState(initialComments || []); // Initialize comments with initialComments from props
+  const [comment, setComment] = useState(comments || []); // Initialize comments with initialComments from props
   const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false); // State for InitiativeHistoryDrawer
 
   // Function to open comment drawer
@@ -64,7 +68,7 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
 
   // Function to add a new comment
   const addComment = (newComment) => {
-    setComments([...comments, newComment]);
+    setComment([...comment, newComment]);
   };
 
   // Function to toggle expanded replies for a comment
@@ -113,32 +117,32 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
         <div className="initiative-title">
           <Typography variant="body1">{title}</Typography>
           <Typography variant="body2" color="textSecondary">
-            {id}
+            {originator}
           </Typography>
         </div>
       </td>
       <td style={{ textAlign: "start" }}>
-        <Typography variant="body2">{type}</Typography>
+        <Typography variant="body2">{processName}</Typography>
         <Typography variant="body2" color="textSecondary">
-          {date}
+          {createdOn}
         </Typography>
       </td>
       <td>
         <div className="left-side">
           <Typography variant="body2" className="due-in" color="textSecondary">
-            {dueIn} Days
+            {createdOn} Days
           </Typography>
         </div>
 
-        <CustomProgressBar
-          stagesCompleted={stagesCompleted}
-          totalStages={totalStages}
+        {/* <CustomProgressBar
+          stagesCompleted={stageOrder}
+          totalStages={maxStage}
           stages={stages}
           initiative={initiative}
           stagesLegend={stagesLegend}
-        />
+        /> */}
         <Typography variant="body2" color="textSecondary">
-          {stagesCompleted} stages completed
+          {stageOrder} stages completed
         </Typography>
       </td>
       <td>
@@ -189,7 +193,7 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
           <div className="container">
             <div className="row justify-content-end">
               <div className="col-auto">
-                <strong>Initiative Code:</strong> <span className="text-danger">{id}</span>
+                <strong>Initiative Code:</strong> <span className="text-danger">{instanceId}</span>
               </div>
             </div>
             <div className="row">
@@ -199,79 +203,82 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
             </div>
           </div>
 
-          {comments &&
-            comments.map((comment, index) => (
-              <div key={index} className={`commentbox commentbox${index + 1}`}>
-                <div className="col-md-12 d-flex mb-3">
-                  <div className="usrimg">
-                    <span className="usernameshort circle-bgpink pull-left name_initials1">
-                      {comment.authorInitials}
-                    </span>
-                  </div>
-                  <div className="card-body py-2 px-3 mb-2">
-                    <h5 className="card-title coment_header d-inline-block fullname1">
-                      {comment.authorName}
-                    </h5>
-                    <span className="text-muted commentdate">{comment.date}</span>
-                    <p className="card-text text-muted coment_content mb-0">{comment.content}</p>
-                    <div className="comment_Actions mt-2">
-                      <span className="small text-muted">
-                        <DefaultButton
-                          styles={buttonStyles}
-                          className="action_reply nostylebtn"
-                          onClick={() => {}}
-                        >
-                          Reply <i className="fas fa-reply"></i>
-                        </DefaultButton>
-                      </span>
-                      <span className="small text-muted ms-3">
-                        <DefaultButton
-                          styles={buttonStyles}
-                          className="action showviewall nostylebtn"
-                          onClick={() => toggleReplies(index)}
-                        >
-                          {comment.replies.length} replies
-                        </DefaultButton>
-                      </span>
-                    </div>
-                    {/* Nested replies */}
-                    {expandedCommentIndex === index &&
-                      comment.replies.map((reply, replyIndex) => (
-                        <div key={replyIndex} className="nested-reply">
-                          <div className="col-md-12 d-flex mb-3">
-                            <div className="usrimg">
-                              <span className="inner_username circle-bgblue pull-left name_initials2">
-                                {reply.authorInitials}
-                              </span>
-                            </div>
-                            <div className="card-body py-2 px-3 mb-2">
-                              <h5 className="card-title coment_header d-inline-block fullname2">
-                                {reply.authorName}
-                              </h5>
-                              <span className="text-muted commentdate">{reply.date}</span>
-                              <p className="card-text text-muted coment_content mb-0">
-                                {reply.content}
-                              </p>
-                              {/* Actions for nested replies */}
-                              <div className="comment_Actions mt-2">
-                                <span className="small text-muted">
-                                  <DefaultButton
-                                    styles={buttonStyles}
-                                    className="action_reply nostylebtn"
-                                    onClick={() => {}}
-                                  >
-                                    Reply <i className="fas fa-reply"></i>
-                                  </DefaultButton>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </div>
-            ))}
+          {
+            comment && <></>
+            // comment.map((comment, index) => (
+            //   <div key={index} className={`commentbox commentbox${index + 1}`}>
+            //     <div className="col-md-12 d-flex mb-3">
+            //       <div className="usrimg">
+            //         <span className="usernameshort circle-bgpink pull-left name_initials1">
+            //           {comment.authorInitials}
+            //         </span>
+            //       </div>
+            //       <div className="card-body py-2 px-3 mb-2">
+            //         <h5 className="card-title coment_header d-inline-block fullname1">
+            //           {comment.authorName}
+            //         </h5>
+            //         <span className="text-muted commentdate">{comment.date}</span>
+            //         <p className="card-text text-muted coment_content mb-0">{comment.content}</p>
+            //         <div className="comment_Actions mt-2">
+            //           <span className="small text-muted">
+            //             <DefaultButton
+            //               styles={buttonStyles}
+            //               className="action_reply nostylebtn"
+            //               onClick={() => {}}
+            //             >
+            //               Reply <i className="fas fa-reply"></i>
+            //             </DefaultButton>
+            //           </span>
+            //           <span className="small text-muted ms-3">
+            //             <DefaultButton
+            //               styles={buttonStyles}
+            //               className="action showviewall nostylebtn"
+            //               onClick={() => toggleReplies(index)}
+            //             >
+            //               {comment.replies.length} replies
+            //             </DefaultButton>
+            //           </span>
+            //         </div>
+            //         {/* Nested replies */}
+            //         {expandedCommentIndex === index &&
+            //           comment.replies.map((reply, replyIndex) => (
+            //             <div key={replyIndex} className="nested-reply">
+            //               <div className="col-md-12 d-flex mb-3">
+            //                 <div className="usrimg">
+            //                   <span className="inner_username circle-bgblue pull-left name_initials2">
+            //                     {reply.authorInitials}
+            //                   </span>
+            //                 </div>
+            //                 <div className="card-body py-2 px-3 mb-2">
+            //                   <h5 className="card-title coment_header d-inline-block fullname2">
+            //                     {reply.authorName}
+            //                   </h5>
+            //                   <span className="text-muted commentdate">{reply.date}</span>
+            //                   <p className="card-text text-muted coment_content mb-0">
+            //                     {reply.content}
+            //                   </p>
+            //                   {/* Actions for nested replies */}
+            //                   <div className="comment_Actions mt-2">
+            //                     <span className="small text-muted">
+            //                       <DefaultButton
+            //                         styles={buttonStyles}
+            //                         className="action_reply nostylebtn"
+            //                         onClick={() => {}}
+            //                       >
+            //                         Reply <i className="fas fa-reply"></i>
+            //                       </DefaultButton>
+            //                     </span>
+            //                   </div>
+            //                 </div>
+            //               </div>
+            //             </div>
+            //           ))}
+            //       </div>
+            //     </div>
+            //   </div>
+            // ))
+          }
+
           <form>
             <div className="card-footer" id="comment_page">
               <div className="row">
@@ -442,7 +449,7 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
                       <th>From Stage</th>
                       <th>To Stage</th>
                       <th>Approver</th>
-                      <th>Comments</th>
+                      <th>comment</th>
                     </tr>
                   </thead>
                   <tbody>
