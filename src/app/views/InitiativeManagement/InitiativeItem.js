@@ -9,6 +9,7 @@ import "./InitiativeItem.css";
 import { Icon } from "@fluentui/react/lib/Icon";
 import { PrimaryButton } from "@fluentui/react/lib/Button"; // Import Fluent UI Button
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import CustomProgressBar from "app/utils/CustomProgressBar";
 
 const InitiativeItem = ({
   initiative,
@@ -30,7 +31,8 @@ const InitiativeItem = ({
     initiativeCode,
     stageOrder,
     maxStage,
-    comments
+    comments,
+    inboxForInitiativeDetails
   } = initiative;
 
   // State for managing drawers and editing
@@ -39,9 +41,22 @@ const InitiativeItem = ({
   const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
   const [expandedCommentIndex, setExpandedCommentIndex] = useState(-1);
   const [comment, setComment] = useState(null); // Initialize comments with null
-
+  const [totalStages, setTotalStages] = useState(0);
+  const [stagesCompleted, setStagesCompleted] = useState(0);
   // Ref for the reply textarea
   const replyTextareaRef = useRef(null);
+
+  useEffect(() => {
+    if (inboxForInitiativeDetails) {
+      const stageDetails = inboxForInitiativeDetails || [];
+      setTotalStages(stageDetails.length);
+      const completedStages = stageDetails.reduce(
+        (count, stage) => (stage.isStageApproved ? count : count),
+        0
+      );
+      setStagesCompleted(completedStages);
+    }
+  }, [inboxForInitiativeDetails]);
 
   useEffect(() => {
     if (commentDrawerOpen) {
@@ -122,6 +137,14 @@ const InitiativeItem = ({
     return `${parts[0].charAt(0).toUpperCase()}${parts[parts.length - 1].charAt(0).toUpperCase()}`;
   };
 
+  const calculateDaysSince = (dateString) => {
+    const currentDate = new Date();
+    const givenDate = new Date(dateString);
+    const timeDifference = currentDate.getTime() - givenDate.getTime();
+    const daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
+    return daysDifference;
+  };
+
   // Function to format date as dd/mm/yy
   const formatDate = (date) => {
     const day = date.getDate().toString().padStart(2, "0");
@@ -129,6 +152,8 @@ const InitiativeItem = ({
     const year = date.getFullYear().toString().slice(-2);
     return `${day}/${month}/${year}`;
   };
+
+  console.log("stages1", inboxForInitiativeDetails);
 
   return (
     <tr>
@@ -143,26 +168,52 @@ const InitiativeItem = ({
       <td style={{ textAlign: "start" }}>
         <Typography variant="body2">{processName}</Typography>
         <Typography variant="body2" color="textSecondary">
-          {createdOn}
+          {calculateDaysSince(createdOn)}
         </Typography>
       </td>
       <td>
-        <div className="left-side">
-          <Typography variant="body2" className="due-in" color="textSecondary">
-            {createdOn} Days
-          </Typography>
-        </div>
-
-        {/* <CustomProgressBar
-          stagesCompleted={stageOrder}
-          totalStages={maxStage}
-          stages={stages}
-          initiative={initiative}
-          stagesLegend={stagesLegend}
-        /> */}
-        <Typography variant="body2" color="textSecondary">
-          {stageOrder} stages completed
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
+          <div className="left-side">
+            <Typography variant="body2" className="due-in" color="textSecondary">
+              Current Stage :{" "}
+              <strong style={{ color: "grey" }}>
+                {" "}
+                {inboxForInitiativeDetails[0].requestStage}
+              </strong>
+            </Typography>
+          </div>
+          <div className="right-side">
+            <Typography variant="body2" className="due-in" color="textSecondary">
+              Due In :{" "}
+              <strong style={{ color: "grey" }}>{calculateDaysSince(createdOn)} Days</strong>
+            </Typography>
+          </div>
+        </Box>
+        <CustomProgressBar stages={inboxForInitiativeDetails} />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
+          <div className="left-side">
+            <Typography variant="body2" className="due-in" color="textSecondary">
+              <strong style={{ color: "grey" }}> {stagesCompleted} </strong> stages completed
+            </Typography>
+          </div>
+          <div className="right-side">
+            <Typography variant="body2" className="due-in" color="textSecondary">
+              & 0 More stages...
+            </Typography>
+          </div>
+        </Box>
       </td>
       <td>
         <div className="current-stage-container">

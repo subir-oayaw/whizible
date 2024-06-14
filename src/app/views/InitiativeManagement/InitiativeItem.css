@@ -151,6 +151,16 @@ span.commentdate {
 .circle-bgpink {
   background: #f578cf;
 }
+.left-right-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-side,
+.right-side {
+  flex: 1;
+}
 
 .circle-bgorange {
   background: #f98843;

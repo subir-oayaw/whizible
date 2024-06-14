@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Tooltip } from "@mui/material";
 import InitiativeDetailsModal from "../views/InitiativeManagement/InitiativeDetailsModal";
 import "./customProgressBar.css";
 
-const CustomProgressBar = ({ stagesCompleted, totalStages, stages, initiative, stagesLegend }) => {
+const CustomProgressBar = ({ stages }) => {
+  const [stagesCompleted, setStagesCompleted] = useState(0);
+  const [totalStages, setTotalStages] = useState(0);
   const [openModal, setOpenModal] = useState(false);
-  console.log("initiative", initiative);
+
+  useEffect(() => {
+    if (stages) {
+      const stageDetails = stages.inboxForInitiativeDetails || [];
+      setTotalStages(stageDetails.length);
+      const completedStages = stageDetails.reduce(
+        (count, stage) => (stage.isStageApproved ? count + 1 : count),
+        0
+      );
+      setStagesCompleted(completedStages);
+    }
+  }, [stages]);
+
   const handleClick = () => {
     setOpenModal(true);
   };
@@ -15,10 +29,10 @@ const CustomProgressBar = ({ stagesCompleted, totalStages, stages, initiative, s
   };
 
   const getStageClass = (index) => {
-    const stageIndex = index + 1; // Adjust index to start from 1
-    if (stageIndex < stagesCompleted) return "sbar sbar-green sbar-small";
-    if (stageIndex === stagesCompleted) return "sbar sbar-orange sbar-large sbar-current";
-    if (stageIndex === stagesCompleted + 1) return "sbar sbar-red sbar-small";
+    if (stagesCompleted === 0) return "sbar sbar-gray sbar-small";
+    if (index < stagesCompleted) return "sbar sbar-green sbar-small";
+    if (index === stagesCompleted) return "sbar sbar-orange sbar-large sbar-current";
+    if (index === stagesCompleted + 1) return "sbar sbar-red sbar-small";
     return "sbar sbar-gray sbar-small";
   };
 
@@ -26,15 +40,15 @@ const CustomProgressBar = ({ stagesCompleted, totalStages, stages, initiative, s
     <>
       <Box className="progress-container">
         <Box className="progress-bar-wrapper" onClick={handleClick}>
-          {stages.map((stage, index) => (
-            <Tooltip key={index} title={`Stage ${index + 1}`}>
+          {stages?.map((stage, index) => (
+            <Tooltip key={index} title={`Stage ${index + 1}: ${stage.requestStage}`}>
               <div
                 id={`stg-bar-${index + 1}`}
                 className={getStageClass(index)}
                 data-bs-toggle="tooltip"
-                aria-label={`Stage ${index + 1}`}
+                aria-label={`Stage ${index + 1}: ${stage.requestStage}`}
               >
-                {index === stagesCompleted - 1 && (
+                {stagesCompleted > 0 && (
                   <a
                     href="javascript:;"
                     data-bs-toggle="offcanvas"
@@ -51,12 +65,12 @@ const CustomProgressBar = ({ stagesCompleted, totalStages, stages, initiative, s
           ))}
         </Box>
       </Box>
-      <InitiativeDetailsModal
+      {/* <InitiativeDetailsModal
         open={openModal}
         handleClose={handleClose}
         initiative={initiative}
         stagesLegend={stagesLegend}
-      />
+      /> */}
     </>
   );
 };
