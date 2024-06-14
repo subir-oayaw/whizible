@@ -29,7 +29,9 @@ const CustomProgressBar = ({ stages }) => {
   };
 
   const getStageClass = (index) => {
-    if (stagesCompleted === 0) return "sbar sbar-gray sbar-small";
+    if (stagesCompleted === 0) {
+      return index === 0 ? "sbar sbar-green sbar-small" : "sbar sbar-gray sbar-small";
+    }
     if (index < stagesCompleted) return "sbar sbar-green sbar-small";
     if (index === stagesCompleted) return "sbar sbar-orange sbar-large sbar-current";
     if (index === stagesCompleted + 1) return "sbar sbar-red sbar-small";
