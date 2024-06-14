@@ -1,20 +1,28 @@
-import React, { useState } from "react";
-import { Typography, IconButton, Tooltip, Drawer, Box, Divider, TextField } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
+import { Typography, IconButton, Tooltip, Drawer, Box, Divider } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import CustomProgressBar from "../../utils/CustomProgressBar";
-import { PrimaryButton, DefaultButton } from "@fluentui/react/lib/Button";
 import FlagIcon from "@mui/icons-material/Flag";
 import EditIcon from "@mui/icons-material/Edit";
 import CommentIcon from "@mui/icons-material/Comment";
+import Button from "@mui/material/Button"; // Import Button from Material-UI
 import "./InitiativeItem.css";
+import { Icon } from "@fluentui/react/lib/Icon";
+import { PrimaryButton } from "@fluentui/react/lib/Button"; // Import Fluent UI Button
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 
-const InitiativeItem = ({ initiative, stagesLegend }) => {
+const InitiativeItem = ({
+  initiative,
+  stagesLegend,
+  setIsEditing,
+  isEditing,
+  startEditing,
+  stopEditing
+}) => {
   const {
     title,
     instanceId,
     userId,
     originator,
-
     processName,
     stageName,
     createdOn,
@@ -28,10 +36,33 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
   // State for managing drawers and editing
   const [commentDrawerOpen, setCommentDrawerOpen] = useState(false);
   const [flagDrawerOpen, setFlagDrawerOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
   const [expandedCommentIndex, setExpandedCommentIndex] = useState(-1);
-  const [comment, setComment] = useState(comments || []); // Initialize comments with initialComments from props
-  const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false); // State for InitiativeHistoryDrawer
+  const [comment, setComment] = useState(null); // Initialize comments with null
+
+  // Ref for the reply textarea
+  const replyTextareaRef = useRef(null);
+
+  useEffect(() => {
+    if (commentDrawerOpen) {
+      fetchComments();
+    }
+  }, [commentDrawerOpen]); // Fetch comments when commentDrawerOpen changes
+
+  // Function to fetch comments from API
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(`http://122.166.47.37:1001/api/Discussion?InitiativeId=2`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch comments");
+      }
+      const data = await response.json();
+      setComment(data.data.discussion); // Update comments state with fetched data
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      // Handle error, e.g., show error message to user
+    }
+  };
 
   // Function to open comment drawer
   const openCommentDrawer = () => {
@@ -49,66 +80,54 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
   };
 
   // Function to close flag drawer
-  const closeHistory = () => {
-    setHistoryDrawerOpen(false);
-  };
-  const openHistory = () => {
-    setHistoryDrawerOpen(true);
-  };
-
-  // Function to close flag drawer
   const closeFlagDrawer = () => {
     setFlagDrawerOpen(false);
-  };
-
-  // Function to start editing
-  const startEditing = () => {
-    setIsEditing(true);
-  };
-
-  // Function to add a new comment
-  const addComment = (newComment) => {
-    setComment([...comment, newComment]);
   };
 
   // Function to toggle expanded replies for a comment
   const toggleReplies = (index) => {
     setExpandedCommentIndex(index === expandedCommentIndex ? -1 : index);
+    // Focus on the reply textarea
+    replyTextareaRef.current.focus();
   };
 
-  // Handle form submission for adding a comment on Enter key press
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      const formData = new FormData(event.target.form);
-      const newComment = {
-        authorInitials: "AA", // Replace with actual initials logic
-        authorName: "Anonymous", // Replace with actual author name logic
-        date: new Date().toLocaleDateString(), // Use current date/time or any format you prefer
-        content: formData.get("commentContent"), // Get comment content from form
-        replies: [] // Initialize with empty replies
-      };
-      addComment(newComment);
-      event.target.form.reset(); // Clear the form after submission
+  // Handle form submission for adding a comment on Submit button click
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const newComment = {
+      // Get initials from authorName
+      userName: formData.get("authorName"),
+      date: formatDate(new Date()), // Use current date/time in "dd/mm/yy" format
+      comments: formData.get("commentContent"),
+      replies: [] // Initialize with empty replies
+    };
+    addComment(newComment);
+    event.target.reset(); // Clear the form after submission
+  };
+
+  // Function to add a new comment to the state
+  const addComment = (newComment) => {
+    if (!comment) {
+      setComment([newComment]); // Initialize comments if not already initialized
+    } else {
+      setComment([...comment, newComment]); // Add new comment to existing comments
     }
   };
 
-  const buttonStyles = {
-    root: {
-      border: "none",
-      boxShadow: "none",
-      padding: 0,
-      height: "auto",
-      minHeight: "auto"
-    },
-    rootHovered: {
-      border: "none",
-      boxShadow: "none"
-    },
-    rootPressed: {
-      border: "none",
-      boxShadow: "none"
-    }
+  // Function to get initials from name
+  const getInitials = (name) => {
+    if (!name) return "";
+    const parts = name.split(" ");
+    return `${parts[0].charAt(0).toUpperCase()}${parts[parts.length - 1].charAt(0).toUpperCase()}`;
+  };
+
+  // Function to format date as dd/mm/yy
+  const formatDate = (date) => {
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString().slice(-2);
+    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -203,301 +222,120 @@ const InitiativeItem = ({ initiative, stagesLegend }) => {
             </div>
           </div>
 
-          {
-            comment && <></>
-            // comment.map((comment, index) => (
-            //   <div key={index} className={`commentbox commentbox${index + 1}`}>
-            //     <div className="col-md-12 d-flex mb-3">
-            //       <div className="usrimg">
-            //         <span className="usernameshort circle-bgpink pull-left name_initials1">
-            //           {comment.authorInitials}
-            //         </span>
-            //       </div>
-            //       <div className="card-body py-2 px-3 mb-2">
-            //         <h5 className="card-title coment_header d-inline-block fullname1">
-            //           {comment.authorName}
-            //         </h5>
-            //         <span className="text-muted commentdate">{comment.date}</span>
-            //         <p className="card-text text-muted coment_content mb-0">{comment.content}</p>
-            //         <div className="comment_Actions mt-2">
-            //           <span className="small text-muted">
-            //             <DefaultButton
-            //               styles={buttonStyles}
-            //               className="action_reply nostylebtn"
-            //               onClick={() => {}}
-            //             >
-            //               Reply <i className="fas fa-reply"></i>
-            //             </DefaultButton>
-            //           </span>
-            //           <span className="small text-muted ms-3">
-            //             <DefaultButton
-            //               styles={buttonStyles}
-            //               className="action showviewall nostylebtn"
-            //               onClick={() => toggleReplies(index)}
-            //             >
-            //               {comment.replies.length} replies
-            //             </DefaultButton>
-            //           </span>
-            //         </div>
-            //         {/* Nested replies */}
-            //         {expandedCommentIndex === index &&
-            //           comment.replies.map((reply, replyIndex) => (
-            //             <div key={replyIndex} className="nested-reply">
-            //               <div className="col-md-12 d-flex mb-3">
-            //                 <div className="usrimg">
-            //                   <span className="inner_username circle-bgblue pull-left name_initials2">
-            //                     {reply.authorInitials}
-            //                   </span>
-            //                 </div>
-            //                 <div className="card-body py-2 px-3 mb-2">
-            //                   <h5 className="card-title coment_header d-inline-block fullname2">
-            //                     {reply.authorName}
-            //                   </h5>
-            //                   <span className="text-muted commentdate">{reply.date}</span>
-            //                   <p className="card-text text-muted coment_content mb-0">
-            //                     {reply.content}
-            //                   </p>
-            //                   {/* Actions for nested replies */}
-            //                   <div className="comment_Actions mt-2">
-            //                     <span className="small text-muted">
-            //                       <DefaultButton
-            //                         styles={buttonStyles}
-            //                         className="action_reply nostylebtn"
-            //                         onClick={() => {}}
-            //                       >
-            //                         Reply <i className="fas fa-reply"></i>
-            //                       </DefaultButton>
-            //                     </span>
-            //                   </div>
-            //                 </div>
-            //               </div>
-            //             </div>
-            //           ))}
-            //       </div>
-            //     </div>
-            //   </div>
-            // ))
-          }
+          {comment && (
+            <>
+              {comment.map((commentItem, index) => (
+                <div key={index} className={`commentbox commentbox${index + 1}`}>
+                  <div className="col-md-12 d-flex mb-3">
+                    <div className="usrimg">
+                      <span className="usernameshort circle-bgpink pull-left name_initials1">
+                        {getInitials(commentItem.userName)}
+                      </span>
+                    </div>
+                    <div className="card-body py-2 px-3 mb-2">
+                      <h5 className="card-title coment_header d-inline-block fullname1">
+                        <strong>{commentItem.userName}</strong>
+                      </h5>
+                      <span className="text-muted commentdate">
+                        {formatDate(new Date(commentItem.discussionDate))}
+                      </span>
+                      <p className="card-text text-muted coment_content mb-0">
+                        {commentItem.comments}
+                      </p>
+                      <div className="comment_Actions mt-2">
+                        <span className="small text-muted">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                              replyTextareaRef.current.focus();
+                            }}
+                            className="action_reply nostylebtn"
+                          >
+                            Reply <i className="fas fa-reply"></i>
+                          </Button>
+                        </span>
+                        <span className="small text-muted ms-3">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => toggleReplies(index)}
+                            className="action showviewall nostylebtn"
+                          >
+                            {commentItem.replies.length} replies
+                          </Button>
+                        </span>
+                      </div>
+                      {/* Nested replies */}
+                      {expandedCommentIndex === index &&
+                        commentItem.replies.map((reply, replyIndex) => (
+                          <div key={replyIndex} className="nested-reply">
+                            <div className="col-md-12 d-flex mb-3">
+                              <div className="usrimg">
+                                <span className="inner_username circle-bgblue pull-left name_initials2">
+                                  {getInitials(reply.userName)}
+                                </span>
+                              </div>
+                              <div className="card-body py-2 px-3 mb-2">
+                                <h5 className="card-title coment_header d-inline-block fullname1">
+                                  <strong>{commentItem.userName}</strong>
+                                </h5>
+                                <span className="text-muted commentdate">
+                                  {formatDate(new Date(reply.discussionDate))}
+                                </span>
+                                <p className="card-text text-muted coment_content mb-0">
+                                  {reply.comments}
+                                </p>
+                                {/* Actions for nested replies */}
+                                <div className="comment_Actions mt-2">
+                                  <span className="small text-muted">
+                                    <Button
+                                      variant="contained"
+                                      color="primary"
+                                      onClick={() => {
+                                        replyTextareaRef.current.focus();
+                                      }}
+                                      className="action_reply nostylebtn"
+                                    >
+                                      Reply <i className="fas fa-reply"></i>
+                                    </Button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
 
-          <form>
-            <div className="card-footer" id="comment_page">
-              <div className="row">
-                <div className="col-md-12 col-12 d-flex mb-3">
-                  <div className="usrimg">
-                    <span className="usernameshort circle-bgorange pull-left name_initials">
-                      UN
-                    </span>
-                  </div>
-                  <div className="d-flex flex-column commentbox flex-grow-1">
-                    <textarea
-                      className="form-control border-0 textareaautosize"
-                      name="commentContent"
-                      id="commentContent"
-                      rows="3"
-                      placeholder="Add a comment"
-                      onKeyDown={handleKeyDown}
-                    ></textarea>
-                  </div>
+          <Divider />
+
+          <form onSubmit={handleSubmit}>
+            <div className="row mt-3">
+              <div className="col-md-12 col-12 d-flex mb-3">
+                <div className="usrimg">
+                  <span className="usernameshort circle-bgorange pull-left name_initials">UN</span>
+                </div>
+                <div className="d-flex flex-column commentbox flex-grow-1">
+                  <textarea
+                    ref={replyTextareaRef} // Ref for reply textarea
+                    className="form-control border-0 textareaautosize"
+                    name="commentContent"
+                    id="commentContent"
+                    rows="3"
+                    placeholder="Add a comment"
+                  ></textarea>
+                  <PrimaryButton type="submit" className="ms-auto mt-2">
+                    Add Comment
+                  </PrimaryButton>
                 </div>
               </div>
             </div>
           </form>
-        </Box>
-      </Drawer>
-
-      {/* Drawer for Flag Tracking Details */}
-      <Drawer anchor="right" open={flagDrawerOpen} onClose={closeFlagDrawer}>
-        <Box sx={{ width: 600, padding: 2 }}>
-          <div id="init_flag_Sec" className="container bg-light">
-            <div className="row">
-              <div
-                style={{
-                  background: "#E7EDF0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between"
-                }}
-              >
-                <h5 className="offcanvasTitle" style={{ margin: 0 }}>
-                  Flag Tracking Details
-                </h5>
-                <div className="col-2 text-end">
-                  <i className="fa-solid fa-xmark"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="mt-2 mb-2 init_history">
-            <div className="row">
-              <div className="col-7"></div>
-              <div className="col-5 d-flex justify-content-end gap-3">
-                <button type="button" className="btn borderbtnbgblue">
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <p>
-            <strong>Maha Metro Pune</strong>
-          </p>
-          <div className="init_borderedbox p-3 mb-5">
-            Flagging marks an item to remind you that it needs to be followed up. After it has been
-            followed up, you can mark it complete
-          </div>
-
-          <div className="row mb-3">
-            <div className="col-4">
-              <label htmlFor="Selflagto" className="form-label">
-                Flag To
-              </label>
-              <select id="Selflagto" className="form-select">
-                <option>Follow Up</option>
-                <option>Review</option>
-              </select>
-            </div>
-            <div className="col-4">
-              <label htmlFor="date_IntKBFromDate" className="form-label">
-                Due by
-              </label>
-              <div className="input-group date" id="datepicker">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="date_IntKBFromDate"
-                  placeholder="Select Date"
-                />
-                <span className="input-group-text bg-light">
-                  <i className="bi bi-calendar"></i>
-                </span>
-              </div>
-            </div>
-            <div className="col-4">
-              <div className="form-check mt-4">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flagcheckcomplete"
-                />
-                <label className="form-check-label" htmlFor="flagcheckcomplete">
-                  Complete
-                </label>
-              </div>
-            </div>
-          </div>
-        </Box>
-      </Drawer>
-      <Drawer anchor="right" open={historyDrawerOpen} onClose={closeHistory}>
-        <Box sx={{ width: 600, p: 2 }}>
-          <Typography variant="h6" gutterBottom style={{ background: "#E7EDF0", width: "100%" }}>
-            Initiative History
-          </Typography>
-          <Divider />
-          <Box className="inithistDetails graybg">
-            <div className="row mt-2 mb-2 ">
-              <div className="col-sm-8">
-                <div className="row">
-                  <div className="col-sm-8">
-                    <label htmlFor="inputPassword6" className="col-form-label text-end">
-                      Action Taken
-                    </label>
-                  </div>
-                  <div className="col-sm-7">
-                    <div className="dropdown bootstrap-select">
-                      <select
-                        className="selectpicker"
-                        data-live-search="true"
-                        id="ActionType"
-                        // onChange={() => changActionType()}
-                      >
-                        <option>Approved</option>
-                        <option>Rejected</option>
-                        <option>Submitted</option>
-                        <option>System</option>
-                      </select>
-
-                      <div className="dropdown-menu">
-                        <div className="bs-searchbox">
-                          <input
-                            type="search"
-                            className="form-control"
-                            autoComplete="off"
-                            role="combobox"
-                            aria-label="Search"
-                            aria-controls="bs-select-10"
-                            aria-autocomplete="list"
-                          />
-                        </div>
-                        <div className="inner show" role="listbox" id="bs-select-10" tabIndex="-1">
-                          <ul className="dropdown-menu inner show" role="presentation"></ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-7"></div>
-            </div>
-            <div className="historyHeight" style={{ height: "290px", overflowY: "auto" }}>
-              <div className="table-responsive offTable_wrapper">
-                <table className="table table-striped table-hover mb-0" id="inithistoryTbl">
-                  <thead>
-                    <tr>
-                      <th>Event Time</th>
-                      <th>Action Taken</th>
-                      <th>From Stage</th>
-                      <th>To Stage</th>
-                      <th>Approver</th>
-                      <th>comment</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>08/06/2022 1:03:53 PM</td>
-                      <td>Approved</td>
-                      <td>Deployment</td>
-                      <td>Completed</td>
-                      <td>Admin</td>
-                      <td>Approved</td>
-                    </tr>
-                    <tr>
-                      <td>08/06/2022 12:38:53 PM</td>
-                      <td>Approved</td>
-                      <td>CFO Approval</td>
-                      <td>Deployment</td>
-                      <td>Admin</td>
-                      <td>Approved</td>
-                    </tr>
-                    <tr>
-                      <td>21/04/2022 12:01:37 PM</td>
-                      <td>Approved</td>
-                      <td>CEO Approval</td>
-                      <td>CFO Approval</td>
-                      <td>Admin</td>
-                      <td>Approved</td>
-                    </tr>
-                    <tr>
-                      <td>08/06/2022 1:03:53 PM</td>
-                      <td>Approved</td>
-                      <td>Deployment</td>
-                      <td>Completed</td>
-                      <td>Admin</td>
-                      <td>Ok</td>
-                    </tr>
-                    <tr style={{ display: "none" }}>
-                      <td>08/06/2022 1:03:53 PM</td>
-                      <td>Approved</td>
-                      <td>CEO Approval</td>
-                      <td>Deployment</td>
-                      <td>Admin</td>
-                      <td>Ok</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </Box>
         </Box>
       </Drawer>
     </tr>

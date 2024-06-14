@@ -6,7 +6,14 @@ import SearchIcon from "../../../assets/img/search-icn.svg";
 
 const ITEMS_PER_PAGE = 5; // Number of items per page
 
-const InitiativeList = ({ initiatives, page }) => {
+const InitiativeList = ({
+  initiatives,
+  page,
+  setIsEditing,
+  isEditing,
+  startEditing,
+  stopEditing
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(page); // State for current page
 
@@ -102,6 +109,10 @@ const InitiativeList = ({ initiatives, page }) => {
               key={initiative.id}
               initiative={initiative}
               stagesLegend={stagesLegend}
+              setIsEditing={setIsEditing}
+              isEditing={isEditing}
+              startEditing={startEditing}
+              stopEditing={stopEditing}
             />
           ))}
         </tbody>
