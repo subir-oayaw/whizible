@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Typography, IconButton, Tooltip, Drawer, Box, Divider } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FlagIcon from "@mui/icons-material/Flag";
@@ -7,6 +7,9 @@ import CommentIcon from "@mui/icons-material/Comment";
 import Button from "@mui/material/Button"; // Import Button from Material-UI
 import "./InitiativeItem.css";
 import { Icon } from "@fluentui/react/lib/Icon";
+import { PrimaryButton } from "@fluentui/react/lib/Button"; // Import Fluent UI Button
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+
 const InitiativeItem = ({
   initiative,
   stagesLegend,
@@ -36,6 +39,9 @@ const InitiativeItem = ({
   const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
   const [expandedCommentIndex, setExpandedCommentIndex] = useState(-1);
   const [comment, setComment] = useState(null); // Initialize comments with null
+
+  // Ref for the reply textarea
+  const replyTextareaRef = useRef(null);
 
   useEffect(() => {
     if (commentDrawerOpen) {
@@ -81,23 +87,23 @@ const InitiativeItem = ({
   // Function to toggle expanded replies for a comment
   const toggleReplies = (index) => {
     setExpandedCommentIndex(index === expandedCommentIndex ? -1 : index);
+    // Focus on the reply textarea
+    replyTextareaRef.current.focus();
   };
 
-  // Handle form submission for adding a comment on Enter key press
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      const formData = new FormData(event.target.form);
-      const newComment = {
-        authorInitials: getInitials(formData.get("authorName")), // Get initials from authorName
-        authorName: formData.get("authorName"),
-        date: formatDate(new Date()), // Use current date/time in "dd/mm/yy" format
-        content: formData.get("commentContent"),
-        replies: [] // Initialize with empty replies
-      };
-      addComment(newComment);
-      event.target.form.reset(); // Clear the form after submission
-    }
+  // Handle form submission for adding a comment on Submit button click
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const newComment = {
+      // Get initials from authorName
+      userName: formData.get("authorName"),
+      date: formatDate(new Date()), // Use current date/time in "dd/mm/yy" format
+      comments: formData.get("commentContent"),
+      replies: [] // Initialize with empty replies
+    };
+    addComment(newComment);
+    event.target.reset(); // Clear the form after submission
   };
 
   // Function to add a new comment to the state
@@ -241,7 +247,9 @@ const InitiativeItem = ({
                           <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => {}}
+                            onClick={() => {
+                              replyTextareaRef.current.focus();
+                            }}
                             className="action_reply nostylebtn"
                           >
                             Reply <i className="fas fa-reply"></i>
@@ -284,7 +292,9 @@ const InitiativeItem = ({
                                     <Button
                                       variant="contained"
                                       color="primary"
-                                      onClick={() => {}}
+                                      onClick={() => {
+                                        replyTextareaRef.current.focus();
+                                      }}
                                       className="action_reply nostylebtn"
                                     >
                                       Reply <i className="fas fa-reply"></i>
@@ -301,6 +311,31 @@ const InitiativeItem = ({
               ))}
             </>
           )}
+
+          <Divider />
+
+          <form onSubmit={handleSubmit}>
+            <div className="row mt-3">
+              <div className="col-md-12 col-12 d-flex mb-3">
+                <div className="usrimg">
+                  <span className="usernameshort circle-bgorange pull-left name_initials">UN</span>
+                </div>
+                <div className="d-flex flex-column commentbox flex-grow-1">
+                  <textarea
+                    ref={replyTextareaRef} // Ref for reply textarea
+                    className="form-control border-0 textareaautosize"
+                    name="commentContent"
+                    id="commentContent"
+                    rows="3"
+                    placeholder="Add a comment"
+                  ></textarea>
+                  <PrimaryButton type="submit" className="ms-auto mt-2">
+                    Add Comment
+                  </PrimaryButton>
+                </div>
+              </div>
+            </div>
+          </form>
         </Box>
       </Drawer>
     </tr>
