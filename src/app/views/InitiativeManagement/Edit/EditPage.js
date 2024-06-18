@@ -106,12 +106,7 @@ const EditPage = () => {
         <div className="container-fluid mt-3">
           <h3>Resources</h3>
           <ResourceEdit resourcesData={resourcesData} />
-          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}>
-            {/* Example of dynamic button */}
-            <PrimaryButton className="topbtnblue">
-              <span>Example Button</span>
-            </PrimaryButton>
-          </Stack>
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
         </div>
       );
     } else {

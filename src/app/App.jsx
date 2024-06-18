@@ -1,5 +1,6 @@
 import { useRoutes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
+import "@fluentui/react/dist/css/fabric.css";
 
 import { WhizTheme } from "./components";
 // ALL CONTEXTS
