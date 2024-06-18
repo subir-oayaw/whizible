@@ -6,7 +6,7 @@ import SearchIcon from "../../../assets/img/serachlist-icn.svg";
 import SearchList from "../../utils/SearchList";
 import useInitiative from "../../hooks/useInitiative";
 import { WhizLoading } from "app/components";
-import EditPage from "./EditPage";
+import EditPage from "./Edit/EditPage";
 
 const InitiativeManagement = () => {
   const { dashboardData, loading, error } = useInitiative();
