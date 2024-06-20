@@ -120,7 +120,21 @@ export const buttonData = [
     display: true // Set to true to display this button
   }
 ];
-
+export const costData = [
+  {
+    category: "Lorem Ipsum 1",
+    amount: "6,21,75,831",
+    startDate: "10 Aug 2022",
+    endDate: "10 Aug 2022"
+  },
+  {
+    category: "Lorem Ipsum 2",
+    amount: "4,32,54,123",
+    startDate: "12 Sep 2022",
+    endDate: "12 Sep 2022"
+  }
+  // Add more objects as needed
+];
 export const formData = [
   {
     display: true,

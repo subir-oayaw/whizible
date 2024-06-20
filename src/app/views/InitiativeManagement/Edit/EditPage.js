@@ -5,9 +5,17 @@ import { TextField, Dropdown, DatePicker } from "@fluentui/react";
 import { Stack } from "@fluentui/react/lib/Stack";
 import "bootstrap/dist/css/bootstrap.min.css";
 import currentstage from "../../../../assets/img/currentstage.svg";
-import { tabData, formData, buttonData, resourcesData } from "./EditDumy";
+import { tabData, formData, buttonData, resourcesData, costData } from "./EditDumy";
 import ResourceEdit from "./ResourceEdit";
 import BasicDetailEdit from "./BasicDetailEdit";
+import CostTabContent from "./CostTabContent";
+import FundingTab from "./Funding";
+import WorkOrderTab from "./WorkOrder";
+import ROIComponent from "./ROIComponent";
+import StageComponent from "./StageComponent";
+import TimelinesComponent from "./TimelinesComponent";
+import DocumentsComponent from "./DocumentsComponent";
+import WorkflowTabs from "./WorkFlow";
 const EditPage = () => {
   const [activeTab, setActiveTab] = useState(tabData[0]?.id); // State to track active tab
 
@@ -104,13 +112,68 @@ const EditPage = () => {
     } else if (activeTab === "resources") {
       return (
         <div className="container-fluid mt-3">
-          <h3>Resources</h3>
           <ResourceEdit resourcesData={resourcesData} />
           <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
         </div>
       );
+    } else if (activeTab === "work-order") {
+      return (
+        <div className="container-fluid mt-3">
+          <WorkOrderTab />
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "cost") {
+      return (
+        <div className="container-fluid mt-3">
+          <CostTabContent costData={costData} />;
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "funding") {
+      return (
+        <div className="container-fluid mt-3">
+          <FundingTab />;
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "roi") {
+      return (
+        <div className="container-fluid mt-3">
+          <ROIComponent />
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "stage") {
+      return (
+        <div className="container-fluid mt-3">
+          <StageComponent />
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "timelines") {
+      return (
+        <div className="container-fluid mt-3">
+          <TimelinesComponent />
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "documents") {
+      return (
+        <div className="container-fluid mt-3">
+          <h3>Funding</h3>
+          <DocumentsComponent />
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "workflows") {
+      return (
+        <div className="container-fluid mt-3">
+          <WorkflowTabs />
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
     } else {
-      // Render default content for other tabs
       return (
         <div>
           <h3>{tabData.find((tab) => tab.id === activeTab)?.title}</h3>
