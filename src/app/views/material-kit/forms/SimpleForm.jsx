@@ -152,7 +152,8 @@ const SimpleForm = () => {
               name="gender"
               sx={{ mb: 2 }}
               value={gender || ""}
-              onChange={handleChange}>
+              onChange={handleChange}
+            >
               <FormControlLabel
                 value="Male"
                 label="Male"

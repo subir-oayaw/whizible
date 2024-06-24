@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Carousel, Dropdown } from "react-bootstrap";
 import { Input, Button as FluentButton, Link } from "@fluentui/react-components";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -15,6 +15,8 @@ import { useTranslation } from "react-i18next";
 import { FaCheckCircle } from "react-icons/fa";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import useAuth from "app/hooks/useAuth";
+import microsoftLogo from "../../../assets/img/microsoft-logo.svg";
 
 function LoginPage() {
   const [loginAttempts, setLoginAttempts] = useState(0);
@@ -37,7 +39,15 @@ function LoginPage() {
   const [confirmPasswordValid, setConfirmPasswordValid] = useState(false);
   const [otpValid, setOtpValid] = useState(false);
   const { t, i18n } = useTranslation();
+  const { login, handleMicrosoftSignIn } = useAuth();
   const navigate = useNavigate(); // Initialize useNavigate
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("access_token");
+    if (token) {
+      navigate("/dashboard/default");
+    }
+  }, [navigate]);
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
     setUsernameValid(e.target.value.length > 0); // Validation logic for username
@@ -73,17 +83,19 @@ function LoginPage() {
     // You can implement validation logic for OTP here
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
-    // Here you would check the credentials
-    const loginSuccess = false; // Replace this with actual login logic
-
-    if (loginSuccess) {
-      // Proceed with the successful login
-    } else {
-      setLoginAttempts((prev) => prev + 1);
-    }
+    navigate("/dashboard/default");
+    // const loginSuccess = false;
+    // try {
+    //   await login(username, password); // Perform login
+    //   navigate("/dashboard/default"); // Navigate to dashboard on success
+    // } catch (error) {
+    //   setLoginAttempts((prev) => prev + 1);
+    //   loginSuccess = true; // Increment login attempts on failure
+    //   console.error("Login failed:", error);
+    //   navigate("/dashboard/default");
+    // }
   };
 
   const handleForgotPassword = (e) => {
@@ -131,6 +143,7 @@ function LoginPage() {
 
     return strength;
   };
+
   const getProgressBarColor = () => {
     const strength = getPasswordStrength();
     switch (strength) {
@@ -403,19 +416,23 @@ function LoginPage() {
                         />
                       </Form.Group>
                     )}
-                    <div className="d-flex justify-content-between mb-4">
+                    <div className="d-flex justify-content-between mb-2">
                       <Link onClick={() => setChangePassword(true)}>Change Password</Link>
                       <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
                     </div>
                     <div class="d-flex justify-content-center">
-                      <FluentButton
-                        className="custom-signin-button"
-                        size="large"
-                        type="submit"
-                        onClick={() => navigate("/dashboard/default")}
-                      >
+                      <FluentButton className="custom-signin-button" size="large" type="submit">
                         <span class="text-white">Sign In</span>
                       </FluentButton>
+                    </div>
+                    <div className="d-flex justify-content-center ">
+                      <img
+                        src={microsoftLogo}
+                        alt="Microsoft Logo"
+                        className="ms-2 "
+                        style={{ height: "90px", weidth: "90px", cursor: "pointer" }}
+                        onClick={handleMicrosoftSignIn}
+                      />
                     </div>
                   </Form>
 

@@ -151,7 +151,7 @@ const Layout1Topbar = () => {
                   </Span>
                 </Hidden>
                 <Box display="flex" flexDirection="column" alignItems="center">
-                  <Avatar src={user.avatar} sx={{ cursor: "pointer" }} />
+                  <Avatar src={user?.avatar} sx={{ cursor: "pointer" }} />
                   <Span sx={{ fontSize: 12, color: "grey" }}>Role</Span>
                 </Box>
               </UserMenu>
