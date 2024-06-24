@@ -24,6 +24,7 @@ const routes = [
     element: (
       <AuthGuard>
         <WhizLayout />
+        <Analytics />
       </AuthGuard>
     ),
     children: [

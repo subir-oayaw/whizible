@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useLocation } from "react-router-dom";
 const useSidebar = () => {
   const [SidebarData, setSidebarData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -9,7 +9,14 @@ const useSidebar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://122.166.47.37:1001/api/Navigation");
+        const accessToken = sessionStorage.getItem("access_token");
+        const response = await axios.get("https://122.166.47.37:1003/api/Navigation", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+          // Optionally, if you need to ignore SSL certificate errors (not recommended in production):
+        });
+
         if (response.status !== 200) {
           throw new Error("Failed to fetch dashboard data");
         }

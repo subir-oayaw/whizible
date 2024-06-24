@@ -9,7 +9,15 @@ const useInitiative = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://122.166.47.37:1001/api/Dashboard");
+        const accessToken = sessionStorage.getItem("access_token");
+        const response = await axios.get(
+          "https://122.166.47.37:1003/api/Dashboard?LastActionName=Approved",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          }
+        );
         if (response.status !== 200) {
           throw new Error("Failed to fetch dashboard data");
         }

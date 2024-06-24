@@ -39,8 +39,15 @@ function LoginPage() {
   const [confirmPasswordValid, setConfirmPasswordValid] = useState(false);
   const [otpValid, setOtpValid] = useState(false);
   const { t, i18n } = useTranslation();
-  const { login } = useAuth();
+  const { login, handleMicrosoftSignIn } = useAuth();
   const navigate = useNavigate(); // Initialize useNavigate
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("access_token");
+    if (token) {
+      navigate("/dashboard/default");
+    }
+  }, [navigate]);
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
     setUsernameValid(e.target.value.length > 0); // Validation logic for username
@@ -136,41 +143,6 @@ function LoginPage() {
 
     return strength;
   };
-  const handleMicrosoftSignIn = () => {
-    // Replace with your Microsoft application's details
-    const clientId = "your-client-id";
-    const redirectUri = "http://localhost:3000/auth/callback"; // Replace with your redirect URI
-
-    // Construct the Microsoft login URL
-    const loginUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(
-      redirectUri
-    )}&scope=User.Read`;
-
-    // Open Microsoft login URL in a new tab
-    window.open(loginUrl, "_blank");
-  };
-
-  useEffect(() => {
-    const handleMicrosoftSignInCallback = () => {
-      const urlParams = new URLSearchParams(window.location.hash.substring(1));
-      const accessToken = urlParams.get("access_token");
-
-      if (accessToken) {
-        // Store token in session storage
-        sessionStorage.setItem("accessToken", accessToken);
-
-        // Redirect to dashboard or another page
-        navigate("/dashboard/default");
-      } else {
-        console.error("Access token not found in callback URL");
-        // Handle error or redirect to login page
-        navigate("/signin");
-      }
-    };
-
-    // Invoke callback handler on component mount
-    handleMicrosoftSignInCallback();
-  }, [navigate]);
 
   const getProgressBarColor = () => {
     const strength = getPasswordStrength();

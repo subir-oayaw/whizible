@@ -9,6 +9,15 @@ const initialState = {
   isAuthenticated: false
 };
 
+const handleMicrosoftSignIn = () => {
+  const baseurlAccessControl = "https://122.166.47.37:1002";
+  const redirectUri = "http://localhost:3000";
+
+  window.location.href =
+    baseurlAccessControl +
+    `/api/Authentication/login?redirectUri=${encodeURIComponent(redirectUri)}`;
+};
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "INIT": {
@@ -26,7 +35,6 @@ const reducer = (state, action) => {
 
     case "REGISTER": {
       const { user } = action.payload;
-
       return { ...state, isAuthenticated: true, user };
     }
 
@@ -40,7 +48,8 @@ const AuthContext = createContext({
   method: "JWT",
   login: () => {},
   logout: () => {},
-  register: () => {}
+  register: () => {},
+  handleMicrosoftSignIn: () => {}
 });
 
 export const AuthProvider = ({ children }) => {
@@ -51,6 +60,7 @@ export const AuthProvider = ({ children }) => {
     const { user } = response.data;
 
     dispatch({ type: "LOGIN", payload: { user } });
+    sessionStorage.setItem("access_token", response.data.token);
   };
 
   const register = async (email, username, password) => {
@@ -58,20 +68,57 @@ export const AuthProvider = ({ children }) => {
     const { user } = response.data;
 
     dispatch({ type: "REGISTER", payload: { user } });
+    sessionStorage.setItem("access_token", response.data.token);
   };
 
   const logout = () => {
+    sessionStorage.removeItem("access_token");
     dispatch({ type: "LOGOUT" });
   };
 
   useEffect(() => {
+    const initialize = async () => {
+      const token = sessionStorage.getItem("access_token");
+      if (token) {
+        dispatch({ type: "INIT", payload: { isAuthenticated: true, user: null } });
+      } else {
+        dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
+      }
+    };
+
+    initialize();
+  }, []);
+
+  useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get("/api/auth/profile");
-        dispatch({ type: "INIT", payload: { isAuthenticated: true, user: data.user } });
+        const url = window.location.href;
+        const codeMatch = url.match(/[?&]code=([^&]+)/);
+        const stateMatch = url.match(/[?&]state=([^&]+)/);
+        const code = codeMatch ? codeMatch[1] : null;
+        const state = stateMatch ? stateMatch[1] : null;
+
+        if (code && state) {
+          const redirectUri = "http://localhost:3000";
+          const baseurlAccessControl = "https://122.166.47.37:1002"; // Replace with your actual base URL
+
+          // Call the API to get the token
+          const response = await axios.get(
+            `${baseurlAccessControl}/api/Authentication/GetToken?code=${code}&state=${state}&redirectUri=${encodeURIComponent(
+              redirectUri
+            )}`
+          );
+
+          const { accessToken } = response.data;
+          if (accessToken) {
+            sessionStorage.setItem("access_token", accessToken);
+            dispatch({ type: "LOGIN", payload: { user: null } });
+          } else {
+            dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
+          }
+        }
       } catch (err) {
-        console.error(err);
-        dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
+        console.error("Initialization failed", err);
       }
     })();
   }, []);
@@ -80,7 +127,16 @@ export const AuthProvider = ({ children }) => {
   if (!state.isInitialized) return <WhizLoading />;
 
   return (
-    <AuthContext.Provider value={{ ...state, method: "JWT", login, logout, register }}>
+    <AuthContext.Provider
+      value={{
+        ...state,
+        method: "JWT",
+        login,
+        logout,
+        register,
+        handleMicrosoftSignIn
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
