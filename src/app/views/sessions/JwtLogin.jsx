@@ -41,13 +41,12 @@ function LoginPage() {
   const { t, i18n } = useTranslation();
   const { login, handleMicrosoftSignIn } = useAuth();
   const navigate = useNavigate(); // Initialize useNavigate
-
+  const token = sessionStorage.getItem("access_token");
   useEffect(() => {
-    const token = sessionStorage.getItem("access_token");
     if (token) {
       navigate("/dashboard/default");
     }
-  }, [navigate]);
+  }, [token]);
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
     setUsernameValid(e.target.value.length > 0); // Validation logic for username

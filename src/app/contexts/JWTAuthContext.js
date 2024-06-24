@@ -8,10 +8,10 @@ const initialState = {
   isInitialized: false,
   isAuthenticated: false
 };
-
+console.log("first", process.env.REACT_APP_REDIRECT_URI);
 const handleMicrosoftSignIn = () => {
-  const baseurlAccessControl = "https://122.166.47.37:1002";
-  const redirectUri = "http://localhost:3000";
+  const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
+  const redirectUri = process.env.REACT_APP_REDIRECT_URI;
 
   window.location.href =
     baseurlAccessControl +
@@ -99,8 +99,8 @@ export const AuthProvider = ({ children }) => {
         const state = stateMatch ? stateMatch[1] : null;
 
         if (code && state) {
-          const redirectUri = "http://localhost:3000";
-          const baseurlAccessControl = "https://122.166.47.37:1002"; // Replace with your actual base URL
+          const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+          const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL; // Replace with your actual base URL
 
           // Call the API to get the token
           const response = await axios.get(
@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }) => {
           const { accessToken } = response.data;
           if (accessToken) {
             sessionStorage.setItem("access_token", accessToken);
-            dispatch({ type: "LOGIN", payload: { user: null } });
+            dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user: null } });
           } else {
             dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
           }
