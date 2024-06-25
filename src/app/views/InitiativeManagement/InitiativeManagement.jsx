@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import InitiativeList from "./InitiativeList";
-import { Container, Typography, Box, Pagination } from "@mui/material";
+import { Container, Typography, Box, Pagination, IconButton } from "@mui/material";
 import "./InitiativeManagement.css";
 import SearchIcon from "../../../assets/img/serachlist-icn.svg";
 import SearchList from "../../utils/SearchList";
 import useInitiative from "../../hooks/useInitiative";
 import { WhizLoading } from "app/components";
 import EditPage from "./Edit/EditPage";
+import { ViewList, ViewModule } from "@mui/icons-material"; // Import icons for list and card view
 
 const InitiativeManagement = () => {
   const { dashboardData, loading, error } = useInitiative();
@@ -16,6 +17,7 @@ const InitiativeManagement = () => {
   const [currentFilter, setCurrentFilter] = useState("All");
   const [showForm, setShowForm] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isListView, setIsListView] = useState(true); // State for list and card view toggle
 
   const startEditing = () => {
     setIsEditing(true);
@@ -25,6 +27,7 @@ const InitiativeManagement = () => {
   const stopEditing = () => {
     setIsEditing(false);
   };
+
   useEffect(() => {
     if (dashboardData) {
       setInitiatives(dashboardData);
@@ -70,7 +73,6 @@ const InitiativeManagement = () => {
   const filterCounts = calculateFilterCounts(initiatives);
 
   const filterInitiatives = (filter, data = initiatives) => {
-    setCurrentFilter(filter);
     let filteredInitiatives = [];
 
     switch (filter) {
@@ -88,7 +90,8 @@ const InitiativeManagement = () => {
         break;
     }
 
-    setfInitiatives(filteredInitiatives);
+    setCurrentFilter(filter);
+    setfInitiatives(() => filteredInitiatives);
     setCurrentPage(1);
   };
 
@@ -110,6 +113,11 @@ const InitiativeManagement = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  // Toggle between list and card view
+  const toggleView = () => {
+    setIsListView((prevView) => !prevView);
+  };
 
   return (
     <Container>
@@ -193,14 +201,20 @@ const InitiativeManagement = () => {
                 </div>
               </div>
               <div className="col-12 col-sm-5 d-flex justify-content-end">
-                <div className="" onClick={handleShowForm}>
-                  <img
-                    src={SearchIcon}
-                    alt=""
-                    data-bs-toggle="tooltip"
-                    aria-label="Search List"
-                    data-bs-original-title="Search List"
-                  />
+                <div className="d-flex align-items-center">
+                  <div className="me-3" onClick={handleShowForm}>
+                    <img
+                      src={SearchIcon}
+                      alt=""
+                      data-bs-toggle="tooltip"
+                      aria-label="Search List"
+                      data-bs-original-title="Search List"
+                    />
+                  </div>
+                  {/* Toggle between list and card view */}
+                  <IconButton onClick={toggleView}>
+                    {isListView ? <ViewModule /> : <ViewList />}
+                  </IconButton>
                 </div>
               </div>
             </div>
@@ -213,6 +227,7 @@ const InitiativeManagement = () => {
             isEditing={isEditing}
             startEditing={startEditing}
             stopEditing={stopEditing}
+            isListView={isListView} // Pass the state to determine view mode
           />
           {finitiatives.length > 5 && (
             <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
