@@ -42,7 +42,7 @@ export default function Analytics() {
       <ContentBox className="analytics">
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <InitiativeManagement />
+            {/* <InitiativeManagement /> */}
           </Grid>
         </Grid>
       </ContentBox>
