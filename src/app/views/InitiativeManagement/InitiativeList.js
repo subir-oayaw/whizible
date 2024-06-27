@@ -1,6 +1,21 @@
 import React, { useState } from "react";
 import InitiativeItem from "./InitiativeItem";
-import { Box, Table, TableHead, TableRow, TableCell, Pagination, Stack } from "@mui/material";
+import InitiativeCard from "./InitiativeCard"; // New component for card view
+import {
+  Box,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  Pagination,
+  IconButton,
+  Card,
+  CardContent,
+  Button,
+  Menu,
+  MenuItem
+} from "@mui/material";
+import { ViewList, ViewModule, SortByAlpha, TrendingUp, CalendarToday } from "@mui/icons-material"; // Icons for list, card view, and sorting
 import "./InitiativeList.css"; // Import your CSS file for styles
 import SearchIcon from "../../../assets/img/search-icn.svg";
 
@@ -12,10 +27,12 @@ const InitiativeList = ({
   setIsEditing,
   isEditing,
   startEditing,
-  stopEditing
+  stopEditing,
+  isListView // Prop to determine if it's list view or card view
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(page); // State for current page
+  const [sortAnchorEl, setSortAnchorEl] = useState(null); // State for sorting dropdown anchor element
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -38,6 +55,23 @@ const InitiativeList = ({
   // Handle page change
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
+  };
+
+  // Handle sorting dropdown open
+  const handleSortOpen = (event) => {
+    setSortAnchorEl(event.currentTarget);
+  };
+
+  // Handle sorting dropdown close
+  const handleSortClose = () => {
+    setSortAnchorEl(null);
+  };
+
+  // Handle sorting option selection
+  const handleSortSelect = (option) => {
+    // Implement sorting logic based on selected option
+    console.log("Sorting by:", option);
+    handleSortClose();
   };
 
   // Legend for stages with colored boxes
@@ -64,59 +98,191 @@ const InitiativeList = ({
 
   return (
     <Box>
-      <Table className="table table-bordered">
-        <TableHead>
-          <TableRow>
-            <TableCell className="thOuter custom-col-width">
-              <div className="igph_title position-relative">
-                Initiative Title
-                <div className="search-box position-absolute top-50 end-0 translate-middle-y me-2">
-                  <input
-                    id="InitMangntSrchInput"
-                    className="search-text"
-                    type="text"
-                    placeholder="Search"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
+      {/* Render content based on view mode */}
+      {isListView ? (
+        <>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div className="search-box position-relative">
+              <input
+                id="InitMangntSrchInput"
+                className="search-text"
+                type="text"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              <a id="initgrid-srch-title" className="search-btn" href="javascript:void(0);">
+                <img
+                  src={SearchIcon}
+                  alt="Search"
+                  data-bs-toggle="tooltip"
+                  aria-label="Search"
+                  data-bs-original-title="Search"
+                />
+              </a>
+            </div>
+            <div className="d-flex align-items-center">
+              <Button
+                aria-controls="sort-menu"
+                aria-haspopup="true"
+                onClick={handleSortOpen}
+                variant="outlined"
+                className="me-3"
+              >
+                Sort
+              </Button>
+              <Menu
+                id="sort-menu"
+                anchorEl={sortAnchorEl}
+                keepMounted
+                open={Boolean(sortAnchorEl)}
+                onClose={handleSortClose}
+              >
+                <MenuItem onClick={() => handleSortSelect("A to Z")}>
+                  <SortByAlpha /> A to Z (Initiative Name)
+                </MenuItem>
+                {/* <MenuItem onClick={() => handleSortSelect("Z to A")}>
+              <SortByAlphaReverse /> Z to A (Initiative Name)
+            </MenuItem> */}
+                <MenuItem onClick={() => handleSortSelect("% Complete (ASC)")}>
+                  <TrendingUp /> % Complete (ASC)
+                </MenuItem>
+                <MenuItem onClick={() => handleSortSelect("Stages Completed")}>
+                  Stages Completed
+                </MenuItem>
+                <MenuItem onClick={() => handleSortSelect("Initiation Date (DSC)")}>
+                  <CalendarToday /> Initiation Date (DSC)
+                </MenuItem>
+              </Menu>
+            </div>
+          </div>
+          <Table className="table table-bordered">
+            <TableHead>
+              <TableRow>
+                <TableCell className="thOuter custom-col-width">
+                  <div className="igph_title position-relative">Initiative Title</div>
+                </TableCell>
+                <TableCell className="thOuter col-sm-2">
+                  <div className="igph_title position-relative">Nature of Initiative</div>
+                </TableCell>
+                <TableCell className="thOuter col-sm-5">
+                  <div className="igph_title position-relative text-center pb-1">Stages</div>
+                  <div className="stagesLegendContainer">{stagesLegend}</div>
+                </TableCell>
+                <TableCell className="thOuter col-sm-1">
+                  <div className="igph_title text-center position-relative">Action</div>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <tbody>
+              {initiativesToShow.map((initiative) => (
+                <InitiativeItem
+                  key={initiative.id}
+                  initiative={initiative}
+                  stagesLegend={stagesLegend}
+                  setIsEditing={setIsEditing}
+                  isEditing={isEditing}
+                  startEditing={startEditing}
+                  stopEditing={stopEditing}
+                />
+              ))}
+            </tbody>
+          </Table>
+        </>
+      ) : (
+        <Card
+          sx={{
+            backgroundColor: "#e7edf0",
+            borderTop: "5px solid #3f51b5",
+            borderBottom: "none"
+          }}
+          className="card-list-container"
+        >
+          <CardContent>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <div className="search-box position-relative">
+                <input
+                  id="InitMangntSrchInput"
+                  className="search-text"
+                  type="text"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+                <a id="initgrid-srch-title" className="search-btn" href="javascript:void(0);">
+                  <img
+                    src={SearchIcon}
+                    alt="Search"
+                    data-bs-toggle="tooltip"
+                    aria-label="Search"
+                    data-bs-original-title="Search"
                   />
-                  <a id="initgrid-srch-title" className="search-btn" href="javascript:void(0);">
-                    <img
-                      src={SearchIcon}
-                      alt="Search"
-                      data-bs-toggle="tooltip"
-                      aria-label="Search"
-                      data-bs-original-title="Search"
-                    />
-                  </a>
-                </div>
+                </a>
               </div>
-            </TableCell>
-            <TableCell className="thOuter col-sm-2">
-              <div className="igph_title position-relative">Nature of Initiative</div>
-            </TableCell>
-            <TableCell className="thOuter col-sm-5">
-              <div className="igph_title position-relative text-center pb-1">Stages</div>
-              <div className="stagesLegendContainer">{stagesLegend}</div>
-            </TableCell>
-            <TableCell className="thOuter col-sm-1">
-              <div className="igph_title text-center position-relative">Action</div>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <tbody>
-          {initiativesToShow.map((initiative) => (
-            <InitiativeItem
-              key={initiative.id}
-              initiative={initiative}
-              stagesLegend={stagesLegend}
-              setIsEditing={setIsEditing}
-              isEditing={isEditing}
-              startEditing={startEditing}
-              stopEditing={stopEditing}
-            />
-          ))}
-        </tbody>
-      </Table>
+              <div className="d-flex align-items-center">
+                <Button
+                  aria-controls="sort-menu"
+                  aria-haspopup="true"
+                  onClick={handleSortOpen}
+                  variant="outlined"
+                  className="me-3"
+                >
+                  Sort
+                </Button>
+                <Menu
+                  id="sort-menu"
+                  anchorEl={sortAnchorEl}
+                  keepMounted
+                  open={Boolean(sortAnchorEl)}
+                  onClose={handleSortClose}
+                >
+                  <MenuItem onClick={() => handleSortSelect("A to Z")}>
+                    <SortByAlpha /> A to Z (Initiative Name)
+                  </MenuItem>
+                  {/* <MenuItem onClick={() => handleSortSelect("Z to A")}>
+              <SortByAlphaReverse /> Z to A (Initiative Name)
+            </MenuItem> */}
+                  <MenuItem onClick={() => handleSortSelect("% Complete (ASC)")}>
+                    <TrendingUp /> % Complete (ASC)
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortSelect("Stages Completed")}>
+                    Stages Completed
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortSelect("Initiation Date (DSC)")}>
+                    <CalendarToday /> Initiation Date (DSC)
+                  </MenuItem>
+                </Menu>
+              </div>
+            </div>
+            <div className="card-container">
+              {initiativesToShow.map((initiative) => (
+                <InitiativeCard
+                  key={initiative.id}
+                  initiative={initiative}
+                  setIsEditing={setIsEditing}
+                  isEditing={isEditing}
+                  startEditing={startEditing}
+                  stopEditing={stopEditing}
+                />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Pagination */}
+      {filteredInitiatives.length > ITEMS_PER_PAGE && (
+        <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            variant="outlined"
+            shape="rounded"
+          />
+        </Box>
+      )}
     </Box>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
-import { Drawer, IconButton, Tooltip } from "@fluentui/react/lib/Button";
+import { IconButton } from "@fluentui/react/lib/Button";
+import { Drawer, Tooltip } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const InitiativeHistoryDrawer = ({ isOpen, onClose }) => {
