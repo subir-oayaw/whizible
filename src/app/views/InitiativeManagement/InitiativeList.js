@@ -27,6 +27,7 @@ const InitiativeList = ({
   setIsEditing,
   isEditing,
   startEditing,
+  SetinitiativesID,
   stopEditing,
   isListView // Prop to determine if it's list view or card view
 }) => {
@@ -181,6 +182,7 @@ const InitiativeList = ({
                   initiative={initiative}
                   stagesLegend={stagesLegend}
                   setIsEditing={setIsEditing}
+                  SetinitiativesID={SetinitiativesID}
                   isEditing={isEditing}
                   startEditing={startEditing}
                   stopEditing={stopEditing}

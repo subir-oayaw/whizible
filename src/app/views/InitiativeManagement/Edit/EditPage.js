@@ -16,7 +16,8 @@ import StageComponent from "./StageComponent";
 import TimelinesComponent from "./TimelinesComponent";
 import DocumentsComponent from "./DocumentsComponent";
 import WorkflowTabs from "./WorkFlow";
-const EditPage = () => {
+import Discussion from "./Discussion";
+const EditPage = ({ initiativesID }) => {
   const [activeTab, setActiveTab] = useState(tabData[0]?.id); // State to track active tab
 
   const handleGoBack = () => {
@@ -59,7 +60,7 @@ const EditPage = () => {
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
-
+  console.log("initiativeId", initiativesID);
   // Handler for changing active tab
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
@@ -170,6 +171,13 @@ const EditPage = () => {
       return (
         <div className="container-fluid mt-3">
           <WorkflowTabs />
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "discussion-thread") {
+      return (
+        <div className="container-fluid mt-3">
+          <Discussion initiativeId={initiativesID} />
           <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
         </div>
       );

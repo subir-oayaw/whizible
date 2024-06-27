@@ -28,7 +28,8 @@ const CommentsSection = ({ initiativeId, commentDrawerOpen, setCommentDrawerOpen
   const fetchComments = async () => {
     try {
       const response = await fetch(
-        `http://122.166.47.37:1001/api/Discussion?InitiativeId=${initiativeId}`
+        process.env.REACT_APP_BASEURL_ACCESS_CONTROL +
+          `/api/Discussion?InitiativeId=${initiativeId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch comments");
