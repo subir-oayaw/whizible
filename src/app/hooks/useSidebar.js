@@ -10,12 +10,15 @@ const useSidebar = () => {
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
-        const response = await axios.get("https://122.166.47.37:1003/api/Navigation", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
+        const response = await axios.get(
+          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + "/api/Navigation",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+            // Optionally, if you need to ignore SSL certificate errors (not recommended in production):
           }
-          // Optionally, if you need to ignore SSL certificate errors (not recommended in production):
-        });
+        );
 
         if (response.status !== 200) {
           throw new Error("Failed to fetch dashboard data");

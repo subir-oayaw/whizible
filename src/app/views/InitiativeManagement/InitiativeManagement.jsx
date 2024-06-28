@@ -17,8 +17,9 @@ const InitiativeManagement = () => {
   const [currentFilter, setCurrentFilter] = useState("All");
   const [showForm, setShowForm] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [initiativesID, SetinitiativesID] = useState(false);
   const [isListView, setIsListView] = useState(true); // State for list and card view toggle
-
+  console.log("initiativeId", initiativesID);
   const startEditing = () => {
     setIsEditing(true);
   };
@@ -129,7 +130,7 @@ const InitiativeManagement = () => {
 
       {isEditing ? (
         <>
-          <EditPage />
+          <EditPage initiativesID={initiativesID} />
         </>
       ) : (
         <>
@@ -225,6 +226,7 @@ const InitiativeManagement = () => {
             page={currentPage}
             setIsEditing={setIsEditing}
             isEditing={isEditing}
+            SetinitiativesID={SetinitiativesID}
             startEditing={startEditing}
             stopEditing={stopEditing}
             isListView={isListView} // Pass the state to determine view mode

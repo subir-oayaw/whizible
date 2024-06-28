@@ -18,6 +18,7 @@ const InitiativeItem = ({
   stagesLegend,
   setIsEditing,
   isEditing,
+  SetinitiativesID,
   startEditing,
   stopEditing
 }) => {
@@ -168,7 +169,12 @@ const InitiativeItem = ({
                 {/* Edit Icon */}
                 <div className="icon-button-container">
                   <Tooltip title="Edit">
-                    <IconButton onClick={startEditing}>
+                    <IconButton
+                      onClick={() => {
+                        startEditing();
+                        SetinitiativesID(instanceId);
+                      }}
+                    >
                       <EditIcon />
                     </IconButton>
                   </Tooltip>

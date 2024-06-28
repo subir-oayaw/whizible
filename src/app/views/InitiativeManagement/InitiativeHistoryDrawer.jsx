@@ -1,34 +1,31 @@
-import React from "react";
-import { IconButton } from "@fluentui/react/lib/Button";
-import { Drawer, Tooltip } from "@mui/material";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+// // InitiativeHistoryDrawer.jsx
+// import React, { useState, useEffect, useRef } from "react";
+// import {
+//   Box,
+//   Typography,
+//   Drawer,
+//   Divider,
+//   Button,
+//   IconButton,
+//   Tooltip,
+//   Avatar
+// } from "@mui/material";
+// import CommentIcon from "@mui/icons-material/Comment";
 
-const InitiativeHistoryDrawer = ({ isOpen, onClose }) => {
-  return (
-    <Drawer anchor="right" open={isOpen} onClose={onClose}>
-      <div className="offcanvas offcanvas-end inithistoryOffcanvas offcanvas-70" tabIndex="-1">
-        <div className="offcanvas-body">
-          <div id="inithist_Sec" className="inithistDetails">
-            <div className="graybg container-fluid py-2 mb-2">
-              <div className="row">
-                <div className="col-sm-10">
-                  <h5 className="offcanvasTitle">Initiative History</h5>
-                </div>
-                <div className="col-sm-2 text-end">
-                  <Tooltip title="Close">
-                    <IconButton onClick={onClose} className="close offClose">
-                      <i className="fa-solid fa-xmark"></i>
-                    </IconButton>
-                  </Tooltip>
-                </div>
-              </div>
-            </div>
-            {/* Rest of your HTML content */}
-          </div>
-        </div>
-      </div>
-    </Drawer>
-  );
-};
+// import "./InitiativeItem.css";
+// const InitiativeHistoryDrawer = ({ isOpen, onClose }) => {
+//   return (
+//     <div>
+//       {/* Drawer for Comments */}
+//       <Drawer anchor="right" open={isOpen} onClose={onClose}>
+//         <Box sx={{ width: 600, padding: 2 }}>
+//           <Typography variant="h6" gutterBottom style={{ background: "#E7EDF0", width: "100%" }}>
+//             Initiative History
+//           </Typography>
+//         </Box>
+//       </Drawer>
+//     </div>
+//   );
+// };
 
-export default InitiativeHistoryDrawer;
+// export default InitiativeHistoryDrawer;

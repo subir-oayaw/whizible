@@ -17,6 +17,7 @@ import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import useAuth from "app/hooks/useAuth";
 import microsoftLogo from "../../../assets/img/microsoft-logo.svg";
+import settings from "../../../settings";
 
 function LoginPage() {
   const [loginAttempts, setLoginAttempts] = useState(0);
@@ -390,49 +391,54 @@ function LoginPage() {
               ) : (
                 <>
                   <Form onSubmit={handleLogin}>
-                    <Form.Group controlId="formBasicEmail" className="mb-2">
-                      <Form.Label>User Name</Form.Label>
-                      <Input
-                        placeholder={t("enter_username_placeholder")}
-                        className="w-100 custom-grey-input"
-                        style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
-                      />
-                    </Form.Group>
-                    <Form.Group controlId="formBasicPassword" className="mb-2">
-                      <Form.Label>Password</Form.Label>
-                      <Input
-                        type="password"
-                        placeholder={t("password_placeholder")}
-                        className="w-100 custom-grey-input"
-                        style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
-                      />
-                    </Form.Group>
-                    {loginAttempts > 0 && (
-                      <Form.Group controlId="formBasicCaptcha" className="mb-2">
-                        <ReCAPTCHA
-                          sitekey="your-recaptcha-site-key" // Replace with your actual site key
-                          // onChange={onCaptchaChange}
+                    {settings.showProviderLogin ? (
+                      <div className="d-flex justify-content-center ">
+                        <img
+                          src={microsoftLogo}
+                          alt="Microsoft Logo"
+                          className="ms-2 "
+                          style={{ height: "120px", weidth: "120px", cursor: "pointer" }}
+                          onClick={handleMicrosoftSignIn}
                         />
-                      </Form.Group>
+                      </div>
+                    ) : (
+                      <>
+                        <Form.Group controlId="formBasicEmail" className="mb-2">
+                          <Form.Label>User Name</Form.Label>
+                          <Input
+                            placeholder={t("enter_username_placeholder")}
+                            className="w-100 custom-grey-input"
+                            style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="formBasicPassword" className="mb-2">
+                          <Form.Label>Password</Form.Label>
+                          <Input
+                            type="password"
+                            placeholder={t("password_placeholder")}
+                            className="w-100 custom-grey-input"
+                            style={{ border: "1px solid #ced4da", borderRadius: "4px" }}
+                          />
+                        </Form.Group>
+                        {loginAttempts > 0 && (
+                          <Form.Group controlId="formBasicCaptcha" className="mb-2">
+                            <ReCAPTCHA
+                              sitekey="your-recaptcha-site-key" // Replace with your actual site key
+                              // onChange={onCaptchaChange}
+                            />
+                          </Form.Group>
+                        )}
+                        <div className="d-flex justify-content-between mb-2">
+                          <Link onClick={() => setChangePassword(true)}>Change Password</Link>
+                          <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                          <FluentButton className="custom-signin-button" size="large" type="submit">
+                            <span class="text-white">Sign In</span>
+                          </FluentButton>
+                        </div>
+                      </>
                     )}
-                    <div className="d-flex justify-content-between mb-2">
-                      <Link onClick={() => setChangePassword(true)}>Change Password</Link>
-                      <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                      <FluentButton className="custom-signin-button" size="large" type="submit">
-                        <span class="text-white">Sign In</span>
-                      </FluentButton>
-                    </div>
-                    <div className="d-flex justify-content-center ">
-                      <img
-                        src={microsoftLogo}
-                        alt="Microsoft Logo"
-                        className="ms-2 "
-                        style={{ height: "90px", weidth: "90px", cursor: "pointer" }}
-                        onClick={handleMicrosoftSignIn}
-                      />
-                    </div>
                   </Form>
 
                   {/* <div className="d-flex justify-content-between mt-3">
