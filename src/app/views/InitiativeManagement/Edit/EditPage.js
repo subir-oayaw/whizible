@@ -17,6 +17,8 @@ import TimelinesComponent from "./TimelinesComponent";
 import DocumentsComponent from "./DocumentsComponent";
 import WorkflowTabs from "./WorkFlow";
 import Discussion from "./Discussion";
+import InitiativeHistoryTab from "./InitiativeHistoryTab";
+import MoreActions from "./MoreActions";
 const EditPage = ({ initiativesID }) => {
   const [activeTab, setActiveTab] = useState(tabData[0]?.id); // State to track active tab
 
@@ -178,6 +180,20 @@ const EditPage = ({ initiativesID }) => {
       return (
         <div className="container-fluid mt-3">
           <Discussion initiativeId={initiativesID} />
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "initiative-history") {
+      return (
+        <div className="container-fluid mt-3">
+          <InitiativeHistoryTab initiativeId={initiativesID} />
+          <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+        </div>
+      );
+    } else if (activeTab === "more-actions") {
+      return (
+        <div className="container-fluid mt-3">
+          <MoreActions initiativeId={initiativesID} />
           <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
         </div>
       );
