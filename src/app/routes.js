@@ -17,6 +17,7 @@ const JwtRegister = Loadable(lazy(() => import("app/views/sessions/JwtRegister")
 // E-CHART PAGE
 const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart")));
 const ActionItems = Loadable(lazy(() => import("app/views/Action/ActionItems")));
+const CompletedInitiativesList = Loadable(lazy(() => import("app/views/CompletedInitiativesList")));
 // DASHBOARD PAGE
 const Analytics = Loadable(lazy(() => import("app/utils/Analytics")));
 const InitiativeManagement = Loadable(
@@ -44,7 +45,8 @@ const routes = [
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
-
+  { path: "/actions", element: <ActionItems /> },
+  { path: "/CompletedInitiativesList", element: <CompletedInitiativesList /> },
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
 ];
