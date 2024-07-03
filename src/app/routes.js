@@ -16,6 +16,15 @@ const JwtRegister = Loadable(lazy(() => import("app/views/sessions/JwtRegister")
 
 // E-CHART PAGE
 const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart")));
+const ActionItems = Loadable(lazy(() => import("app/views/Action/ActionItems")));
+const CompletedInitiativesList = Loadable(lazy(() => import("app/views/CompletedInitiativesList")));
+const WithdrawnInitiatives = Loadable(
+  lazy(() => import("app/views/WithdrawnInitiatives/WithdrawnInitiatives"))
+);
+const ConvertedInitiatives = Loadable(
+  lazy(() => import("app/views/ConvertedInitiatives/ConvertedInitiatives"))
+);
+const Warehouse = Loadable(lazy(() => import("app/views/Warehouse/Warehouse")));
 // DASHBOARD PAGE
 const Analytics = Loadable(lazy(() => import("app/utils/Analytics")));
 const InitiativeManagement = Loadable(
@@ -43,7 +52,11 @@ const routes = [
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
-
+  { path: "/actions", element: <ActionItems /> },
+  { path: "/CompletedInitiativesList", element: <CompletedInitiativesList /> },
+  { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
+  { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
+  { path: "/Warehouse", element: <Warehouse /> },
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
 ];
