@@ -21,10 +21,12 @@ const CompletedInitiativesList = Loadable(lazy(() => import("app/views/Completed
 const WithdrawnInitiatives = Loadable(
   lazy(() => import("app/views/WithdrawnInitiatives/WithdrawnInitiatives"))
 );
+const EditPage = Loadable(lazy(() => import("app/views/InitiativeManagement/Edit/EditPage")));
 const ConvertedInitiatives = Loadable(
   lazy(() => import("app/views/ConvertedInitiatives/ConvertedInitiatives"))
 );
 const Warehouse = Loadable(lazy(() => import("app/views/Warehouse/Warehouse")));
+const Reallocation = Loadable(lazy(() => import("app/views/Reallocation")));
 // DASHBOARD PAGE
 const Analytics = Loadable(lazy(() => import("app/utils/Analytics")));
 const InitiativeManagement = Loadable(
@@ -57,6 +59,9 @@ const routes = [
   { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
   { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
   { path: "/Warehouse", element: <Warehouse /> },
+  { path: "/Reallocation", element: <Reallocation /> },
+  { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
+
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
 ];

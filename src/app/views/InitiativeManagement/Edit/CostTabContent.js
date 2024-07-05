@@ -3,11 +3,14 @@ import { DefaultButton } from "@fluentui/react/lib/Button";
 import { Checkbox } from "@fluentui/react/lib/Checkbox";
 import { Label } from "@fluentui/react/lib/Label";
 import { TooltipHost } from "@fluentui/react/lib/Tooltip";
-import { TextField, Radio, RadioGroup, FormControlLabel } from "@mui/material";
+import { TextField } from "@fluentui/react/lib/TextField";
+import { Dropdown } from "@fluentui/react/lib/Dropdown";
+import { DatePicker } from "@fluentui/react/lib/DatePicker";
+import { Stack } from "react-bootstrap";
 import Drawer from "@mui/material/Drawer";
-import { LocalizationProvider, DatePicker } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns"; // Correct import for date-fns adapter
-import { Table, Nav, Stack } from "react-bootstrap";
+import { Table } from "react-bootstrap";
+import "@fluentui/react/dist/css/fabric.css";
+
 const CostTabContent = ({ costData }) => {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [individualChecks, setIndividualChecks] = useState(costData.map(() => false));
@@ -18,11 +21,10 @@ const CostTabContent = ({ costData }) => {
     costType: "",
     fromDate: null,
     toDate: null,
-    description: "",
-    monthlyDistribution: Array(12).fill("")
+    description: ""
   });
 
-  const handleSelectAllChange = (checked) => {
+  const handleSelectAllChange = (e, checked) => {
     setSelectAllChecked(checked);
     setIndividualChecks(individualChecks.map(() => checked));
   };
@@ -49,6 +51,17 @@ const CostTabContent = ({ costData }) => {
     }));
   };
 
+  const costCategoryOptions = [
+    { key: "", text: "" },
+    { key: "Alpha", text: "Alpha" },
+    { key: "Petrol", text: "Petrol" }
+  ];
+
+  const costTypeOptions = [
+    { key: "Running", text: "Running" },
+    { key: "Fixed", text: "Fixed" }
+  ];
+
   const DrawerContent = () => (
     <div style={{ width: 300, padding: 20 }}>
       <div className="offcanvas-body">
@@ -71,46 +84,38 @@ const CostTabContent = ({ costData }) => {
         </div>
         <div className="mt-3">
           <Stack tokens={{ childrenGap: 15 }}>
-            <TextField
+            <Dropdown
               label="Cost Category"
-              select
-              SelectProps={{
-                native: true
-              }}
-              value={formState.costCategory}
-              onChange={(e) => handleFormChange("costCategory", e.target.value)}
-            >
-              <option value="" />
-              <option value="Alpha">Alpha</option>
-              <option value="Petrol">Petrol</option>
-            </TextField>
+              options={costCategoryOptions}
+              selectedKey={formState.costCategory}
+              onChange={(e, option) => handleFormChange("costCategory", option.key)}
+            />
             <TextField
               label="Amount"
               type="number"
               value={formState.amount}
               onChange={(e) => handleFormChange("amount", e.target.value)}
             />
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="From Date"
-                value={formState.fromDate}
-                onChange={(newValue) => handleFormChange("fromDate", newValue)}
-                renderInput={(params) => <TextField {...params} />}
-              />
-              <DatePicker
-                label="To Date"
-                value={formState.toDate}
-                onChange={(newValue) => handleFormChange("toDate", newValue)}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-            <RadioGroup
-              value={formState.costType}
-              onChange={(e) => handleFormChange("costType", e.target.value)}
-            >
-              <FormControlLabel value="Running" control={<Radio />} label="Running" />
-              <FormControlLabel value="Fixed" control={<Radio />} label="Fixed" />
-            </RadioGroup>
+            <DatePicker
+              label="From Date"
+              placeholder="Select a date..."
+              ariaLabel="Select a date"
+              value={formState.fromDate}
+              onSelectDate={(date) => handleFormChange("fromDate", date)}
+            />
+            <DatePicker
+              label="To Date"
+              placeholder="Select a date..."
+              ariaLabel="Select a date"
+              value={formState.toDate}
+              onSelectDate={(date) => handleFormChange("toDate", date)}
+            />
+            <Dropdown
+              label="Cost Type"
+              options={costTypeOptions}
+              selectedKey={formState.costType}
+              onChange={(e, option) => handleFormChange("costType", option.key)}
+            />
             <TextField
               label="Description"
               multiline
@@ -128,9 +133,6 @@ const CostTabContent = ({ costData }) => {
     <div className="tab-pane" id="Ini_Cost">
       <div className="container-fluid">
         <div className="row align-items-center">
-          <div className="col-12 col-sm-6 text-start">
-            <Label className="textstrong ps-2">Cost</Label>
-          </div>
           <div className="col-12 col-sm-6">
             <Stack
               horizontal
@@ -171,7 +173,7 @@ const CostTabContent = ({ costData }) => {
                       id="dltAllcost"
                       className="chckHead"
                       checked={selectAllChecked}
-                      onChange={(e, checked) => handleSelectAllChange(checked)}
+                      onChange={(e, checked) => handleSelectAllChange(e, checked)}
                     />
                   </div>
                 </th>
