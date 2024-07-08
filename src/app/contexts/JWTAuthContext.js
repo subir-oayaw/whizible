@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }) => {
 
             // Fetch user profile
             const userProfileResponse = await axios.get(
-              "https://122.166.47.37:1003/api/UserProfile",
+              process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + "/api/UserProfile",
               {
                 headers: {
                   Authorization: `Bearer ${accessToken}`

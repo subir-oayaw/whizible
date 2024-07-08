@@ -11,7 +11,7 @@ const useInitiative = () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
         const response = await axios.get(
-          "https://122.166.47.37:1003/api/Dashboard?LastActionName=Approved",
+          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + "api/Dashboard?LastActionName=Approved",
           {
             headers: {
               Authorization: `Bearer ${accessToken}`

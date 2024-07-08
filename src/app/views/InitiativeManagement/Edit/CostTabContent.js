@@ -8,6 +8,8 @@ import "@fluentui/react/dist/css/fabric.css";
 import { DatePicker } from "@mui/lab";
 import TextField from "@mui/material/TextField";
 
+import { mergeStyles } from "@fluentui/react/lib/Styling";
+
 const CostTabContent = ({ costData }) => {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [individualChecks, setIndividualChecks] = useState(costData.map(() => false));
@@ -174,25 +176,24 @@ const CostTabContent = ({ costData }) => {
                 </div>
               </div>
 
-              <div className="form-group row pt-1 mb-3">
+              <div className="row mt-3">
                 <div className="col-sm-3 form-group required">
                   <label className="form-label IM_label text-end">From Date</label>
                   <DatePicker
                     value={formState.fromDate}
-                    onChange={(newValue) => handleFormChange("fromDate", newValue)}
-                    renderInput={(params) => <TextField {...params} />}
+                    onSelectDate={(date) => handleFormChange("fromDate", date)}
+                    placeholder="Select date"
                   />
                 </div>
-                <div className="col-sm-1">&nbsp;</div>
                 <div className="col-sm-3 form-group required">
                   <label className="form-label IM_label text-end">To Date</label>
                   <DatePicker
                     value={formState.toDate}
-                    onChange={(newValue) => handleFormChange("toDate", newValue)}
-                    renderInput={(params) => <TextField {...params} />}
+                    onSelectDate={(date) => handleFormChange("toDate", date)}
+                    placeholder="Select date"
                   />
                 </div>
-                <div className="col-sm-4 form-group">&nbsp;</div>
+                <div className="col-sm-6 form-group">&nbsp;</div>
               </div>
               <div className="form-group row pt-1 mb-3">
                 <div className="col-sm-12 form-group required">
@@ -390,7 +391,20 @@ const CostTabContent = ({ costData }) => {
       </div>
     </div>
   );
-
+  const checkboxStyles = {
+    checkbox: mergeStyles({
+      selectors: {
+        "::after": {
+          content: '"✓"',
+          fontSize: "16px",
+          color: "white"
+        }
+      }
+    }),
+    checkmark: {
+      visibility: "hidden"
+    }
+  };
   return (
     <div className="tab-pane" id="Ini_Cost">
       <div className="container-fluid">
@@ -424,6 +438,7 @@ const CostTabContent = ({ costData }) => {
                 <th>
                   <div className="igph_title position-relative">
                     <Checkbox
+                      styles={checkboxStyles}
                       id="dltAllcost"
                       className="chckHead"
                       checked={selectAllChecked}
@@ -442,6 +457,7 @@ const CostTabContent = ({ costData }) => {
                 <tr key={index}>
                   <td>
                     <Checkbox
+                      styles={checkboxStyles}
                       id={`chkRow${index + 1}`}
                       className="dltSingleCost"
                       checked={individualChecks[index]}
