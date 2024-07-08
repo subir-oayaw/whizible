@@ -93,11 +93,11 @@ const Layout1Topbar = () => {
   const { settings, updateSettings } = useSettings();
   const { logout, user } = useAuth();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  const userdata = JSON.parse(sessionStorage.getItem("user"));
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
-
+  console.log("roleName", userdata);
   const handleSidebarToggle = () => {
     let { layout1Settings } = settings;
     let mode;
@@ -147,12 +147,12 @@ const Layout1Topbar = () => {
                 <Hidden xsDown>
                   <Span>
                     {/* Hi <strong>{user.name}</strong> */}
-                    Hi <strong>Saji</strong>
+                    Hi <strong>{userdata.employeeName}</strong>
                   </Span>
                 </Hidden>
                 <Box display="flex" flexDirection="column" alignItems="center">
                   <Avatar src={user?.avatar} sx={{ cursor: "pointer" }} />
-                  <Span sx={{ fontSize: 12, color: "grey" }}>Role</Span>
+                  <Span sx={{ fontSize: 12, color: "grey" }}>{userdata.roleName}</Span>
                 </Box>
               </UserMenu>
             }

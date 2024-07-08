@@ -1,0 +1,58 @@
+/* Custom styling for form elements */
+.form-control-custom {
+  margin-bottom: 1rem;
+}
+
+.input-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.input-box {
+  height: 40px;
+  padding: 10px;
+}
+
+.select-box {
+  height: 40px;
+  padding: 10px;
+}
+
+.select-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.button-custom {
+  height: 40px;
+  padding: 0 20px;
+}
+
+/* Custom styling for stage boxes */
+.StageboxDiv {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border-radius: 3px;
+}
+
+.pendingStage {
+  background-color: #f0ad4e;
+}
+
+.currStage {
+  background-color: #d9534f;
+}
+
+.clearedStage {
+  background-color: #5cb85c;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .form-control-custom {
+    margin-bottom: 1.5rem;
+  }
+}

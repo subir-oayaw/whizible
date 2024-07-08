@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { DefaultButton } from "@fluentui/react/lib/Button";
 import { Checkbox } from "@fluentui/react/lib/Checkbox";
-import { Label } from "@fluentui/react/lib/Label";
-import { TooltipHost } from "@fluentui/react/lib/Tooltip";
-import { TextField, Radio, RadioGroup, FormControlLabel } from "@mui/material";
+import { Stack } from "@fluentui/react/lib/Stack";
 import Drawer from "@mui/material/Drawer";
-import { LocalizationProvider, DatePicker } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns"; // Correct import for date-fns adapter
-import { Table, Nav, Stack } from "react-bootstrap";
+import { Table } from "react-bootstrap";
+import "@fluentui/react/dist/css/fabric.css";
+import { DatePicker } from "@mui/lab";
+import TextField from "@mui/material/TextField";
+
 const CostTabContent = ({ costData }) => {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [individualChecks, setIndividualChecks] = useState(costData.map(() => false));
@@ -18,11 +18,12 @@ const CostTabContent = ({ costData }) => {
     costType: "",
     fromDate: null,
     toDate: null,
-    description: "",
-    monthlyDistribution: Array(12).fill("")
+    description: ""
   });
+  const [showDetailTab, setShowDetailTab] = useState(false);
+  const [showMonthlyDistribution, setShowMonthlyDistribution] = useState(false);
 
-  const handleSelectAllChange = (checked) => {
+  const handleSelectAllChange = (e, checked) => {
     setSelectAllChecked(checked);
     setIndividualChecks(individualChecks.map(() => checked));
   };
@@ -36,10 +37,12 @@ const CostTabContent = ({ costData }) => {
 
   const openDrawer = () => {
     setShowDrawer(true);
+    setShowDetailTab(true); // Show detail tab when drawer opens
   };
 
   const closeDrawer = () => {
     setShowDrawer(false);
+    setShowDetailTab(false); // Hide detail tab when drawer closes
   };
 
   const handleFormChange = (field, value) => {
@@ -49,9 +52,13 @@ const CostTabContent = ({ costData }) => {
     }));
   };
 
+  const toggleMonthlyDistribution = () => {
+    setShowMonthlyDistribution(!showMonthlyDistribution);
+  };
+
   const DrawerContent = () => (
-    <div style={{ width: 300, padding: 20 }}>
-      <div className="offcanvas-body">
+    <div style={{ width: 600, padding: 20 }}>
+      <div id="initcost_Sec" className="inithistDetails">
         <div className="graybg container-fluid py-2 mb-2">
           <div className="row">
             <div className="col-sm-10">
@@ -70,55 +77,315 @@ const CostTabContent = ({ costData }) => {
           </div>
         </div>
         <div className="mt-3">
-          <Stack tokens={{ childrenGap: 15 }}>
-            <TextField
-              label="Cost Category"
-              select
-              SelectProps={{
-                native: true
-              }}
-              value={formState.costCategory}
-              onChange={(e) => handleFormChange("costCategory", e.target.value)}
-            >
-              <option value="" />
-              <option value="Alpha">Alpha</option>
-              <option value="Petrol">Petrol</option>
-            </TextField>
-            <TextField
-              label="Amount"
-              type="number"
-              value={formState.amount}
-              onChange={(e) => handleFormChange("amount", e.target.value)}
-            />
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="From Date"
-                value={formState.fromDate}
-                onChange={(newValue) => handleFormChange("fromDate", newValue)}
-                renderInput={(params) => <TextField {...params} />}
-              />
-              <DatePicker
-                label="To Date"
-                value={formState.toDate}
-                onChange={(newValue) => handleFormChange("toDate", newValue)}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-            <RadioGroup
-              value={formState.costType}
-              onChange={(e) => handleFormChange("costType", e.target.value)}
-            >
-              <FormControlLabel value="Running" control={<Radio />} label="Running" />
-              <FormControlLabel value="Fixed" control={<Radio />} label="Fixed" />
-            </RadioGroup>
-            <TextField
-              label="Description"
-              multiline
-              rows={4}
-              value={formState.description}
-              onChange={(e) => handleFormChange("description", e.target.value)}
-            />
-          </Stack>
+          <ul className="nav nav-tabs detailsubtabs">
+            <li className="nav-item">
+              <a
+                href="#CostDetailsTab1"
+                className={`nav-link ${showDetailTab ? "active" : ""}`}
+                onClick={() => setShowDetailTab(true)}
+              >
+                Details
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                href="#CostMonthlyTab1"
+                className={`nav-link ${showMonthlyDistribution ? "active" : ""}`}
+                onClick={() => {
+                  setShowDetailTab(false);
+                  toggleMonthlyDistribution();
+                }}
+              >
+                Monthly Distribution
+              </a>
+            </li>
+          </ul>
+          <div className="tab-content detailsmenutab">
+            <div id="CostDetailsTab1" className={`tab-pane py-0 ${showDetailTab ? "active" : ""}`}>
+              <div className="detailsubtabsbtn pb-1 text-end">
+                <a
+                  href="javascript:;"
+                  className="btn borderbtnbgblue"
+                  data-bs-toggle="tooltip"
+                  id="sv_costdetails"
+                >
+                  Save
+                </a>
+              </div>
+              <div className="col-sm-12 text-end form-group">
+                <label className="form-label IM_label">
+                  (<font color="red">*</font> Mandatory)
+                </label>
+              </div>
+              <div className="form-group row pt-1 mb-3">
+                <div className="col-sm-4 form-group required">
+                  <label className="form-label IM_label text-end">Cost Category</label>
+                  <select
+                    className="form-control"
+                    id="select_Category"
+                    value={formState.costCategory}
+                    onChange={(e) => handleFormChange("costCategory", e.target.value)}
+                  >
+                    <option></option>
+                    <option>Alpha</option>
+                    <option>Petrol</option>
+                  </select>
+                </div>
+                <div className="col-sm-4 form-group required">
+                  <label className="form-label IM_label text-end">Amount</label>
+                  <input
+                    className="form-control"
+                    type="number"
+                    id="initiativecostamount"
+                    value={formState.amount}
+                    onChange={(e) => handleFormChange("amount", e.target.value)}
+                  />
+                </div>
+                <div className="col-sm-4 form-group required">
+                  <label className="form-label IM_label text-end">Cost Type</label>
+                  <div className="row mt-1">
+                    <div className="col-sm-6 form-group form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="costType"
+                        id="flexRadiocost1"
+                        checked={formState.costType === "Running"}
+                        onChange={() => handleFormChange("costType", "Running")}
+                      />
+                      <label className="form-check-label" htmlFor="flexRadiocost1">
+                        Running
+                      </label>
+                    </div>
+                    <div className="col-sm-6 form-group form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="costType"
+                        id="flexRadiocost2"
+                        checked={formState.costType === "Fixed"}
+                        onChange={() => handleFormChange("costType", "Fixed")}
+                      />
+                      <label className="form-check-label" htmlFor="flexRadiocost2">
+                        Fixed
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-group row pt-1 mb-3">
+                <div className="col-sm-3 form-group required">
+                  <label className="form-label IM_label text-end">From Date</label>
+                  <DatePicker
+                    value={formState.fromDate}
+                    onChange={(newValue) => handleFormChange("fromDate", newValue)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </div>
+                <div className="col-sm-1">&nbsp;</div>
+                <div className="col-sm-3 form-group required">
+                  <label className="form-label IM_label text-end">To Date</label>
+                  <DatePicker
+                    value={formState.toDate}
+                    onChange={(newValue) => handleFormChange("toDate", newValue)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </div>
+                <div className="col-sm-4 form-group">&nbsp;</div>
+              </div>
+              <div className="form-group row pt-1 mb-3">
+                <div className="col-sm-12 form-group required">
+                  <label className="form-label IM_label text-end">Description</label>
+                  <textarea
+                    className="form-control"
+                    placeholder="Small Metro"
+                    value={formState.description}
+                    onChange={(e) => handleFormChange("description", e.target.value)}
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            {showMonthlyDistribution && (
+              <div id="CostMonthlyTab1" className="tab-pane py-0">
+                <div className="detailsubtabsbtn mt-1 text-end">
+                  <a
+                    href="javascript:;"
+                    className="btn borderbtnbgblue"
+                    data-bs-toggle="tooltip"
+                    id="sv_cost_monthlyBtn"
+                  >
+                    Save
+                  </a>
+                </div>
+                <div className="col-sm-12 text-end form-group">
+                  <label className="form-label IM_label"></label>
+                </div>
+                <div className="table-responsive offTable_wrapper">
+                  <table className="table table-striped table-hover mb-0">
+                    <thead>
+                      <tr>
+                        <th>Year</th>
+                        <th>Jan</th>
+                        <th>Feb</th>
+                        <th>Mar</th>
+                        <th>April</th>
+                        <th>May</th>
+                        <th>June</th>
+                        <th>July</th>
+                        <th>Aug</th>
+                        <th>Sep</th>
+                        <th>Oct</th>
+                        <th>Nov</th>
+                        <th>Dec</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>2023</td>
+                        <td>
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth1"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth2"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth3"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth4"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth5"
+                          />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+            {!showMonthlyDistribution && (
+              <div id="CostMonthlyTab1" className="tab-pane py-0">
+                {" "}
+                <div className="detailsubtabsbtn mt-1 text-end">
+                  {" "}
+                  <a
+                    href="javascript:;"
+                    className="btn borderbtnbgblue"
+                    data-bs-toggle="tooltip"
+                    id="sv_cost_monthlyBtn"
+                  >
+                    {" "}
+                    Save{" "}
+                  </a>{" "}
+                </div>{" "}
+                <div className="col-sm-12 text-end form-group">
+                  {" "}
+                  <label className="form-label IM_label"></label>{" "}
+                </div>{" "}
+                <div className="table-responsive offTable_wrapper">
+                  {" "}
+                  <table className="table table-striped table-hover mb-0">
+                    {" "}
+                    <thead>
+                      {" "}
+                      <tr>
+                        {" "}
+                        <th>Year</th> <th>Jan</th> <th>Feb</th> <th>Mar</th> <th>April</th>{" "}
+                        <th>May</th> <th>June</th> <th>July</th> <th>Aug</th> <th>Sep</th>{" "}
+                        <th>Oct</th> <th>Nov</th> <th>Dec</th>{" "}
+                      </tr>{" "}
+                    </thead>{" "}
+                    <tbody>
+                      {" "}
+                      <tr>
+                        {" "}
+                        <td>2023</td>{" "}
+                        <td>
+                          {" "}
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth1"
+                          />{" "}
+                        </td>{" "}
+                        <td>
+                          {" "}
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth2"
+                          />{" "}
+                        </td>{" "}
+                        <td>
+                          {" "}
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth3"
+                          />{" "}
+                        </td>{" "}
+                        <td>
+                          {" "}
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth4"
+                          />{" "}
+                        </td>{" "}
+                        <td>
+                          {" "}
+                          <input
+                            className="form-control"
+                            placeholder="40.0"
+                            type="text"
+                            id="txtmonth5"
+                          />{" "}
+                        </td>{" "}
+                        <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>{" "}
+                      </tr>{" "}
+                    </tbody>{" "}
+                  </table>{" "}
+                </div>{" "}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -128,33 +395,22 @@ const CostTabContent = ({ costData }) => {
     <div className="tab-pane" id="Ini_Cost">
       <div className="container-fluid">
         <div className="row align-items-center">
-          <div className="col-12 col-sm-6 text-start">
-            <Label className="textstrong ps-2">Cost</Label>
-          </div>
-          <div className="col-12 col-sm-6">
-            <Stack
-              horizontal
-              horizontalAlign="end"
-              tokens={{ childrenGap: 10 }}
-              className="toprightactionsCol text-end pe-2"
-            >
-              <TooltipHost content="Add">
-                <DefaultButton
-                  className="btn closelink add-new1"
-                  onClick={openDrawer}
-                  iconProps={{ iconName: "Add" }}
-                >
-                  Add
-                </DefaultButton>
-              </TooltipHost>
-              <a
-                id="deleteBtn_cost"
+          <div className="col-12">
+            <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="end">
+              <DefaultButton
                 className="btn closelink add-new1"
-                data-bs-toggle="tooltip"
-                data-bs-original-title="Delete"
+                onClick={openDrawer}
+                iconProps={{ iconName: "Add" }}
+              >
+                Add
+              </DefaultButton>
+              <DefaultButton
+                className="btn closelink add-new1"
+                id="deleteBtn_cost"
+                iconProps={{ iconName: "Delete" }}
               >
                 Delete
-              </a>
+              </DefaultButton>
             </Stack>
           </div>
         </div>
@@ -171,7 +427,7 @@ const CostTabContent = ({ costData }) => {
                       id="dltAllcost"
                       className="chckHead"
                       checked={selectAllChecked}
-                      onChange={(e, checked) => handleSelectAllChange(checked)}
+                      onChange={(e, checked) => handleSelectAllChange(e, checked)}
                     />
                   </div>
                 </th>

@@ -8,7 +8,7 @@ const initialState = {
   isInitialized: false,
   isAuthenticated: false
 };
-console.log("first", process.env.REACT_APP_REDIRECT_URI);
+
 const handleMicrosoftSignIn = () => {
   const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
   const redirectUri = process.env.REACT_APP_REDIRECT_URI;
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
 
         if (code && state) {
           const redirectUri = process.env.REACT_APP_REDIRECT_URI;
-          const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL; // Replace with your actual base URL
+          const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
 
           // Call the API to get the token
           const response = await axios.get(
@@ -112,6 +112,19 @@ export const AuthProvider = ({ children }) => {
           const { accessToken } = response.data;
           if (accessToken) {
             sessionStorage.setItem("access_token", accessToken);
+
+            // Fetch user profile
+            const userProfileResponse = await axios.get(
+              "https://122.166.47.37:1003/api/UserProfile",
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`
+                }
+              }
+            );
+            console.log("user", userProfileResponse.data.data.data);
+            const user = userProfileResponse.data.data.data;
+            sessionStorage.setItem("user", JSON.stringify(user));
             dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user: null } });
           } else {
             dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
@@ -119,6 +132,7 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (err) {
         console.error("Initialization failed", err);
+        dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
       }
     })();
   }, []);
