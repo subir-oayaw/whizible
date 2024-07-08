@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table } from "react-bootstrap";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
 import { Checkbox } from "@fluentui/react/lib/Checkbox";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { mergeStyles } from "@fluentui/react/lib/Styling";
 
 const FundingTab = () => {
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+
   const fundings = [
     { id: 1, category: "Lorem Ipsum", sourceTitle: "Lorem Ipsum", approvedAmount: "6,21,75,831" },
     { id: 2, category: "Lorem Ipsum", sourceTitle: "Lorem Ipsum", approvedAmount: "6,21,75,831" },
@@ -15,6 +19,45 @@ const FundingTab = () => {
     { id: 7, category: "Lorem Ipsum", sourceTitle: "Lorem Ipsum", approvedAmount: "6,21,75,831" },
     { id: 8, category: "Lorem Ipsum", sourceTitle: "Lorem Ipsum", approvedAmount: "6,21,75,831" }
   ];
+
+  const handleCheckboxChange = (id) => {
+    const selectedIndex = selectedItems.indexOf(id);
+    let newSelectedItems = [];
+
+    if (selectedIndex === -1) {
+      newSelectedItems = [...selectedItems, id];
+    } else {
+      newSelectedItems = selectedItems.filter((item) => item !== id);
+    }
+
+    setSelectedItems(newSelectedItems);
+  };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedItems([]);
+    } else {
+      const allIds = fundings.map((funding) => funding.id);
+      setSelectedItems(allIds);
+    }
+    setSelectAll(!selectAll);
+  };
+
+  // Custom styles for the Checkbox to display a check mark
+  const checkboxStyles = {
+    checkbox: mergeStyles({
+      selectors: {
+        "::after": {
+          content: '"✓"',
+          fontSize: "16px",
+          color: "white"
+        }
+      }
+    }),
+    checkmark: {
+      visibility: "hidden"
+    }
+  };
 
   return (
     <div className="container-fluid mt-3">
@@ -45,13 +88,19 @@ const FundingTab = () => {
           <thead>
             <tr>
               <th className="thOuter col-sm-4">
-                <div className="igph_title position-relative">Cost of Category</div>
+                <div className="igph_title position-relative">
+                  <span className="ms-2">Cost of Category</span>
+                </div>
               </th>
               <th className="thOuter col-sm-3">Funding source & title</th>
               <th className="thOuter">Approved amount</th>
               <th className="thOuter col-sm-1 text-center">
                 <div className="custom_chckbox">
-                  <Checkbox />
+                  <Checkbox
+                    styles={checkboxStyles}
+                    checked={selectAll}
+                    onChange={handleSelectAll}
+                  />
                 </div>
               </th>
             </tr>
@@ -78,7 +127,11 @@ const FundingTab = () => {
                 </td>
                 <td className="tdOuter text-center">
                   <div className="custom_chckbox">
-                    <Checkbox />
+                    <Checkbox
+                      styles={checkboxStyles}
+                      checked={selectedItems.includes(funding.id)}
+                      onChange={() => handleCheckboxChange(funding.id)}
+                    />
                   </div>
                 </td>
               </tr>
