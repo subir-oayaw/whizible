@@ -3,8 +3,43 @@ import { PrimaryButton } from "@fluentui/react/lib/Button";
 import { TextField, Dropdown, DatePicker } from "@fluentui/react";
 import { Stack } from "@fluentui/react/lib/Stack";
 import { Modal } from "@fluentui/react/lib/Modal";
+import { getTheme, mergeStyleSets } from "@fluentui/react/lib/Styling";
 import "bootstrap/dist/css/bootstrap.min.css";
 import currentstage from "../../../../assets/img/currentstage.svg";
+
+// Get theme to use its spacing
+const theme = getTheme();
+
+const classNames = mergeStyleSets({
+  modal: {
+    maxWidth: "40vw",
+    width: "40vw",
+    maxHeight: "80vh",
+    padding: theme.spacing.m,
+    selectors: {
+      [".ms-Modal-scrollableContent"]: {
+        overflowY: "auto",
+        padding: theme.spacing.m
+      }
+    }
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: `${theme.spacing.s1} ${theme.spacing.m}`,
+    borderBottom: `1px solid ${theme.palette.neutralLight}`
+  },
+  body: {
+    padding: theme.spacing.m
+  },
+  footer: {
+    padding: `${theme.spacing.s1} ${theme.spacing.m}`,
+    borderTop: `1px solid ${theme.palette.neutralLight}`,
+    display: "flex",
+    justifyContent: "flex-end"
+  }
+});
 
 function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack }) {
   const [formDataState, setFormDataState] = useState({
@@ -147,15 +182,15 @@ function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack
         isOpen={isModalOpen}
         onDismiss={closeModal}
         isBlocking={false}
-        containerClassName="blue-background"
+        containerClassName={classNames.modal} // Apply custom styles here
       >
-        <div className="modal-header">
+        <div className={classNames.header}>
           <h5 className="modal-title">{modalTitle}</h5>
           <button type="button" className="close" aria-label="Close" onClick={closeModal}>
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div className="modal-body">
+        <div className={classNames.body}>
           <TextField
             label="Comments"
             placeholder="Enter comments"
@@ -164,7 +199,7 @@ function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack
             required
           />
         </div>
-        <div className="modal-footer">
+        <div className={classNames.footer}>
           <PrimaryButton onClick={closeModal}>
             <span>Submit</span>
           </PrimaryButton>
