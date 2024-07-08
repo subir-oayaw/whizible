@@ -122,9 +122,9 @@ export const AuthProvider = ({ children }) => {
                 }
               }
             );
-            console.log("user", userProfileResponse.data.data.data);
-            const user = userProfileResponse.data.data.data;
-            sessionStorage.setItem("user", JSON.stringify(user));
+
+            // const user = userProfileResponse.data.data.data;
+            // sessionStorage.setItem("user", JSON.stringify(user));
             dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user: null } });
           } else {
             dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
