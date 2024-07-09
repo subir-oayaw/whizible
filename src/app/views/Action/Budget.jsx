@@ -1,64 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button, Nav } from "react-bootstrap";
-import { TextField } from "@fluentui/react";
-import Pagination from "@mui/material/Pagination";
-import { TableContainer, Table, TableBody, TableRow, TableCell } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import React from "react";
+import { mergeStyles } from "@fluentui/react/lib/Styling";
+import { Stack, Text } from "@fluentui/react";
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-    "& th": {
-      backgroundColor: "#f2f2f2",
-      border: "1px solid #ddd",
-      padding: "8px"
-    },
-    "& td": {
-      border: "1px solid #ddd",
-      padding: "8px"
-    }
-  },
-  selectedRow: {
-    backgroundColor: "#e3f2fd !important" // Example of selected row background color
-  }
+const itemStyles = mergeStyles({
+  padding: 8,
+  borderBottom: "1px solid #ddd",
+  display: "flex",
+  justifyContent: "space-between"
 });
+
 export default function Budget({ slicedActionItems }) {
   console.log("slicedActionItems", slicedActionItems);
-  const classes = useStyles();
+
   return (
     <div className="mt-4">
-      <TableContainer>
-        <Table className={classes.table} striped bordered>
-          <thead>
-            <tr>
-              <th>Action Item</th>
-              <th>Due Date</th>
-              <th>Stage</th>
-              <th>Assigned To</th>
-              <th>Submitted By</th>
-              <th>Status</th>
-              <th>Priority</th>
-              <th>Initiative</th> {/* New column for Initiative */}
-              <th></th>
-            </tr>
-          </thead>
-          <TableBody>
-            {slicedActionItems.map((item, index) => (
-              <TableRow key={index} className={index === 0 ? classes.selectedRow : ""}>
-                <TableCell>{item.actionItem}</TableCell>
-                <TableCell>{item.dueDate}</TableCell>
-                <TableCell>{item.stage}</TableCell>
-                <TableCell>{item.assignedTo}</TableCell>
-                <TableCell>{item.submittedBy}</TableCell>
-                <TableCell>{item.status}</TableCell>
-                <TableCell>{item.priority}</TableCell>
-                <TableCell>{item.initiative}</TableCell>
-                <TableCell>{/* <FluentCheckbox /> */}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Stack>
+        {slicedActionItems.map((item, index) => (
+          <Stack key={index} className={itemStyles}>
+            <Text>{item.actionItem}</Text>
+            <Text>{item.dueDate}</Text>
+            <Text>{item.stage}</Text>
+            <Text>{item.assignedTo}</Text>
+            <Text>{item.submittedBy}</Text>
+            <Text>{item.status}</Text>
+            <Text>{item.priority}</Text>
+            <Text>{item.initiative}</Text>
+            {/* Add Fluent UI components for other columns */}
+          </Stack>
+        ))}
+      </Stack>
     </div>
   );
 }

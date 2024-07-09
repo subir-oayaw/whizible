@@ -39,7 +39,6 @@
     "@mui/icons-material": "^5.15.10",
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.20",
-    "@mui/styles": "^5.16.0",
     "@mui/x-date-pickers": "^7.7.0",
     "@reduxjs/toolkit": "^2.2.1",
     "autosuggest-highlight": "^3.3.4",
