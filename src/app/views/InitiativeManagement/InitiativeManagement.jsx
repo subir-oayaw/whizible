@@ -8,7 +8,9 @@ import useInitiative from "../../hooks/useInitiative";
 import { WhizLoading } from "app/components";
 import EditPage from "./Edit/EditPage";
 import { ViewList, ViewModule } from "@mui/icons-material"; // Import icons for list and card view
-
+import { Button, Menu, MenuItem } from "@mui/material";
+import { SortByAlpha, TrendingUp, CalendarToday } from "@mui/icons-material";
+import SearchIcon1 from "../../../assets/img/search-icn.svg";
 const InitiativeManagement = () => {
   const { dashboardData, loading, error } = useInitiative();
   const [initiatives, setInitiatives] = useState([]);
@@ -17,8 +19,10 @@ const InitiativeManagement = () => {
   const [currentFilter, setCurrentFilter] = useState("All");
   const [showForm, setShowForm] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [initiativesID, SetinitiativesID] = useState(false);
   const [isListView, setIsListView] = useState(true); // State for list and card view toggle
+  const [sortAnchorEl, setSortAnchorEl] = useState(null);
   console.log("initiativeId", initiativesID);
   const startEditing = () => {
     setIsEditing(true);
@@ -28,7 +32,10 @@ const InitiativeManagement = () => {
   const stopEditing = () => {
     setIsEditing(false);
   };
-
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to first page when search term changes
+  };
   useEffect(() => {
     if (dashboardData) {
       setInitiatives(dashboardData);
@@ -39,7 +46,18 @@ const InitiativeManagement = () => {
   const handleShowForm = () => {
     setShowForm(!showForm);
   };
-
+  const handleSortOpen = (event) => {
+    setSortAnchorEl(event.currentTarget);
+  };
+  const handleSortSelect = (option) => {
+    // Implement sorting logic based on selected option
+    console.log("Sorting by:", option);
+    handleSortClose();
+  };
+  // Handle sorting dropdown close
+  const handleSortClose = () => {
+    setSortAnchorEl(null);
+  };
   const handleCloseForm = () => {
     setShowForm(false);
   };
@@ -203,6 +221,25 @@ const InitiativeManagement = () => {
               </div>
               <div className="col-12 col-sm-5 d-flex justify-content-end">
                 <div className="d-flex align-items-center">
+                  <div className="search-box position-relative me-3">
+                    <input
+                      id="InitMangntSrchInput"
+                      className="search-text"
+                      type="text"
+                      placeholder="Search"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                    />
+                    <a id="initgrid-srch-title" className="search-btn" href="javascript:void(0);">
+                      <img
+                        src={SearchIcon1}
+                        alt="Search"
+                        data-bs-toggle="tooltip"
+                        aria-label="Search"
+                        data-bs-original-title="Search"
+                      />
+                    </a>
+                  </div>
                   <div className="me-3" onClick={handleShowForm}>
                     <img
                       src={SearchIcon}
@@ -216,6 +253,38 @@ const InitiativeManagement = () => {
                   <IconButton onClick={toggleView}>
                     {isListView ? <ViewModule /> : <ViewList />}
                   </IconButton>
+
+                  <div className="d-flex align-items-center">
+                    <Button
+                      aria-controls="sort-menu"
+                      aria-haspopup="true"
+                      onClick={handleSortOpen}
+                      variant="outlined"
+                      className="me-3"
+                    >
+                      Sort
+                    </Button>
+                    <Menu
+                      id="sort-menu"
+                      anchorEl={sortAnchorEl}
+                      keepMounted
+                      open={Boolean(sortAnchorEl)}
+                      onClose={handleSortClose}
+                    >
+                      <MenuItem onClick={() => handleSortSelect("A to Z")}>
+                        <SortByAlpha /> A to Z (Initiative Name)
+                      </MenuItem>
+                      <MenuItem onClick={() => handleSortSelect("% Complete (ASC)")}>
+                        <TrendingUp /> % Complete (ASC)
+                      </MenuItem>
+                      <MenuItem onClick={() => handleSortSelect("Stages Completed")}>
+                        Stages Completed
+                      </MenuItem>
+                      <MenuItem onClick={() => handleSortSelect("Initiation Date (DSC)")}>
+                        <CalendarToday /> Initiation Date (DSC)
+                      </MenuItem>
+                    </Menu>
+                  </div>
                 </div>
               </div>
             </div>
@@ -229,6 +298,9 @@ const InitiativeManagement = () => {
             SetinitiativesID={SetinitiativesID}
             startEditing={startEditing}
             stopEditing={stopEditing}
+            handleSearchChange={handleSearchChange}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
             isListView={isListView} // Pass the state to determine view mode
           />
           {finitiatives.length > 5 && (

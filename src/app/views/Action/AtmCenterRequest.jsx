@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button, Nav } from "react-bootstrap";
-import { TextField } from "@fluentui/react";
+import React from "react";
+import { mergeStyles } from "@fluentui/react/lib/Styling";
+import { DetailsList, DetailsListLayoutMode, SelectionMode } from "@fluentui/react/lib/DetailsList";
+import { TextField } from "@fluentui/react/lib/TextField";
 import Pagination from "@mui/material/Pagination";
-import { TableContainer, Table, TableBody, TableRow, TableCell } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
+const tableStyles = mergeStyles({
+  minWidth: 650,
+  selectors: {
     "& th": {
       backgroundColor: "#f2f2f2",
       border: "1px solid #ddd",
@@ -17,48 +16,35 @@ const useStyles = makeStyles({
       border: "1px solid #ddd",
       padding: "8px"
     }
-  },
-  selectedRow: {
-    backgroundColor: "#e3f2fd !important" // Example of selected row background color
   }
 });
+
+const selectedRowStyles = mergeStyles({
+  backgroundColor: "#e3f2fd"
+});
+
 function AtmCenterRequest({ slicedActionItems }) {
   console.log("slicedActionItems", slicedActionItems);
-  const classes = useStyles();
+
   return (
     <div className="mt-4">
-      <TableContainer>
-        <Table className={classes.table} striped bordered>
-          <thead>
-            <tr>
-              <th>Action Item</th>
-              <th>Due Date</th>
-              <th>Stage</th>
-              <th>Assigned To</th>
-              <th>Submitted By</th>
-              <th>Status</th>
-              <th>Priority</th>
-              <th>Initiative</th> {/* New column for Initiative */}
-              <th></th>
-            </tr>
-          </thead>
-          <TableBody>
-            {slicedActionItems.map((item, index) => (
-              <TableRow key={index} className={index === 0 ? classes.selectedRow : ""}>
-                <TableCell>{item.actionItem}</TableCell>
-                <TableCell>{item.dueDate}</TableCell>
-                <TableCell>{item.stage}</TableCell>
-                <TableCell>{item.assignedTo}</TableCell>
-                <TableCell>{item.submittedBy}</TableCell>
-                <TableCell>{item.status}</TableCell>
-                <TableCell>{item.priority}</TableCell>
-                <TableCell>{item.initiative}</TableCell>
-                <TableCell>{/* <FluentCheckbox /> */}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <DetailsList
+        items={slicedActionItems}
+        columns={[
+          { key: "actionItem", name: "Action Item", fieldName: "actionItem", minWidth: 100 },
+          { key: "dueDate", name: "Due Date", fieldName: "dueDate", minWidth: 100 },
+          { key: "stage", name: "Stage", fieldName: "stage", minWidth: 100 },
+          { key: "assignedTo", name: "Assigned To", fieldName: "assignedTo", minWidth: 100 },
+          { key: "submittedBy", name: "Submitted By", fieldName: "submittedBy", minWidth: 100 },
+          { key: "status", name: "Status", fieldName: "status", minWidth: 100 },
+          { key: "priority", name: "Priority", fieldName: "priority", minWidth: 100 },
+          { key: "initiative", name: "Initiative", fieldName: "initiative", minWidth: 100 }
+        ]}
+        layoutMode={DetailsListLayoutMode.fixedColumns}
+        selectionMode={SelectionMode.none}
+        styles={tableStyles}
+      />
+      <Pagination count={10} variant="outlined" shape="rounded" />
     </div>
   );
 }

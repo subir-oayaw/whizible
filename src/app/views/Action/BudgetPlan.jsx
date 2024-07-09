@@ -1,64 +1,105 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button, Nav } from "react-bootstrap";
-import { TextField } from "@fluentui/react";
-import Pagination from "@mui/material/Pagination";
-import { TableContainer, Table, TableBody, TableRow, TableCell } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import React from "react";
+import { mergeStyles } from "@fluentui/react/lib/Styling";
+import {
+  DetailsList,
+  DetailsListLayoutMode,
+  SelectionMode,
+  CheckboxVisibility
+} from "@fluentui/react";
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-    "& th": {
-      backgroundColor: "#f2f2f2",
-      border: "1px solid #ddd",
-      padding: "8px"
-    },
-    "& td": {
-      border: "1px solid #ddd",
-      padding: "8px"
-    }
-  },
+const useStyles = mergeStyles({
   selectedRow: {
-    backgroundColor: "#e3f2fd !important" // Example of selected row background color
+    backgroundColor: "#e3f2fd"
   }
 });
-export default function BudgetPlan({ slicedActionItems }) {
+
+function BudgetPlan({ slicedActionItems }) {
   console.log("slicedActionItems", slicedActionItems);
   const classes = useStyles();
+
+  const columns = [
+    {
+      key: "column1",
+      name: "Action Item",
+      fieldName: "actionItem",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true
+    },
+    {
+      key: "column2",
+      name: "Due Date",
+      fieldName: "dueDate",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true
+    },
+    {
+      key: "column3",
+      name: "Stage",
+      fieldName: "stage",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true
+    },
+    {
+      key: "column4",
+      name: "Assigned To",
+      fieldName: "assignedTo",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true
+    },
+    {
+      key: "column5",
+      name: "Submitted By",
+      fieldName: "submittedBy",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true
+    },
+    {
+      key: "column6",
+      name: "Status",
+      fieldName: "status",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true
+    },
+    {
+      key: "column7",
+      name: "Priority",
+      fieldName: "priority",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true
+    },
+    {
+      key: "column8",
+      name: "Initiative",
+      fieldName: "initiative",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true
+    }
+  ];
+
   return (
     <div className="mt-4">
-      <TableContainer>
-        <Table className={classes.table} striped bordered>
-          <thead>
-            <tr>
-              <th>Action Item</th>
-              <th>Due Date</th>
-              <th>Stage</th>
-              <th>Assigned To</th>
-              <th>Submitted By</th>
-              <th>Status</th>
-              <th>Priority</th>
-              <th>Initiative</th> {/* New column for Initiative */}
-              <th></th>
-            </tr>
-          </thead>
-          <TableBody>
-            {slicedActionItems.map((item, index) => (
-              <TableRow key={index} className={index === 0 ? classes.selectedRow : ""}>
-                <TableCell>{item.actionItem}</TableCell>
-                <TableCell>{item.dueDate}</TableCell>
-                <TableCell>{item.stage}</TableCell>
-                <TableCell>{item.assignedTo}</TableCell>
-                <TableCell>{item.submittedBy}</TableCell>
-                <TableCell>{item.status}</TableCell>
-                <TableCell>{item.priority}</TableCell>
-                <TableCell>{item.initiative}</TableCell>
-                <TableCell>{/* <FluentCheckbox /> */}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <DetailsList
+        items={slicedActionItems}
+        columns={columns}
+        selectionMode={SelectionMode.none}
+        layoutMode={DetailsListLayoutMode.fixedColumns}
+        checkboxVisibility={CheckboxVisibility.hidden}
+        onRenderRow={(props, defaultRender) => (
+          <div className={props.itemIndex === 0 ? classes.selectedRow : ""}>
+            {defaultRender(props)}
+          </div>
+        )}
+      />
     </div>
   );
 }
+
+export default BudgetPlan;

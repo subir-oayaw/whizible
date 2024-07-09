@@ -64,6 +64,10 @@ const WorkflowTabs = () => {
                           <td>Current Stage:</td>
                           <td className="tital22">{workflowData.currentStage}</td>
                         </tr>
+                        <tr>
+                          <td>Current Stage:</td>
+                          <td className="tital22">{workflowData.currentStage}</td>
+                        </tr>
                       </tbody>
                     </Table>
                   </div>

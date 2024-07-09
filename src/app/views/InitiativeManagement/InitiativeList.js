@@ -32,25 +32,21 @@ const InitiativeList = ({
   startEditing,
   SetinitiativesID,
   stopEditing,
+  handleSearchChange,
+  searchTerm,
+  setSearchTerm,
   isListView // Prop to determine if it's list view or card view
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(page); // State for current page
-  const [sortAnchorEl, setSortAnchorEl] = useState(null); // State for sorting dropdown anchor element
 
   // Pagination states for each column in card view
   const [currentCardPage1, setCurrentCardPage1] = useState(1);
   const [currentCardPage2, setCurrentCardPage2] = useState(1);
   const [currentCardPage3, setCurrentCardPage3] = useState(1);
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to first page when search term changes
-  };
-
   // Filter initiatives based on search term
   const filteredInitiatives = initiatives.filter((initiative) =>
-    initiative.title.toLowerCase().includes(searchTerm.toLowerCase())
+    initiative?.title?.toLowerCase().includes(searchTerm?.toLowerCase())
   );
 
   // Pagination Logic
@@ -80,21 +76,8 @@ const InitiativeList = ({
   };
 
   // Handle sorting dropdown open
-  const handleSortOpen = (event) => {
-    setSortAnchorEl(event.currentTarget);
-  };
-
-  // Handle sorting dropdown close
-  const handleSortClose = () => {
-    setSortAnchorEl(null);
-  };
 
   // Handle sorting option selection
-  const handleSortSelect = (option) => {
-    // Implement sorting logic based on selected option
-    console.log("Sorting by:", option);
-    handleSortClose();
-  };
 
   // Legend for stages with colored boxes
   const stagesLegend = (
@@ -123,58 +106,7 @@ const InitiativeList = ({
       {/* Render content based on view mode */}
       {isListView ? (
         <>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <div className="search-box position-relative">
-              <input
-                id="InitMangntSrchInput"
-                className="search-text"
-                type="text"
-                placeholder="Search"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <a id="initgrid-srch-title" className="search-btn" href="javascript:void(0);">
-                <img
-                  src={SearchIcon}
-                  alt="Search"
-                  data-bs-toggle="tooltip"
-                  aria-label="Search"
-                  data-bs-original-title="Search"
-                />
-              </a>
-            </div>
-            <div className="d-flex align-items-center">
-              <Button
-                aria-controls="sort-menu"
-                aria-haspopup="true"
-                onClick={handleSortOpen}
-                variant="outlined"
-                className="me-3"
-              >
-                Sort
-              </Button>
-              <Menu
-                id="sort-menu"
-                anchorEl={sortAnchorEl}
-                keepMounted
-                open={Boolean(sortAnchorEl)}
-                onClose={handleSortClose}
-              >
-                <MenuItem onClick={() => handleSortSelect("A to Z")}>
-                  <SortByAlpha /> A to Z (Initiative Name)
-                </MenuItem>
-                <MenuItem onClick={() => handleSortSelect("% Complete (ASC)")}>
-                  <TrendingUp /> % Complete (ASC)
-                </MenuItem>
-                <MenuItem onClick={() => handleSortSelect("Stages Completed")}>
-                  Stages Completed
-                </MenuItem>
-                <MenuItem onClick={() => handleSortSelect("Initiation Date (DSC)")}>
-                  <CalendarToday /> Initiation Date (DSC)
-                </MenuItem>
-              </Menu>
-            </div>
-          </div>
+          <div className="d-flex justify-content-between align-items-center mb-3"></div>
           <Table className="table table-bordered">
             <TableHead>
               <TableRow>
@@ -254,37 +186,6 @@ const InitiativeList = ({
                       />
                     </a>
                   </div>
-                  <div className="d-flex align-items-center">
-                    <Button
-                      aria-controls="sort-menu"
-                      aria-haspopup="true"
-                      onClick={handleSortOpen}
-                      variant="outlined"
-                      className="me-3"
-                    >
-                      Sort
-                    </Button>
-                    <Menu
-                      id="sort-menu"
-                      anchorEl={sortAnchorEl}
-                      keepMounted
-                      open={Boolean(sortAnchorEl)}
-                      onClose={handleSortClose}
-                    >
-                      <MenuItem onClick={() => handleSortSelect("A to Z")}>
-                        <SortByAlpha /> A to Z (Initiative Name)
-                      </MenuItem>
-                      <MenuItem onClick={() => handleSortSelect("% Complete (ASC)")}>
-                        <TrendingUp /> % Complete (ASC)
-                      </MenuItem>
-                      <MenuItem onClick={() => handleSortSelect("Stages Completed")}>
-                        Stages Completed
-                      </MenuItem>
-                      <MenuItem onClick={() => handleSortSelect("Initiation Date (DSC)")}>
-                        <CalendarToday /> Initiation Date (DSC)
-                      </MenuItem>
-                    </Menu>
-                  </div>
                 </div>
                 <div className="card-container">
                   {initiativesToShow
@@ -349,37 +250,6 @@ const InitiativeList = ({
                       />
                     </a>
                   </div>
-                  <div className="d-flex align-items-center">
-                    <Button
-                      aria-controls="sort-menu"
-                      aria-haspopup="true"
-                      onClick={handleSortOpen}
-                      variant="outlined"
-                      className="me-3"
-                    >
-                      Sort
-                    </Button>
-                    <Menu
-                      id="sort-menu"
-                      anchorEl={sortAnchorEl}
-                      keepMounted
-                      open={Boolean(sortAnchorEl)}
-                      onClose={handleSortClose}
-                    >
-                      <MenuItem onClick={() => handleSortSelect("A to Z")}>
-                        <SortByAlpha /> A to Z (Initiative Name)
-                      </MenuItem>
-                      <MenuItem onClick={() => handleSortSelect("% Complete (ASC)")}>
-                        <TrendingUp /> % Complete (ASC)
-                      </MenuItem>
-                      <MenuItem onClick={() => handleSortSelect("Stages Completed")}>
-                        Stages Completed
-                      </MenuItem>
-                      <MenuItem onClick={() => handleSortSelect("Initiation Date (DSC)")}>
-                        <CalendarToday /> Initiation Date (DSC)
-                      </MenuItem>
-                    </Menu>
-                  </div>
                 </div>
                 <div className="card-container">
                   {initiativesToShow
@@ -443,37 +313,6 @@ const InitiativeList = ({
                         data-bs-original-title="Search"
                       />
                     </a>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <Button
-                      aria-controls="sort-menu"
-                      aria-haspopup="true"
-                      onClick={handleSortOpen}
-                      variant="outlined"
-                      className="me-3"
-                    >
-                      Sort
-                    </Button>
-                    <Menu
-                      id="sort-menu"
-                      anchorEl={sortAnchorEl}
-                      keepMounted
-                      open={Boolean(sortAnchorEl)}
-                      onClose={handleSortClose}
-                    >
-                      <MenuItem onClick={() => handleSortSelect("A to Z")}>
-                        <SortByAlpha /> A to Z (Initiative Name)
-                      </MenuItem>
-                      <MenuItem onClick={() => handleSortSelect("% Complete (ASC)")}>
-                        <TrendingUp /> % Complete (ASC)
-                      </MenuItem>
-                      <MenuItem onClick={() => handleSortSelect("Stages Completed")}>
-                        Stages Completed
-                      </MenuItem>
-                      <MenuItem onClick={() => handleSortSelect("Initiation Date (DSC)")}>
-                        <CalendarToday /> Initiation Date (DSC)
-                      </MenuItem>
-                    </Menu>
                   </div>
                 </div>
                 <div className="card-container">

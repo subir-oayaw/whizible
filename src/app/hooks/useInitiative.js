@@ -10,8 +10,9 @@ const useInitiative = () => {
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
+        console.log("sss");
         const response = await axios.get(
-          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + "api/Dashboard?LastActionName=Approved",
+          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + "/api/Dashboard?LastActionName=Approved",
           {
             headers: {
               Authorization: `Bearer ${accessToken}`

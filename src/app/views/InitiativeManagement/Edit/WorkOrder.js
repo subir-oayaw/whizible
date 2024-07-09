@@ -171,7 +171,7 @@ const WorkOrderTab = () => {
                 label="Date of Issue"
                 value={drawerData.date}
                 onSelectDate={(date) =>
-                  setDrawerData({ ...drawerData, date: date ? date.toLocaleDateString() : "" })
+                  setDrawerData({ ...drawerData, date: date ? date?.toLocaleDateString() : "" })
                 }
                 isRequired={true}
                 placeholder="Select a date"
