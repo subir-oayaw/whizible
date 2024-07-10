@@ -150,9 +150,9 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
           </div>
           <Divider sx={{ my: 2 }} /> {/* Horizontal line */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Avatar src={originator.profileImageUrl} alt={originator.name} />
+            <Avatar src={originator?.profileImageUrl} alt={originator?.name} />
             <Typography variant="body2" color="textSecondary" style={{ marginLeft: "8px" }}>
-              Created By: {originator.name}
+              Created By: {originator?.name}
             </Typography>
           </Box>
         </CardContent>

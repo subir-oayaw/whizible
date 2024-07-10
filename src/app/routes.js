@@ -46,6 +46,12 @@ const routes = [
       // dashboard route
       { path: "/analytics", element: <Analytics />, auth: authRoles.admin },
       { path: "/dashboard/default", element: <InitiativeManagement />, auth: authRoles.admin },
+      { path: "/Warehouse", element: <Warehouse /> },
+      { path: "/CompletedInitiativesList", element: <CompletedInitiativesList /> },
+      { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
+      { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
+
+      { path: "/Reallocation", element: <Reallocation /> },
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }
     ]
@@ -56,11 +62,7 @@ const routes = [
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
   { path: "/actions", element: <ActionItems /> },
-  { path: "/CompletedInitiativesList", element: <CompletedInitiativesList /> },
-  { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
-  { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
-  { path: "/Warehouse", element: <Warehouse /> },
-  { path: "/Reallocation", element: <Reallocation /> },
+
   { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
   {
     path: "/under-construction",

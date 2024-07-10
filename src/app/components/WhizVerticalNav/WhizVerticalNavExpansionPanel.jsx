@@ -24,7 +24,8 @@ const NavExpandRoot = styled("div")(({ theme }) => ({
   "& .expansion-panel": {
     overflow: "hidden",
     transition: "max-height 0.3s cubic-bezier(0, 0, 0.2, 1)",
-    marginLeft: "20px" // Add margin for nested children
+    marginLeft: "35px" // Add margin-left of 25px
+    // Add other styles as needed
   },
   "& .highlight": {
     background: theme.palette.primary.main
@@ -105,6 +106,10 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
     console.log("under", item);
     if (!item.isParent) {
       if (item.tagDescription === "Initiative") navigate("/dashboard/default");
+      else if (item.tagDescription === "Warehouse") navigate("/Warehouse");
+      else if (item.tagDescription === "Completed Initiatives")
+        navigate("/CompletedInitiativesList");
+      else if (item.tagDescription === "Converted Initiatives") navigate("/ConvertedInitiatives");
       else navigate("/under-construction"); // Navigate to under construction page
       return;
     }
