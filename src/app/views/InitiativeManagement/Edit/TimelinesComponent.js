@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
-import { Modal } from "react-bootstrap";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import { DatePicker } from "@fluentui/react";
 import TimelineHistoryDrawer from "./TimelineHistoryDrawer"; // Adjust path as needed
 
 const TimelinesComponent = () => {
@@ -95,38 +92,10 @@ const TimelinesComponent = () => {
                 <td>Start</td>
                 <td>Submitted By : Admin</td>
                 <td>
-                  <div className="input-group datefield">
-                    <div className="col-sm-2 input-group date datepicker" id="Plan1StartDate">
-                      <input
-                        type="text"
-                        className="form-control border-end-0"
-                        id="date_Plan1StartDate"
-                        placeholder="Select Date"
-                      />
-                      <span className="input-group-append">
-                        <span className="input-group-text bg-light border-start-0 d-block">
-                          <img src="../../WhizibleJQuery/dist/img/Datepicker.svg" alt="" />
-                        </span>
-                      </span>
-                    </div>
-                  </div>
+                  <DatePicker placeholder="Select Date" ariaLabel="Select a date" />
                 </td>
                 <td>
-                  <div className="input-group datefield">
-                    <div className="col-sm-2 input-group date datepicker" id="Plan1EndDate">
-                      <input
-                        type="text"
-                        className="form-control border-end-0"
-                        id="date_Plan1EndDate"
-                        placeholder="Select Date"
-                      />
-                      <span className="input-group-append">
-                        <span className="input-group-text bg-light d-block">
-                          <img src="../../WhizibleJQuery/dist/img/Datepicker.svg" alt="" />
-                        </span>
-                      </span>
-                    </div>
-                  </div>
+                  <DatePicker placeholder="Select Date" ariaLabel="Select a date" />
                 </td>
                 <td className="IMrequired d-flex">
                   <input

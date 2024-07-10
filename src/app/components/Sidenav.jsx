@@ -7,6 +7,7 @@ import useSidebar from "../hooks/useSidebar"; // Import the custom hook
 import { Span } from "app/components/Typography";
 import eDashboardIcon from "../../assets/img/e-dashboard.svg"; // Import the SVG icon
 import { Search20Regular as SearchIcon } from "@fluentui/react-icons";
+import Search from "../../assets/img/search-icn.svg";
 // STYLED COMPONENTS
 const StyledScrollBar = styled(Scrollbar)(() => ({
   paddingLeft: "1rem",
@@ -92,6 +93,7 @@ export default function Sidenav({ children }) {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+  console.log("mode", mode);
 
   return (
     <Fragment>

@@ -25,6 +25,7 @@ const EditPage = Loadable(lazy(() => import("app/views/InitiativeManagement/Edit
 const ConvertedInitiatives = Loadable(
   lazy(() => import("app/views/ConvertedInitiatives/ConvertedInitiatives"))
 );
+const UnderConstruction = Loadable(lazy(() => import("app/views/UnderConstruction")));
 const Warehouse = Loadable(lazy(() => import("app/views/Warehouse/Warehouse")));
 const Reallocation = Loadable(lazy(() => import("app/views/Reallocation")));
 // DASHBOARD PAGE
@@ -45,6 +46,12 @@ const routes = [
       // dashboard route
       { path: "/analytics", element: <Analytics />, auth: authRoles.admin },
       { path: "/dashboard/default", element: <InitiativeManagement />, auth: authRoles.admin },
+      { path: "/Warehouse", element: <Warehouse /> },
+      { path: "/CompletedInitiativesList", element: <CompletedInitiativesList /> },
+      { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
+      { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
+
+      { path: "/Reallocation", element: <Reallocation /> },
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }
     ]
@@ -55,13 +62,12 @@ const routes = [
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
   { path: "/actions", element: <ActionItems /> },
-  { path: "/CompletedInitiativesList", element: <CompletedInitiativesList /> },
-  { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
-  { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
-  { path: "/Warehouse", element: <Warehouse /> },
-  { path: "/Reallocation", element: <Reallocation /> },
-  { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
 
+  { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
+  {
+    path: "/under-construction",
+    element: <UnderConstruction />
+  },
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
 ];

@@ -1,9 +1,35 @@
-// DocumentsComponent.js
-
 import React from "react";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
+import { Modal } from "@fluentui/react/lib/Modal";
+import { Stack, TextField } from "@fluentui/react";
+
+const modalStyles = {
+  root: {
+    maxWidth: "70vw",
+    maxHeight: "70vh",
+
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    top: "50%",
+    left: "50%"
+  }
+};
 
 const DocumentsComponent = () => {
+  // State to manage modal visibility
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  // Function to handle modal open/close
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  // Function to handle file upload
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    // Handle file upload logic
+  };
+
   return (
     <div className="tab-pane" id="Ini_Documents">
       <div className="container-fluid">
@@ -12,17 +38,12 @@ const DocumentsComponent = () => {
             <label className="textstrong ps-2">Documents</label>
           </div>
           <div className="col-12 col-sm-9">
-            <div id="Documents_topActions" className="toprightactionsCol text-end pe-2">
+            <div className="toprightactionsCol text-end pe-2">
               <PrimaryButton className="tital1" data-bs-toggle="tooltip" title="Download template">
                 Download template
               </PrimaryButton>
               &nbsp;
-              <PrimaryButton
-                className="tital1"
-                data-bs-toggle="modal"
-                data-bs-target="#Doc_uploadTab"
-                title="Upload document"
-              >
+              <PrimaryButton className="tital1" onClick={toggleModal}>
                 Upload document
               </PrimaryButton>
               &nbsp;
@@ -33,17 +54,32 @@ const DocumentsComponent = () => {
               >
                 Attach URL
               </PrimaryButton>
+              {/* Other buttons as needed */}
             </div>
           </div>
         </div>
       </div>
 
-      <div id="Project_Grid_panel_8" className="init_grid_panel m-3">
+      {/* Modal for document upload */}
+      <Modal isOpen={isModalOpen} onDismiss={toggleModal} isBlocking={false} styles={modalStyles}>
+        <div style={{ padding: 20 }}>
+          <div style={{ marginBottom: 20 }}>
+            <h3>Upload Document (* Mandatory)</h3>
+          </div>
+          <Stack tokens={{ childrenGap: 10 }}>
+            <TextField label="Document Name" />
+            <TextField label="Uploaded By" />
+            <TextField label="Upload Date" />
+            <input type="file" id="fileUpload" onChange={handleFileUpload} />
+            <PrimaryButton text="Upload" onClick={toggleModal} />
+          </Stack>
+        </div>
+      </Modal>
+
+      {/* Table structure */}
+      <div className="init_grid_panel m-3">
         <div className="table_wrapper stageGridPanel">
-          <table
-            className="table_document table table-hover init-stickytable mb-0"
-            id="Tbl_ini_mainDocuments"
-          >
+          <table className="table_document table table-hover init-stickytable mb-0">
             <thead className="IM_document">
               <tr className="cart-table-head">
                 <th>Documents name</th>
@@ -66,135 +102,14 @@ const DocumentsComponent = () => {
                     Functional Specifications
                   </a>
                 </td>
-                <td>Start</td>
                 <td>Admin</td>
                 <td>10 Aug 2022</td>
+                <td>25/05/2023</td>
                 <td className="text-center">
-                  <a
-                    href="javascript:;"
-                    className="historyicon"
-                    data-bs-toggle="modal"
-                    data-bs-target="#Document_history"
-                  >
-                    <img
-                      src="../../WhizibleJQuery/dist/img/history.svg"
-                      alt="Flag"
-                      data-bs-toggle="tooltip"
-                      title="History"
-                    />
-                  </a>
-                  <a href="javascript:;">
-                    <img
-                      src="../../WhizibleJQuery/dist/img/Delete.svg"
-                      alt="Flag"
-                      data-bs-toggle="tooltip"
-                      title="Delete"
-                    />
-                  </a>
+                  <a href="javascript:;">{/* Action icons */}</a>
                 </td>
               </tr>
-              <tr className="TRDocument">
-                <td></td>
-                <td>
-                  <div id="collapsed_etaildata_One" className="panel-collapse collapse in mt-3">
-                    <div className="panel-body">
-                      <div className="form-group row mb-3">
-                        <div className="col-sm-12 form-group">
-                          <div className="form-group row">
-                            <div className="col-sm-7 form-group">
-                              <label className="form-label IM_label text-start">
-                                Document Name(Latest)
-                              </label>
-                            </div>
-                            <div className="col-sm-5 form-group">
-                              <label className="form-label IM_label text-start">
-                                <a href="javascript:;">Screenshot (1).png</a>
-                              </label>
-                            </div>
-                          </div>
-                          <div className="form-group row">
-                            <div className="col-sm-7 form-group">
-                              <label className="form-label IM_label text-start">Uploaded By:</label>
-                            </div>
-                            <div className="col-sm-5 form-group">
-                              <label className="form-label IM_label text-start">Admin</label>
-                            </div>
-                          </div>
-                          <div className="form-group row">
-                            <div className="col-sm-7 form-group">
-                              <label className="form-label IM_label text-start">Upload Date:</label>
-                            </div>
-                            <div className="col-sm-5 form-group">
-                              <label className="form-label IM_label text-start">25/05/2023</label>
-                            </div>
-                          </div>
-                          <div className="form-group row">
-                            <div className="col-sm-7">
-                              <label className="form-label IM_label text-start">
-                                File Size(KB):
-                              </label>
-                            </div>
-                            <div className="col-sm-5">
-                              <label className="form-label IM_label text-start">130.48</label>
-                            </div>
-                          </div>
-                          <div className="form-group row">
-                            <div className="col-sm-7">
-                              <label className="form-label IM_label text-start">
-                                Last Modified:
-                              </label>
-                            </div>
-                            <div className="col-sm-5">
-                              <label className="form-label IM_label text-start">25/05/2023</label>
-                            </div>
-                          </div>
-                          <div className="form-group row">
-                            <div className="col-sm-7">
-                              <label className="form-label IM_label text-start">Review:</label>
-                            </div>
-                            <div className="col-sm-5">
-                              <label className="form-label IM_label text-start">
-                                <span>
-                                  <a
-                                    href="javascript:;"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#Doc_review_modal"
-                                  >
-                                    Review
-                                  </a>
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                          <div className="form-group row">
-                            <div className="col-sm-7">
-                              <label className="form-label IM_label text-start">History:</label>
-                            </div>
-                            <div className="col-sm-5">
-                              <label className="form-label IM_label text-start">
-                                <span>
-                                  <a
-                                    href="javascript:;"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#Document_history"
-                                  >
-                                    History
-                                  </a>
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              {/* Additional rows as per your data */}
+              {/* Additional rows */}
             </tbody>
           </table>
         </div>
