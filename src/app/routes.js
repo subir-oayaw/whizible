@@ -25,6 +25,7 @@ const EditPage = Loadable(lazy(() => import("app/views/InitiativeManagement/Edit
 const ConvertedInitiatives = Loadable(
   lazy(() => import("app/views/ConvertedInitiatives/ConvertedInitiatives"))
 );
+const UnderConstruction = Loadable(lazy(() => import("app/views/UnderConstruction")));
 const Warehouse = Loadable(lazy(() => import("app/views/Warehouse/Warehouse")));
 const Reallocation = Loadable(lazy(() => import("app/views/Reallocation")));
 // DASHBOARD PAGE
@@ -61,7 +62,10 @@ const routes = [
   { path: "/Warehouse", element: <Warehouse /> },
   { path: "/Reallocation", element: <Reallocation /> },
   { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
-
+  {
+    path: "/under-construction",
+    element: <UnderConstruction />
+  },
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
 ];

@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Scrollbar from "react-perfect-scrollbar";
 import { WhizVerticalNav } from "app/components";
@@ -7,7 +7,10 @@ import useSidebar from "../hooks/useSidebar"; // Import the custom hook
 import { Span } from "app/components/Typography";
 import eDashboardIcon from "../../assets/img/e-dashboard.svg"; // Import the SVG icon
 import { Search20Regular as SearchIcon } from "@fluentui/react-icons";
-// STYLED COMPONENTS
+import SearchImage from "../../assets/img/search-icn.svg"; // Import the image
+import { mergeStyles } from "@fluentui/react/lib/Styling";
+import { Box } from "@mui/material";
+
 const StyledScrollBar = styled(Scrollbar)(() => ({
   paddingLeft: "1rem",
   paddingRight: "1rem",
@@ -32,9 +35,24 @@ const SideNavMobile = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: { display: "none" }
 }));
 
-export default function Sidenav({ children }) {
+const SearchContainer = styled("div")(() => ({
+  display: "flex",
+  alignItems: "center",
+  cursor: "pointer"
+}));
+
+const SearchInput = styled("input")(({ expanded }) => ({
+  margin: "1rem",
+  padding: "0.005rem",
+  width: expanded ? "calc(100% - 2rem)" : 0,
+  opacity: expanded ? 1 : 0,
+  transition: "width 0.3s ease-in-out, opacity 0.3s ease-in-out"
+}));
+
+const Sidenav = ({ children }) => {
   const { settings, updateSettings } = useSettings();
   const [searchTerm, setSearchTerm] = useState("");
+  const [expanded, setExpanded] = useState(false); // State to manage expansion
   const leftSidebar = settings.layout1Settings.leftSidebar;
   const { mode } = leftSidebar;
 
@@ -90,20 +108,38 @@ export default function Sidenav({ children }) {
     }
   };
 
+  const toggleExpand = () => {
+    setExpanded(!expanded);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <Fragment>
-      <StyledSpan mode={mode} className="sidenavHoverShow">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearch}
-          style={{ margin: "1rem", padding: "0.005rem", width: "calc(100% - 2rem)" }}
-        />
-      </StyledSpan>
+      <SearchContainer onClick={toggleExpand}>
+        <Box display="flex" alignItems="center">
+          <img
+            src={SearchImage}
+            style={{
+              width: 36,
+              height: 36,
+              filter: "brightness(0) invert(1)",
+              verticalAlign: "middle"
+            }}
+            alt="Search Icon"
+          />
+        </Box>
+        <StyledSpan mode={mode} className="sidenavHoverShow">
+          <SearchInput
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={handleSearch}
+            expanded={expanded}
+          />
+        </StyledSpan>
+      </SearchContainer>
       <StyledScrollBar options={{ suppressScrollX: true }}>
         <WhizVerticalNav items={filteredNavigations} />
         {children}
@@ -111,4 +147,6 @@ export default function Sidenav({ children }) {
       <SideNavMobile onClick={() => updateSidebarMode({ mode: "close" })} />
     </Fragment>
   );
-}
+};
+
+export default Sidenav;

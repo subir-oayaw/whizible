@@ -93,7 +93,7 @@ const Layout1Topbar = () => {
   const { settings, updateSettings } = useSettings();
   const { logout, user } = useAuth();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
-  // const userdata = JSON.parse(sessionStorage.getItem("user"));
+  const userdata = JSON.parse(sessionStorage.getItem("user"));
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };

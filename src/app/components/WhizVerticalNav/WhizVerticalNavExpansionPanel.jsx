@@ -99,13 +99,22 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
   const componentHeight = useRef(0);
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { tagName, icon, iconText, badge, isExpanded, pageName } = item;
+  const { tagName, icon, iconText, badge, isExpanded, pageName, isParent } = item;
 
   const handleClick = () => {
+    console.log("under", item);
+    if (!item.isParent) {
+      if (item.tagDescription === "Initiative") navigate("/dashboard/default");
+      else navigate("/under-construction"); // Navigate to under construction page
+      return;
+    }
     if (!isExpanded) {
-      const cleanedPageName = pageName.endsWith(".aspx") ? pageName.slice(0, -5) : pageName;
-      console.log("path", cleanedPageName);
-      navigate(cleanedPageName);
+      // Check if the item is a leaf node (not expandable)
+
+      // Toggle collapsed state and calculate height for expandable items
+      componentHeight.current = 0;
+      calculateHeight(elementRef.current);
+      setCollapsed(!collapsed);
     } else {
       componentHeight.current = 0;
       calculateHeight(elementRef.current);
@@ -139,7 +148,6 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
   }, [pathname, calculateHeight]);
 
   const getIconPath = (name) => {
-    console.log("Dashboard", name);
     return iconMappings[name] || null;
   };
 
@@ -154,7 +162,12 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
         onClick={handleClick}
       >
         <Box display="flex" alignItems="center">
-          {/* <img src={getIconPath(tagName)} style={{ fill: "white" }} /> */}
+          <img
+            src={getIconPath(tagName)}
+            style={{
+              filter: "brightness(0) invert(1)"
+            }}
+          />
           {iconText && <BulletIcon />}
           <ItemText className="sidenavHoverShow">{tagName}</ItemText>
         </Box>
