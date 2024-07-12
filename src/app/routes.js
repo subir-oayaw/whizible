@@ -18,15 +18,14 @@ const JwtRegister = Loadable(lazy(() => import("app/views/sessions/JwtRegister")
 const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart")));
 const ActionItems = Loadable(lazy(() => import("app/views/Action/ActionItems")));
 const CompletedInitiativesList = Loadable(lazy(() => import("app/views/CompletedInitiativesList")));
-const WithdrawnInitiatives = Loadable(
-  lazy(() => import("app/views/WithdrawnInitiatives/WithdrawnInitiatives"))
-);
+
 const EditPage = Loadable(lazy(() => import("app/views/InitiativeManagement/Edit/EditPage")));
 const ConvertedInitiatives = Loadable(
   lazy(() => import("app/views/ConvertedInitiatives/ConvertedInitiatives"))
 );
 const UnderConstruction = Loadable(lazy(() => import("app/views/UnderConstruction")));
 const Warehouse = Loadable(lazy(() => import("app/views/Warehouse/Warehouse")));
+const WithdrawnInitiatives = Loadable(lazy(() => import("app/views/WithdrawnInitiatives")));
 const Reallocation = Loadable(lazy(() => import("app/views/Reallocation")));
 // DASHBOARD PAGE
 const Analytics = Loadable(lazy(() => import("app/utils/Analytics")));
@@ -50,7 +49,11 @@ const routes = [
       { path: "/CompletedInitiativesList", element: <CompletedInitiativesList /> },
       { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
       { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
-
+      { path: "/actions", element: <ActionItems /> },
+      {
+        path: "/under-construction",
+        element: <UnderConstruction />
+      },
       { path: "/Reallocation", element: <Reallocation /> },
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }
@@ -61,13 +64,9 @@ const routes = [
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
-  { path: "/actions", element: <ActionItems /> },
 
   { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
-  {
-    path: "/under-construction",
-    element: <UnderConstruction />
-  },
+
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
 ];

@@ -44,7 +44,6 @@ function AtmCenterRequest({ slicedActionItems }) {
         selectionMode={SelectionMode.none}
         styles={tableStyles}
       />
-      <Pagination count={10} variant="outlined" shape="rounded" />
     </div>
   );
 }

@@ -1,9 +1,26 @@
-import { Fragment } from "react";
-import { NavLink } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, ButtonBase, Icon, styled } from "@mui/material";
 import useSettings from "app/hooks/useSettings";
 import { Paragraph, Span } from "../Typography";
 import WhizVerticalNavExpansionPanel from "./WhizVerticalNavExpansionPanel";
+import {
+  Dashboard as DashboardIcon,
+  Assignment as AssignmentIcon,
+  AssignmentTurnedIn as AssignmentTurnedInIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as CancelIcon,
+  Warehouse as WarehouseIcon,
+  AssignmentLate as AuditIcon,
+  SwapHoriz as SwapHorizIcon,
+  TrackChanges as TrackChangesIcon,
+  FormatListNumbered as FormatListNumberedIcon,
+  Link as LinkIcon,
+  Search as SearchIcon,
+  List as ListIcon,
+  HealthAndSafety as HealthAndSafetyIcon,
+  AttachMoney as AttachMoneyIcon
+} from "@mui/icons-material";
 
 // Styled components
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
@@ -18,10 +35,11 @@ const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
 
 const ExtAndIntCommon = styled("div")(({ theme }) => ({
   display: "flex",
+  alignItems: "center",
   overflow: "hidden",
   borderRadius: "4px",
   height: 44,
-  whiteSpace: "pre",
+  whiteSpace: "nowrap",
   marginBottom: "8px",
   textDecoration: "none",
   justifyContent: "space-between",
@@ -39,11 +57,6 @@ const ExtAndIntCommon = styled("div")(({ theme }) => ({
   }
 }));
 
-const ExternalLink = styled("a")(({ theme }) => ({
-  ...ExtAndIntCommon,
-  color: theme.palette.text.primary
-}));
-
 const InternalLink = styled(Box)(({ theme }) => ({
   "& a": {
     ...ExtAndIntCommon,
@@ -57,16 +70,8 @@ const InternalLink = styled(Box)(({ theme }) => ({
 const StyledText = styled(Span)(({ mode }) => ({
   fontSize: "0.875rem",
   paddingLeft: "0.8rem",
-  display: mode === "compact" ? "none" : "block"
-}));
-
-const BulletIcon = styled("div")(({ theme }) => ({
-  padding: "2px",
-  marginLeft: "24px",
-  marginRight: "8px",
-  overflow: "hidden",
-  borderRadius: "300px",
-  background: theme.palette.text.primary
+  display: mode === "compact" ? "none" : "block",
+  whiteSpace: "nowrap"
 }));
 
 const BadgeValue = styled("div")(() => ({
@@ -75,12 +80,68 @@ const BadgeValue = styled("div")(() => ({
   borderRadius: "300px"
 }));
 
+const iconMappings = {
+  "Initiative Management": DashboardIcon,
+  Initiative: AssignmentIcon,
+  "Converted Initiatives": AssignmentTurnedInIcon,
+  "Completed Initiatives": CheckCircleIcon,
+  "Withdrawn Initiatives": CancelIcon,
+  Warehouse: WarehouseIcon,
+  "Action Items": AssignmentTurnedInIcon,
+  "External Audit": AuditIcon,
+  "Initiative Reallocation": SwapHorizIcon,
+  "Initiative Status Management": TrackChangesIcon,
+  "Initiative Tracking": TrackChangesIcon,
+  "Initiative Prioritization": FormatListNumberedIcon,
+  "Initiative Linking": LinkIcon,
+  "Initiative Search": SearchIcon,
+  "Man-Com Prioritization": FormatListNumberedIcon,
+  Program: ListIcon,
+  "Program List": ListIcon,
+  "Projects List": ListIcon,
+  "Project Health Sheet Approval": HealthAndSafetyIcon,
+  "Update Actual Cost": AttachMoneyIcon
+};
+
 export default function WhizVerticalNav({ items }) {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
-  console.log("WhizVerticalNav22", items);
+  const navigate = useNavigate();
+
+  const handleClick = (item) => {
+    if (!item.isParent) {
+      switch (item.tagDescription) {
+        case "Initiative":
+          navigate("/dashboard/default");
+          break;
+        case "Warehouse":
+          navigate("/Warehouse");
+          break;
+        case "Completed Initiatives":
+          navigate("/CompletedInitiativesList");
+          break;
+        case "Withdrawn Initiatives":
+          navigate("/WithdrawnInitiatives");
+          break;
+        case "Action Items":
+          navigate("/Actions");
+          break;
+        case "Converted Initiatives":
+          navigate("/ConvertedInitiatives");
+          break;
+        case "External Audit":
+          navigate("/Reallocation");
+          break;
+        default:
+          navigate("/under-construction");
+          break;
+      }
+    }
+  };
+
   const renderLevels = (data) => {
     return data.map((item, index) => {
+      const IconComponent = iconMappings[item.tagDescription];
       if (item.type === "label") {
         return (
           <ListLabel key={index} mode={mode} className="sidenavHoverShow">
@@ -89,7 +150,7 @@ export default function WhizVerticalNav({ items }) {
         );
       }
 
-      if (item.children) {
+      if (item.children && item.isParent) {
         return (
           <WhizVerticalNavExpansionPanel mode={mode} item={item} key={index}>
             {renderLevels(item.children)}
@@ -99,42 +160,21 @@ export default function WhizVerticalNav({ items }) {
 
       return (
         <InternalLink key={index}>
-          <NavLink
-            to={item.path}
-            className={`navItem ${mode === "compact" ? "compactNavItem" : ""}`}
+          <ButtonBase
+            key={item.tagName}
+            name="child"
+            sx={{ width: "100%" }}
+            onClick={() => handleClick(item)}
           >
-            <ButtonBase key={item.tagName} name="child" sx={{ width: "100%" }}>
-              {item.icon ? (
-                <Icon className="icon" sx={{ width: 36 }}>
-                  {item.icon}
-                </Icon>
-              ) : (
-                <Fragment>
-                  <BulletIcon
-                    className="nav-bullet"
-                    sx={{ display: mode === "compact" ? "none" : "block" }}
-                  />
-                  <Box
-                    className="nav-bullet-text"
-                    sx={{
-                      ml: "20px",
-                      fontSize: "11px",
-                      display: mode !== "compact" ? "none" : "block"
-                    }}
-                  >
-                    {item.iconText}
-                  </Box>
-                </Fragment>
-              )}
-              <StyledText mode={mode} className="sidenavHoverShow">
-                {item.tagName}
-              </StyledText>
-              <Box mx="auto" />
-              {item.badge && (
-                <BadgeValue className="sidenavHoverShow">{item.badge.value}</BadgeValue>
-              )}
-            </ButtonBase>
-          </NavLink>
+            <Icon className="icon" sx={{ width: 36 }}>
+              {IconComponent && <IconComponent />}
+            </Icon>
+            <StyledText mode={mode} className="sidenavHoverShow">
+              {item.tagName}
+            </StyledText>
+            <Box mx="auto" />
+            {item.badge && <BadgeValue className="sidenavHoverShow">{item.badge.value}</BadgeValue>}
+          </ButtonBase>
         </InternalLink>
       );
     });
