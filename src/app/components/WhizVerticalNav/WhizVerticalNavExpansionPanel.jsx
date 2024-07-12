@@ -24,7 +24,7 @@ const NavExpandRoot = styled("div")(({ theme }) => ({
   "& .expansion-panel": {
     overflow: "hidden",
     transition: "max-height 0.3s cubic-bezier(0, 0, 0.2, 1)",
-    marginLeft: "35px" // Add margin-left of 25px
+    marginLeft: "0px" // Add margin-left of 15px
     // Add other styles as needed
   },
   "& .highlight": {
@@ -84,6 +84,12 @@ const BadgeValue = styled("div")(() => ({
   borderRadius: "300px"
 }));
 
+const IconImage = styled("img")({
+  // width: 50,
+  // height: 50,
+  filter: "brightness(0) invert(1)" // Keep your existing styles
+});
+
 const iconMappings = {
   Dashboard: EDashboardIcon,
   "Initiative Management": InitiativeDashboardIcon,
@@ -109,7 +115,10 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
       else if (item.tagDescription === "Warehouse") navigate("/Warehouse");
       else if (item.tagDescription === "Completed Initiatives")
         navigate("/CompletedInitiativesList");
+      else if (item.tagDescription === "Withdrawn Initiatives") navigate("/WithdrawnInitiatives");
+      else if (item.tagDescription === "Action Items") navigate("/Actions");
       else if (item.tagDescription === "Converted Initiatives") navigate("/ConvertedInitiatives");
+      else if (item.tagDescription === "External Audit") navigate("/Reallocation");
       else navigate("/under-construction"); // Navigate to under construction page
       return;
     }
@@ -167,12 +176,7 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
         onClick={handleClick}
       >
         <Box display="flex" alignItems="center">
-          <img
-            src={getIconPath(tagName)}
-            style={{
-              filter: "brightness(0) invert(1)"
-            }}
-          />
+          <IconImage src={getIconPath(tagName)} />
           {iconText && <BulletIcon />}
           <ItemText className="sidenavHoverShow">{tagName}</ItemText>
         </Box>

@@ -1,24 +1,22 @@
 import React, { useState } from "react";
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
+  Stack,
+  TooltipHost,
+  TextField as FluentTextField,
+  Dropdown,
+  Checkbox
+} from "@fluentui/react";
+import {
   Typography,
-  TextField,
   Button,
-  Select,
-  MenuItem,
-  InputLabel,
   FormControl,
-  Checkbox,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-  Paper,
-  Tooltip
+  TableRow
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -29,19 +27,21 @@ const Reallocation = () => {
   const [stageOfApproval, setStageOfApproval] = useState("");
   const [initiativeTitle, setInitiativeTitle] = useState("");
   const [selectedApprovers, setSelectedApprovers] = useState([]);
-  const [rows, setRows] = useState([
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Number of items per page
+  const rows = [
     { id: 1, status: "Pending", orderNo: 4, stage: "Deployment", approvers: ["James"] },
     { id: 2, status: "Delayed", orderNo: 5, stage: "Deployment", approvers: ["Kavya"] },
     { id: 3, status: "Cleared", orderNo: 6, stage: "Completed", approvers: ["Mac"] }
-  ]);
+  ]; // Sample rows data
 
   const approvers = ["James", "Kavya", "Mac", "Nirbhay", "Robin"];
   const initiatives = ["Initiative 1", "Initiative 2", "Initiative 3"];
   const businessGroups = ["Construction", "India International"];
   const stages = ["CEO Approval", "CFO Approval", "Completed", "Delivery Manager"];
 
-  const handleSelectChange = (event) => {
-    const { name, value } = event.target;
+  const handleSelectChange = (event, name) => {
+    const { value } = event.target;
     switch (name) {
       case "currentApprover":
         setCurrentApprover(value);
@@ -58,167 +58,122 @@ const Reallocation = () => {
       case "initiativeTitle":
         setInitiativeTitle(value);
         break;
-      case "selectedApprovers":
-        setSelectedApprovers(value);
-        break;
       default:
         break;
     }
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const filteredRows = rows.slice(
+    (currentPage - 1) * itemsPerPage,
+    (currentPage - 1) * itemsPerPage + itemsPerPage
+  );
+
   return (
     <div className="container-fluid">
-      <style jsx>{`
-        .input-field {
-          height: 40px;
-          width: 300px;
-          margin-bottom: 20px;
-        }
-        .stage-box {
-          width: 20px;
-          height: 20px;
-          display: inline-block;
-          margin-right: 10px;
-        }
-        .pendingStage {
-          background-color: yellow;
-        }
-        .delayedStage {
-          background-color: red;
-        }
-        .clearedStage {
-          background-color: green;
-        }
-      `}</style>
-      <Accordion defaultExpanded>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Advanced Search</Typography>
-        </AccordionSummary>
-        <div class="note-txt">
-          <span class="note-title">
-            <i class="fa-regular fa-lightbulb"></i>{" "}
-          </span>
-          Initiative Reallocation helps to manage the approval process such a way that an initiative
-          is not 'stranded' at any stage. So the approval process continues smoothly...
-        </div>
-        <AccordionDetails>
-          <div className="row mb-3">
-            <div className="col-md-4">
-              <FormControl fullWidth variant="outlined" className="input-field">
-                <InputLabel id="current-approver-label">Select Current Approver</InputLabel>
-                <Select
-                  labelId="current-approver-label"
-                  id="current-approver"
-                  name="currentApprover"
-                  value={currentApprover}
-                  onChange={handleSelectChange}
-                  label="Select Current Approver"
-                >
-                  {approvers.map((approver) => (
-                    <MenuItem key={approver} value={approver}>
-                      {approver}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="col-md-4">
-              <FormControl fullWidth variant="outlined" className="input-field">
-                <InputLabel id="nature-of-initiative-label">Nature of Initiative</InputLabel>
-                <Select
-                  labelId="nature-of-initiative-label"
-                  id="nature-of-initiative"
-                  name="natureOfInitiative"
-                  value={natureOfInitiative}
-                  onChange={handleSelectChange}
-                  label="Nature of Initiative"
-                >
-                  {initiatives.map((initiative) => (
-                    <MenuItem key={initiative} value={initiative}>
-                      {initiative}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="col-md-4">
-              <FormControl fullWidth variant="outlined" className="input-field">
-                <InputLabel id="business-group-label">Business Group</InputLabel>
-                <Select
-                  labelId="business-group-label"
-                  id="business-group"
-                  name="businessGroup"
-                  value={businessGroup}
-                  onChange={handleSelectChange}
-                  label="Business Group"
-                >
-                  {businessGroups.map((group) => (
-                    <MenuItem key={group} value={group}>
-                      {group}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-md-4">
-              <FormControl fullWidth variant="outlined" className="input-field">
-                <InputLabel id="stage-of-approval-label">Stage of Approval</InputLabel>
-                <Select
-                  labelId="stage-of-approval-label"
-                  id="stage-of-approval"
-                  name="stageOfApproval"
-                  value={stageOfApproval}
-                  onChange={handleSelectChange}
-                  label="Stage of Approval"
-                >
-                  {stages.map((stage) => (
-                    <MenuItem key={stage} value={stage}>
-                      {stage}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="col-md-4">
-              <TextField
-                fullWidth
-                id="initiative-title"
-                name="initiativeTitle"
-                label="Initiative Title"
-                variant="outlined"
-                className="input-field"
-                value={initiativeTitle}
-                onChange={handleSelectChange}
+      <Stack gap="m">
+        <Stack horizontal gap="m">
+          <TooltipHost content="Pending stage">
+            <div className="stage-box pendingStage"></div>
+          </TooltipHost>
+          <TooltipHost content="Delayed stage">
+            <div className="stage-box delayedStage"></div>
+          </TooltipHost>
+          <TooltipHost content="Cleared stage">
+            <div className="stage-box clearedStage"></div>
+          </TooltipHost>
+        </Stack>
+
+        <Stack horizontal tokens={{ childrenGap: "m" }}>
+          <div className="col-md-4">
+            <FormControl fullWidth className="input-field">
+              <Dropdown
+                label="Select Current Approver"
+                placeholder="Select Current Approver"
+                selectedKey={currentApprover}
+                options={approvers.map((approver) => ({
+                  key: approver,
+                  text: approver
+                }))}
+                onChange={(event, option) => handleSelectChange(event, "currentApprover")}
               />
-            </div>
-            <div className="col-md-4 d-flex justify-content-center align-items-end">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => console.log("Next clicked")}
-              >
-                Next
-              </Button>
-            </div>
+            </FormControl>
           </div>
-        </AccordionDetails>
-      </Accordion>
+          <div className="col-md-4">
+            <FormControl fullWidth className="input-field">
+              <Dropdown
+                label="Nature of Initiative"
+                placeholder="Nature of Initiative"
+                selectedKey={natureOfInitiative}
+                options={initiatives.map((initiative) => ({
+                  key: initiative,
+                  text: initiative
+                }))}
+                onChange={(event, option) => handleSelectChange(event, "natureOfInitiative")}
+              />
+            </FormControl>
+          </div>
+          <div className="col-md-4">
+            <FormControl fullWidth className="input-field">
+              <Dropdown
+                label="Business Group"
+                placeholder="Business Group"
+                selectedKey={businessGroup}
+                options={businessGroups.map((group) => ({
+                  key: group,
+                  text: group
+                }))}
+                onChange={(event, option) => handleSelectChange(event, "businessGroup")}
+              />
+            </FormControl>
+          </div>
+        </Stack>
+
+        <Stack horizontal tokens={{ childrenGap: "m" }}>
+          <div className="col-md-4">
+            <FormControl fullWidth className="input-field">
+              <Dropdown
+                label="Stage of Approval"
+                placeholder="Stage of Approval"
+                selectedKey={stageOfApproval}
+                options={stages.map((stage) => ({
+                  key: stage,
+                  text: stage
+                }))}
+                onChange={(event, option) => handleSelectChange(event, "stageOfApproval")}
+              />
+            </FormControl>
+          </div>
+          <div className="col-md-4">
+            <FluentTextField
+              label="Initiative Title"
+              className="input-field"
+              value={initiativeTitle}
+              onChange={(event) => handleSelectChange(event, "initiativeTitle")}
+            />
+          </div>
+          <div className="col-md-4 d-flex justify-content-center align-items-end">
+            <Button variant="contained" color="primary" onClick={() => console.log("Next clicked")}>
+              Next
+            </Button>
+          </div>
+        </Stack>
+      </Stack>
+
       <div className="mt-4 text-end" style={{ backgroundColor: "lightgrey" }}>
         <Typography variant="h5" gutterBottom>
           Selected Approver: Nikhil Adtakar
         </Typography>
       </div>
       <div className=" text-end ">
-        <Button variant="contained" color="primary" onClick={() => console.log("Next clicked")}>
+        <Button variant="contained" color="primary" onClick={() => console.log("Save clicked")}>
           Save
         </Button>
       </div>
+
       <div className="mt-4">
         <div className="row">
           <div className="col-6">
@@ -255,30 +210,28 @@ const Reallocation = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {filteredRows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                  <Tooltip title={row.status} placement="top">
+                  <TooltipHost content={row.status}>
                     <div className={`stage-box ${row.status.toLowerCase()}Stage`}></div>
-                  </Tooltip>
+                  </TooltipHost>
                 </TableCell>
                 <TableCell>{row.orderNo}</TableCell>
                 <TableCell>{row.stage}</TableCell>
                 <TableCell>
-                  <FormControl fullWidth variant="outlined" className="input-field">
-                    <Select
-                      multiple
-                      value={selectedApprovers}
-                      onChange={(e) => setSelectedApprovers(e.target.value)}
-                      renderValue={(selected) => selected.join(", ")}
-                    >
-                      {approvers.map((approver) => (
-                        <MenuItem key={approver} value={approver}>
-                          <Checkbox checked={selectedApprovers.indexOf(approver) > -1} />
-                          {approver}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                  <FormControl className="input-field">
+                    <Dropdown
+                      label="Select Approvers"
+                      placeholder="Select Approvers"
+                      selectedKeys={selectedApprovers}
+                      multiSelect
+                      options={approvers.map((approver) => ({
+                        key: approver,
+                        text: approver
+                      }))}
+                      onChange={(event, option) => setSelectedApprovers(option.selectedKeys)}
+                    />
                   </FormControl>
                 </TableCell>
                 <TableCell align="center">
