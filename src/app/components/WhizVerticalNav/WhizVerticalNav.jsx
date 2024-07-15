@@ -5,7 +5,8 @@ import useSettings from "app/hooks/useSettings";
 import { Paragraph, Span } from "../Typography";
 import WhizVerticalNavExpansionPanel from "./WhizVerticalNavExpansionPanel";
 import { CheckCircle as CheckCircleIcon, Cancel as CancelIcon } from "@mui/icons-material";
-
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 // Styled components
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
   fontSize: "12px",
@@ -103,7 +104,8 @@ export default function WhizVerticalNav({ items }) {
   };
   const renderLevels = (data) => {
     return data.map((item, index) => {
-      const IconComponent = selectedItem === item.tagDescription ? CheckCircleIcon : CancelIcon;
+      const IconComponent =
+        selectedItem === item.tagDescription ? CheckCircleOutlineIcon : HighlightOffIcon;
       if (item.type === "label") {
         return (
           <ListLabel key={index} mode={mode} className="sidenavHoverShow">
@@ -125,7 +127,7 @@ export default function WhizVerticalNav({ items }) {
           <ButtonBase
             key={item.tagName}
             name="child"
-            sx={{ width: "100%", paddingLeft: "16px" }} // Added padding here
+            sx={{ width: "100%", paddingLeft: "6px" }} // Added padding here
             onClick={() => handleClick(item)}
           >
             <Icon className="icon" sx={{ width: 36 }}>
