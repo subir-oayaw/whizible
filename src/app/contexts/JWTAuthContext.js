@@ -113,18 +113,17 @@ export const AuthProvider = ({ children }) => {
           if (accessToken) {
             sessionStorage.setItem("access_token", accessToken);
 
-            // Fetch user profile
-            // const userProfileResponse = await axios.get(
-            //   process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + "/api/UserProfile",
-            //   {
-            //     headers: {
-            //       Authorization: `Bearer ${accessToken}`
-            //     }
-            //   }
-            // );
+            const userProfileResponse = await axios.get(
+              process.env.REACT_APP_BASEURL_ACCESS_CONTROL3 + "/api/UserProfile",
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`
+                }
+              }
+            );
 
-            // const user = userProfileResponse.data.data.data;
-            // sessionStorage.setItem("user", JSON.stringify(user));
+            const user = userProfileResponse.data.data.data;
+            sessionStorage.setItem("user", JSON.stringify(user));
             dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user: null } });
           } else {
             dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });

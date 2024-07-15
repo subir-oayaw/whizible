@@ -147,14 +147,14 @@ const Layout1Topbar = () => {
                 <Hidden xsDown>
                   <Span>
                     {/* Hi <strong>{user.name}</strong> */}
-                    Hi <strong>employee Name</strong>
-                    {/* Hi <strong>{userdata.employeeName}</strong> */}
+                    {/* Hi <strong>employee Name</strong> */}
+                    Hi <strong>{userdata?.employeeName}</strong>
                   </Span>
                 </Hidden>
                 <Box display="flex" flexDirection="column" alignItems="center">
                   <Avatar src={user?.avatar} sx={{ cursor: "pointer" }} />
-                  {/* <Span sx={{ fontSize: 12, color: "grey" }}>{userdata.roleName}</Span> */}
-                  <Span sx={{ fontSize: 12, color: "grey" }}>role Name</Span>
+                  <Span sx={{ fontSize: 12, color: "grey" }}>{userdata?.roleName}</Span>
+                  {/* <Span sx={{ fontSize: 12, color: "grey" }}>role Name</Span> */}
                 </Box>
               </UserMenu>
             }
