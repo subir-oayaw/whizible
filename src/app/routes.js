@@ -23,8 +23,13 @@ const EditPage = Loadable(lazy(() => import("app/views/InitiativeManagement/Edit
 const ConvertedInitiatives = Loadable(
   lazy(() => import("app/views/ConvertedInitiatives/ConvertedInitiatives"))
 );
+
+const InitiativeStatusManagement = Loadable(
+  lazy(() => import("app/views/InitiativeStatusManagement/index"))
+);
 const UnderConstruction = Loadable(lazy(() => import("app/views/UnderConstruction")));
 const Warehouse = Loadable(lazy(() => import("app/views/Warehouse/Warehouse")));
+const ExternalAudit = Loadable(lazy(() => import("app/views/ExternalAudit")));
 const WithdrawnInitiatives = Loadable(lazy(() => import("app/views/WithdrawnInitiatives")));
 const Reallocation = Loadable(lazy(() => import("app/views/Reallocation")));
 // DASHBOARD PAGE
@@ -49,6 +54,9 @@ const routes = [
       { path: "/CompletedInitiativesList", element: <CompletedInitiativesList /> },
       { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
       { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
+      { path: "/InitiativeStatusManagement", element: <InitiativeStatusManagement /> },
+
+      { path: "/ExternalAudit", element: <ExternalAudit /> },
       { path: "/actions", element: <ActionItems /> },
       {
         path: "/under-construction",
