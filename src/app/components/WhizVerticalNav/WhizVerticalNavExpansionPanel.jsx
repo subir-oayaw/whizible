@@ -85,9 +85,9 @@ const BadgeValue = styled("div")(() => ({
 }));
 
 const IconImage = styled("img")({
-  // width: 50,
-  // height: 50,
-  filter: "brightness(0) invert(1)" // Keep your existing styles
+  width: 45,
+  height: 45,
+  filter: "brightness(0) invert(1)"
 });
 
 const iconMappings = {

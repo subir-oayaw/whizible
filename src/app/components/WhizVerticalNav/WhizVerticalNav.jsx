@@ -1,26 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, ButtonBase, Icon, styled } from "@mui/material";
 import useSettings from "app/hooks/useSettings";
 import { Paragraph, Span } from "../Typography";
 import WhizVerticalNavExpansionPanel from "./WhizVerticalNavExpansionPanel";
-import {
-  Dashboard as DashboardIcon,
-  Assignment as AssignmentIcon,
-  AssignmentTurnedIn as AssignmentTurnedInIcon,
-  CheckCircle as CheckCircleIcon,
-  Cancel as CancelIcon,
-  Warehouse as WarehouseIcon,
-  AssignmentLate as AuditIcon,
-  SwapHoriz as SwapHorizIcon,
-  TrackChanges as TrackChangesIcon,
-  FormatListNumbered as FormatListNumberedIcon,
-  Link as LinkIcon,
-  Search as SearchIcon,
-  List as ListIcon,
-  HealthAndSafety as HealthAndSafetyIcon,
-  AttachMoney as AttachMoneyIcon
-} from "@mui/icons-material";
+import { CheckCircle as CheckCircleIcon, Cancel as CancelIcon } from "@mui/icons-material";
 
 // Styled components
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
@@ -80,36 +64,15 @@ const BadgeValue = styled("div")(() => ({
   borderRadius: "300px"
 }));
 
-const iconMappings = {
-  "Initiative Management": DashboardIcon,
-  Initiative: AssignmentIcon,
-  "Converted Initiatives": AssignmentTurnedInIcon,
-  "Completed Initiatives": CheckCircleIcon,
-  "Withdrawn Initiatives": CancelIcon,
-  Warehouse: WarehouseIcon,
-  "Action Items": AssignmentTurnedInIcon,
-  "External Audit": AuditIcon,
-  "Initiative Reallocation": SwapHorizIcon,
-  "Initiative Status Management": TrackChangesIcon,
-  "Initiative Tracking": TrackChangesIcon,
-  "Initiative Prioritization": FormatListNumberedIcon,
-  "Initiative Linking": LinkIcon,
-  "Initiative Search": SearchIcon,
-  "Man-Com Prioritization": FormatListNumberedIcon,
-  Program: ListIcon,
-  "Program List": ListIcon,
-  "Projects List": ListIcon,
-  "Project Health Sheet Approval": HealthAndSafetyIcon,
-  "Update Actual Cost": AttachMoneyIcon
-};
-
 export default function WhizVerticalNav({ items }) {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState("Initiative");
 
   const handleClick = (item) => {
     if (!item.isParent) {
+      setSelectedItem(item.tagDescription);
       switch (item.tagDescription) {
         case "Initiative":
           navigate("/dashboard/default");
@@ -138,10 +101,9 @@ export default function WhizVerticalNav({ items }) {
       }
     }
   };
-
   const renderLevels = (data) => {
     return data.map((item, index) => {
-      const IconComponent = iconMappings[item.tagDescription];
+      const IconComponent = selectedItem === item.tagDescription ? CheckCircleIcon : CancelIcon;
       if (item.type === "label") {
         return (
           <ListLabel key={index} mode={mode} className="sidenavHoverShow">
@@ -163,11 +125,11 @@ export default function WhizVerticalNav({ items }) {
           <ButtonBase
             key={item.tagName}
             name="child"
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", paddingLeft: "16px" }} // Added padding here
             onClick={() => handleClick(item)}
           >
             <Icon className="icon" sx={{ width: 36 }}>
-              {IconComponent && <IconComponent />}
+              <IconComponent />
             </Icon>
             <StyledText mode={mode} className="sidenavHoverShow">
               {item.tagName}
