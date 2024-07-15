@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }) => {
             sessionStorage.setItem("access_token", accessToken);
 
             const userProfileResponse = await axios.get(
-              process.env.REACT_APP_BASEURL_ACCESS_CONTROL3 + "/api/UserProfile",
+              process.env.REACT_APP_BASEURL_ACCESS_CONTROL + "/api/UserProfile",
               {
                 headers: {
                   Authorization: `Bearer ${accessToken}`

@@ -93,8 +93,15 @@ export default function WhizVerticalNav({ items }) {
         case "Converted Initiatives":
           navigate("/ConvertedInitiatives");
           break;
-        case "External Audit":
+
+        case "Initiative Management":
           navigate("/Reallocation");
+          break;
+        case "External Audit":
+          navigate("/ExternalAudit");
+          break;
+        case "Initiative Status Management":
+          navigate("/InitiativeStatusManagement");
           break;
         default:
           navigate("/under-construction");
