@@ -6,7 +6,7 @@ const useInitiative = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const userdata = JSON.parse(sessionStorage.getItem("user"));
-  const employeeId = userdata.employeeId;
+  const employeeId = userdata?.employeeId;
   useEffect(() => {
     const fetchData = async () => {
       try {
