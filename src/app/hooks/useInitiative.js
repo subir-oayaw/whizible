@@ -5,14 +5,17 @@ const useInitiative = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const userdata = JSON.parse(sessionStorage.getItem("user"));
+  const employeeId = userdata.employeeId;
   useEffect(() => {
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
         console.log("sss");
         const response = await axios.get(
-          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + "/api/Dashboard?LastActionName=Approved",
+          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 +
+            "/api/Dashboard?LastActionName=Approved&employeeId=" +
+            employeeId,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`
