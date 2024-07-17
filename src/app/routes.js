@@ -23,7 +23,7 @@ const EditPage = Loadable(lazy(() => import("app/views/InitiativeManagement/Edit
 const ConvertedInitiatives = Loadable(
   lazy(() => import("app/views/ConvertedInitiatives/ConvertedInitiatives"))
 );
-
+const ProfilePage = Loadable(lazy(() => import("app/views/Profile/Profile")));
 const InitiativeStatusManagement = Loadable(
   lazy(() => import("app/views/InitiativeStatusManagement/index"))
 );
@@ -55,6 +55,7 @@ const routes = [
       { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
       { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
       { path: "/InitiativeStatusManagement", element: <InitiativeStatusManagement /> },
+      { path: "/page-layouts/user-profile", element: <ProfilePage /> },
 
       { path: "/ExternalAudit", element: <ExternalAudit /> },
       { path: "/actions", element: <ActionItems /> },
