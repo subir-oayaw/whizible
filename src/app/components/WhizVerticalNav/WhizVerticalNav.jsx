@@ -48,7 +48,7 @@ export default function WhizVerticalNav({ items, isHovered }) {
   const { mode } = settings.layout1Settings.leftSidebar;
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState("Initiative");
-
+  console.log("itemsq", items);
   const handleClick = (item) => {
     if (!item.isParent) {
       setSelectedItem(item.tagDescription);

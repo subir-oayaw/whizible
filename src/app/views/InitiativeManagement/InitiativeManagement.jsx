@@ -167,7 +167,7 @@ const InitiativeManagement = () => {
                       data-bs-original-title="All"
                       onClick={() => filterInitiatives("All")}
                     >
-                      <a href="javascript: void(0);" className="">
+                      <a className="">
                         <span id="FltrCountAll" className="fltrcount">
                           {filterCounts.all}
                         </span>
@@ -181,7 +181,7 @@ const InitiativeManagement = () => {
                       data-bs-original-title="Inbox"
                       onClick={() => filterInitiatives("Inbox")}
                     >
-                      <a href="javascript: void(0);">
+                      <a>
                         <span id="FltrCountInbox" className="fltrcount">
                           {filterCounts.inbox}
                         </span>
@@ -195,7 +195,7 @@ const InitiativeManagement = () => {
                       data-bs-original-title="Watchlist"
                       onClick={() => filterInitiatives("Watchlist")}
                     >
-                      <a href="javascript: void(0);">
+                      <a>
                         <span id="FltrCountWatchlist" className="fltrcount">
                           {filterCounts.watchlist}
                         </span>
@@ -209,7 +209,7 @@ const InitiativeManagement = () => {
                       data-bs-original-title="Draft"
                       onClick={() => filterInitiatives("Draft")}
                     >
-                      <a href="javascript: void(0);">
+                      <a>
                         <span id="FltrCountDraft" className="fltrcount">
                           {filterCounts.draft}
                         </span>
