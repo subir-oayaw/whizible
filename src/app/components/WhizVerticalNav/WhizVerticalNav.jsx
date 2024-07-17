@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, ButtonBase, Icon, styled } from "@mui/material";
+import { Box, ButtonBase, styled } from "@mui/material";
 import useSettings from "app/hooks/useSettings";
 import { Paragraph, Span } from "../Typography";
 import WhizVerticalNavExpansionPanel from "./WhizVerticalNavExpansionPanel";
-import { CheckCircle as CheckCircleIcon, Cancel as CancelIcon } from "@mui/icons-material";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+
 // Styled components
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
   fontSize: "12px",
@@ -18,7 +16,7 @@ const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
   color: theme.palette.text.secondary
 }));
 
-const ExtAndIntCommon = styled("div")(({ theme }) => ({
+const InternalLink = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   overflow: "hidden",
@@ -29,27 +27,7 @@ const ExtAndIntCommon = styled("div")(({ theme }) => ({
   textDecoration: "none",
   justifyContent: "space-between",
   transition: "all 150ms ease-in",
-  "&:hover": { background: "rgba(255, 255, 255, 0.08)" },
-  "&.compactNavItem": {
-    overflow: "hidden",
-    justifyContent: "center !important"
-  },
-  "& .icon": {
-    fontSize: "18px",
-    paddingLeft: "16px",
-    paddingRight: "16px",
-    verticalAlign: "middle"
-  }
-}));
-
-const InternalLink = styled(Box)(({ theme }) => ({
-  "& a": {
-    ...ExtAndIntCommon,
-    color: theme.palette.text.primary
-  },
-  "& .navItemActive": {
-    backgroundColor: "rgba(255, 255, 255, 0.16)"
-  }
+  "&:hover": { background: "rgba(255, 255, 255, 0.08)" }
 }));
 
 const StyledText = styled(Span)(({ mode }) => ({
@@ -65,7 +43,7 @@ const BadgeValue = styled("div")(() => ({
   borderRadius: "300px"
 }));
 
-export default function WhizVerticalNav({ items }) {
+export default function WhizVerticalNav({ items, isHovered }) {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
   const navigate = useNavigate();
@@ -93,7 +71,6 @@ export default function WhizVerticalNav({ items }) {
         case "Converted Initiatives":
           navigate("/ConvertedInitiatives");
           break;
-
         case "Initiative Management":
           navigate("/Reallocation");
           break;
@@ -109,10 +86,9 @@ export default function WhizVerticalNav({ items }) {
       }
     }
   };
+
   const renderLevels = (data) => {
     return data.map((item, index) => {
-      const IconComponent =
-        selectedItem === item.tagDescription ? CheckCircleOutlineIcon : HighlightOffIcon;
       if (item.type === "label") {
         return (
           <ListLabel key={index} mode={mode} className="sidenavHoverShow">
@@ -123,7 +99,7 @@ export default function WhizVerticalNav({ items }) {
 
       if (item.children && item.isParent) {
         return (
-          <WhizVerticalNavExpansionPanel mode={mode} item={item} key={index}>
+          <WhizVerticalNavExpansionPanel mode={mode} item={item} key={index} isHovered={isHovered}>
             {renderLevels(item.children)}
           </WhizVerticalNavExpansionPanel>
         );
@@ -137,9 +113,6 @@ export default function WhizVerticalNav({ items }) {
             sx={{ width: "100%", paddingLeft: "6px" }} // Added padding here
             onClick={() => handleClick(item)}
           >
-            <Icon className="icon" sx={{ width: 36 }}>
-              <IconComponent />
-            </Icon>
             <StyledText mode={mode} className="sidenavHoverShow">
               {item.tagName}
             </StyledText>

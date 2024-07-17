@@ -33,7 +33,7 @@ const SideNavMobile = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: { display: "none" }
 }));
 
-export default function Sidenav({ children }) {
+export default function Sidenav({ children, isHovered }) {
   const { settings, updateSettings } = useSettings();
   const [searchTerm, setSearchTerm] = useState("");
   const leftSidebar = settings.layout1Settings.leftSidebar;
@@ -107,7 +107,7 @@ export default function Sidenav({ children }) {
         />
       </StyledSpan>
       <StyledScrollBar options={{ suppressScrollX: true }}>
-        <WhizVerticalNav items={filteredNavigations} />
+        <WhizVerticalNav items={filteredNavigations} isHovered={isHovered} />
         {children}
       </StyledScrollBar>
       <SideNavMobile onClick={() => updateSidebarMode({ mode: "close" })} />

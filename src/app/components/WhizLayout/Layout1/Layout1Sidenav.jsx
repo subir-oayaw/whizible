@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Hidden, Switch, Box, styled, useTheme } from "@mui/material";
 
 import useSettings from "app/hooks/useSettings";
@@ -7,7 +7,6 @@ import Brand from "app/components/Brand";
 import Sidenav from "app/components/Sidenav";
 import { themeShadows } from "app/components/WhizTheme/themeColors";
 
-import { convertHexToRGB } from "app/utils/utils";
 import { sidenavCompactWidth, sideNavWidth } from "app/utils/constant";
 
 // STYLED COMPONENTS
@@ -49,27 +48,43 @@ const Layout1Sidenav = () => {
   const { settings, updateSettings } = useSettings();
   const leftSidebar = settings.layout1Settings.leftSidebar;
   const { mode } = leftSidebar;
+  const [isHovered, setIsHovered] = useState(false);
 
   const getSidenavWidth = () => {
+    console.log("mode", mode);
     switch (mode) {
       case "compact":
         return sidenavCompactWidth;
-
       default:
         return sideNavWidth;
     }
   };
 
   const updateSidebarMode = (sidebarSettings) => {
-    updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
+    updateSettings({
+      layout1Settings: { leftSidebar: { ...sidebarSettings } }
+    });
   };
 
   const handleSidenavToggle = () => {
     updateSidebarMode({ mode: mode === "compact" ? "full" : "compact" });
   };
 
+  const handleMouseEnter = () => {
+    console.log("Hovered!");
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
-    <SidebarNavRoot width={getSidenavWidth()}>
+    <SidebarNavRoot
+      width={getSidenavWidth()}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <NavListBox>
         <Brand>
           <Hidden smDown>
@@ -81,7 +96,7 @@ const Layout1Sidenav = () => {
             />
           </Hidden>
         </Brand>
-        <Sidenav />
+        <Sidenav isHovered={isHovered} />
       </NavListBox>
     </SidebarNavRoot>
   );

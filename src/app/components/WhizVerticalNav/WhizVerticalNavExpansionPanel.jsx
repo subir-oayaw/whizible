@@ -100,7 +100,7 @@ const iconMappings = {
   Favorite: Favorite
 };
 
-export default function WhizVerticalNavExpansionPanel({ item, children, mode }) {
+export default function WhizVerticalNavExpansionPanel({ item, children, mode, isHovered }) {
   const [collapsed, setCollapsed] = useState(true);
   const elementRef = useRef(null);
   const componentHeight = useRef(0);
@@ -110,18 +110,7 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
 
   const handleClick = () => {
     console.log("under", item);
-    if (!item.isParent) {
-      if (item.tagDescription === "Initiative") navigate("/dashboard/default");
-      else if (item.tagDescription === "Warehouse") navigate("/Warehouse");
-      else if (item.tagDescription === "Completed Initiatives")
-        navigate("/CompletedInitiativesList");
-      else if (item.tagDescription === "Withdrawn Initiatives") navigate("/WithdrawnInitiatives");
-      else if (item.tagDescription === "Action Items") navigate("/Actions");
-      else if (item.tagDescription === "Converted Initiatives") navigate("/ConvertedInitiatives");
-      else if (item.tagDescription === "External Audit") navigate("/Reallocation");
-      else navigate("/under-construction"); // Navigate to under construction page
-      return;
-    }
+
     if (!isExpanded) {
       // Check if the item is a leaf node (not expandable)
 
@@ -164,6 +153,9 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
   const getIconPath = (name) => {
     return iconMappings[name] || null;
   };
+  useEffect(() => {
+    setCollapsed(true);
+  }, [isHovered]);
 
   return (
     <NavExpandRoot>
