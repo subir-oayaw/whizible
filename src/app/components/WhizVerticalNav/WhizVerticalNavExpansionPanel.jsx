@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ButtonBase, Box, styled } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import Project from "../../../assets/img/project.svg";
 import InitiativeTracking from "../../../assets/img/initiative-tracking.svg";
 import Reports from "../../../assets/img/reports.svg";
 import Favorite from "../../../assets/img/favorite.svg";
-
+import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 // STYLED COMPONENTS
 const NavExpandRoot = styled("div")(({ theme }) => ({
   "& .expandIcon": {
@@ -85,8 +85,8 @@ const BadgeValue = styled("div")(() => ({
 }));
 
 const IconImage = styled("img")({
-  width: 45,
-  height: 45,
+  width: 40,
+  height: 40,
   filter: "brightness(0) invert(1)"
 });
 
@@ -100,7 +100,7 @@ const iconMappings = {
   Favorite: Favorite
 };
 
-export default function WhizVerticalNavExpansionPanel({ item, children, mode }) {
+export default function WhizVerticalNavExpansionPanel({ item, children, mode, isHovered }) {
   const [collapsed, setCollapsed] = useState(true);
   const elementRef = useRef(null);
   const componentHeight = useRef(0);
@@ -109,19 +109,6 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
   const { tagName, icon, iconText, badge, isExpanded, pageName, isParent } = item;
 
   const handleClick = () => {
-    console.log("under", item);
-    if (!item.isParent) {
-      if (item.tagDescription === "Initiative") navigate("/dashboard/default");
-      else if (item.tagDescription === "Warehouse") navigate("/Warehouse");
-      else if (item.tagDescription === "Completed Initiatives")
-        navigate("/CompletedInitiativesList");
-      else if (item.tagDescription === "Withdrawn Initiatives") navigate("/WithdrawnInitiatives");
-      else if (item.tagDescription === "Action Items") navigate("/Actions");
-      else if (item.tagDescription === "Converted Initiatives") navigate("/ConvertedInitiatives");
-      else if (item.tagDescription === "External Audit") navigate("/Reallocation");
-      else navigate("/under-construction"); // Navigate to under construction page
-      return;
-    }
     if (!isExpanded) {
       // Check if the item is a leaf node (not expandable)
 
@@ -164,6 +151,9 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
   const getIconPath = (name) => {
     return iconMappings[name] || null;
   };
+  useEffect(() => {
+    if (mode != "full") setCollapsed(true);
+  }, [isHovered]);
 
   return (
     <NavExpandRoot>
@@ -201,7 +191,13 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode }) 
         className="expansion-panel submenu"
         style={collapsed ? { maxHeight: "0px" } : { maxHeight: componentHeight.current + "px" }}
       >
-        {children}
+        {children &&
+          React.Children.map(children, (child) => (
+            <div style={{ display: "flex", alignItems: "center", marginLeft: "30px" }}>
+              <PanoramaFishEyeIcon sx={{ fontSize: "10px", position: "relative", top: "-4px" }} />
+              {child}
+            </div>
+          ))}
       </div>
     </NavExpandRoot>
   );
