@@ -1,7 +1,9 @@
 // LoadingPage.js
 
 import React, { useState, useEffect } from "react";
-import { initializeIcons, Icon } from "@fluentui/react"; // Fluent UI imports
+import { initializeIcons } from "@fluentui/react"; // Fluent UI imports
+import loginFrameImage from "../../assets/Images/Loginframe.png";
+import developerImage from "../../assets/Images/developerrr.png";
 
 // Initialize Fluent UI icons (required step)
 initializeIcons();
@@ -16,11 +18,11 @@ const LoadingPage = () => {
     "Efficient money management"
   ];
 
-  // Example icons related to banking from Fluent UI
-  const icons = ["Bank", "Money", "PaymentCard", "Savings", "CreditCardSolid"];
+  // Example images related to banking
+  const images = [loginFrameImage, developerImage];
 
   const [taglineIndex, setTaglineIndex] = useState(0);
-  const [iconIndex, setIconIndex] = useState(0);
+  const [imageIndex, setImageIndex] = useState(0);
   const [dots, setDots] = useState(".");
 
   useEffect(() => {
@@ -28,9 +30,9 @@ const LoadingPage = () => {
       setTaglineIndex((prevIndex) => (prevIndex + 1) % taglines.length);
     }, 3000); // Change tagline every 3 seconds
 
-    const iconInterval = setInterval(() => {
-      setIconIndex((prevIndex) => (prevIndex + 1) % icons.length);
-    }, 3000); // Change icon every 3 seconds
+    const imageInterval = setInterval(() => {
+      setImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000); // Change image every 3 seconds
 
     const dotsInterval = setInterval(() => {
       setDots((prevDots) => {
@@ -49,10 +51,10 @@ const LoadingPage = () => {
 
     return () => {
       clearInterval(taglineInterval);
-      clearInterval(iconInterval);
+      clearInterval(imageInterval);
       clearInterval(dotsInterval);
     };
-  }, [taglines.length, icons.length]);
+  }, [taglines.length, images.length]);
 
   return (
     <div
@@ -67,12 +69,12 @@ const LoadingPage = () => {
     >
       {/* Loading message with animated dots */}
       <div style={{ marginBottom: "1rem" }}>
-        <span>We're fetching latest data for you{dots}</span>
+        <span>We're fetching the latest data for you{dots}</span>
       </div>
 
-      {/* Rotate icons */}
+      {/* Rotate images */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
-        <Icon iconName={icons[iconIndex]} style={{ fontSize: 72 }} />
+        <img src={images[imageIndex]} alt="Loading" style={{ width: 150, height: 150 }} />
       </div>
 
       {/* Rotate taglines */}

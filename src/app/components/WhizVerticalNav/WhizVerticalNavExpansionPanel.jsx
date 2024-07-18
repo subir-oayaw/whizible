@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ButtonBase, Box, styled } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import Project from "../../../assets/img/project.svg";
 import InitiativeTracking from "../../../assets/img/initiative-tracking.svg";
 import Reports from "../../../assets/img/reports.svg";
 import Favorite from "../../../assets/img/favorite.svg";
-
+import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 // STYLED COMPONENTS
 const NavExpandRoot = styled("div")(({ theme }) => ({
   "& .expandIcon": {
@@ -85,8 +85,8 @@ const BadgeValue = styled("div")(() => ({
 }));
 
 const IconImage = styled("img")({
-  width: 45,
-  height: 45,
+  width: 40,
+  height: 40,
   filter: "brightness(0) invert(1)"
 });
 
@@ -109,8 +109,6 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode, is
   const { tagName, icon, iconText, badge, isExpanded, pageName, isParent } = item;
 
   const handleClick = () => {
-    console.log("under", item);
-
     if (!isExpanded) {
       // Check if the item is a leaf node (not expandable)
 
@@ -154,7 +152,7 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode, is
     return iconMappings[name] || null;
   };
   useEffect(() => {
-    setCollapsed(true);
+    if (mode != "full") setCollapsed(true);
   }, [isHovered]);
 
   return (
@@ -193,7 +191,13 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode, is
         className="expansion-panel submenu"
         style={collapsed ? { maxHeight: "0px" } : { maxHeight: componentHeight.current + "px" }}
       >
-        {children}
+        {children &&
+          React.Children.map(children, (child) => (
+            <div style={{ display: "flex", alignItems: "center", marginLeft: "30px" }}>
+              <PanoramaFishEyeIcon sx={{ fontSize: "10px", position: "relative", top: "-4px" }} />
+              {child}
+            </div>
+          ))}
       </div>
     </NavExpandRoot>
   );

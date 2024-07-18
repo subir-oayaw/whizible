@@ -5,13 +5,15 @@ const useSidebar = () => {
   const [SidebarData, setSidebarData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const userdata = JSON.parse(sessionStorage.getItem("user"));
+  const employeeId = userdata?.employeeId;
   useEffect(() => {
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
         const response = await axios.get(
-          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + "/api/Navigation",
+          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 +
+            `/api/Navigation?employeeId=${employeeId}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`
