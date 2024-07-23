@@ -1,6 +1,6 @@
 // src/settings.js
 const settings = {
-  showProviderLogin: true
+  showProviderLogin: false
 };
 
 export default settings;
