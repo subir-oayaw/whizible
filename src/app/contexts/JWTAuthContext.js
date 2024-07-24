@@ -150,7 +150,7 @@ export const AuthProvider = ({ children }) => {
       } finally {
         setTimeout(() => {
           setShowLoader(false);
-        }, 8000); // Show loader for at least 10 seconds
+        }, 1000); // Show loader for at least 10 seconds
       }
     })();
   }, []);

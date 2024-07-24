@@ -34,10 +34,11 @@ const WithdrawnInitiatives = Loadable(lazy(() => import("app/views/WithdrawnInit
 const Reallocation = Loadable(lazy(() => import("app/views/Reallocation")));
 // DASHBOARD PAGE
 const Analytics = Loadable(lazy(() => import("app/utils/Analytics")));
+const InitiativePrioritization = Loadable(lazy(() => import("app/views/InitiativePrioritization")));
 const InitiativeManagement = Loadable(
   lazy(() => import("app/views/InitiativeManagement/InitiativeManagement"))
 );
-
+const InitiativeProgress = Loadable(lazy(() => import("app/views/InitiativeProgress")));
 const routes = [
   {
     element: (
@@ -56,6 +57,7 @@ const routes = [
       { path: "/WithdrawnInitiatives", element: <WithdrawnInitiatives /> },
       { path: "/InitiativeStatusManagement", element: <InitiativeStatusManagement /> },
       { path: "/page-layouts/user-profile", element: <ProfilePage /> },
+      { path: "/InitiativePrioritization", element: <InitiativePrioritization /> },
 
       { path: "/ExternalAudit", element: <ExternalAudit /> },
       { path: "/actions", element: <ActionItems /> },
@@ -63,6 +65,7 @@ const routes = [
         path: "/under-construction",
         element: <UnderConstruction />
       },
+      { path: "/InitiativeProgress", element: <InitiativeProgress /> },
       { path: "/Reallocation", element: <Reallocation /> },
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }

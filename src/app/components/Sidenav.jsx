@@ -1,18 +1,33 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useCallback } from "react";
 import { styled } from "@mui/material/styles";
 import Scrollbar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css"; // Import the CSS
 import { WhizVerticalNav } from "app/components";
 import useSettings from "app/hooks/useSettings";
-import useSidebar from "../hooks/useSidebar"; // Import the custom hook
+import useSidebar from "../hooks/useSidebar";
 import { Span } from "app/components/Typography";
-import eDashboardIcon from "../../assets/img/e-dashboard.svg"; // Import the SVG icon
+import eDashboardIcon from "../../assets/img/e-dashboard.svg";
 import { Search20Regular as SearchIcon } from "@fluentui/react-icons";
 import Search from "../../assets/img/search-icn.svg";
+
 // STYLED COMPONENTS
-const StyledScrollBar = styled(Scrollbar)(() => ({
+const ScrollContainer = styled("div")({
+  height: "calc(100vh - 64px)", // Adjust based on header/footer height
+  overflowY: "auto" // Enable vertical scrolling
+});
+
+const StyledScrollBar = styled(Scrollbar)(({ theme }) => ({
+  height: "100%", // Take up the full height of the parent container
   paddingLeft: "1rem",
   paddingRight: "1rem",
-  position: "relative"
+  overflowY: "auto", // Ensure vertical scrolling
+  overflowX: "hidden", // Hide horizontal overflow if not needed
+  "& .ps__rail-y": {
+    zIndex: 1 // Ensure the scrollbar is above other elements
+  },
+  "& .ps__thumb-y": {
+    background: theme.palette.primary.main // Customize scrollbar color
+  }
 }));
 
 const StyledSpan = styled(Span)(({ mode }) => ({
@@ -41,6 +56,7 @@ export default function Sidenav({ children, isHovered }) {
 
   const { SidebarData: navigations, loading, error } = useSidebar();
   const [filteredNavigations, setFilteredNavigations] = useState([]);
+  const [expandedItems, setExpandedItems] = useState(new Set()); // Track expanded items
 
   useEffect(() => {
     if (navigations) {
@@ -91,9 +107,25 @@ export default function Sidenav({ children, isHovered }) {
     }
   };
 
+  const handleToggleExpand = useCallback((itemId) => {
+    setExpandedItems((prevExpandedItems) => {
+      const newExpandedItems = new Set(prevExpandedItems);
+      if (newExpandedItems.has(itemId)) {
+        newExpandedItems.delete(itemId);
+      } else {
+        newExpandedItems.add(itemId);
+      }
+      return newExpandedItems;
+    });
+  }, []);
+
+  useEffect(() => {
+    // Force a re-render on expand/collapse to update scrollbar height
+    setFilteredNavigations([...filteredNavigations]);
+  }, [expandedItems]);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  console.log("mode", mode);
 
   return (
     <Fragment>
@@ -103,13 +135,20 @@ export default function Sidenav({ children, isHovered }) {
           placeholder="Search..."
           value={searchTerm}
           onChange={handleSearch}
-          style={{ margin: "1rem", padding: "0.005rem", width: "calc(100% - 2rem)" }}
+          style={{ margin: "1rem", padding: "0.5rem", width: "calc(100% - 2rem)" }}
         />
       </StyledSpan>
-      <StyledScrollBar options={{ suppressScrollX: true }}>
-        <WhizVerticalNav items={filteredNavigations} isHovered={isHovered} />
-        {children}
-      </StyledScrollBar>
+      <ScrollContainer>
+        <StyledScrollBar options={{ suppressScrollX: true }}>
+          <WhizVerticalNav
+            items={filteredNavigations}
+            isHovered={isHovered}
+            onToggleExpand={handleToggleExpand} // Pass the toggle function
+            expandedItems={expandedItems} // Pass the expanded items state
+          />
+          {children}
+        </StyledScrollBar>
+      </ScrollContainer>
       <SideNavMobile onClick={() => updateSidebarMode({ mode: "close" })} />
     </Fragment>
   );
