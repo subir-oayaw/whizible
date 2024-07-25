@@ -22,8 +22,8 @@ import ScheduleComponent from "./ScheduleComponent";
 import ResourceComponent from "./ResourceComponent";
 
 const InitiativePrioritization = () => {
-  const [selectedTab, setSelectedTab] = useState("iniReallocationTab");
-  const [selectedTabParameter, setSelectedTabParameter] = useState("cost");
+  const [selectedTab, setSelectedTab] = useState("ReadyforConversion");
+  const [selectedTabParameter, setSelectedTabParameter] = useState("Cost");
   const [currentApprover, setCurrentApprover] = useState("");
   const [natureOfInitiative, setNatureOfInitiative] = useState("");
   const [businessGroup, setBusinessGroup] = useState("");
