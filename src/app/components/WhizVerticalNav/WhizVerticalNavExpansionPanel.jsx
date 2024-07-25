@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ButtonBase, Box, styled } from "@mui/material";
-import { ChevronRight } from "@mui/icons-material";
+import { ChevronRight, PanoramaFishEye } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import EDashboardIcon from "../../../assets/img/e-dashboard.svg";
@@ -11,6 +11,9 @@ import InitiativeTracking from "../../../assets/img/initiative-tracking.svg";
 import Reports from "../../../assets/img/reports.svg";
 import Favorite from "../../../assets/img/favorite.svg";
 import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
+import Configuration from "../../../assets/img/configuration.svg";
+import Security from "../../../assets/img/reports.svg";
+
 // STYLED COMPONENTS
 const NavExpandRoot = styled("div")(({ theme }) => ({
   "& .expandIcon": {
@@ -97,14 +100,16 @@ const iconMappings = {
   Projects: Project,
   "Initiative Tracking": InitiativeTracking,
   Reports: Reports,
-  Favorite: Favorite
+  Favorite: Favorite,
+  Configuration: Configuration,
+  Security: Security
 };
 
 export default function WhizVerticalNavExpansionPanel({ item, children, mode, isHovered }) {
   const [collapsed, setCollapsed] = useState(true);
   const elementRef = useRef(null);
   const componentHeight = useRef(0);
-  const { pathname } = useLocation();
+  const { pathname, location } = useLocation();
   const navigate = useNavigate();
   const { tagName, icon, iconText, badge, isExpanded, pageName, isParent } = item;
 
@@ -151,10 +156,12 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode, is
   const getIconPath = (name) => {
     return iconMappings[name] || null;
   };
-  useEffect(() => {
-    if (mode != "full") setCollapsed(true);
-  }, [isHovered]);
-
+  // useEffect(() => {
+  //   if (mode != "full") setCollapsed(true);
+  // }, [isHovered]);
+  const isSelected = (path) => {
+    return location.pathname.includes(path);
+  };
   return (
     <NavExpandRoot>
       <BaseButton
@@ -166,7 +173,13 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode, is
         onClick={handleClick}
       >
         <Box display="flex" alignItems="center">
-          <IconImage src={getIconPath(tagName)} />
+          {children.length > 0 ? (
+            <IconImage src={getIconPath(tagName)} />
+          ) : isSelected(item.path) ? (
+            <ChevronRight fontSize="small" sx={{ verticalAlign: "middle" }} />
+          ) : (
+            <></>
+          )}
           {iconText && <BulletIcon />}
           <ItemText className="sidenavHoverShow">{tagName}</ItemText>
         </Box>
@@ -193,10 +206,11 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode, is
       >
         {children &&
           React.Children.map(children, (child) => (
-            <div style={{ display: "flex", alignItems: "center", marginLeft: "30px" }}>
-              <PanoramaFishEyeIcon sx={{ fontSize: "10px", position: "relative", top: "-4px" }} />
+            <div
+              style={{ display: "flex", alignItems: "center", marginLeft: "15px", height: "36px" }}
+            >
               {child}
-            </div>
+            </div> // Reduced marginLeft and added height
           ))}
       </div>
     </NavExpandRoot>

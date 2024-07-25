@@ -4,13 +4,14 @@ import { Box, ButtonBase, styled } from "@mui/material";
 import useSettings from "app/hooks/useSettings";
 import { Paragraph, Span } from "../Typography";
 import WhizVerticalNavExpansionPanel from "./WhizVerticalNavExpansionPanel";
+import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 
 // Styled components
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
   fontSize: "12px",
   marginTop: "20px",
   marginLeft: "15px",
-  marginBottom: "10px",
+
   textTransform: "uppercase",
   display: mode === "compact" ? "none" : "block",
   color: theme.palette.text.secondary
@@ -23,7 +24,7 @@ const InternalLink = styled(Box)(({ theme }) => ({
   borderRadius: "4px",
   height: 44,
   whiteSpace: "nowrap",
-  marginBottom: "8px",
+  marginBottom: "0px", // Reduced marginBottom to decrease spacing
   textDecoration: "none",
   justifyContent: "space-between",
   transition: "all 150ms ease-in",
@@ -34,7 +35,9 @@ const StyledText = styled(Span)(({ mode }) => ({
   fontSize: "0.875rem",
   paddingLeft: "0.8rem",
   display: mode === "compact" ? "none" : "block",
-  whiteSpace: "nowrap"
+  whiteSpace: "nowrap",
+  display: "flex",
+  alignItems: "center"
 }));
 
 const BadgeValue = styled("div")(() => ({
@@ -48,7 +51,7 @@ export default function WhizVerticalNav({ items, isHovered }) {
   const { mode } = settings.layout1Settings.leftSidebar;
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState("Initiative");
-  console.log("itemsq", items);
+
   const handleClick = (item) => {
     if (!item.isParent) {
       setSelectedItem(item.tagDescription);
@@ -79,6 +82,12 @@ export default function WhizVerticalNav({ items, isHovered }) {
           break;
         case "Initiative Status Management":
           navigate("/InitiativeStatusManagement");
+          break;
+        case "Initiative Prioritization":
+          navigate("/InitiativePrioritization");
+          break;
+        case "Initiative Progress":
+          navigate("/InitiativeProgress");
           break;
         default:
           navigate("/under-construction");
@@ -114,6 +123,7 @@ export default function WhizVerticalNav({ items, isHovered }) {
             onClick={() => handleClick(item)}
           >
             <StyledText mode={mode} className="sidenavHoverShow">
+              <PanoramaFishEyeIcon sx={{ fontSize: "10px", marginRight: "4px" }} />
               {item.tagName}
             </StyledText>
             <Box mx="auto" />
