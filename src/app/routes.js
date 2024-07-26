@@ -77,6 +77,8 @@ const routes = [
       { path: "/Program", element: <Program /> },
       { path: "/Reallocation", element: <Reallocation /> },
       { path: "/ProjectMain", element: <ProjectMain /> },
+
+      { path: "/edit/:id", element: <EditPage /> },
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }
     ]
@@ -86,8 +88,6 @@ const routes = [
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
-
-  { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
 
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
