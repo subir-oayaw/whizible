@@ -89,6 +89,16 @@ export default function WhizVerticalNav({ items, isHovered }) {
         case "Initiative Progress":
           navigate("/InitiativeProgress");
           break;
+        case "Initiative Progress":
+          navigate("/InitiativeProgress");
+          break;
+
+        case "Initiative Linking":
+          navigate("/InitiativeLinking");
+          break;
+        case "Man-Com Prioritization":
+          navigate("/ManComPrioritization");
+          break;
         default:
           navigate("/under-construction");
           break;

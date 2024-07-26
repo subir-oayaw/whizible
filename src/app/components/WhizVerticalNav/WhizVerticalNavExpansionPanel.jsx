@@ -156,9 +156,9 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode, is
   const getIconPath = (name) => {
     return iconMappings[name] || null;
   };
-  // useEffect(() => {
-  //   if (mode != "full") setCollapsed(true);
-  // }, [isHovered]);
+  useEffect(() => {
+    if (mode != "full") setCollapsed(true);
+  }, [isHovered]);
   const isSelected = (path) => {
     return location.pathname.includes(path);
   };
@@ -206,11 +206,7 @@ export default function WhizVerticalNavExpansionPanel({ item, children, mode, is
       >
         {children &&
           React.Children.map(children, (child) => (
-            <div
-              style={{ display: "flex", alignItems: "center", marginLeft: "15px", height: "36px" }}
-            >
-              {child}
-            </div> // Reduced marginLeft and added height
+            <div style={{ display: "flex", alignItems: "center", marginLeft: "15px" }}>{child}</div> // Reduced marginLeft and added height
           ))}
       </div>
     </NavExpandRoot>

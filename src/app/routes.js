@@ -38,7 +38,12 @@ const InitiativePrioritization = Loadable(lazy(() => import("app/views/Initiativ
 const InitiativeManagement = Loadable(
   lazy(() => import("app/views/InitiativeManagement/InitiativeManagement"))
 );
+const InitiativeConversion = Loadable(lazy(() => import("app/views/InitiativeConversion")));
 const InitiativeProgress = Loadable(lazy(() => import("app/views/InitiativeProgress")));
+const ManComPrioritization = Loadable(lazy(() => import("app/views/ManComPrioritization")));
+const InitiativeLinking = Loadable(lazy(() => import("app/views/InitiativeLinking")));
+const Program = Loadable(lazy(() => import("app/views/Program")));
+const ProjectMain = Loadable(lazy(() => import("app/views/ProjectMain")));
 const routes = [
   {
     element: (
@@ -66,7 +71,14 @@ const routes = [
         element: <UnderConstruction />
       },
       { path: "/InitiativeProgress", element: <InitiativeProgress /> },
+      { path: "/InitiativeConversion", element: <InitiativeConversion /> },
+      { path: "/ManComPrioritization", element: <ManComPrioritization /> },
+      { path: "/InitiativeLinking", element: <InitiativeLinking /> },
+      { path: "/Program", element: <Program /> },
       { path: "/Reallocation", element: <Reallocation /> },
+      { path: "/ProjectMain", element: <ProjectMain /> },
+
+      { path: "/edit/:id", element: <EditPage /> },
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }
     ]
@@ -76,8 +88,6 @@ const routes = [
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
-
-  { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
 
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
