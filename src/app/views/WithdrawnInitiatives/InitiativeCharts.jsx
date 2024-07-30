@@ -1,5 +1,5 @@
-import React from "react";
-import { Card, Col, Row, ProgressBar } from "react-bootstrap";
+import React, { useState } from "react";
+import { Card, Col, Row, Accordion, ProgressBar } from "react-bootstrap";
 import { Bar, Pie, Scatter } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -152,32 +152,36 @@ const InitiativeCharts = () => {
   };
 
   return (
-    <Row className="gx-3 gy-3">
-      <Col md={4}>
-        <Card className="h-100">
-          <Card.Header>By Organization Unit</Card.Header>
-          <Card.Body>
-            <Scatter data={scatterData} options={scatterOptions} />
-          </Card.Body>
-        </Card>
-      </Col>
-      <Col md={4}>
-        <Card className="h-100">
-          <Card.Header>Top 5 Nature of Initiative</Card.Header>
-          <Card.Body>
-            <Bar data={orgUnitBarData} options={barOptions} />
-          </Card.Body>
-        </Card>
-      </Col>
-      <Col md={4}>
-        <Card className="h-100">
-          <Card.Header>Converted to Project / Milestone / Deliverable / Module</Card.Header>
-          <Card.Body>
-            <Pie data={pieData} />
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
+    <Accordion>
+      <Accordion.Item eventKey="0">
+        <Accordion.Header>View Charts</Accordion.Header>
+        <Accordion.Body>
+          <Row className="gx-3 gy-3">
+            <Col md={4}>
+              <Card className="h-100">
+                <Card.Body>
+                  <Scatter data={scatterData} options={scatterOptions} />
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="h-100">
+                <Card.Body>
+                  <Bar data={orgUnitBarData} options={barOptions} />
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="h-100">
+                <Card.Body>
+                  <Pie data={pieData} />
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
   );
 };
 

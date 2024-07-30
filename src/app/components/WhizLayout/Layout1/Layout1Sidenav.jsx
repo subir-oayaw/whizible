@@ -51,7 +51,6 @@ const Layout1Sidenav = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const getSidenavWidth = () => {
-    console.log("mode", mode);
     switch (mode) {
       case "compact":
         return sidenavCompactWidth;
