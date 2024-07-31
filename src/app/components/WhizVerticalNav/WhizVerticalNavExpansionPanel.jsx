@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { ButtonBase, Box, styled } from "@mui/material";
-import { ChevronRight, PanoramaFishEye } from "@mui/icons-material";
-import { useLocation, useNavigate } from "react-router-dom";
-import clsx from "clsx";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import "react-pro-sidebar/dist/css/styles.css";
 import EDashboardIcon from "../../../assets/img/e-dashboard.svg";
 import InitiativeDashboardIcon from "../../../assets/img/initiative-management-icn.svg";
 import BusinessUserTrackingIcon from "../../../assets/img/program.svg";
@@ -10,88 +9,10 @@ import Project from "../../../assets/img/project.svg";
 import InitiativeTracking from "../../../assets/img/initiative-tracking.svg";
 import Reports from "../../../assets/img/reports.svg";
 import Favorite from "../../../assets/img/favorite.svg";
-import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 import Configuration from "../../../assets/img/configuration.svg";
 import Security from "../../../assets/img/reports.svg";
-
-// STYLED COMPONENTS
-const NavExpandRoot = styled("div")(({ theme }) => ({
-  "& .expandIcon": {
-    transition: "transform 0.3s cubic-bezier(0, 0, 0.2, 1) 0ms",
-    transform: "rotate(90deg)"
-  },
-  "& .collapseIcon": {
-    transition: "transform 0.3s cubic-bezier(0, 0, 0.2, 1) 0ms",
-    transform: "rotate(0deg)"
-  },
-  "& .expansion-panel": {
-    overflow: "hidden",
-    transition: "max-height 0.3s cubic-bezier(0, 0, 0.2, 1)",
-    marginLeft: "0px" // Add margin-left of 15px
-    // Add other styles as needed
-  },
-  "& .highlight": {
-    background: theme.palette.primary.main
-  },
-  "&.compactNavItem": {
-    width: 44,
-    overflow: "hidden",
-    justifyContent: "center !important",
-    "& .itemText": { display: "none" },
-    "& .itemIcon": { display: "none" }
-  }
-}));
-
-const BaseButton = styled(ButtonBase)(({ theme }) => ({
-  height: 44,
-  width: "100%",
-  whiteSpace: "pre",
-  overflow: "hidden",
-  paddingRight: "16px",
-  borderRadius: "4px",
-  marginBottom: "8px",
-  display: "flex",
-  justifyContent: "space-between !important",
-  color: theme.palette.text.primary,
-  "&:hover": { background: "rgba(255, 255, 255, 0.08)" },
-  "& .icon": {
-    width: 36,
-    fontSize: "18px",
-    paddingLeft: "16px",
-    paddingRight: "16px",
-    verticalAlign: "middle"
-  }
-}));
-
-const BulletIcon = styled("div")(({ theme }) => ({
-  width: 4,
-  height: 4,
-  color: "inherit",
-  overflow: "hidden",
-  marginLeft: "20px",
-  marginRight: "8px",
-  borderRadius: "300px !important",
-  background: theme.palette.text.primary
-}));
-
-const ItemText = styled("span")(() => ({
-  fontSize: "12px", // Font size set to 12px
-  paddingLeft: "0.8rem",
-  verticalAlign: "middle",
-  color: "#e7e7e7"
-}));
-
-const BadgeValue = styled("div")(() => ({
-  padding: "1px 4px",
-  overflow: "hidden",
-  borderRadius: "300px"
-}));
-
-const IconImage = styled("img")({
-  width: 40,
-  height: 40,
-  filter: "brightness(0) invert(1)"
-});
+import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
+import "./SidebarComponent.css";
 
 const iconMappings = {
   Dashboard: EDashboardIcon,
@@ -105,110 +26,120 @@ const iconMappings = {
   Security: Security
 };
 
-export default function WhizVerticalNavExpansionPanel({ item, children, mode, isHovered }) {
-  const [collapsed, setCollapsed] = useState(true);
-  const elementRef = useRef(null);
-  const componentHeight = useRef(0);
-  const { pathname, location } = useLocation();
+const SidebarComponent = ({ items, mode }) => {
   const navigate = useNavigate();
-  const { tagName, icon, iconText, badge, isExpanded, pageName, isParent } = item;
-
-  const handleClick = () => {
-    if (!isExpanded) {
-      // Check if the item is a leaf node (not expandable)
-
-      // Toggle collapsed state and calculate height for expandable items
-      componentHeight.current = 0;
-      calculateHeight(elementRef.current);
-      setCollapsed(!collapsed);
-    } else {
-      componentHeight.current = 0;
-      calculateHeight(elementRef.current);
-      setCollapsed(!collapsed);
-    }
-  };
-
-  const calculateHeight = useCallback((node) => {
-    if (node.name !== "child") {
-      for (let child of node.children) {
-        calculateHeight(child);
-      }
-    }
-
-    if (node.name === "child") componentHeight.current += node.scrollHeight;
-    else componentHeight.current += 44; // here 44 is node height
-    return;
-  }, []);
+  const location = useLocation();
+  const [selectedItem, setSelectedItem] = useState(location.pathname);
+  const [isCollapsed, setIsCollapsed] = useState(mode !== "full");
+  console.log("first", mode);
+  useEffect(() => {
+    setSelectedItem(location.pathname);
+  }, [location.pathname]);
 
   useEffect(() => {
-    if (!elementRef) return;
+    console.log("setIsCollapsed", mode);
+    setIsCollapsed(mode !== "full");
+  }, [mode]);
 
-    calculateHeight(elementRef.current);
+  const handleClick = (path, tagDescription) => {
+    setSelectedItem(path);
 
-    // OPEN DROPDOWN IF CHILD IS ACTIVE
-    for (let child of elementRef.current.children) {
-      if (child.getAttribute("href") === pathname) {
-        setCollapsed(false);
-      }
+    switch (tagDescription) {
+      case "Initiative":
+        navigate("/dashboard/default");
+        break;
+      case "Warehouse":
+        navigate("/Warehouse");
+        break;
+      case "Completed Initiatives":
+        navigate("/CompletedInitiativesList");
+        break;
+      case "Withdrawn Initiatives":
+        navigate("/WithdrawnInitiatives");
+        break;
+      case "Action Items":
+        navigate("/Actions");
+        break;
+      case "Converted Initiatives":
+        navigate("/ConvertedInitiatives");
+        break;
+      case "Initiative Management":
+        navigate("/Reallocation");
+        break;
+      case "External Audit":
+        navigate("/ExternalAudit");
+        break;
+      case "Initiative Status Management":
+        navigate("/InitiativeStatusManagement");
+        break;
+      case "Initiative Prioritization":
+        navigate("/InitiativePrioritization");
+        break;
+      case "Initiative Progress":
+        navigate("/InitiativeProgress");
+        break;
+      case "Initiative Linking":
+        navigate("/InitiativeLinking");
+        break;
+      case "Man-Com Prioritization":
+        navigate("/ManComPrioritization");
+        break;
+      default:
+        navigate("/under-construction");
+        break;
     }
-  }, [pathname, calculateHeight]);
-
-  const getIconPath = (name) => {
-    return iconMappings[name] || null;
   };
-  useEffect(() => {
-    if (mode != "full") setCollapsed(true);
-  }, [isHovered]);
-  const isSelected = (path) => {
-    return location.pathname.includes(path);
-  };
-  return (
-    <NavExpandRoot>
-      <BaseButton
-        className={clsx({
-          "has-submenu compactNavItem": true,
-          compactNavItem: mode === "compact",
-          open: !collapsed
-        })}
-        onClick={handleClick}
-      >
-        <Box display="flex" alignItems="center">
-          {children.length > 0 ? (
-            <IconImage src={getIconPath(tagName)} />
-          ) : isSelected(item.path) ? (
-            <ChevronRight fontSize="small" sx={{ verticalAlign: "middle" }} />
-          ) : (
-            <></>
-          )}
-          {iconText && <BulletIcon />}
-          <ItemText className="sidenavHoverShow">{tagName}</ItemText>
-        </Box>
 
-        {badge && <BadgeValue className="sidenavHoverShow itemIcon">{badge.value}</BadgeValue>}
+  const renderMenuItems = (data) => {
+    return data.map((item, index) => {
+      const isActive = selectedItem === item.path;
 
-        {isExpanded && (
-          <div
-            className={clsx({
-              sidenavHoverShow: true,
-              collapseIcon: collapsed,
-              expandIcon: !collapsed
-            })}
+      const childIcon = <PanoramaFishEyeIcon style={{ color: "white", fontSize: 16 }} />;
+
+      if (item.isParent) {
+        return (
+          <SubMenu
+            key={index}
+            title={item.tagName}
+            icon={
+              iconMappings[item.tagName] ? (
+                <img src={iconMappings[item.tagName]} alt={item.tagName} className="sidebar-icon" />
+              ) : (
+                <PanoramaFishEyeIcon style={{ color: "white", fontSize: 16 }} />
+              )
+            }
           >
-            <ChevronRight fontSize="small" sx={{ verticalAlign: "middle" }} />
-          </div>
-        )}
-      </BaseButton>
+            {item.children && renderMenuItems(item.children)}
+          </SubMenu>
+        );
+      }
 
-      <div
-        ref={elementRef}
-        className="expansion-panel submenu"
-        style={collapsed ? { maxHeight: "0px" } : { maxHeight: componentHeight.current + "px" }}
-      >
-        {children &&
-          React.Children.map(children, (child) => (
-            <div style={{ display: "flex", alignItems: "center", marginLeft: "15px" }}>{child}</div> // Reduced marginLeft and added height
-          ))}
-      </div>
-    </NavExpandRoot>
+      return (
+        <MenuItem
+          key={index}
+          icon={
+            iconMappings[item.tagName] ? (
+              <img src={iconMappings[item.tagName]} alt={item.tagName} className="sidebar-icon" />
+            ) : (
+              childIcon
+            )
+          }
+          active={isActive}
+          className={isActive ? "active-menu-item" : ""}
+          onClick={() => handleClick(item.path, item.tagDescription)}
+        >
+          {item.tagName}
+          {item.badge && <span className="badge">{item.badge.value}</span>}
+        </MenuItem>
+      );
+    });
+  };
+
+  return (
+    <ProSidebar collapsed={isCollapsed}>
+      <Menu>{renderMenuItems(items)}</Menu>
+    </ProSidebar>
   );
-}
+};
+
+export default SidebarComponent;
