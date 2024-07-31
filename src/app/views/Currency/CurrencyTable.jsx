@@ -21,11 +21,11 @@ const CurrencyTable = ({ currencyData }) => {
   const [data, setData] = useState([]);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [page, setPage] = useState(1);
-  const [rowsPerPage] = useState(5); // Set rows per page as needed
+  const [rowsPerPage] = useState(5);
   const [showForm, setShowForm] = useState(false);
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [individualChecks, setIndividualChecks] = useState(CurrencyInfo_Section.map(() => false));
-
+  const [selectedCurrencyNames, setSelectedCurrencyNames] = useState();
   useEffect(() => {
     setData(currencyData);
     console.log("currencyData4", currencyData);
@@ -73,6 +73,9 @@ const CurrencyTable = ({ currencyData }) => {
     }
   };
 
+  // Get selected items based on individualChecks
+  const selectedItems = currentData.filter((_, index) => individualChecks[index]);
+  console.log("selectedValue2s", selectedCurrencyNames);
   return (
     <div className="mx-4 mt-3">
       <div className="row align-items-end mb-3">
@@ -96,7 +99,11 @@ const CurrencyTable = ({ currencyData }) => {
             <PrimaryButton className="borderbtnbgblue" text="Delete" />
           </div>
         </div>
-        <DrawerCurrency visible={drawerVisible} onClose={() => setDrawerVisible(false)} />
+        <DrawerCurrency
+          visible={drawerVisible}
+          onClose={() => setDrawerVisible(false)}
+          selectedCurrencyNames={selectedCurrencyNames}
+        />
       </div>
       {showForm && <AccorCurrency className="mb-3" onClose={handleCloseForm} />}
       <Box sx={{ height: 340 }}>
@@ -135,7 +142,10 @@ const CurrencyTable = ({ currencyData }) => {
                       href="javascript:;"
                       id="ClearSearchBtn"
                       className="closelink"
-                      onClick={() => setDrawerVisible(true)}
+                      onClick={() => {
+                        setSelectedCurrencyNames([currency]);
+                        setDrawerVisible(true);
+                      }}
                     >
                       {currency.currencyName}
                     </Link>
