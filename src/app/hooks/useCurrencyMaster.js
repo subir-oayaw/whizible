@@ -5,7 +5,7 @@ const useCurrencyMaster = (searchParams) => {
   const [currencyData, setCurrencyData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  console.log("searchParams", searchParams);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,6 +22,7 @@ const useCurrencyMaster = (searchParams) => {
         if (response.status !== 200) {
           throw new Error("Failed to fetch currency data");
         }
+        console.log("currencyData1", response.data);
         setCurrencyData(response.data.data.listCurrencyMaster);
       } catch (error) {
         setError(error.message);

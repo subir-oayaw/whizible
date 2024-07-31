@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Pivot, PivotItem } from "@fluentui/react";
 import CurrencyTable from "./CurrencyTable";
 import useCurrencyMaster from "app/hooks/useCurrencyMaster";
@@ -10,8 +10,8 @@ const CurrencyInfo = () => {
     CurrencyName: "",
     CurrencySymbol: "",
     ConversionRate: "",
-    Major: "",
-    filter_Minor: ""
+    majorCurrencyUnit: "",
+    minorCurrencyUnit: ""
   });
 
   const { currencyData, loading, error } = useCurrencyMaster(searchParams);
@@ -25,12 +25,11 @@ const CurrencyInfo = () => {
       <Pivot className="bglightblue">
         <PivotItem headerText="Currency"></PivotItem>
       </Pivot>
-      <AccorCurrency onClose={() => console.log("Closed")} onSearch={handleSearch} />
-      <div>
-        {loading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
-        {currencyData && <CurrencyTable currencyData={currencyData} />}
-      </div>
+      <AccorCurrency
+        onClose={() => console.log("Closed")}
+        onSearch={handleSearch} // Pass the handleSearch function as a prop
+      />
+      <div>{currencyData && <CurrencyTable currencyData={currencyData} />}</div>
     </div>
   );
 };

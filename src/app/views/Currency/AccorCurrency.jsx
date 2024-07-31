@@ -1,20 +1,26 @@
-import React, { useState } from "react";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Checkbox,
+  FormControlLabel,
+  Link
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Label, TextField, DefaultButton } from "@fluentui/react";
+import React, { useState } from "react";
+import { Label, TextField, Stack, DefaultButton } from "@fluentui/react";
 
-const AccorCurrency = ({ onClose, onSearch }) => {
-  const initialValues = {
-    currencyID: "0",
-    currencyCode: "",
-    currencyName: "",
-    currencySymbol: "",
-    conversionRate: "0",
-    majorCurrencyUnit: "",
-    minorCurrencyUnit: ""
+const Accor_Currency = ({ onClose, onSearch }) => {
+  const RApproach = {
+    filter_CurrencyCode: "",
+    filter_CurrencyName: "",
+    filter_CurrencySymbol: "",
+    filter_ConversionRate: "",
+    filter_Major: "",
+    filter_Minor: ""
   };
 
-  const [formValues, setFormValues] = useState(initialValues);
+  const [formValues, setFormValues] = useState(RApproach);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -25,27 +31,18 @@ const AccorCurrency = ({ onClose, onSearch }) => {
   };
 
   const handleClearSearch = () => {
-    setFormValues(initialValues);
+    setFormValues(RApproach);
   };
 
-  const handleSaveAndSearchClick = () => {
-    console.log("Saving and Searching with Parameters:", formatSearchParams(formValues));
-    if (onSearch) {
-      onSearch(formatSearchParams(formValues));
-    } else {
-      console.error("onSearch function is not defined");
-    }
-  };
-
-  const handleSearchClick = () => {
-    console.log("Search Parameters:", formatSearchParams(formValues));
-    if (onSearch) {
-      onSearch(formatSearchParams(formValues));
-    }
-  };
-
-  const formatSearchParams = (values) => {
-    return `currencyID=${values.currencyID}&currencyCode=${values.currencyCode}&currencyName=${values.currencyName}&currencySymbol=${values.currencySymbol}&conversionRate=${values.conversionRate}&majorCurrencyUnit=${values.majorCurrencyUnit}&minorCurrencyUnit=${values.minorCurrencyUnit}`;
+  const handleSaveAndSearch = () => {
+    onSearch({
+      CurrencyCode: formValues.filter_CurrencyCode,
+      CurrencyName: formValues.filter_CurrencyName,
+      CurrencySymbol: formValues.filter_CurrencySymbol,
+      ConversionRate: formValues.filter_ConversionRate,
+      majorCurrencyUnit: formValues.filter_Major,
+      minorCurrencyUnit: formValues.filter_Minor
+    });
   };
 
   return (
@@ -62,56 +59,58 @@ const AccorCurrency = ({ onClose, onSearch }) => {
         <AccordionDetails>
           <div className="row">
             <div className="col-sm-4 mb-2">
-              <Label htmlFor="currencyCode">Currency Code</Label>
+              <Label htmlFor="filter_CurrencyCode">Currency Code</Label>
               <TextField
-                id="currencyCode"
-                value={formValues.currencyCode}
+                id="filter_CurrencyCode"
+                value={formValues.filter_CurrencyCode}
                 onChange={handleInputChange}
                 placeholder="ac1234"
               />
             </div>
             <div className="col-sm-4 mb-2">
-              <Label htmlFor="currencyName">Currency Name</Label>
+              <Label htmlFor="filter_CurrencyName">Currency Name</Label>
               <TextField
-                id="currencyName"
-                value={formValues.currencyName}
+                id="filter_CurrencyName"
+                value={formValues.filter_CurrencyName}
                 onChange={handleInputChange}
                 placeholder="Indian"
               />
             </div>
             <div className="col-sm-4 mb-2">
-              <Label htmlFor="currencySymbol">Currency Symbol</Label>
+              <Label htmlFor="filter_CurrencySymbol">Currency Symbol</Label>
               <TextField
-                id="currencySymbol"
-                value={formValues.currencySymbol}
+                id="filter_CurrencySymbol"
+                value={formValues.filter_CurrencySymbol}
                 onChange={handleInputChange}
                 placeholder="Rs."
               />
             </div>
             <div className="col-sm-4 mb-2">
-              <Label htmlFor="conversionRate">Conversion Rate (Value Vs. Base Currency)</Label>
+              <Label htmlFor="filter_ConversionRate">
+                Conversion Rate (Value Vs. Base Currency)
+              </Label>
               <TextField
-                id="conversionRate"
-                value={formValues.conversionRate}
+                id="filter_ConversionRate"
+                value={formValues.filter_ConversionRate}
                 onChange={handleInputChange}
                 placeholder="10"
               />
             </div>
             <div className="col-sm-3 mb-2">
-              <Label htmlFor="majorCurrencyUnit">Major</Label>
+              <Label htmlFor="filter_Major">Major</Label>
               <TextField
-                id="majorCurrencyUnit"
-                value={formValues.majorCurrencyUnit}
+                id="filter_Major"
+                value={formValues.filter_Major}
                 onChange={handleInputChange}
                 placeholder="10"
               />
             </div>
             <div className="col-sm-1"></div>
             <div className="col-sm-3 mb-2">
-              <Label htmlFor="minorCurrencyUnit">Minor</Label>
+              <Label htmlFor="filter_Minor">Minor</Label>
               <TextField
-                id="minorCurrencyUnit"
-                value={formValues.minorCurrencyUnit}
+                id="filter_Minor"
+                value={formValues.filter_Minor}
                 onChange={handleInputChange}
                 placeholder="10"
               />
@@ -124,13 +123,13 @@ const AccorCurrency = ({ onClose, onSearch }) => {
                 id="ClearSearchBtn"
                 className="underline_btn"
                 text="Clear Search"
-                onClick={handleClearSearch}
+                onClick={handleClearSearch} // Added onClick handler
               />
               <DefaultButton
                 id="SaveSearchBtn"
                 className="underline_btn"
                 text="Save and Search"
-                onClick={handleSaveAndSearchClick}
+                onClick={handleSaveAndSearch}
               />
               <DefaultButton
                 id="CloseSearchBtn"
@@ -143,7 +142,7 @@ const AccorCurrency = ({ onClose, onSearch }) => {
                 className=""
                 color="primary"
                 text="Search"
-                onClick={handleSearchClick}
+                onClick={handleSaveAndSearch}
               />
             </div>
           </div>
@@ -153,4 +152,4 @@ const AccorCurrency = ({ onClose, onSearch }) => {
   );
 };
 
-export default AccorCurrency;
+export default Accor_Currency;

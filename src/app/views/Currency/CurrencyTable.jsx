@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CurrencyInfo_Section } from "./DummyData"; // Import the dummy data
+import { CurrencyInfo_Section } from "./DummyData";
 import {
   Box,
   Link,
@@ -13,38 +13,30 @@ import {
   TableRow
 } from "@mui/material";
 import Ad_SearchIcon from "../../../assets/img/search-list.png";
-import { Checkbox, Dropdown, Label, mergeStyles, PrimaryButton } from "@fluentui/react";
+import { Checkbox, PrimaryButton } from "@fluentui/react";
 import DrawerCurrency from "./DrawerCurrency";
 import AccorCurrency from "./AccorCurrency";
 
 const CurrencyTable = ({ currencyData }) => {
   const [data, setData] = useState([]);
-  const [DrawerVisible, setDrawerVisible] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage] = useState(5); // Set rows per page as needed
   const [showForm, setShowForm] = useState(false);
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [individualChecks, setIndividualChecks] = useState(CurrencyInfo_Section.map(() => false));
 
   useEffect(() => {
-    // Assuming CurrencyInfo_Section is defined somewhere and passed as props or imported
     setData(currencyData);
-  }, []);
+    console.log("currencyData4", currencyData);
+  }, [currencyData]);
 
   const handleChangePage = (event, value) => {
     setPage(value);
   };
 
   const currentData = data.slice((page - 1) * rowsPerPage, page * rowsPerPage);
-  // Calculate current data to display based on pagination
-  const indexOfLastItem = page * rowsPerPage;
-  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
-  // const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
-  const actionOptions = [
-    { key: "select", text: "Select Action" },
-    { key: "Yes", text: "Yes" },
-    { key: "No", text: "No" }
-  ];
+
   const handleShowForm = () => {
     setShowForm(!showForm);
   };
@@ -66,7 +58,7 @@ const CurrencyTable = ({ currencyData }) => {
   };
 
   const checkboxStyles = {
-    checkbox: mergeStyles({
+    checkbox: {
       selectors: {
         "::after": {
           content: '"✓"',
@@ -75,17 +67,18 @@ const CurrencyTable = ({ currencyData }) => {
           paddingRight: "7px"
         }
       }
-    }),
+    },
     checkmark: {
       visibility: "hidden"
     }
   };
+
   return (
     <div className="mx-4 mt-3">
       <div className="row align-items-end mb-3">
         <div className="col-3 col-sm-3"></div>
         <div className="col-3 col-sm-3" align={"start"}></div>
-        <div className="col-6 col-sm-6 my-2 ">
+        <div className="col-6 col-sm-6 my-2">
           <div className="d-flex justify-content-end gap-3">
             <img
               src={Ad_SearchIcon}
@@ -95,7 +88,6 @@ const CurrencyTable = ({ currencyData }) => {
               aria-label="Search List"
               data-bs-original-title="Search List"
             />
-            {/* <Link href="#"><img src={searchlist_red_icn} className='search_ion' id="search_Icn" tooltipText="Search"/></Link> */}
             <PrimaryButton
               className="borderbtnbgblue"
               onClick={() => setDrawerVisible(true)}
@@ -104,7 +96,7 @@ const CurrencyTable = ({ currencyData }) => {
             <PrimaryButton className="borderbtnbgblue" text="Delete" />
           </div>
         </div>
-        <DrawerCurrency visible={DrawerVisible} onClose={() => setDrawerVisible(false)} />
+        <DrawerCurrency visible={drawerVisible} onClose={() => setDrawerVisible(false)} />
       </div>
       {showForm && <AccorCurrency className="mb-3" onClose={handleCloseForm} />}
       <Box sx={{ height: 340 }}>
@@ -116,8 +108,7 @@ const CurrencyTable = ({ currencyData }) => {
                 <TableCell align="center">Currency Name</TableCell>
                 <TableCell align="center">Currency Symbol</TableCell>
                 <TableCell align="center">
-                  Conversion Rate <br></br>
-                  (Value Vs. Base Currency)
+                  Conversion Rate <br /> (Value Vs. Base Currency)
                 </TableCell>
                 <TableCell align="center">Major</TableCell>
                 <TableCell align="center">Minor</TableCell>
@@ -133,12 +124,12 @@ const CurrencyTable = ({ currencyData }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {currentData.map((healthsheet, index) => (
+              {currentData.map((currency, index) => (
                 <TableRow
-                  key={healthsheet.name}
+                  key={currency.currencyID}
                   style={{ backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9" }}
                 >
-                  <TableCell align="center">{healthsheet.currencyID}</TableCell>
+                  <TableCell align="center">{currency.currencyID}</TableCell>
                   <TableCell align="center">
                     <Link
                       href="javascript:;"
@@ -146,13 +137,13 @@ const CurrencyTable = ({ currencyData }) => {
                       className="closelink"
                       onClick={() => setDrawerVisible(true)}
                     >
-                      {healthsheet.currencyName}
+                      {currency.currencyName}
                     </Link>
                   </TableCell>
-                  <TableCell align="center">{healthsheet.currencySymbol}</TableCell>
-                  <TableCell align="center">{healthsheet.conversionRate}</TableCell>
-                  <TableCell align="center">{healthsheet.majorCurrencyUnit}</TableCell>
-                  <TableCell align="center">{healthsheet.minorCurrencyUnit}</TableCell>
+                  <TableCell align="center">{currency.currencySymbol}</TableCell>
+                  <TableCell align="center">{currency.conversionRate}</TableCell>
+                  <TableCell align="center">{currency.majorCurrencyUnit}</TableCell>
+                  <TableCell align="center">{currency.minorCurrencyUnit}</TableCell>
                   <TableCell align="center">
                     <Checkbox
                       styles={checkboxStyles}
@@ -183,4 +174,5 @@ const CurrencyTable = ({ currencyData }) => {
     </div>
   );
 };
+
 export default CurrencyTable;
