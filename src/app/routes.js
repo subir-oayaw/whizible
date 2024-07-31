@@ -32,6 +32,17 @@ const Warehouse = Loadable(lazy(() => import("app/views/Warehouse/Warehouse")));
 const ExternalAudit = Loadable(lazy(() => import("app/views/ExternalAudit")));
 const WithdrawnInitiatives = Loadable(lazy(() => import("app/views/WithdrawnInitiatives")));
 const Reallocation = Loadable(lazy(() => import("app/views/Reallocation")));
+const Currency = Loadable(lazy(() => import("app/views/Currency")));
+const Skills = Loadable(lazy(() => import("app/views/Skills/SkillsInfo")));
+const Country = Loadable(lazy(() => import("app/views/Country/CountryInformation")));
+const AuditTypeDefinition = Loadable(
+  lazy(() => import("app/views/AuditTypeDefinition/AuditTypeDefiInfo"))
+);
+const DocumentsCategory = Loadable(lazy(() => import("app/views/DocumentsCategory/DocCategory")));
+const DepartmentMaster = Loadable(
+  lazy(() => import("app/views/DepartmentMaster/DepartmentMaster"))
+);
+
 // DASHBOARD PAGE
 const Analytics = Loadable(lazy(() => import("app/utils/Analytics")));
 const InitiativePrioritization = Loadable(lazy(() => import("app/views/InitiativePrioritization")));
@@ -63,7 +74,6 @@ const routes = [
       { path: "/InitiativeStatusManagement", element: <InitiativeStatusManagement /> },
       { path: "/page-layouts/user-profile", element: <ProfilePage /> },
       { path: "/InitiativePrioritization", element: <InitiativePrioritization /> },
-
       { path: "/ExternalAudit", element: <ExternalAudit /> },
       { path: "/actions", element: <ActionItems /> },
       {
@@ -79,6 +89,12 @@ const routes = [
       { path: "/ProjectMain", element: <ProjectMain /> },
 
       { path: "/edit/:id", element: <EditPage /> },
+      { path: "/Currency", element: <Currency /> },
+      { path: "/Skills", element: <Skills /> },
+      { path: "/Country", element: <Country /> },
+      { path: "/AuditTypeDefinition", element: <AuditTypeDefinition /> },
+      { path: "/DocumentsCategory", element: <DocumentsCategory /> },
+      { path: "/DepartmentMaster", element: <DepartmentMaster /> },
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }
     ]
@@ -88,6 +104,8 @@ const routes = [
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
+
+  { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
 
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
