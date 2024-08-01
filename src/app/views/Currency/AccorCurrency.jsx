@@ -93,7 +93,7 @@ const AccorCurrency = ({ onClose, onSearch }) => {
                 className="underline_btn"
                 text="Clear Search"
                 onClick={handleClearSearch}
-                styles={{ root: { backgroundColor: "#f44336", color: "#fff" } }}
+                styles={{ root: { backgroundColor: "#9e9e9e", color: "#fff" } }}
               />
               <DefaultButton
                 id="SaveSearchBtn"
@@ -103,19 +103,18 @@ const AccorCurrency = ({ onClose, onSearch }) => {
                 styles={{ root: { backgroundColor: "#4caf50", color: "#fff" } }}
               />
               <DefaultButton
+                id="SearchBtn"
+                className="borderbtnbgblue"
+                text="Search"
+                onClick={handleSaveAndSearch}
+                styles={{ root: { backgroundColor: "#2196f3", color: "#fff" } }}
+              />
+              <DefaultButton
                 id="CloseSearchBtn"
                 className="underline_btn"
                 onClick={onClose}
                 text="Close"
-                styles={{ root: { backgroundColor: "#9e9e9e", color: "#fff" } }}
-              />
-              <DefaultButton
-                id="SearchBtn"
-                className=""
-                color="primary"
-                text="Search"
-                onClick={handleSaveAndSearch}
-                styles={{ root: { backgroundColor: "#2196f3", color: "#fff" } }}
+                styles={{ root: { backgroundColor: "#f44336", color: "#fff" } }}
               />
             </div>
           </div>

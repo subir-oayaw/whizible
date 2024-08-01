@@ -92,14 +92,17 @@ const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
               data-bs-original-title="Search List"
             />
             <PrimaryButton
-              className="borderbtnbgblue"
               onClick={() => {
                 setSelectedCurrencyNames([]);
                 setDrawerVisible(true);
               }}
-              text="+ Add"
+              text="Add"
+              styles={{ root: { backgroundColor: "#4caf50", color: "#fff" } }}
             />
-            <PrimaryButton className="borderbtnbgblue" text="Delete" />
+            <PrimaryButton
+              text="Delete"
+              styles={{ root: { backgroundColor: "#f44336", color: "#fff" } }}
+            />
           </div>
         </div>
         <DrawerCurrency
