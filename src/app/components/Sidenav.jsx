@@ -107,7 +107,7 @@ export default function Sidenav({ children, isHovered }) {
         />
       </StyledSpan>
       <StyledScrollBar options={{ suppressScrollX: true }}>
-        <WhizVerticalNav items={filteredNavigations} isHovered={isHovered} />
+        <WhizVerticalNav items={filteredNavigations} isHovered={isHovered} mode={mode} />
         {children}
       </StyledScrollBar>
       <SideNavMobile onClick={() => updateSidebarMode({ mode: "close" })} />
