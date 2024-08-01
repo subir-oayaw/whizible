@@ -99,10 +99,17 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initialize = async () => {
       const token = sessionStorage.getItem("access_token");
-      if (token) {
+      const user = sessionStorage.getItem("user");
+
+      if (user) {
+        dispatch({ type: "INIT", payload: { isAuthenticated: true, user: JSON.parse(user) } });
+        setShowLoader(false);
+      } else if (token) {
         dispatch({ type: "INIT", payload: { isAuthenticated: true, user: null } });
+        setShowLoader(false);
       } else {
         dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
+        setShowLoader(false);
       }
     };
 
@@ -135,7 +142,7 @@ export const AuthProvider = ({ children }) => {
             const user = await fetchUserProfile(accessToken);
             sessionStorage.setItem("user", JSON.stringify(user));
 
-            dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user: null } });
+            dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user } });
 
             toast.success("Login successful");
           } else {
@@ -148,14 +155,12 @@ export const AuthProvider = ({ children }) => {
         dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
         toast.error("Login failed. Please retry.");
       } finally {
-        setTimeout(() => {
-          setShowLoader(false);
-        }, 1000); // Show loader for at least 10 seconds
+        setShowLoader(false);
       }
     })();
   }, []);
 
-  if (showLoader || !state.isInitialized) return <LoadingPage />;
+  if (showLoader) return <LoadingPage />;
 
   return (
     <AuthContext.Provider

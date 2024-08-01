@@ -27,7 +27,7 @@ const iconMappings = {
   Security: Security
 };
 
-const WhizVerticalNav = ({ items, isHovered }) => {
+const WhizVerticalNav = ({ items, isHovered, mode }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedItem, setSelectedItem] = useState(location.pathname);
@@ -38,7 +38,7 @@ const WhizVerticalNav = ({ items, isHovered }) => {
     setSelectedItem(location.pathname);
   }, [location.pathname]);
   useEffect(() => {
-    if (isHovered) setIsCollapsed(false);
+    if (isHovered || mode === "full") setIsCollapsed(false);
     else setIsCollapsed(true);
   }, [isHovered]);
   const handleClick = (path, tagDescription) => {

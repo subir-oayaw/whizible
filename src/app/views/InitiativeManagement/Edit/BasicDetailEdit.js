@@ -41,10 +41,10 @@ const classNames = mergeStyleSets({
   }
 });
 
-function BasicDetailEdit({ initiativesID, formData, buttonData, handleFieldChange, handleGoBack }) {
+function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack }) {
   const [formDataState, setFormDataState] = useState({
     natureOfInitiative: "",
-    initiativeCode: initiativesID,
+    initiativeCode: "",
     businessGroup: null,
     organizationUnit: null,
     plannedStart: null,
@@ -80,50 +80,56 @@ function BasicDetailEdit({ initiativesID, formData, buttonData, handleFieldChang
 
   const renderFormElements = () => {
     return formData?.map((field, index) => {
-      const isDisabled = field.stateKey === "initiativeCode";
-      return field.display ? (
-        <div key={index} className={`${classNames.formGroup} col-md-4 mt-2 form-group`}>
-          {field.type === "TextField" ? (
-            <TextField
-              label={field.label}
-              placeholder={field.placeholder}
-              value={formDataState[field.stateKey] || ""}
-              onChange={(ev, newValue) => {
-                if (!isDisabled) {
+      switch (field.type) {
+        case "TextField":
+          return field.display ? (
+            <div key={index} className="col-md-4 mt-2 form-group">
+              <TextField
+                label={field.label}
+                placeholder={field.placeholder}
+                value={formDataState[field.stateKey] || ""}
+                onChange={(ev, newValue) => {
                   setFormDataState({ ...formDataState, [field.stateKey]: newValue });
                   handleFieldChange(newValue, field.stateKey);
-                }
-              }}
-              required={field.required}
-              readOnly={isDisabled}
-              className={isDisabled ? classNames.disabledInput : ""}
-            />
-          ) : field.type === "Dropdown" ? (
-            <Dropdown
-              label={field.label}
-              placeholder={field.placeholder}
-              options={field.options}
-              selectedKey={formDataState[field.stateKey]}
-              onChange={(ev, item) => {
-                const value = item ? item.key : null;
-                setFormDataState({ ...formDataState, [field.stateKey]: value });
-                handleFieldChange(value, field.stateKey);
-              }}
-            />
-          ) : field.type === "DatePicker" ? (
-            <DatePicker
-              label={field.label}
-              placeholder={field.placeholder}
-              value={formDataState[field.stateKey]}
-              onSelectDate={(date) => {
-                setFormDataState({ ...formDataState, [field.stateKey]: date });
-                handleFieldChange(date, field.stateKey);
-              }}
-              isRequired={field.isRequired}
-            />
-          ) : null}
-        </div>
-      ) : null;
+                }}
+                required={field.required}
+              />
+            </div>
+          ) : null;
+        case "Dropdown":
+          return field.display ? (
+            <div key={index} className="col-md-4 mt-2 form-group">
+              <Dropdown
+                label={field.label}
+                placeholder={field.placeholder}
+                options={field.options}
+                selectedKey={formDataState[field.stateKey]}
+                onChange={(ev, item) => {
+                  const value = item ? item.key : null;
+                  setFormDataState({ ...formDataState, [field.stateKey]: value });
+                  handleFieldChange(value, field.stateKey);
+                }}
+              />
+            </div>
+          ) : null;
+        case "DatePicker":
+          return field.display ? (
+            <div key={index} className="col-md-4 mt-2 form-group">
+              <DatePicker
+                label={field.label}
+                placeholder={field.placeholder}
+                value={formDataState[field.stateKey]}
+                onSelectDate={(date) => {
+                  setFormDataState({ ...formDataState, [field.stateKey]: date });
+                  handleFieldChange(date, field.stateKey);
+                }}
+                isRequired={field.isRequired}
+              />
+            </div>
+          ) : null;
+        default:
+          return null;
+      }
     });
   };
 

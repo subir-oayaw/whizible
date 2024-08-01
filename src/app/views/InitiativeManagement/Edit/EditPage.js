@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Nav } from "react-bootstrap";
+import { Nav, Table } from "react-bootstrap";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
+import { TextField, Dropdown, DatePicker } from "@fluentui/react";
 import { Stack } from "@fluentui/react/lib/Stack";
-import { useParams } from "react-router-dom"; // Import useParams
 import "bootstrap/dist/css/bootstrap.min.css";
+import currentstage from "../../../../assets/img/currentstage.svg";
 import { tabData, formData, buttonData, resourcesData, costData } from "./EditDumy";
 import ResourceEdit from "./ResourceEdit";
 import BasicDetailEdit from "./BasicDetailEdit";
@@ -18,11 +19,7 @@ import WorkflowTabs from "./WorkFlow";
 import Discussion from "./Discussion";
 import InitiativeHistoryTab from "./InitiativeHistoryTab";
 import MoreActions from "./MoreActions";
-
-const EditPage = ({ initiativesID: propInitiativesID }) => {
-  const { id: urlInitiativesID } = useParams(); // Get initiativesID from URL
-  const initiativesID = propInitiativesID || urlInitiativesID; // Use propInitiativesID or fallback to URL
-  console.log("urlInitiativesID", urlInitiativesID);
+const EditPage = ({ initiativesID }) => {
   const [activeTab, setActiveTab] = useState(tabData[0]?.id); // State to track active tab
 
   const handleGoBack = () => {
@@ -65,7 +62,7 @@ const EditPage = ({ initiativesID: propInitiativesID }) => {
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
-
+  console.log("initiativeId", initiativesID);
   // Handler for changing active tab
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
@@ -103,11 +100,11 @@ const EditPage = ({ initiativesID: propInitiativesID }) => {
   // Render content based on active tab
   const renderContent = () => {
     if (activeTab === "basic-details") {
+      // Render specific content for "Basic Details" tab
       return (
         <div className="container-fluid mt-3">
           <h3>Resources</h3>
           <BasicDetailEdit
-            initiativesID={initiativesID}
             formData={formData}
             buttonData={buttonData}
             handleFieldChange={handleFieldChange}

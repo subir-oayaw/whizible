@@ -18,8 +18,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import useAuth from "app/hooks/useAuth";
 import microsoftLogo from "../../../assets/img/microsoft-logo.svg";
 import settings from "../../../settings";
-import { forgotPassword } from "../../hooks/password/forgotPasswordAPI";
-import { changePassword } from "../../hooks/password/changePasswordAPI";
+
 function LoginPage() {
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [captchaValue, setCaptchaValue] = useState(null);
@@ -99,28 +98,11 @@ function LoginPage() {
     // }
   };
 
-  const handleForgotPassword = async (e) => {
+  const handleForgotPassword = (e) => {
     e.preventDefault();
-    try {
-      const response = await forgotPassword(username, email);
-      console.log(response);
-      // Handle successful password reset (e.g., show a success message)
-    } catch (error) {
-      console.error("Forgot password failed:", error);
-      // Handle error (e.g., show an error message)
-    }
+    // Handle forgot password logic here
   };
-  const handleChangePassword = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await changePassword(username, oldPassword, newPassword);
-      console.log(response);
-      // Handle successful password change (e.g., show a success message)
-    } catch (error) {
-      console.error("Change password failed:", error);
-      // Handle error (e.g., show an error message)
-    }
-  };
+
   const signin = () => {
     navigate("/dashboard/default");
   };
@@ -309,20 +291,21 @@ function LoginPage() {
                     />
                   </Form.Group>
                   <div className="d-flex justify-content-between mb-4">
+                    <FluentButton className="custom-signin-button" size="large">
+                      <span class="text-white">Reset</span>
+                    </FluentButton>
                     <FluentButton
+                      onClick={() => setShowForgotPassword(false)}
                       className="custom-signin-button"
                       size="large"
-                      onClick={() => setShowForgotPassword(false)}
+                      type="submit"
                     >
                       <span class="text-white">Cancel</span>
-                    </FluentButton>
-                    <FluentButton className="custom-signin-button" size="large" type="submit">
-                      <span class="text-white">Reset</span>
                     </FluentButton>
                   </div>
                 </Form>
               ) : showChangePassword ? (
-                <Form onSubmit={handleChangePassword}>
+                <Form onSubmit={handleForgotPassword}>
                   <Form.Group controlId="formBasicUsername" className="mb-2">
                     <Form.Label>{t("username_label")}</Form.Label>
                     <Input
@@ -367,15 +350,16 @@ function LoginPage() {
                     />
                   </Form.Group>
                   <div className="d-flex justify-content-between mb-4">
+                    <FluentButton className="custom-signin-button" size="large">
+                      <span class="text-white"> Reset</span>
+                    </FluentButton>
                     <FluentButton
+                      onClick={() => setChangePassword(false)}
                       className="custom-signin-button"
                       size="large"
-                      onClick={() => setChangePassword(false)}
+                      type="submit"
                     >
                       <span class="text-white"> Cancel</span>
-                    </FluentButton>
-                    <FluentButton className="custom-signin-button" size="large" type="submit">
-                      <span class="text-white">Reset </span>
                     </FluentButton>
                   </div>
                 </Form>
@@ -446,7 +430,7 @@ function LoginPage() {
                         )}
                         <div className="d-flex justify-content-between mb-2">
                           <Link onClick={() => setChangePassword(true)}>Change Password</Link>
-                          <Link onClick={() => setShowForgotPassword(true)}>Forgot Password</Link>
+                          <Link onClick={() => setShowForgotPassword(true)}>Forgot Password?</Link>
                         </div>
                         <div class="d-flex justify-content-center">
                           <FluentButton className="custom-signin-button" size="large" type="submit">
