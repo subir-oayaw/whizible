@@ -10,7 +10,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React, { useState } from "react";
 import { Label, TextField, Stack, DefaultButton } from "@fluentui/react";
 
-const Accor_Currency = ({ onClose, onSearch }) => {
+const AccorCurrency = ({ onClose, onSearch }) => {
   const RApproach = {
     filter_CurrencyCode: "",
     filter_CurrencyName: "",
@@ -58,64 +58,33 @@ const Accor_Currency = ({ onClose, onSearch }) => {
         </AccordionSummary>
         <AccordionDetails>
           <div className="row">
-            <div className="col-sm-4 mb-2">
-              <Label htmlFor="filter_CurrencyCode">Currency Code</Label>
-              <TextField
-                id="filter_CurrencyCode"
-                value={formValues.filter_CurrencyCode}
-                onChange={handleInputChange}
-                placeholder="ac1234"
-              />
-            </div>
-            <div className="col-sm-4 mb-2">
-              <Label htmlFor="filter_CurrencyName">Currency Name</Label>
-              <TextField
-                id="filter_CurrencyName"
-                value={formValues.filter_CurrencyName}
-                onChange={handleInputChange}
-                placeholder="Indian"
-              />
-            </div>
-            <div className="col-sm-4 mb-2">
-              <Label htmlFor="filter_CurrencySymbol">Currency Symbol</Label>
-              <TextField
-                id="filter_CurrencySymbol"
-                value={formValues.filter_CurrencySymbol}
-                onChange={handleInputChange}
-                placeholder="Rs."
-              />
-            </div>
-            <div className="col-sm-4 mb-2">
-              <Label htmlFor="filter_ConversionRate">
-                Conversion Rate (Value Vs. Base Currency)
-              </Label>
-              <TextField
-                id="filter_ConversionRate"
-                value={formValues.filter_ConversionRate}
-                onChange={handleInputChange}
-                placeholder="10"
-              />
-            </div>
-            <div className="col-sm-3 mb-2">
-              <Label htmlFor="filter_Major">Major</Label>
-              <TextField
-                id="filter_Major"
-                value={formValues.filter_Major}
-                onChange={handleInputChange}
-                placeholder="10"
-              />
-            </div>
-            <div className="col-sm-1"></div>
-            <div className="col-sm-3 mb-2">
-              <Label htmlFor="filter_Minor">Minor</Label>
-              <TextField
-                id="filter_Minor"
-                value={formValues.filter_Minor}
-                onChange={handleInputChange}
-                placeholder="10"
-              />
-            </div>
-            <div className="col-sm-1"></div>
+            {[
+              { id: "filter_CurrencyCode", label: "Currency Code", placeholder: "ac1234" },
+              { id: "filter_CurrencyName", label: "Currency Name", placeholder: "Indian" },
+              { id: "filter_CurrencySymbol", label: "Currency Symbol", placeholder: "Rs." },
+              {
+                id: "filter_ConversionRate",
+                label: "Conversion Rate (Value Vs. Base Currency)",
+                placeholder: "10"
+              },
+              { id: "filter_Major", label: "Major", placeholder: "10" },
+              { id: "filter_Minor", label: "Minor", placeholder: "10" }
+            ].map(({ id, label, placeholder }, index) => (
+              <div key={id} className={`col-sm-${index < 4 ? "4" : "3"} mb-2`}>
+                <Label htmlFor={id}>{label}</Label>
+                <TextField
+                  id={id}
+                  value={formValues[id]}
+                  onChange={handleInputChange}
+                  placeholder={placeholder}
+                  styles={{
+                    root: { width: "100%" },
+                    fieldGroup: { width: "100%" }
+                  }}
+                  underlined
+                />
+              </div>
+            ))}
           </div>
           <div className="row">
             <div className="col-sm-12 d-flex justify-content-end gap-3 mt-3">
@@ -123,19 +92,22 @@ const Accor_Currency = ({ onClose, onSearch }) => {
                 id="ClearSearchBtn"
                 className="underline_btn"
                 text="Clear Search"
-                onClick={handleClearSearch} // Added onClick handler
+                onClick={handleClearSearch}
+                styles={{ root: { backgroundColor: "#f44336", color: "#fff" } }}
               />
               <DefaultButton
                 id="SaveSearchBtn"
                 className="underline_btn"
                 text="Save and Search"
                 onClick={handleSaveAndSearch}
+                styles={{ root: { backgroundColor: "#4caf50", color: "#fff" } }}
               />
               <DefaultButton
                 id="CloseSearchBtn"
                 className="underline_btn"
                 onClick={onClose}
                 text="Close"
+                styles={{ root: { backgroundColor: "#9e9e9e", color: "#fff" } }}
               />
               <DefaultButton
                 id="SearchBtn"
@@ -143,6 +115,7 @@ const Accor_Currency = ({ onClose, onSearch }) => {
                 color="primary"
                 text="Search"
                 onClick={handleSaveAndSearch}
+                styles={{ root: { backgroundColor: "#2196f3", color: "#fff" } }}
               />
             </div>
           </div>
@@ -152,4 +125,4 @@ const Accor_Currency = ({ onClose, onSearch }) => {
   );
 };
 
-export default Accor_Currency;
+export default AccorCurrency;

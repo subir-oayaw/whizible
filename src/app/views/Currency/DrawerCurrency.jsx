@@ -23,7 +23,7 @@ const DrawerCurrency = ({ visible, onClose, selectedCurrencyNames }) => {
   const renderActionItems = () => {
     // Depending on the activeTab, render the corresponding action items
     if (activeTab === "healthsheet-Details") {
-      return <DetailsCurrency selectedCurrencyNames={selectedCurrencyNames} />;
+      return <DetailsCurrency selectedCurrencyNames={selectedCurrencyNames} onClose={onClose} />;
     } else if (activeTab === "History-Details") {
       // Render Audit Action Items logic here
       return <CurrencyInfoHistTbl />;

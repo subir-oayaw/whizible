@@ -25,11 +25,19 @@ const CurrencyInfo = () => {
       <Pivot className="bglightblue">
         <PivotItem headerText="Currency"></PivotItem>
       </Pivot>
-      <AccorCurrency
+      {/* <AccorCurrency
         onClose={() => console.log("Closed")}
         onSearch={handleSearch} // Pass the handleSearch function as a prop
-      />
-      <div>{currencyData && <CurrencyTable currencyData={currencyData} />}</div>
+      /> */}
+      <div>
+        {currencyData && (
+          <CurrencyTable
+            currencyData={currencyData}
+            onSearch={handleSearch}
+            onClose={() => console.log("Closed")}
+          />
+        )}
+      </div>
     </div>
   );
 };

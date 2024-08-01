@@ -88,7 +88,7 @@ export default function WhizVerticalNav({ items, isHovered }) {
   };
 
   const renderLevels = (data) => {
-    return data.map((item, index) => {
+    return data?.map((item, index) => {
       if (item.type === "label") {
         return (
           <ListLabel key={index} mode={mode} className="sidenavHoverShow">

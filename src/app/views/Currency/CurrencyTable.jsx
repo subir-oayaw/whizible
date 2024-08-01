@@ -17,7 +17,7 @@ import { Checkbox, PrimaryButton } from "@fluentui/react";
 import DrawerCurrency from "./DrawerCurrency";
 import AccorCurrency from "./AccorCurrency";
 
-const CurrencyTable = ({ currencyData }) => {
+const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
   const [data, setData] = useState([]);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [page, setPage] = useState(1);
@@ -93,7 +93,10 @@ const CurrencyTable = ({ currencyData }) => {
             />
             <PrimaryButton
               className="borderbtnbgblue"
-              onClick={() => setDrawerVisible(true)}
+              onClick={() => {
+                setSelectedCurrencyNames([]);
+                setDrawerVisible(true);
+              }}
               text="+ Add"
             />
             <PrimaryButton className="borderbtnbgblue" text="Delete" />
@@ -105,7 +108,7 @@ const CurrencyTable = ({ currencyData }) => {
           selectedCurrencyNames={selectedCurrencyNames}
         />
       </div>
-      {showForm && <AccorCurrency className="mb-3" onClose={handleCloseForm} />}
+      {showForm && <AccorCurrency onClose={onClose} onSearch={onSearch} />}
       <Box sx={{ height: 340 }}>
         <TableContainer component={Paper} className="mt-3">
           <Table>

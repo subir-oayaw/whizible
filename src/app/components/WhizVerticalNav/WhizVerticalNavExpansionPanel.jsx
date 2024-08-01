@@ -129,7 +129,7 @@ const WhizVerticalNavExpansionPanel = ({ item, mode, isHovered }) => {
 
   const renderChildren = (children) => {
     if (Array.isArray(children) && children.length > 0) {
-      return children.map((child) => (
+      return children?.map((child) => (
         <WhizVerticalNavExpansionPanel
           key={child.tagId}
           item={child}
