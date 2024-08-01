@@ -1,17 +1,20 @@
 import React from "react";
 import { Pivot, PivotItem } from "@fluentui/react";
 import WithdrawnInitiatives from "./WithdrawnInitiatives";
+import useWithdrawnIni from "../../hooks/useWithdrawnIni";
 
-const CompletedInitiativesList = () => {
+const WithdrawnInitiativesList = () => {
+  const { withdrawnIni: data, loading, error } = useWithdrawnIni();
+
   return (
     <div id="initiative-management" className="container">
       <Pivot>
-        <PivotItem headerText="Completed Initiatives">
-          <WithdrawnInitiatives />
+        <PivotItem headerText="Withdrawn Initiatives">
+          <WithdrawnInitiatives data={data} loading={loading} error={error} />
         </PivotItem>
       </Pivot>
     </div>
   );
 };
 
-export default CompletedInitiativesList;
+export default WithdrawnInitiativesList;

@@ -120,12 +120,7 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
           key={index}
           icon={
             iconMappings[item.tagName] ? (
-              <img
-                src={iconMappings[item.tagName]}
-                alt={item.tagName}
-                style={{ width: 28, height: 28 }}
-                className="sidebar-icon"
-              />
+              <img src={iconMappings[item.tagName]} alt={item.tagName} className="sidebar-icon" />
             ) : (
               childIcon
             )

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Label, TextField, Stack, PrimaryButton, Dropdown, IDropdownOption } from "@fluentui/react";
+import { Label, TextField, Stack, PrimaryButton, Dropdown } from "@fluentui/react";
+import currencySymbolMap from "currency-symbol-map";
+import currencyCodes from "currency-codes";
 
-const currencySymbolOptions = [
-  { key: "$", text: "$ - Dollar" },
-  { key: "€", text: "€ - Euro" },
-  { key: "£", text: "£ - Pound" },
-  { key: "₹", text: "₹ - Rupee" }
-  // Add more symbols as needed
-];
+// Function to get currency symbol options
+const getCurrencySymbolOptions = () => {
+  return currencyCodes.codes().map((code) => {
+    const symbol = currencySymbolMap(code);
+    const currencyName = currencyCodes.code(code).currency;
+    return { key: symbol, text: `${symbol} - ${currencyName} (${code})` };
+  });
+};
 
 const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
   const Currency = {
@@ -18,13 +21,13 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
     Major: "",
     Minor: ""
   };
-  console.log("selectedCurrencyNames2", selectedCurrencyNames);
+
   const [formValues, setFormValues] = useState(Currency);
   const [errors, setErrors] = useState({});
+  const currencySymbolOptions = getCurrencySymbolOptions();
 
   useEffect(() => {
     if (selectedCurrencyNames && selectedCurrencyNames.length > 0) {
-      console.log("selectedCurrencyNames99");
       const currency = selectedCurrencyNames[0];
       setFormValues({
         CurrencyCode: currency.currencyCode || "",
@@ -34,15 +37,9 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
         Major: currency.majorCurrencyUnit || "",
         Minor: currency.minorCurrencyUnit || ""
       });
-    } else
-      setFormValues({
-        CurrencyCode: "",
-        CurrencyName: "",
-        CurrencySymbol: "",
-        ConversionRate: "",
-        Major: "",
-        Minor: ""
-      });
+    } else {
+      setFormValues(Currency);
+    }
   }, [selectedCurrencyNames]);
 
   const handleInputChange = (e) => {
@@ -77,10 +74,8 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
 
   const handleSave = () => {
     if (validateForm()) {
-      // Proceed with save operation
       onClose();
     } else {
-      // Scroll to the first error
       const firstErrorField = Object.keys(errors)[0];
       if (firstErrorField) {
         const element = document.getElementById(firstErrorField);
@@ -92,14 +87,13 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
     }
   };
 
-  // Custom styles for the TextField component
   const textFieldStyles = {
     fieldGroup: { width: "100%" },
     field: {
-      color: "#000", // Entered text color (darker)
+      color: "#000",
       "::placeholder": {
-        color: "lightgrey", // Placeholder text color (lighter)
-        opacity: 1 // Ensure placeholder text is not transparent
+        color: "lightgrey",
+        opacity: 1
       }
     }
   };

@@ -90,6 +90,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
               data-bs-toggle="tooltip"
               aria-label="Search List"
               data-bs-original-title="Search List"
+              style={{ width: "30px", height: "30px" }}
             />
             <PrimaryButton
               onClick={() => {
