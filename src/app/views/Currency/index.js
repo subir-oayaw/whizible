@@ -3,6 +3,8 @@ import { Pivot, PivotItem } from "@fluentui/react";
 import CurrencyTable from "./CurrencyTable";
 import useCurrencyMaster from "app/hooks/useCurrencyMaster";
 import AccorCurrency from "./AccorCurrency";
+import useGetViewOptions from "app/hooks/useGetViewOptions";
+import tagMappings from "../../../app/TagNames/tag";
 
 const CurrencyInfo = () => {
   const [searchParams, setSearchParams] = useState({
@@ -15,9 +17,10 @@ const CurrencyInfo = () => {
   });
 
   const { currencyData, loading, error } = useCurrencyMaster(searchParams);
+  const { getViewOptions } = useGetViewOptions(tagMappings.Currency.toString());
 
   const handleSearch = (newSearchParams) => {
-    setSearchParams(newSearchParams); // Update search parameters
+    setSearchParams(newSearchParams);
   };
 
   return (
@@ -35,6 +38,7 @@ const CurrencyInfo = () => {
             currencyData={currencyData}
             onSearch={handleSearch}
             onClose={() => console.log("Closed")}
+            getViewOptions={getViewOptions}
           />
         )}
       </div>

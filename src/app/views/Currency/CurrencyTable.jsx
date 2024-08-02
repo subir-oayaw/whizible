@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { CurrencyInfo_Section } from "./DummyData";
 import {
   Box,
   Link,
@@ -10,14 +9,18 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
+  Tooltip,
+  Modal,
+  Typography
 } from "@mui/material";
 import Ad_SearchIcon from "../../../assets/img/search-list.png";
 import { Checkbox, PrimaryButton } from "@fluentui/react";
 import DrawerCurrency from "./DrawerCurrency";
 import AccorCurrency from "./AccorCurrency";
+import { CurrencyInfo_Section } from "./DummyData";
 
-const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
+const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
   const [data, setData] = useState([]);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [page, setPage] = useState(1);
@@ -26,9 +29,13 @@ const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [individualChecks, setIndividualChecks] = useState(CurrencyInfo_Section.map(() => false));
   const [selectedCurrencyNames, setSelectedCurrencyNames] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const viewPermission = getViewOptions && getViewOptions[0] ? getViewOptions[0] : {};
+  const { a: canAdd, e: canEdit, d: canDelete } = viewPermission;
+
   useEffect(() => {
     setData(currencyData);
-    console.log("currencyData4", currencyData);
   }, [currencyData]);
 
   const handleChangePage = (event, value) => {
@@ -57,6 +64,15 @@ const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
     setSelectAllChecked(newChecks.every((check) => check));
   };
 
+  const handleDisabledClick = (message) => {
+    setModalMessage(message);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   const checkboxStyles = {
     checkbox: {
       selectors: {
@@ -73,9 +89,6 @@ const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
     }
   };
 
-  // Get selected items based on individualChecks
-  const selectedItems = currentData.filter((_, index) => individualChecks[index]);
-  console.log("selectedValue2s", selectedCurrencyNames);
   return (
     <div className="mx-4 mt-3">
       <div className="row align-items-end mb-3">
@@ -92,18 +105,41 @@ const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
               data-bs-original-title="Search List"
               style={{ width: "30px", height: "30px" }}
             />
-            <PrimaryButton
-              onClick={() => {
-                setSelectedCurrencyNames([]);
-                setDrawerVisible(true);
-              }}
-              text="Add"
-              styles={{ root: { backgroundColor: "#4caf50", color: "#fff" } }}
-            />
-            <PrimaryButton
-              text="Delete"
-              styles={{ root: { backgroundColor: "#f44336", color: "#fff" } }}
-            />
+            <Tooltip title={!canAdd ? "You don't have rights, contact admin" : ""}>
+              <span>
+                <PrimaryButton
+                  onClick={() => {
+                    if (!canAdd) {
+                      handleDisabledClick("You don't have rights to add, contact admin.");
+                    } else {
+                      setSelectedCurrencyNames([]);
+                      setDrawerVisible(true);
+                    }
+                  }}
+                  text="Add"
+                  disabled={!canAdd}
+                  styles={{
+                    root: { backgroundColor: canAdd ? "#1976d2" : "#ccc", color: "#fff" }
+                  }}
+                />
+              </span>
+            </Tooltip>
+            <Tooltip title={!canDelete ? "You don't have rights, contact admin" : ""}>
+              <span>
+                <PrimaryButton
+                  text="Delete"
+                  onClick={() => {
+                    if (!canDelete) {
+                      handleDisabledClick("You don't have rights to delete, contact admin.");
+                    }
+                  }}
+                  disabled={!canDelete}
+                  styles={{
+                    root: { backgroundColor: canDelete ? "#1976d2" : "#ccc", color: "#fff" }
+                  }}
+                />
+              </span>
+            </Tooltip>
           </div>
         </div>
         <DrawerCurrency
@@ -145,18 +181,32 @@ const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
                 >
                   <TableCell align="center">{currency.currencyID}</TableCell>
                   <TableCell align="center">
-                    <Link
-                      href="javascript:;"
-                      id="ClearSearchBtn"
-                      className="closelink"
-                      onClick={() => {
-                        setSelectedCurrencyNames([currency]);
-                        setDrawerVisible(true);
-                      }}
-                    >
-                      {currency.currencyName}
-                    </Link>
+                    <Tooltip title={!canEdit ? "You don't have rights to edit, contact admin" : ""}>
+                      <span>
+                        <Link
+                          href="javascript:;"
+                          id="ClearSearchBtn"
+                          className="closelink"
+                          onClick={() => {
+                            if (!canEdit) {
+                              handleDisabledClick("You don't have rights to edit, contact admin.");
+                            } else {
+                              setSelectedCurrencyNames([currency]);
+                              setDrawerVisible(true);
+                            }
+                          }}
+                          style={{
+                            color: canEdit ? "#1976d2" : "#ccc",
+                            textDecoration: "none",
+                            cursor: canEdit ? "pointer" : "not-allowed"
+                          }}
+                        >
+                          {currency.currencyName}
+                        </Link>
+                      </span>
+                    </Tooltip>
                   </TableCell>
+
                   <TableCell align="center">{currency.currencySymbol}</TableCell>
                   <TableCell align="center">{currency.conversionRate}</TableCell>
                   <TableCell align="center">{currency.majorCurrencyUnit}</TableCell>
@@ -188,6 +238,33 @@ const CurrencyTable = ({ currencyData, onSearch, onClose }) => {
           />
         </Box>
       </div>
+      <Modal
+        open={modalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4
+          }}
+        >
+          <Typography id="modal-title" variant="h6" component="h2">
+            Access Denied
+          </Typography>
+          <Typography id="modal-description" sx={{ mt: 2 }}>
+            {modalMessage}
+          </Typography>
+        </Box>
+      </Modal>
     </div>
   );
 };
