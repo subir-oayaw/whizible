@@ -84,6 +84,9 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
       case "Man-Com Prioritization":
         navigate("/ManComPrioritization");
         break;
+      case "Currency":
+        navigate("/currency");
+        break;
       default:
         navigate("/under-construction");
         break;
