@@ -102,12 +102,12 @@ const routes = [
 
   // session pages route
   { path: "/session/404", element: <NotFound /> },
-  { path: "/", element: <JwtLogin /> },
+  { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
 
   { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
 
-  { path: "/dashboard", element: <Navigate to="dashboard/default" /> },
+  { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
 ];
 
