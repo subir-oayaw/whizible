@@ -5,25 +5,25 @@
 }
 
 .active-menu-item {
-  background: rgba(52, 49, 76, 1); /* Highlight color */
+  /* background: rgba(52, 49, 76, 1);  */
   color: #fff; /* Text color for active items */
 }
 
 .badge {
-  background: rgba(52, 49, 76, 1); /* Badge background color */
+  /* background: rgba(52, 49, 76, 1);  */
   color: #fff; /* Badge text color */
   padding: 2px 6px;
   border-radius: 12px;
   font-size: 12px;
 }
 
-.pro-sidebar > .pro-sidebar-inner {
+/* .pro-sidebar > .pro-sidebar-inner {
   background: rgba(52, 49, 76, 1) !important;
-}
+} */
 /* src/App.css or src/index.css */
-.pro-sidebar .pro-menu > ul > .pro-sub-menu > .pro-inner-list-item {
+/* .pro-sidebar .pro-menu > ul > .pro-sub-menu > .pro-inner-list-item {
   background-color: rgba(52, 49, 76, 1) !important;
-}
+} */
 /* SidebarComponent.css */
 
 /* Adjust the spacing between child items */
