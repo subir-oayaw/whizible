@@ -88,12 +88,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleMicrosoftSignIn = () => {
-    const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
-    const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+    // const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
+    // const redirectUri = process.env.REACT_APP_REDIRECT_URI;
 
-    window.location.href =
-      baseurlAccessControl +
-      `/api/Authentication/login?redirectUri=${encodeURIComponent(redirectUri)}`;
+    // window.location.href =
+    //   baseurlAccessControl +
+    //   `/api/Authentication/login?redirectUri=${encodeURIComponent(redirectUri)}`;
+    sessionStorage.setItem(
+      "access_token",
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCIsImtpZCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCJ9.eyJhdWQiOiJhcGk6Ly8zNjg2NDQ5My1lYTFjLTQ0OGEtYTQ2Yi1mZGFmN2YyMmZiOWYiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC9kZTc3ZWU0My04Y2ViLTQ4OWMtOWU4YS0wMjRmMmM0ZTFhNjIvIiwiaWF0IjoxNzIyODM5MjM1LCJuYmYiOjE3MjI4MzkyMzUsImV4cCI6MTcyMjg0Mzk4MywiYWNyIjoiMSIsImFpbyI6IkFUUUF5LzhYQUFBQXZ2Mm02VUpKVjkrKzNtL015bERQR2V2aFZucFpkM1JRdG5HQnh4bWpzLzAyR2xuQTkrYjErRmxHN3ZuMHRFbFciLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiMzY4NjQ0OTMtZWExYy00NDhhLWE0NmItZmRhZjdmMjJmYjlmIiwiYXBwaWRhY3IiOiIxIiwiaXBhZGRyIjoiMTAzLjE5OS4yMDIuNjEiLCJuYW1lIjoiV2hpemlibGVfVGVzdCIsIm9pZCI6IjhjYmRkOTYzLWY4NGUtNDhlMy1iYmY5LTYyMDBlMTA2YWMwOSIsInJoIjoiMC5BVlVBUS01MzN1dU1uRWllaWdKUExFNGFZcE5FaGpZYzZvcEVwR3Y5cjM4aS01LV9BRG8uIiwic2NwIjoiYWNjZXNzX2FzX3VzZXIiLCJzdWIiOiJEOFFwU2IyV0F0ZnJDRlVZaDktMi1mVm9UR3dnZEdLa3YzdTNTRjcwUFNBIiwidGlkIjoiZGU3N2VlNDMtOGNlYi00ODljLTllOGEtMDI0ZjJjNGUxYTYyIiwidW5pcXVlX25hbWUiOiJXaGl6aWJsZV9UZXN0QHdoaXppYmxlLm5ldCIsInVwbiI6IldoaXppYmxlX1Rlc3RAd2hpemlibGUubmV0IiwidXRpIjoiRGVhRnNmaUNiVXlka2dXNk43TXpBQSIsInZlciI6IjEuMCJ9.WnwzQB5GIi6G-eQvUHZPqHIHdC69Lep-XdguAUEUc6yZ8ERLj8NwFaLwx6kHS3Q4ftZDekRXUhjRb-cAm-mxPpRidrmsctxlqyZfuTcY4t8_zWRJrAwLYYB8qTH2XWFlOXtANzx9C1flmmoqSsf6U2vZDWF-AHyc2h1apbJv87LJlWE-45uwy_kw0ia2Jj_X6YTAmVl5-uELkVxhskXaqqEUDpXjA1F0QyU3PzZ6xNFqLHi-xTkaTGQtHgpGmp8ujmw4t5jIv-8Ri0Rb1i8DgtvQ9Kt2aD5R-6enCFwv5mzfLDozEB0WalUyNeDLEG3Bat39LFngOYq7VutWTW5RMw"
+    );
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -112,36 +117,37 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        const url = window.location.href;
-        const codeMatch = url.match(/[?&]code=([^&]+)/);
-        const stateMatch = url.match(/[?&]state=([^&]+)/);
-        const code = codeMatch ? codeMatch[1] : null;
-        const state = stateMatch ? stateMatch[1] : null;
+        // const url = window.location.href;
+        // const codeMatch = url.match(/[?&]code=([^&]+)/);
+        // const stateMatch = url.match(/[?&]state=([^&]+)/);
+        // const code = codeMatch ? codeMatch[1] : null;
+        // const state = stateMatch ? stateMatch[1] : null;
 
-        if (code && state) {
-          const redirectUri = process.env.REACT_APP_REDIRECT_URI;
-          const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
+        // if (code && state) {
+        //   const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+        //   const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
 
-          const response = await axios.get(
-            `${baseurlAccessControl}/api/Authentication/GetToken?code=${code}&state=${state}&redirectUri=${encodeURIComponent(
-              redirectUri
-            )}`
-          );
+        //   const response = await axios.get(
+        //     `${baseurlAccessControl}/api/Authentication/GetToken?code=${code}&state=${state}&redirectUri=${encodeURIComponent(
+        //       redirectUri
+        //     )}`
+        //   );
 
-          const { accessToken } = response.data;
-          if (accessToken) {
-            sessionStorage.setItem("access_token", accessToken);
+        // const { accessToken } = response.data;
+        accessToken =
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCIsImtpZCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCJ9.eyJhdWQiOiJhcGk6Ly8zNjg2NDQ5My1lYTFjLTQ0OGEtYTQ2Yi1mZGFmN2YyMmZiOWYiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC9kZTc3ZWU0My04Y2ViLTQ4OWMtOWU4YS0wMjRmMmM0ZTFhNjIvIiwiaWF0IjoxNzIyODM5MjM1LCJuYmYiOjE3MjI4MzkyMzUsImV4cCI6MTcyMjg0Mzk4MywiYWNyIjoiMSIsImFpbyI6IkFUUUF5LzhYQUFBQXZ2Mm02VUpKVjkrKzNtL015bERQR2V2aFZucFpkM1JRdG5HQnh4bWpzLzAyR2xuQTkrYjErRmxHN3ZuMHRFbFciLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiMzY4NjQ0OTMtZWExYy00NDhhLWE0NmItZmRhZjdmMjJmYjlmIiwiYXBwaWRhY3IiOiIxIiwiaXBhZGRyIjoiMTAzLjE5OS4yMDIuNjEiLCJuYW1lIjoiV2hpemlibGVfVGVzdCIsIm9pZCI6IjhjYmRkOTYzLWY4NGUtNDhlMy1iYmY5LTYyMDBlMTA2YWMwOSIsInJoIjoiMC5BVlVBUS01MzN1dU1uRWllaWdKUExFNGFZcE5FaGpZYzZvcEVwR3Y5cjM4aS01LV9BRG8uIiwic2NwIjoiYWNjZXNzX2FzX3VzZXIiLCJzdWIiOiJEOFFwU2IyV0F0ZnJDRlVZaDktMi1mVm9UR3dnZEdLa3YzdTNTRjcwUFNBIiwidGlkIjoiZGU3N2VlNDMtOGNlYi00ODljLTllOGEtMDI0ZjJjNGUxYTYyIiwidW5pcXVlX25hbWUiOiJXaGl6aWJsZV9UZXN0QHdoaXppYmxlLm5ldCIsInVwbiI6IldoaXppYmxlX1Rlc3RAd2hpemlibGUubmV0IiwidXRpIjoiRGVhRnNmaUNiVXlka2dXNk43TXpBQSIsInZlciI6IjEuMCJ9.WnwzQB5GIi6G-eQvUHZPqHIHdC69Lep-XdguAUEUc6yZ8ERLj8NwFaLwx6kHS3Q4ftZDekRXUhjRb-cAm-mxPpRidrmsctxlqyZfuTcY4t8_zWRJrAwLYYB8qTH2XWFlOXtANzx9C1flmmoqSsf6U2vZDWF-AHyc2h1apbJv87LJlWE-45uwy_kw0ia2Jj_X6YTAmVl5-uELkVxhskXaqqEUDpXjA1F0QyU3PzZ6xNFqLHi-xTkaTGQtHgpGmp8ujmw4t5jIv-8Ri0Rb1i8DgtvQ9Kt2aD5R-6enCFwv5mzfLDozEB0WalUyNeDLEG3Bat39LFngOYq7VutWTW5RMw";
+        if (accessToken) {
+          sessionStorage.setItem("access_token", accessToken);
 
-            const user = await fetchUserProfile(accessToken);
-            sessionStorage.setItem("user", JSON.stringify(user));
+          const user = await fetchUserProfile(accessToken);
+          sessionStorage.setItem("user", JSON.stringify(user));
 
-            dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user: null } });
+          dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user: null } });
 
-            toast.success("Login successful");
-          } else {
-            dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
-            toast.error("Login failed. Please retry.");
-          }
+          toast.success("Login successful");
+        } else {
+          dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
+          toast.error("Login failed. Please retry.");
         }
       } catch (err) {
         console.error("Initialization failed", err);
@@ -150,7 +156,7 @@ export const AuthProvider = ({ children }) => {
       } finally {
         setTimeout(() => {
           setShowLoader(false);
-        }, 100); // Show loader for at least 10 seconds
+        }, 3000); // Show loader for at least 10 seconds
       }
     })();
   }, []);
