@@ -82,9 +82,6 @@ function LoginPage() {
     setOtp(e.target.value);
     // You can implement validation logic for OTP here
   };
-  useEffect(() => {
-    handleMicrosoftSignIn();
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
