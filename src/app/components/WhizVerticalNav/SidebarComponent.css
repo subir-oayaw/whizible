@@ -5,11 +5,35 @@
   width: 30px;
   height: 30px;
 }
+/* SidebarComponent.css */
 
+/* .menu-item {
+  transition: background-color 0.3s;
+} */
+
+.menu-item.selected-child {
+  color: blue; /* Text color for selected child */
+}
+
+.menu-item:hover {
+  background-color: blue; /* Light gray on hover */
+}
+.sidebar-item {
+  transition: color 0.3s;
+}
+
+.sidebar-item:hover {
+  color: blue !important; /* Blue color on hover */
+}
 /* Style for active menu items */
 .active-menu-item {
-  background: rgba(241, 241, 241, 255); /* Highlight color for active items */
-  color: #000000; /* Text color for active items */
+  color: blue; /* Set the color for the selected menu item */
+  background-color: rgba(
+    0,
+    0,
+    255,
+    0.1
+  ); /* Optional: Add a background color for better visibility */
 }
 
 /* Style for badges next to menu items */
@@ -45,4 +69,7 @@
 /* Optional: adjust padding for submenu items */
 .pro-sidebar .pro-menu > ul > .pro-sub-menu > .pro-inner-list-item {
   padding: 0 24px; /* Adjust padding as needed */
+}
+.pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item:hover {
+  color: blue;
 }

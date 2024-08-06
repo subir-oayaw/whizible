@@ -90,8 +90,29 @@ export default function Sidenav({ children, isHovered }) {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading)
+    return (
+      <div
+        style={{
+          // color: theme.palette.mode === "dark" ? "white" : "black",
+          // backgroundColor: theme.palette.mode === "dark" ? "#333" : "#fdd",
+          padding: "10px",
+          borderRadius: "4px"
+        }}
+      >
+        Loading...
+      </div>
+    );
+  <div
+    style={{
+      // color: theme.palette.mode === "dark" ? "white" : "black",
+      // backgroundColor: theme.palette.mode === "dark" ? "#333" : "#fdd",
+      padding: "10px",
+      borderRadius: "4px"
+    }}
+  >
+    Error: {error}
+  </div>;
   console.log("mode", mode);
 
   return (
