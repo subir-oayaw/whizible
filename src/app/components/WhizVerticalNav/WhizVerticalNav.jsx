@@ -39,6 +39,7 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
   });
 
   useEffect(() => {
+    console.log("black", app);
     if (app) {
       app.initialize(() => {
         app.getContext((context) => {
