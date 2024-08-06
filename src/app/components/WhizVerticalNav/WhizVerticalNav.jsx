@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import "react-pro-sidebar/dist/css/styles.css"; // Ensure this path is correct
+import "react-pro-sidebar/dist/css/styles.css";
 import { app } from "@microsoft/teams-js";
 import EDashboardIcon from "../../../assets/img/e-dashboard.svg";
 import InitiativeDashboardIcon from "../../../assets/img/initiative-management-icn.svg";
@@ -13,8 +13,7 @@ import Favorite from "../../../assets/img/favorite.svg";
 import Configuration from "../../../assets/img/configuration.svg";
 import Security from "../../../assets/img/reports.svg";
 import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import "./SidebarComponent.css"; // Import the CSS file
+import "./SidebarComponent.css";
 
 const iconMappings = {
   Dashboard: EDashboardIcon,
@@ -39,24 +38,36 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
   });
 
   useEffect(() => {
-    console.log("black", app);
-    if (app) {
-      app.initialize(() => {
-        app.getContext((context) => {
-          if (context.theme === "dark") {
-            setTheme({
-              background: "black",
-              color: "white" // Text color for dark mode
+    const initializeTeams = async () => {
+      if (window.microsoftTeams) {
+        try {
+          await new Promise((resolve) => {
+            window.microsoftTeams.app.initialize(() => {
+              resolve();
             });
-          } else {
-            setTheme({
-              background: "rgba(241, 241, 241, 255)",
-              color: "black" // Text color for light mode
-            });
-          }
-        });
-      });
-    }
+          });
+          window.microsoftTeams.app.getContext((context) => {
+            if (context.theme === "dark") {
+              setTheme({
+                background: "black",
+                color: "white" // Text color for dark mode
+              });
+            } else {
+              setTheme({
+                background: "rgba(241, 241, 241, 255)",
+                color: "black" // Text color for light mode
+              });
+            }
+          });
+        } catch (error) {
+          console.error("Teams SDK initialization failed:", error);
+        }
+      } else {
+        console.error("Teams SDK is not available.");
+      }
+    };
+
+    initializeTeams();
   }, []);
 
   useEffect(() => {
@@ -69,11 +80,13 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
   }, [isHovered]);
 
   const handleClick = (path, tagDescription) => {
-    setSelectedItem(path);
+    const formattedPath = `/${path.replace(".aspx", "")}`;
+    setSelectedItem(formattedPath);
+    console.log(`Navigating to: ${formattedPath}`); // Logging for debugging
 
     switch (tagDescription) {
       case "Initiative":
-        navigate("/dashboard/default");
+        navigate("/InitiativeManagement");
         break;
       case "Warehouse":
         navigate("/Warehouse");
@@ -120,10 +133,15 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
     }
   };
 
+  const isSelected = (item) => {
+    // Ensure path format is consistent
+    const formattedPath = `/${item.pageName.replace(".aspx", "")}`;
+    return selectedItem === formattedPath;
+  };
+
   const renderMenuItems = (data) => {
     return data.map((item, index) => {
-      const isActive = selectedItem === item.path;
-
+      const isActive = isSelected(item);
       const childIcon = <PanoramaFishEyeIcon style={{ fontSize: 10 }} />;
 
       if (item.isParent) {
@@ -138,7 +156,7 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
                 <PanoramaFishEyeIcon style={{ color: "white", fontSize: 16 }} />
               )
             }
-            style={{ color: theme.color }} // Apply text color here
+            style={{ color: theme.color }}
           >
             {item.children && renderMenuItems(item.children)}
           </SubMenu>
@@ -155,10 +173,8 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
               childIcon
             )
           }
-          active={isActive}
-          className={isActive ? "active-menu-item" : ""}
-          onClick={() => handleClick(item.path, item.tagDescription)}
-          style={{ color: theme.color }} // Apply text color here
+          style={{ color: isActive ? "blue" : theme.color }} // Apply blue color to selected item
+          onClick={() => handleClick(item.pageName, item.tagDescription)}
         >
           {item.tagName}
           {item.badge && <span className="badge">{item.badge.value}</span>}
@@ -167,11 +183,10 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
     });
   };
 
-  console.log("backgroundColor", theme);
   return (
     <ProSidebar
       collapsed={isCollapsed}
-      style={{ backgroundColor: theme.background, color: theme.color }} // Set dynamic background and text color
+      style={{ backgroundColor: theme.background, color: theme.color }}
     >
       <Menu>{renderMenuItems(items)}</Menu>
     </ProSidebar>

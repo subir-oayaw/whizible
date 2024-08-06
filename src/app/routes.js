@@ -66,7 +66,7 @@ const routes = [
       ...materialRoutes,
       // dashboard route
       { path: "/analytics", element: <Analytics />, auth: authRoles.admin },
-      { path: "/dashboard/default", element: <InitiativeManagement />, auth: authRoles.admin },
+      { path: "/InitiativeManagement", element: <InitiativeManagement />, auth: authRoles.admin },
       { path: "/Warehouse", element: <Warehouse /> },
       { path: "/CompletedInitiativesList", element: <CompletedInitiativesList /> },
       { path: "/ConvertedInitiatives", element: <ConvertedInitiatives /> },
@@ -107,7 +107,7 @@ const routes = [
 
   { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
 
-  { path: "/", element: <Navigate to="dashboard/default" /> },
+  { path: "/", element: <Navigate to="InitiativeManagement" /> },
   { path: "*", element: <NotFound /> }
 ];
 
