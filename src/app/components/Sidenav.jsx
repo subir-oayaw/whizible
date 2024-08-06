@@ -10,7 +10,6 @@ import { Search20Regular as SearchIcon } from "@fluentui/react-icons";
 import Search from "../../assets/img/search-icn.svg";
 // STYLED COMPONENTS
 const StyledScrollBar = styled(Scrollbar)(() => ({
-  paddingLeft: "1rem",
   paddingRight: "1rem",
   position: "relative"
 }));
@@ -97,7 +96,7 @@ export default function Sidenav({ children, isHovered }) {
 
   return (
     <Fragment>
-      <StyledSpan mode={mode} className="sidenavHoverShow">
+      {/* <StyledSpan mode={mode} className="sidenavHoverShow">
         <input
           type="text"
           placeholder="Search..."
@@ -105,7 +104,7 @@ export default function Sidenav({ children, isHovered }) {
           onChange={handleSearch}
           style={{ margin: "1rem", padding: "0.005rem", width: "calc(100% - 2rem)" }}
         />
-      </StyledSpan>
+      </StyledSpan> */}
       <StyledScrollBar options={{ suppressScrollX: true }}>
         <WhizVerticalNav items={filteredNavigations} isHovered={isHovered} mode={mode} />
         {children}
