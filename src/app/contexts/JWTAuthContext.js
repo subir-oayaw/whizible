@@ -88,9 +88,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleMicrosoftSignIn = () => {
-    const accessToken =
-"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCIsImtpZCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCJ9.eyJhdWQiOiJhcGk6Ly8zNjg2NDQ5My1lYTFjLTQ0OGEtYTQ2Yi1mZGFmN2YyMmZiOWYiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC9kZTc3ZWU0My04Y2ViLTQ4OWMtOWU4YS0wMjRmMmM0ZTFhNjIvIiwiaWF0IjoxNzIyODQ5MTU2LCJuYmYiOjE3MjI4NDkxNTYsImV4cCI6MTcyMjg1MzM3NiwiYWNyIjoiMSIsImFpbyI6IkFUUUF5LzhYQUFBQUVRWTIxdVhic215ZEJXTERZK0taRXFaMk9VYTdXclRJNE1SeVVCLzVEOFVLTnF6TS9iKzljY0E0MXdhRDF6K3ciLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiMzY4NjQ0OTMtZWExYy00NDhhLWE0NmItZmRhZjdmMjJmYjlmIiwiYXBwaWRhY3IiOiIxIiwiaXBhZGRyIjoiMTAzLjE5OS4yMDIuNjEiLCJuYW1lIjoiV2hpemlibGVfVGVzdCIsIm9pZCI6IjhjYmRkOTYzLWY4NGUtNDhlMy1iYmY5LTYyMDBlMTA2YWMwOSIsInJoIjoiMC5BVlVBUS01MzN1dU1uRWllaWdKUExFNGFZcE5FaGpZYzZvcEVwR3Y5cjM4aS01LV9BRG8uIiwic2NwIjoiYWNjZXNzX2FzX3VzZXIiLCJzdWIiOiJEOFFwU2IyV0F0ZnJDRlVZaDktMi1mVm9UR3dnZEdLa3YzdTNTRjcwUFNBIiwidGlkIjoiZGU3N2VlNDMtOGNlYi00ODljLTllOGEtMDI0ZjJjNGUxYTYyIiwidW5pcXVlX25hbWUiOiJXaGl6aWJsZV9UZXN0QHdoaXppYmxlLm5ldCIsInVwbiI6IldoaXppYmxlX1Rlc3RAd2hpemlibGUubmV0IiwidXRpIjoiY1ZxS3E3WUwtVXVGclBDRmNpLXRBQSIsInZlciI6IjEuMCJ9.J02Zb2c3Yg_sKCk4H98lQ-5FVe7BhIjxAGlLZpWUs-JtzFN_sgl6UIe0aNyYiNjSjRMoUVwZ7RIXpvWhM92wszcSWc-7TvOeGTOf4xeS0nHUhRwmub9qVt7eC9zSybEXzuxGVhfSwJ0FJw6ZlKjb5LA71cpbbk4ErMXxSVFYcF8H2h2BaaX4b_Am2Vr1zoV6l6Fz0ncPVzFTjQWXjHwzZXmkbgc8CQYeEJ9oNYK467d08B5VJlZKzXeXLB9EArnYsQg4KnvKLhWrzt16Wkgx_P8mwjoxno_exioLHvPHgDpU21sSMTN__TmjLM_Y_9_F5nyWWYPgHWY6qe8vCXYkkg"      
-sessionStorage.setItem("access_token", accessToken);
+    const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
+    const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+
+    window.location.href =
+      baseurlAccessControl +
+      `/api/Authentication/login?redirectUri=${encodeURIComponent(redirectUri)}`;
   };
 
   useEffect(() => {
@@ -116,37 +119,37 @@ sessionStorage.setItem("access_token", accessToken);
   useEffect(() => {
     (async () => {
       try {
-        // const url = window.location.href;
-        // const codeMatch = url.match(/[?&]code=([^&]+)/);
-        // const stateMatch = url.match(/[?&]state=([^&]+)/);
-        // const code = codeMatch ? codeMatch[1] : null;
-        // const state = stateMatch ? stateMatch[1] : null;
+        const url = window.location.href;
+        const codeMatch = url.match(/[?&]code=([^&]+)/);
+        const stateMatch = url.match(/[?&]state=([^&]+)/);
+        const code = codeMatch ? codeMatch[1] : null;
+        const state = stateMatch ? stateMatch[1] : null;
 
-        // if (code && state) {
-        //   const redirectUri = process.env.REACT_APP_REDIRECT_URI;
-        //   const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
+        if (code && state) {
+          const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+          const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
 
-        //   const response = await axios.get(
-        //     `${baseurlAccessControl}/api/Authentication/GetToken?code=${code}&state=${state}&redirectUri=${encodeURIComponent(
-        //       redirectUri
-        //     )}`
-        //   );
+          const response = await axios.get(
+            `${baseurlAccessControl}/api/Authentication/GetToken?code=${code}&state=${state}&redirectUri=${encodeURIComponent(
+              redirectUri
+            )}`
+          );
 
-        // const { accessToken } = response.data;
-        const accessToken =
-         "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCIsImtpZCI6IktRMnRBY3JFN2xCYVZWR0JtYzVGb2JnZEpvNCJ9.eyJhdWQiOiJhcGk6Ly8zNjg2NDQ5My1lYTFjLTQ0OGEtYTQ2Yi1mZGFmN2YyMmZiOWYiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC9kZTc3ZWU0My04Y2ViLTQ4OWMtOWU4YS0wMjRmMmM0ZTFhNjIvIiwiaWF0IjoxNzIyODQ5MTU2LCJuYmYiOjE3MjI4NDkxNTYsImV4cCI6MTcyMjg1MzM3NiwiYWNyIjoiMSIsImFpbyI6IkFUUUF5LzhYQUFBQUVRWTIxdVhic215ZEJXTERZK0taRXFaMk9VYTdXclRJNE1SeVVCLzVEOFVLTnF6TS9iKzljY0E0MXdhRDF6K3ciLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiMzY4NjQ0OTMtZWExYy00NDhhLWE0NmItZmRhZjdmMjJmYjlmIiwiYXBwaWRhY3IiOiIxIiwiaXBhZGRyIjoiMTAzLjE5OS4yMDIuNjEiLCJuYW1lIjoiV2hpemlibGVfVGVzdCIsIm9pZCI6IjhjYmRkOTYzLWY4NGUtNDhlMy1iYmY5LTYyMDBlMTA2YWMwOSIsInJoIjoiMC5BVlVBUS01MzN1dU1uRWllaWdKUExFNGFZcE5FaGpZYzZvcEVwR3Y5cjM4aS01LV9BRG8uIiwic2NwIjoiYWNjZXNzX2FzX3VzZXIiLCJzdWIiOiJEOFFwU2IyV0F0ZnJDRlVZaDktMi1mVm9UR3dnZEdLa3YzdTNTRjcwUFNBIiwidGlkIjoiZGU3N2VlNDMtOGNlYi00ODljLTllOGEtMDI0ZjJjNGUxYTYyIiwidW5pcXVlX25hbWUiOiJXaGl6aWJsZV9UZXN0QHdoaXppYmxlLm5ldCIsInVwbiI6IldoaXppYmxlX1Rlc3RAd2hpemlibGUubmV0IiwidXRpIjoiY1ZxS3E3WUwtVXVGclBDRmNpLXRBQSIsInZlciI6IjEuMCJ9.J02Zb2c3Yg_sKCk4H98lQ-5FVe7BhIjxAGlLZpWUs-JtzFN_sgl6UIe0aNyYiNjSjRMoUVwZ7RIXpvWhM92wszcSWc-7TvOeGTOf4xeS0nHUhRwmub9qVt7eC9zSybEXzuxGVhfSwJ0FJw6ZlKjb5LA71cpbbk4ErMXxSVFYcF8H2h2BaaX4b_Am2Vr1zoV6l6Fz0ncPVzFTjQWXjHwzZXmkbgc8CQYeEJ9oNYK467d08B5VJlZKzXeXLB9EArnYsQg4KnvKLhWrzt16Wkgx_P8mwjoxno_exioLHvPHgDpU21sSMTN__TmjLM_Y_9_F5nyWWYPgHWY6qe8vCXYkkg"
-        if (accessToken) {
-          sessionStorage.setItem("access_token", accessToken);
+          const { accessToken } = response.data;
 
-          const user = await fetchUserProfile(accessToken);
-          sessionStorage.setItem("user", JSON.stringify(user));
+          if (accessToken) {
+            sessionStorage.setItem("access_token", accessToken);
 
-          dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user } });
+            const user = await fetchUserProfile(accessToken);
+            sessionStorage.setItem("user", JSON.stringify(user));
 
-          toast.success("Login successful");
-        } else {
-          dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
-          toast.error("Login failed. Please retry.");
+            dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user } });
+
+            toast.success("Login successful");
+          } else {
+            dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
+            toast.error("Login failed. Please retry.");
+          }
         }
       } catch (err) {
         console.error("Initialization failed", err);
