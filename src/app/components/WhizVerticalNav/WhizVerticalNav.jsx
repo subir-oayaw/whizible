@@ -27,6 +27,27 @@ const iconMappings = {
   Security: Security
 };
 
+// Function to build the full path correctly
+const buildFullPath = (parentPath, tagDescription) => {
+  // If parentPath exists, trim any extra spaces and append tagDescription
+  if (parentPath) {
+    // Clean up the parentPath and tagDescription, removing any leading or trailing ">"
+    let cleanParentPath = parentPath
+      .trim()
+      .replace(/^\s*>\s*/, "")
+      .replace(/\s*>\s*$/, "");
+    let cleanTagDescription = tagDescription
+      .trim()
+      .replace(/^\s*>\s*/, "")
+      .replace(/\s*>\s*$/, "");
+
+    // Concatenate and ensure no double ">"
+    return `${cleanParentPath} > ${cleanTagDescription}`.replace(/\s*>\s*>+\s*/g, " > ");
+  }
+  // If no parentPath, return tagDescription directly
+  return tagDescription.trim();
+};
+
 const WhizVerticalNav = ({ items, isHovered, mode }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -79,10 +100,14 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
     else setIsCollapsed(true);
   }, [isHovered]);
 
-  const handleClick = (path, tagDescription) => {
+  const handleClick = (path, tagDescription, parentPath) => {
     const formattedPath = `/${path.replace(".aspx", "")}`;
     setSelectedItem(formattedPath);
     console.log(`Navigating to: ${formattedPath}`); // Logging for debugging
+
+    // Build the full path and store it in sessionStorage
+    const fullPath = buildFullPath(parentPath, tagDescription);
+    sessionStorage.setItem("selectedPath", fullPath);
 
     switch (tagDescription) {
       case "Initiative":
@@ -139,7 +164,7 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
     return selectedItem === formattedPath;
   };
 
-  const renderMenuItems = (data) => {
+  const renderMenuItems = (data, parentPath = "") => {
     return data.map((item, index) => {
       const isActive = isSelected(item);
       const childIcon = <PanoramaFishEyeIcon style={{ fontSize: 10 }} />;
@@ -153,12 +178,13 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
               iconMappings[item.tagName] ? (
                 <img src={iconMappings[item.tagName]} alt={item.tagName} className="sidebar-icon" />
               ) : (
-                <PanoramaFishEyeIcon style={{ color: "white", fontSize: 16 }} />
+                <PanoramaFishEyeIcon style={{ fontSize: 16 }} />
               )
             }
             style={{ color: theme.color }}
           >
-            {item.children && renderMenuItems(item.children)}
+            {item.children &&
+              renderMenuItems(item.children, buildFullPath(parentPath, item.tagName))}
           </SubMenu>
         );
       }
@@ -174,7 +200,7 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
             )
           }
           style={{ color: isActive ? "blue" : theme.color }} // Apply blue color to selected item
-          onClick={() => handleClick(item.pageName, item.tagDescription)}
+          onClick={() => handleClick(item.pageName, item.tagDescription, parentPath)}
         >
           {item.tagName}
           {item.badge && <span className="badge">{item.badge.value}</span>}

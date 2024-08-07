@@ -11,9 +11,11 @@ import {
   TableRow
 } from "@mui/material";
 import { Dropdown, Label } from "@fluentui/react";
+import { useTranslation } from "react-i18next"; // Import useTranslation
 import { Hist_section } from "./DummyData";
 
 const CurrencyInfoHistTbl = ({ index }) => {
+  const { t } = useTranslation(); // Initialize translation function
   const [data, setData] = useState([]);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [page, setPage] = useState(1);
@@ -38,7 +40,7 @@ const CurrencyInfoHistTbl = ({ index }) => {
   const currentData = data.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const healthsheetModiFields = [
-    { key: "select", text: "Select Field" },
+    { key: "select", text: t("selectField") },
     { key: "Field1", text: "Field 1" },
     { key: "Field2", text: "Field 2" },
     { key: "Field3", text: "Field 3" },
@@ -46,7 +48,7 @@ const CurrencyInfoHistTbl = ({ index }) => {
     { key: "Field5", text: "Field 5" }
   ];
   const healthsheetModifiedBy = [
-    { key: "select", text: "Select Field" },
+    { key: "select", text: t("selectField") },
     { key: "Admin", text: "Admin" },
     { key: "User", text: "User" },
     { key: "Customer", text: "Customer" }
@@ -55,17 +57,17 @@ const CurrencyInfoHistTbl = ({ index }) => {
     <div className="mx-4 mt-3">
       <div className="row mb-3 mt-2">
         <div className="col-sm-4">
-          <Label className="form-label IM_label">Modified Field</Label>
+          <Label className="form-label IM_label">{t("modifiedField")}</Label>
           <Dropdown
-            placeholder="Select Modified Field"
+            placeholder={t("selectModifiedField")}
             options={healthsheetModiFields}
             styles={{ dropdown: { width: "100%" } }}
           />
         </div>
         <div className="col-sm-4">
-          <Label className="form-label IM_label">Modified By</Label>
+          <Label className="form-label IM_label">{t("modifiedBy")}</Label>
           <Dropdown
-            placeholder="Select Modified By"
+            placeholder={t("selectModifiedBy")}
             options={healthsheetModifiedBy}
             styles={{ dropdown: { width: "100%" } }}
           />
@@ -76,10 +78,10 @@ const CurrencyInfoHistTbl = ({ index }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center">Modified Field</TableCell>
-              <TableCell align="center">Modified Date</TableCell>
-              <TableCell align="center">Value</TableCell>
-              <TableCell align="center">Modified By</TableCell>
+              <TableCell align="center">{t("modifiedField")}</TableCell>
+              <TableCell align="center">{t("modifiedDate")}</TableCell>
+              <TableCell align="center">{t("value")}</TableCell>
+              <TableCell align="center">{t("modifiedBy")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -112,4 +114,5 @@ const CurrencyInfoHistTbl = ({ index }) => {
     </div>
   );
 };
+
 export default CurrencyInfoHistTbl;

@@ -152,9 +152,6 @@ const InitiativeManagement = () => {
         </>
       ) : (
         <>
-          <Typography variant="h4" gutterBottom>
-            Initiative Management
-          </Typography>
           <div className="container-fluid pb-3" style={{ paddingLeft: 0 }}>
             <div className="row align-items-end">
               <div className="col-12 col-sm-7">

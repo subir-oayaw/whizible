@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Label, TextField, Stack, PrimaryButton, Dropdown } from "@fluentui/react";
 import currencySymbolMap from "currency-symbol-map";
 import currencyCodes from "currency-codes";
+import { useTranslation } from "react-i18next";
 
 // Function to get currency symbol options
 const getCurrencySymbolOptions = () => {
@@ -13,6 +14,8 @@ const getCurrencySymbolOptions = () => {
 };
 
 const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
+  const { t } = useTranslation();
+
   const Currency = {
     CurrencyCode: "",
     CurrencyName: "",
@@ -59,15 +62,16 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formValues.CurrencyCode) newErrors.CurrencyCode = "Currency Code is required.";
-    if (!formValues.CurrencyName) newErrors.CurrencyName = "Currency Name is required.";
-    if (!formValues.CurrencySymbol) newErrors.CurrencySymbol = "Currency Symbol is required.";
+    if (!formValues.CurrencyCode) newErrors.CurrencyCode = t("CurrencyCode") + " is required.";
+    if (!formValues.CurrencyName) newErrors.CurrencyName = t("CurrencyName") + " is required.";
+    if (!formValues.CurrencySymbol)
+      newErrors.CurrencySymbol = t("CurrencySymbol") + " is required.";
     if (!formValues.ConversionRate || isNaN(formValues.ConversionRate))
-      newErrors.ConversionRate = "Conversion Rate must be a floating-point number.";
+      newErrors.ConversionRate = t("ConversionRate") + " must be a floating-point number.";
     if (!formValues.Major || isNaN(formValues.Major) || !Number.isInteger(Number(formValues.Major)))
-      newErrors.Major = "Major must be an integer.";
+      newErrors.Major = t("Major") + " must be an integer.";
     if (!formValues.Minor || isNaN(formValues.Minor) || !Number.isInteger(Number(formValues.Minor)))
-      newErrors.Minor = "Minor must be an integer.";
+      newErrors.Minor = t("Minor") + " must be an integer.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -101,15 +105,13 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
   return (
     <div className="above-form-container">
       <div className="d-flex justify-content-end gap-3 mt-2">
-        <PrimaryButton text="Save" className="borderbtnbgblue" onClick={handleSave} />
-        <PrimaryButton text="Save and Add" className="borderbtnbgblue" onClick={handleSave} />
+        <PrimaryButton text={t("Save")} className="borderbtnbgblue" onClick={handleSave} />
+        <PrimaryButton text={t("SaveAndAdd")} className="borderbtnbgblue" onClick={handleSave} />
       </div>
 
       <div className="row mt-1">
         <div className="col-sm-12 text-end required">
-          <label className="IM_label">
-            (<font color="red">*</font> Mandatory)
-          </label>
+          <label className="IM_label">{t("Mandatory")}</label>
         </div>
       </div>
 
@@ -118,7 +120,7 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
           <Stack horizontal tokens={{ childrenGap: 15 }} wrap>
             <Stack.Item grow>
               <Label htmlFor="CurrencyCode" className="form-label">
-                Currency Code
+                {t("CurrencyCode")}
               </Label>
               <TextField
                 id="CurrencyCode"
@@ -131,7 +133,7 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
             </Stack.Item>
             <Stack.Item grow>
               <Label htmlFor="CurrencyName" className="form-label">
-                Currency Name
+                {t("CurrencyName")}
               </Label>
               <TextField
                 id="CurrencyName"
@@ -144,7 +146,7 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
             </Stack.Item>
             <Stack.Item grow>
               <Label htmlFor="ConversionRate" className="form-label">
-                Conversion Rate
+                {t("ConversionRate")}
               </Label>
               <TextField
                 id="ConversionRate"
@@ -159,7 +161,7 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
           <Stack horizontal tokens={{ childrenGap: 15 }} wrap>
             <Stack.Item grow>
               <Label htmlFor="Major" className="form-label">
-                Major
+                {t("Major")}
               </Label>
               <TextField
                 id="Major"
@@ -172,7 +174,7 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
             </Stack.Item>
             <Stack.Item grow>
               <Label htmlFor="Minor" className="form-label">
-                Minor
+                {t("Minor")}
               </Label>
               <TextField
                 id="Minor"
@@ -185,13 +187,13 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
             </Stack.Item>
             <Stack.Item grow>
               <Label htmlFor="CurrencySymbol" className="form-label">
-                Currency Symbol
+                {t("CurrencySymbol")}
               </Label>
               <Dropdown
                 id="CurrencySymbol"
                 selectedKey={formValues.CurrencySymbol}
                 onChange={handleDropdownChange}
-                placeholder="Select a symbol"
+                placeholder={t("SelectSymbol")}
                 options={currencySymbolOptions}
                 errorMessage={errors.CurrencySymbol}
               />
