@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Box, Tooltip, Modal, Typography } from "@mui/material";
-import { Checkbox, PrimaryButton, DetailsList, DetailsListLayoutMode } from "@fluentui/react";
-import Pagination from "@mui/material/Pagination";
+import {
+  Checkbox,
+  PrimaryButton,
+  DetailsList,
+  DetailsListLayoutMode,
+  DetailsListColumns,
+  DetailsRow,
+  DetailsHeader,
+  IColumn
+} from "@fluentui/react";
 import DrawerCurrency from "./DrawerCurrency";
 import AccorCurrency from "./AccorCurrency";
 import { CurrencyInfo_Section } from "./DummyData";
 import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
 import Ad_SearchIcon from "../../../assets/img/search-list.png";
+import Pagination from "@mui/material/Pagination";
 
 const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
   const { t } = useTranslation();
@@ -21,7 +30,6 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
   const [selectedCurrencyNames, setSelectedCurrencyNames] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [editCurrency, setEditCurrency] = useState(null);
   const viewPermission = getViewOptions && getViewOptions[0] ? getViewOptions[0] : {};
   const { a: canAdd, e: canEdit, d: canDelete } = viewPermission;
 
@@ -64,19 +72,6 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
     setModalOpen(false);
   };
 
-  const handleEditClick = (currency) => {
-    setEditCurrency(currency);
-    setDrawerVisible(true);
-  };
-
-  const handleUpdateCurrency = (updatedCurrency) => {
-    const updatedData = data.map((currency) =>
-      currency.currencyID === updatedCurrency.currencyID ? updatedCurrency : currency
-    );
-    setData(updatedData);
-    setDrawerVisible(false); // Close the drawer/modal after update
-  };
-
   const checkboxStyles = {
     checkbox: {
       selectors: {
@@ -93,11 +88,6 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
     }
   };
 
-  const cellStyle = {
-    borderRight: "1px solid #ddd", // Vertical lines between cells
-    padding: "8px" // Adjust padding as needed
-  };
-
   const columns = [
     {
       key: "currencyID",
@@ -105,9 +95,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
       fieldName: "currencyID",
       minWidth: 100,
       maxWidth: 150,
-      isResizable: true,
-      isMultiline: false, // Disable multiline to support resizing
-      onRender: (item) => <div style={cellStyle}>{item.currencyID}</div>
+      isMultiline: false
     },
     {
       key: "currencyName",
@@ -115,9 +103,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
       fieldName: "currencyName",
       minWidth: 150,
       maxWidth: 200,
-      isMultiline: false,
-      isResizable: true,
-      onRender: (item) => <div style={cellStyle}>{item.currencyName}</div>
+      isMultiline: false
     },
     {
       key: "currencySymbol",
@@ -125,9 +111,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
       fieldName: "currencySymbol",
       minWidth: 100,
       maxWidth: 150,
-      isMultiline: false,
-      isResizable: true,
-      onRender: (item) => <div style={cellStyle}>{item.currencySymbol}</div>
+      isMultiline: false
     },
     {
       key: "conversionRate",
@@ -135,9 +119,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
       fieldName: "conversionRate",
       minWidth: 150,
       maxWidth: 200,
-      isMultiline: true,
-      isResizable: true,
-      onRender: (item) => <div style={cellStyle}>{item.conversionRate}</div>
+      isMultiline: false
     },
     {
       key: "majorCurrencyUnit",
@@ -145,9 +127,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
       fieldName: "majorCurrencyUnit",
       minWidth: 100,
       maxWidth: 150,
-      isMultiline: false,
-      isResizable: true,
-      onRender: (item) => <div style={cellStyle}>{item.majorCurrencyUnit}</div>
+      isMultiline: false
     },
     {
       key: "minorCurrencyUnit",
@@ -155,9 +135,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
       fieldName: "minorCurrencyUnit",
       minWidth: 100,
       maxWidth: 150,
-      isMultiline: false,
-      isResizable: true,
-      onRender: (item) => <div style={cellStyle}>{item.minorCurrencyUnit}</div>
+      isMultiline: false
     },
     {
       key: "select",
@@ -166,7 +144,6 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
       minWidth: 50,
       maxWidth: 50,
       isMultiline: false,
-      isResizable: true,
       onRender: (item, index) => (
         <Checkbox
           styles={checkboxStyles}
@@ -175,35 +152,6 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
           checked={individualChecks[index]}
           onChange={(e, checked) => handleIndividualChange(index, checked)}
         />
-      )
-    },
-    {
-      key: "edit",
-      name: "",
-      fieldName: "edit",
-      minWidth: 50,
-      maxWidth: 50,
-      isMultiline: false,
-      isResizable: false,
-      onRender: (item) => (
-        <Tooltip title={!canEdit ? t("no_rights_edit") : ""}>
-          <span>
-            <PrimaryButton
-              text={t("edit")}
-              onClick={() => {
-                if (!canEdit) {
-                  handleDisabledClick(t("no_rights_edit"));
-                } else {
-                  handleEditClick(item);
-                }
-              }}
-              disabled={!canEdit}
-              styles={{
-                root: { backgroundColor: canEdit ? "#1976d2" : "#ccc", color: "#fff" }
-              }}
-            />
-          </span>
-        </Tooltip>
       )
     }
   ];
@@ -265,31 +213,53 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
           visible={drawerVisible}
           onClose={() => setDrawerVisible(false)}
           selectedCurrencyNames={selectedCurrencyNames}
-          onUpdateCurrency={handleUpdateCurrency} // Pass update handler
         />
       </div>
-
-      <Box>
+      {showForm && <AccorCurrency onClose={onClose} onSearch={onSearch} />}
+      <Box sx={{ height: 340 }}>
         <DetailsList
           items={currentData}
           columns={columns}
           layoutMode={DetailsListLayoutMode.fixedColumns}
-          isMultiline={true}
-          onItemInvoked={(item) => handleEditClick(item)}
-          selectionMode={0}
-          selectionPreservedOnEmptyClick={true}
         />
       </Box>
-      <div className="d-flex justify-content-center">
-        <Pagination
-          count={Math.ceil(data.length / rowsPerPage)}
-          page={page}
-          onChange={handleChangePage}
-        />
+      <div>
+        <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+          <Pagination
+            count={Math.ceil(data.length / rowsPerPage)}
+            page={page}
+            onChange={handleChangePage}
+            color="primary"
+            variant="outlined"
+            shape="rounded"
+          />
+        </Box>
       </div>
-      <Modal open={modalOpen} onClose={handleCloseModal}>
-        <Box className="modal-content">
-          <Typography variant="h6">{modalMessage}</Typography>
+      <Modal
+        open={modalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4
+          }}
+        >
+          <Typography id="modal-title" variant="h6" component="h2">
+            {t("access_denied")}
+          </Typography>
+          <Typography id="modal-description" sx={{ mt: 2 }}>
+            {modalMessage}
+          </Typography>
         </Box>
       </Modal>
     </div>

@@ -27,9 +27,9 @@ const CurrencyInfo = () => {
 
   return (
     <div id="Currency_main" className="">
-      <Pivot className="bglightblue">
-        <PivotItem headerText={t("currency")}></PivotItem> {/* Use translation */}
-      </Pivot>
+      {/* <Pivot className="bglightblue">
+        <PivotItem headerText={t("currency")}></PivotItem> 
+      </Pivot> */}
       {/* Uncomment and use AccorCurrency if needed */}
       {/* <AccorCurrency
         onClose={() => console.log(t('closed'))} // Use translation
