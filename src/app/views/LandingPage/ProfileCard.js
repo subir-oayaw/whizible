@@ -40,7 +40,49 @@ const ProfileCard = () => (
     </Stack>
     <Stack verticalAlign="end" styles={{ root: { flex: 1, textAlign: "right" } }}>
       <Carousel indicators={false} controls={false} interval={3000}>
-        {/* Add Carousel Items here */}
+        <Carousel.Item>
+          <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
+            <Text variant="large">New Initiative Created</Text>
+            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
+              "A new Initiative created. Let's get started!"
+            </Text>
+          </Stack>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
+            <img
+              src={profImg2} // Replace with your image path
+              alt="Description"
+              style={{ width: 50, height: 50, borderRadius: "50%" }} // Adjust styling as needed
+            />
+            <Text variant="large" styles={{ root: { color: "#0078d4" } }}>
+              Birthday
+            </Text>
+            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
+              "It's Madhuri's Birthday!"
+            </Text>
+          </Stack>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
+            <Text variant="large" styles={{ root: { color: "red" } }}>
+              Approval Alert
+            </Text>
+            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
+              "Today One approval is Pending. Kindly review and approve."
+            </Text>
+          </Stack>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
+            <Text variant="large" styles={{ root: { color: "green" } }}>
+              New Initiative Created
+            </Text>
+            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
+              "A new Initiative created. Let's get started!"
+            </Text>
+          </Stack>
+        </Carousel.Item>
       </Carousel>
     </Stack>
   </Stack>
