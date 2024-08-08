@@ -45,7 +45,7 @@ function LoginPage() {
   const token = sessionStorage.getItem("access_token");
   useEffect(() => {
     if (token) {
-      navigate("/InitiativeManagement");
+      navigate("/landingPage");
     }
   }, [token]);
   const handleUsernameChange = (e) => {
@@ -104,7 +104,7 @@ function LoginPage() {
   };
 
   const signin = () => {
-    navigate("/InitiativeManagement");
+    navigate("/landingPage");
   };
   const calculatePasswordStrength = () => {
     const strength = {

@@ -194,7 +194,7 @@ const Layout1Topbar = () => {
             }
           >
             <StyledItem>
-              <Link to="/">
+              <Link to="/landingPage">
                 <HomeOutlined />
                 <Span>Home</Span>
               </Link>

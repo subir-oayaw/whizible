@@ -1,0 +1,168 @@
+import React from "react";
+import { Stack, Text, Button } from "@fluentui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleNotch,
+  faInbox,
+  faPause,
+  faClock,
+  faPlaneSlash
+} from "@fortawesome/free-solid-svg-icons";
+
+const StatisticsCard = () => (
+  <Stack
+    styles={{
+      root: {
+        backgroundColor: "white",
+        padding: "16px",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        width: "100%", // Ensure the outer card uses the full width available
+        boxSizing: "border-box"
+      }
+    }}
+  >
+    <Text variant="medium" styles={{ root: { fontWeight: "bold", marginBottom: "16px" } }}>
+      <FontAwesomeIcon icon={faCircleNotch} /> Statistics{" "}
+      <span style={{ color: "#6c757d" }}>(past 30 days)</span>
+    </Text>
+    <Stack
+      horizontal
+      tokens={{ childrenGap: 20 }}
+      styles={{ root: { textAlign: "center", flexWrap: "wrap" } }}
+    >
+      {/* Inbox */}
+      <Stack.Item grow>
+        <Stack
+          styles={{
+            root: {
+              backgroundColor: "white",
+              padding: "16px",
+              borderRadius: "8px",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              width: "100%" // Ensure inner cards fit the width of the outer card
+            }
+          }}
+        >
+          <Stack
+            horizontal
+            verticalAlign="center"
+            tokens={{ childrenGap: 10 }}
+            styles={{ root: { textAlign: "center" } }}
+          >
+            <FontAwesomeIcon
+              icon={faInbox}
+              className="box_icon"
+              style={{ fontSize: "28px", color: "#0078d4" }}
+            />
+
+            <Text variant="large" styles={{ root: { fontWeight: "bold" } }}>
+              05
+            </Text>
+            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
+              Inbox
+            </Text>
+          </Stack>
+        </Stack>
+      </Stack.Item>
+      {/* Draft */}
+      <Stack.Item grow>
+        <Stack
+          styles={{
+            root: {
+              backgroundColor: "white",
+              padding: "16px",
+              borderRadius: "8px",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              width: "100%" // Ensure inner cards fit the width of the outer card
+            }
+          }}
+        >
+          <Stack
+            horizontal
+            verticalAlign="center"
+            tokens={{ childrenGap: 10 }}
+            styles={{ root: { textAlign: "center" } }}
+          >
+            <FontAwesomeIcon
+              icon={faPause}
+              style={{ fontSize: "28px", color: "#0078d4" }} // Inline styles for testing
+            />
+            <Text variant="large" styles={{ root: { fontWeight: "bold" } }}>
+              03
+            </Text>
+            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
+              Draft
+            </Text>
+          </Stack>
+        </Stack>
+      </Stack.Item>
+      {/* Watchlist */}
+      <Stack.Item grow>
+        <Stack
+          styles={{
+            root: {
+              backgroundColor: "white",
+              padding: "16px",
+              borderRadius: "8px",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              width: "100%" // Ensure inner cards fit the width of the outer card
+            }
+          }}
+        >
+          <Stack
+            horizontal
+            verticalAlign="center"
+            tokens={{ childrenGap: 10 }}
+            styles={{ root: { textAlign: "center" } }}
+          >
+            <FontAwesomeIcon
+              icon={faClock}
+              style={{ fontSize: "28px", color: "#0078d4" }} // Inline styles for testing
+            />
+            <Text variant="large" styles={{ root: { fontWeight: "bold" } }}>
+              08
+            </Text>
+            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
+              Watchlist
+            </Text>
+          </Stack>
+        </Stack>
+      </Stack.Item>
+      {/* Ageing */}
+      <Stack.Item grow>
+        <Stack
+          styles={{
+            root: {
+              backgroundColor: "white",
+              padding: "16px",
+              borderRadius: "8px",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              width: "100%" // Ensure inner cards fit the width of the outer card
+            }
+          }}
+        >
+          <Stack
+            horizontal
+            verticalAlign="center"
+            tokens={{ childrenGap: 10 }}
+            styles={{ root: { textAlign: "center" } }}
+          >
+            <FontAwesomeIcon
+              icon={faPlaneSlash}
+              style={{ fontSize: "28px", color: "#0078d4" }} // Inline styles for testing
+            />
+            <Text variant="large" styles={{ root: { fontWeight: "bold" } }}>
+              01
+            </Text>
+            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
+              Ageing
+            </Text>
+          </Stack>
+        </Stack>
+      </Stack.Item>
+    </Stack>
+  </Stack>
+);
+
+export default StatisticsCard;
