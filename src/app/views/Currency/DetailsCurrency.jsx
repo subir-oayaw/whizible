@@ -13,7 +13,7 @@ const getCurrencySymbolOptions = () => {
   });
 };
 
-const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
+const DetailsCurrency = ({ onClose, selectedCurrencyNames, handleAddCurrency }) => {
   const { t } = useTranslation();
 
   const Currency = {
@@ -78,7 +78,18 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames }) => {
 
   const handleSave = () => {
     if (validateForm()) {
-      onClose();
+      const payload = {
+        currencyID: 0, // Assuming this is a new currency
+        currencyCode: formValues.CurrencyCode,
+        currencyName: formValues.CurrencyName,
+        currencySymbol: formValues.CurrencySymbol,
+        conversionRate: parseFloat(formValues.ConversionRate),
+        majorCurrencyUnit: formValues.Major.toString(), // Convert to string
+        minorCurrencyUnit: formValues.Minor.toString(), // Convert to string
+        createdBYID: 0 // Set this to the appropriate user ID
+      };
+      console.log("Currency-Currency", payload);
+      handleAddCurrency(payload);
     } else {
       const firstErrorField = Object.keys(errors)[0];
       if (firstErrorField) {

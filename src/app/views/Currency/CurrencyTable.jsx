@@ -17,6 +17,8 @@ import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
 import Ad_SearchIcon from "../../../assets/img/search-list.png";
 import Pagination from "@mui/material/Pagination";
+import usePostCurrencyMaster from "../../hooks/CurrencyMaster/usePostCurrencyMaster";
+import useDeleteCurrencyMaster from "../../hooks/CurrencyMaster/useDeleteCurrencyMaster";
 
 const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
   const { t } = useTranslation();
@@ -30,12 +32,27 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
   const [selectedCurrencyNames, setSelectedCurrencyNames] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+
   const viewPermission = getViewOptions && getViewOptions[0] ? getViewOptions[0] : {};
   const { a: canAdd, e: canEdit, d: canDelete } = viewPermission;
 
+  // Use custom hooks
+  const {
+    postCurrencyData,
+    responseData: postResponseData,
+    loading: postLoading,
+    error: postError
+  } = usePostCurrencyMaster();
+  const {
+    deleteCurrencyData,
+    responseData: deleteResponseData,
+    loading: deleteLoading,
+    error: deleteError
+  } = useDeleteCurrencyMaster();
+
   useEffect(() => {
     setData(currencyData);
-  }, [currencyData]);
+  }, [currencyData, postResponseData, deleteResponseData]);
 
   const handleChangePage = (event, value) => {
     setPage(value);
@@ -70,6 +87,34 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
 
   const handleCloseModal = () => {
     setModalOpen(false);
+  };
+
+  const handleAddCurrency = async (currencyData) => {
+    try {
+      await postCurrencyData(currencyData);
+      setDrawerVisible(false);
+      onSearch(); // Trigger search or refresh after adding new data
+    } catch (error) {
+      console.error("Failed to add currency:", error);
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    const selectedIndices = individualChecks
+      .map((checked, index) => (checked ? index : -1))
+      .filter((index) => index !== -1);
+
+    const selectedItems = selectedIndices.map((index) => currentData[index]);
+
+    for (const item of selectedItems) {
+      try {
+        await deleteCurrencyData(item.currencyID, item.logID);
+      } catch (error) {
+        console.error("Failed to delete currency:", error);
+      }
+    }
+
+    onSearch(); // Trigger search or refresh after deleting data
   };
 
   const checkboxStyles = {
@@ -198,6 +243,8 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
                   onClick={() => {
                     if (!canDelete) {
                       handleDisabledClick(t("no_rights_delete"));
+                    } else {
+                      handleDeleteSelected();
                     }
                   }}
                   disabled={!canDelete}
@@ -213,6 +260,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
           visible={drawerVisible}
           onClose={() => setDrawerVisible(false)}
           selectedCurrencyNames={selectedCurrencyNames}
+          handleAddCurrency={handleAddCurrency} // Pass the add handler to the DrawerCurrency component
         />
       </div>
       {showForm && <AccorCurrency onClose={onClose} onSearch={onSearch} />}
@@ -249,17 +297,19 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
             transform: "translate(-50%, -50%)",
             width: 400,
             bgcolor: "background.paper",
-            border: "2px solid #000",
             boxShadow: 24,
             p: 4
           }}
         >
           <Typography id="modal-title" variant="h6" component="h2">
-            {t("access_denied")}
+            {t("attention")}
           </Typography>
           <Typography id="modal-description" sx={{ mt: 2 }}>
             {modalMessage}
           </Typography>
+          <PrimaryButton onClick={handleCloseModal} variant="contained" color="primary">
+            {t("close")}
+          </PrimaryButton>
         </Box>
       </Modal>
     </div>

@@ -10,9 +10,8 @@ const useDeleteCurrencyMaster = () => {
     setLoading(true);
     try {
       const accessToken = sessionStorage.getItem("access_token");
-      const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/CurrencyMaster`;
+      const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/CurrencyMaster/${id}`;
       const response = await axios.delete(url, {
-        data: { id, logID },
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json"
