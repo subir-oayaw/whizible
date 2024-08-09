@@ -22,7 +22,7 @@ const QuickInbox = () => (
     styles={{
       root: {
         backgroundColor: "white",
-        padding: "16px",
+        padding: "8px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         flex: 1

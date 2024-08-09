@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Pivot, PivotItem } from "@fluentui/react";
 import CurrencyTable from "./CurrencyTable";
-import useCurrencyMaster from "app/hooks/useCurrencyMaster";
+import useCurrencyMaster from "app/hooks/CurrencyMaster/useCurrencyMaster";
 import AccorCurrency from "./AccorCurrency";
 import useGetViewOptions from "app/hooks/useGetViewOptions";
 import tagMappings from "../../../app/TagNames/tag";

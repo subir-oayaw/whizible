@@ -30,7 +30,12 @@ const MyTimeline = () => (
         padding: "16px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        flex: 1
+        flex: 1,
+        maxWidth: "100%",
+        boxSizing: "border-box",
+        "@media (max-width: 768px)": {
+          padding: "12px" // Adjust padding on smaller screens
+        }
       }
     }}
   >
@@ -42,9 +47,25 @@ const MyTimeline = () => (
         horizontal
         verticalAlign="center"
         tokens={{ childrenGap: 20 }}
-        styles={{ root: { marginBottom: "16px" } }}
+        styles={{
+          root: {
+            marginBottom: "16px",
+            "@media (max-width: 768px)": {
+              flexDirection: "column", // Stack the calendar vertically on smaller screens
+              childrenGap: 10 // Adjust gap between elements
+            }
+          }
+        }}
       >
-        <Calendar tileClassName={getTileClassName} />
+        <Calendar
+          tileClassName={getTileClassName}
+          style={{
+            width: "100%", // Make sure the calendar takes up full width
+            "@media (max-width: 768px)": {
+              width: "100%" // Ensure full width on smaller screens
+            }
+          }}
+        />
       </Stack>
     </Stack>
   </Stack>

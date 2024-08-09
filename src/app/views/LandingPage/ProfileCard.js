@@ -14,7 +14,12 @@ const ProfileCard = () => (
         backgroundColor: "white",
         padding: "16px",
         borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        flexDirection: "row", // Default horizontal layout
+        "@media (max-width: 768px)": {
+          flexDirection: "column", // Switch to vertical layout on smaller screens
+          textAlign: "center" // Center-align text on smaller screens
+        }
       }
     }}
   >
@@ -26,10 +31,15 @@ const ProfileCard = () => (
       imageAlt="User"
       styles={{
         primaryText: { display: "none" },
-        secondaryText: { display: "none" }
+        secondaryText: { display: "none" },
+        root: {
+          "@media (max-width: 768px)": {
+            alignSelf: "center" // Center the persona image on smaller screens
+          }
+        }
       }}
     />
-    <Stack>
+    <Stack styles={{ root: { flex: 1 } }}>
       <Text variant="large">Welcome, Mary McDonnell</Text>
       <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
         Have a Wonderful Day!
@@ -38,7 +48,19 @@ const ProfileCard = () => (
         You have pending notifications.
       </Text>
     </Stack>
-    <Stack verticalAlign="end" styles={{ root: { flex: 1, textAlign: "right" } }}>
+    <Stack
+      verticalAlign="end"
+      styles={{
+        root: {
+          flex: 1,
+          textAlign: "right",
+          "@media (max-width: 768px)": {
+            textAlign: "center", // Center the carousel on smaller screens
+            marginTop: "16px" // Add space between text and carousel on smaller screens
+          }
+        }
+      }}
+    >
       <Carousel indicators={false} controls={false} interval={3000}>
         <Carousel.Item>
           <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
@@ -51,9 +73,9 @@ const ProfileCard = () => (
         <Carousel.Item>
           <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
             <img
-              src={profImg2} // Replace with your image path
+              src={profImg2}
               alt="Description"
-              style={{ width: 50, height: 50, borderRadius: "50%" }} // Adjust styling as needed
+              style={{ width: 50, height: 50, borderRadius: "50%" }}
             />
             <Text variant="large" styles={{ root: { color: "#0078d4" } }}>
               Birthday
@@ -69,7 +91,7 @@ const ProfileCard = () => (
               Approval Alert
             </Text>
             <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
-              "Today One approval is Pending. Kindly review and approve."
+              "Today one approval is pending. Kindly review and approve."
             </Text>
           </Stack>
         </Carousel.Item>
@@ -79,7 +101,7 @@ const ProfileCard = () => (
               New Initiative Created
             </Text>
             <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
-              "A new Initiative created. Let's get started!"
+              "A new initiative created. Let's get started!"
             </Text>
           </Stack>
         </Carousel.Item>

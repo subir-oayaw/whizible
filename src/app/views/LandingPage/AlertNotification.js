@@ -1,5 +1,31 @@
 import React from "react";
 import { Stack, Text } from "@fluentui/react";
+import { Carousel } from "react-bootstrap";
+import "./AlertNotification.css"; // Assuming you're adding custom styles here
+
+const notifications = [
+  {
+    title: "[New] Initiative Created",
+    description: "Nature of Initiative/Type",
+    date: "07 Aug 2022",
+    color: "#ffc107",
+    backgroundColor: "#fff3cd"
+  },
+  {
+    title: "[Update] Initiative Updated",
+    description: "Nature of Initiative/Type",
+    date: "07 Aug 2022",
+    color: "#28a745",
+    backgroundColor: "#d4edda"
+  },
+  {
+    title: "[Alert] Pending Approval",
+    description: "Your approval is pending.",
+    date: "08 Aug 2022",
+    color: "#dc3545",
+    backgroundColor: "#f8d7da"
+  }
+];
 
 const AlertNotification = () => (
   <Stack
@@ -8,63 +34,74 @@ const AlertNotification = () => (
       root: {
         flex: 1,
         backgroundColor: "white",
-        padding: "16px",
+        padding: "23px", // Increased padding
         borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        "@media (max-width: 768px)": {
+          padding: "16px" // Adjusted padding for smaller screens
+        }
       }
     }}
   >
-    <Text variant="medium" styles={{ root: { fontWeight: "bold", marginBottom: "16px" } }}>
+    <Text variant="large" styles={{ root: { fontWeight: "bold", marginBottom: "20px" } }}>
       Alert / Notification
     </Text>
-    <Stack tokens={{ childrenGap: 10 }}>
-      <Stack
-        horizontal
-        verticalAlign="center"
-        tokens={{ childrenGap: 10 }}
-        styles={{
-          root: {
-            backgroundColor: "#fff3cd",
-            padding: "16px",
-            borderRadius: "8px",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
-          }
-        }}
-      >
-        <Text variant="medium" styles={{ root: { color: "#ffc107" } }}>
-          [New] Initiative Created
-        </Text>
-        <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
-          Nature of Initiative/Type
-        </Text>
-        <Text variant="small" styles={{ root: { color: "#6c757d", marginLeft: "auto" } }}>
-          07 Aug 2022
-        </Text>
-      </Stack>
-      <Stack
-        horizontal
-        verticalAlign="center"
-        tokens={{ childrenGap: 10 }}
-        styles={{
-          root: {
-            backgroundColor: "#d4edda",
-            padding: "16px",
-            borderRadius: "8px",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
-          }
-        }}
-      >
-        <Text variant="medium" styles={{ root: { color: "#28a745" } }}>
-          [Update] Initiative Updated
-        </Text>
-        <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
-          Nature of Initiative/Type
-        </Text>
-        <Text variant="small" styles={{ root: { color: "#6c757d", marginLeft: "auto" } }}>
-          07 Aug 2022
-        </Text>
-      </Stack>
-    </Stack>
+    <Carousel
+      indicators={false}
+      controls={false}
+      interval={3000}
+      slide
+      pause="hover"
+      className="vertical-carousel"
+    >
+      {notifications.map((notification, index) => (
+        <Carousel.Item key={index}>
+          <Stack tokens={{ childrenGap: 10 }}>
+            <Stack
+              horizontal
+              verticalAlign="center"
+              tokens={{ childrenGap: 12 }}
+              wrap
+              styles={{
+                root: {
+                  backgroundColor: notification.backgroundColor,
+                  padding: "24px", // Increased padding for larger card size
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                  "@media (max-width: 768px)": {
+                    padding: "16px", // Adjusted padding for smaller screens
+                    flexDirection: "column",
+                    alignItems: "flex-start"
+                  }
+                }
+              }}
+            >
+              <Text variant="large" styles={{ root: { color: notification.color } }}>
+                {notification.title}
+              </Text>
+              <Text variant="medium" styles={{ root: { color: "#6c757d" } }}>
+                {notification.description}
+              </Text>
+              <Text
+                variant="smallPlus"
+                styles={{
+                  root: {
+                    color: "#6c757d",
+                    marginLeft: "auto",
+                    "@media (max-width: 768px)": {
+                      marginLeft: 0,
+                      marginTop: "8px"
+                    }
+                  }
+                }}
+              >
+                {notification.date}
+              </Text>
+            </Stack>
+          </Stack>
+        </Carousel.Item>
+      ))}
+    </Carousel>
   </Stack>
 );
 
