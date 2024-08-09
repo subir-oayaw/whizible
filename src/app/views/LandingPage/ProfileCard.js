@@ -3,7 +3,10 @@ import { Stack, Text, Persona, PersonaSize } from "@fluentui/react";
 import { Carousel } from "react-bootstrap";
 import profImg1 from "../../../assets/img/profImg1.jpg";
 import profImg2 from "../../../assets/Images/Loginframe.png";
+import { use } from "echarts";
 
+const user = JSON.parse(sessionStorage.getItem("user"));
+console.log("user", user);
 const ProfileCard = () => (
   <Stack
     horizontal
@@ -24,8 +27,8 @@ const ProfileCard = () => (
     }}
   >
     <Persona
-      text="Mary McDonnell"
-      secondaryText="Developer"
+      text={user.employeeName}
+      secondaryText={user.department}
       size={PersonaSize.size72}
       imageUrl={profImg1}
       imageAlt="User"
@@ -40,7 +43,7 @@ const ProfileCard = () => (
       }}
     />
     <Stack styles={{ root: { flex: 1 } }}>
-      <Text variant="large">Welcome, Mary McDonnell</Text>
+      <Text variant="large">Welcome {user.employeeName},</Text>
       <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
         Have a Wonderful Day!
       </Text>

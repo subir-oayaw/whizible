@@ -3,20 +3,21 @@ import { Stack, Text } from "@fluentui/react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-const dateRanges = [
-  { start: new Date(2024, 7, 1), end: new Date(2024, 7, 5), color: "red" },
-  { start: new Date(2024, 7, 6), end: new Date(2024, 7, 10), color: "green" },
-  { start: new Date(2024, 7, 11), end: new Date(2024, 7, 15), color: "yellow" }
+const highlightedDates = [
+  { date: new Date(2024, 7, 1), color: "red" },
+  { date: new Date(2024, 7, 6), color: "green" },
+  { date: new Date(2024, 7, 11), color: "yellow" },
+  { date: new Date(2024, 7, 15), color: "red" }
+  // Add more specific dates with their colors as needed
 ];
-
-const isInRange = (date, range) => date >= range.start && date <= range.end;
 
 const getTileClassName = ({ date, view }) => {
   if (view === "month") {
-    for (const range of dateRanges) {
-      if (isInRange(date, range)) {
-        return `highlight-${range.color}`;
-      }
+    const matchingDate = highlightedDates.find(
+      (d) => d.date.toDateString() === date.toDateString()
+    );
+    if (matchingDate) {
+      return `highlight-${matchingDate.color}`;
     }
   }
   return null;

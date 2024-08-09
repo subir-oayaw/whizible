@@ -1,12 +1,12 @@
 import React from "react";
 import { Stack, Text } from "@fluentui/react";
-import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { PolarArea } from "react-chartjs-2";
+import { Chart as ChartJS, RadialLinearScale, ArcElement, Tooltip, Legend } from "chart.js";
 
 // Register Chart.js components
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
-const pieChartData = {
+const polarAreaChartData = {
   labels: ["Label 1", "Label 2", "Label 3"],
   datasets: [
     {
@@ -33,7 +33,7 @@ const QuickInbox = () => (
       Quick InBox
     </Text>
     <div style={{ width: "100%", height: "300px" }}>
-      <Pie data={pieChartData} />
+      <PolarArea data={polarAreaChartData} />
     </div>
   </Stack>
 );

@@ -7,7 +7,7 @@ import LoadingPage from "../views/LoadingPage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { initializeIcons } from "@fluentui/react/lib/Icons";
-
+import { useNavigate } from "react-router-dom";
 // Initialize Fluent UI icons (required step)
 initializeIcons();
 
@@ -50,7 +50,7 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showLoader, setShowLoader] = useState(true);
-
+  const navigate = useNavigate();
   const login = async (email, password) => {
     try {
       const response = await axios.post("/api/auth/login", { email, password });
@@ -60,6 +60,7 @@ export const AuthProvider = ({ children }) => {
       sessionStorage.setItem("access_token", response.data.token);
 
       toast.success("Login successful");
+      navigate("/landingPage");
     } catch (error) {
       console.error("Login failed:", error);
       toast.error("Login failed. Please retry.");

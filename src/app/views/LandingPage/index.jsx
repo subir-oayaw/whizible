@@ -6,7 +6,8 @@ import AlertNotification from "./AlertNotification";
 import TodayPriority from "./TodayPriority";
 import QuickInbox from "./QuickInbox";
 import MyTimeline from "./MyTimeline";
-import { FaSync, FaRandom } from "react-icons/fa"; // Import icons
+import { FaSync, FaRandom, FaCamera, FaLock, FaUnlock } from "react-icons/fa";
+import { captureFullPageScreenshot } from "../Action/screenshotUtils";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -21,22 +22,56 @@ const defaultLayout = [
 
 const Dashboard = () => {
   const [layout, setLayout] = useState(defaultLayout);
+  const [isDraggable, setIsDraggable] = useState(false); // State to control drag
+  const [screenshotLoading, setScreenshotLoading] = useState(false);
+
+  const toggleDraggable = () => {
+    setIsDraggable((prev) => !prev);
+  };
 
   const resetLayout = () => {
     window.location.reload();
   };
 
+  const handleScreenshot = async () => {
+    setScreenshotLoading(true);
+    try {
+      const dataUrl = await captureFullPageScreenshot();
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = "screenshot.png";
+      link.click();
+    } catch (error) {
+      console.error("Error taking screenshot:", error);
+    }
+    setScreenshotLoading(false);
+  };
+
   return (
     <div style={{ padding: "24px", backgroundColor: "#F9F9F9", minHeight: "100vh" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "20px" }}>
         <button
-          onClick={resetLayout} // Call resetLayout on click
+          onClick={toggleDraggable}
           style={{
             background: "none",
             border: "none",
             cursor: "pointer",
-            fontSize: "24px",
-            color: "#0078d4"
+            fontSize: "15px",
+            color: "#0078d4",
+            marginRight: "10px"
+          }}
+        >
+          {isDraggable ? <FaUnlock /> : <FaLock />}
+        </button>
+        <button
+          onClick={resetLayout}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "15px",
+            color: "#0078d4",
+            marginRight: "10px"
           }}
         >
           <FaRandom />
@@ -47,20 +82,35 @@ const Dashboard = () => {
             background: "none",
             border: "none",
             cursor: "pointer",
-            fontSize: "24px",
-            color: "#0078d4"
+            fontSize: "15px",
+            color: "#0078d4",
+            marginRight: "10px"
           }}
         >
           <FaSync />
         </button>
+        {/* <button
+          onClick={handleScreenshot}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+             fontSize: "15px",
+            color: "#0078d4"
+          }}
+        >
+          <FaCamera />
+        </button> */}
       </div>
       <ResponsiveGridLayout
         className="layout"
         layouts={{ lg: layout }}
         breakpoints={{ lg: 1200 }}
-        cols={{ lg: 4 }} // Number of columns in the grid
+        cols={{ lg: 4 }}
         rowHeight={150}
         width={1200}
+        isDraggable={isDraggable} // Control draggable state
+        isResizable={isDraggable} // Control resizable state
       >
         <div key="profile" style={{ backgroundColor: "#fff", padding: "10px" }}>
           <ProfileCard />
