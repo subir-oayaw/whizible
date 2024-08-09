@@ -6,7 +6,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import DetailsCurrency from "./DetailsCurrency";
 import CurrencyInfoHistTbl from "./HistoryCurrency";
 
-const DrawerCurrency = ({ visible, onClose, selectedCurrencyNames, handleAddCurrency }) => {
+const DrawerCurrency = ({
+  visible,
+  onClose,
+  selectedCurrencyNames,
+  handleAddCurrency,
+  handleEditCurrency
+}) => {
   const [activeTab, setActiveTab] = useState("healthsheet-Details");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedInitiative, setSelectedInitiative] = useState(0); // Default selected initiative index
@@ -28,6 +34,7 @@ const DrawerCurrency = ({ visible, onClose, selectedCurrencyNames, handleAddCurr
           selectedCurrencyNames={selectedCurrencyNames}
           onClose={onClose}
           handleAddCurrency={handleAddCurrency}
+          handleEditCurrency={handleEditCurrency}
         />
       );
     } else if (activeTab === "History-Details") {

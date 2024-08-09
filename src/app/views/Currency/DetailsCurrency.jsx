@@ -13,9 +13,16 @@ const getCurrencySymbolOptions = () => {
   });
 };
 
-const DetailsCurrency = ({ onClose, selectedCurrencyNames, handleAddCurrency }) => {
+const DetailsCurrency = ({
+  onClose,
+  selectedCurrencyNames,
+  handleAddCurrency,
+  handleEditCurrency
+}) => {
   const { t } = useTranslation();
-
+  const currencySymbolOptions = getCurrencySymbolOptions();
+  const userdata = JSON.parse(sessionStorage.getItem("user"));
+  const employeeId = userdata?.employeeId;
   const Currency = {
     CurrencyCode: "",
     CurrencyName: "",
@@ -27,7 +34,8 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames, handleAddCurrency }) 
 
   const [formValues, setFormValues] = useState(Currency);
   const [errors, setErrors] = useState({});
-  const currencySymbolOptions = getCurrencySymbolOptions();
+
+  // Use custom hook for PUT request
 
   useEffect(() => {
     if (selectedCurrencyNames && selectedCurrencyNames.length > 0) {
@@ -76,20 +84,32 @@ const DetailsCurrency = ({ onClose, selectedCurrencyNames, handleAddCurrency }) 
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (validateForm()) {
       const payload = {
-        currencyID: 0, // Assuming this is a new currency
+        currencyID:
+          selectedCurrencyNames && selectedCurrencyNames.length > 0
+            ? selectedCurrencyNames[0].currencyID
+            : 0,
         currencyCode: formValues.CurrencyCode,
         currencyName: formValues.CurrencyName,
         currencySymbol: formValues.CurrencySymbol,
         conversionRate: parseFloat(formValues.ConversionRate),
         majorCurrencyUnit: formValues.Major.toString(), // Convert to string
         minorCurrencyUnit: formValues.Minor.toString(), // Convert to string
-        createdBYID: 0 // Set this to the appropriate user ID
+        createdBYID: employeeId
       };
-      console.log("Currency-Currency", payload);
-      handleAddCurrency(payload);
+
+      try {
+        if (selectedCurrencyNames && selectedCurrencyNames.length > 0) {
+          await handleEditCurrency(payload); // Call the PUT API if currency exists
+        } else {
+          handleAddCurrency(payload); // Call the POST API otherwise
+        }
+        onClose(); // Close the form or perform other actions
+      } catch (error) {
+        console.error("Error saving currency data:", error);
+      }
     } else {
       const firstErrorField = Object.keys(errors)[0];
       if (firstErrorField) {

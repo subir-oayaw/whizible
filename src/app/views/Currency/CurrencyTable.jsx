@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Box, Tooltip, Modal, Typography } from "@mui/material";
+import { Box, Tooltip, Modal, Typography, IconButton } from "@mui/material";
 import {
   Checkbox,
   PrimaryButton,
   DetailsList,
   DetailsListLayoutMode,
-  DetailsListColumns,
-  DetailsRow,
-  DetailsHeader,
+  SelectionMode,
   IColumn
 } from "@fluentui/react";
 import DrawerCurrency from "./DrawerCurrency";
@@ -17,8 +15,12 @@ import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
 import Ad_SearchIcon from "../../../assets/img/search-list.png";
 import Pagination from "@mui/material/Pagination";
+import EditIcon from "@mui/icons-material/Edit"; // Import the pencil icon
 import usePostCurrencyMaster from "../../hooks/CurrencyMaster/usePostCurrencyMaster";
 import useDeleteCurrencyMaster from "../../hooks/CurrencyMaster/useDeleteCurrencyMaster";
+import usePutCurrencyMaster from "../../hooks/CurrencyMaster/usePutCurrencyMaster";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
   const { t } = useTranslation();
@@ -32,7 +34,8 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
   const [selectedCurrencyNames, setSelectedCurrencyNames] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-
+  const userdata = JSON.parse(sessionStorage.getItem("user"));
+  const employeeId = userdata?.employeeId;
   const viewPermission = getViewOptions && getViewOptions[0] ? getViewOptions[0] : {};
   const { a: canAdd, e: canEdit, d: canDelete } = viewPermission;
 
@@ -49,6 +52,12 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
     loading: deleteLoading,
     error: deleteError
   } = useDeleteCurrencyMaster();
+  const {
+    putCurrencyData,
+    responseData: putResponseData,
+    loading: putLoading,
+    error: putError
+  } = usePutCurrencyMaster();
 
   useEffect(() => {
     setData(currencyData);
@@ -93,12 +102,24 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
     try {
       await postCurrencyData(currencyData);
       setDrawerVisible(false);
-      onSearch(); // Trigger search or refresh after adding new data
+      onSearch();
+      toast.success("Currency added successfully");
     } catch (error) {
       console.error("Failed to add currency:", error);
+      toast.error("Failed. Please retry.");
     }
   };
-
+  const handleEditCurrency = async (currencyData) => {
+    try {
+      await putCurrencyData(currencyData);
+      setDrawerVisible(false);
+      onSearch();
+      toast.success("Currency edited successfully");
+    } catch (error) {
+      console.error("Failed to add currency:", error);
+      toast.error("Failed. Please retry.");
+    }
+  };
   const handleDeleteSelected = async () => {
     const selectedIndices = individualChecks
       .map((checked, index) => (checked ? index : -1))
@@ -108,13 +129,25 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
 
     for (const item of selectedItems) {
       try {
-        await deleteCurrencyData(item.currencyID, item.logID);
+        await deleteCurrencyData(item.currencyID, employeeId);
+        onSearch();
+        toast.success("Currency deleted successfully");
       } catch (error) {
         console.error("Failed to delete currency:", error);
+        toast.error("Failed. Please retry.");
       }
     }
 
     onSearch(); // Trigger search or refresh after deleting data
+  };
+
+  const handleEdit = (currency) => {
+    if (!canEdit) {
+      handleDisabledClick("You don't have rights to edit, contact admin.");
+    } else {
+      setSelectedCurrencyNames([currency]);
+      setDrawerVisible(true);
+    }
   };
 
   const checkboxStyles = {
@@ -136,7 +169,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
   const columns = [
     {
       key: "currencyID",
-      name: t("currency_code"),
+      name: t("Currency ID"),
       fieldName: "currencyID",
       minWidth: 100,
       maxWidth: 150,
@@ -181,6 +214,27 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
       minWidth: 100,
       maxWidth: 150,
       isMultiline: false
+    },
+    {
+      key: "actions",
+      name: t("actions"),
+      fieldName: "actions",
+      minWidth: 100,
+      maxWidth: 150,
+      isMultiline: false,
+      onRender: (item) => (
+        <IconButton
+          color="primary"
+          onClick={() => handleEdit(item)}
+          disabled={!canEdit}
+          sx={{
+            color: canEdit ? "#1976d2" : "#ccc",
+            cursor: canEdit ? "pointer" : "not-allowed"
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+      )
     },
     {
       key: "select",
@@ -261,6 +315,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
           onClose={() => setDrawerVisible(false)}
           selectedCurrencyNames={selectedCurrencyNames}
           handleAddCurrency={handleAddCurrency} // Pass the add handler to the DrawerCurrency component
+          handleEditCurrency={handleEditCurrency}
         />
       </div>
       {showForm && <AccorCurrency onClose={onClose} onSearch={onSearch} />}
@@ -269,6 +324,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
           items={currentData}
           columns={columns}
           layoutMode={DetailsListLayoutMode.fixedColumns}
+          selectionMode={SelectionMode.none}
         />
       </Box>
       <div>

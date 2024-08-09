@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pivot, PivotItem } from "@fluentui/react";
 import CurrencyTable from "./CurrencyTable";
 import useCurrencyMaster from "app/hooks/CurrencyMaster/useCurrencyMaster";
@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next"; // Import useTranslation
 
 const CurrencyInfo = () => {
   const { t } = useTranslation(); // Initialize translation function
+  const [refresh, setRefresh] = useState(true);
   const [searchParams, setSearchParams] = useState({
     CurrencyCode: "",
     CurrencyName: "",
@@ -22,8 +23,11 @@ const CurrencyInfo = () => {
   const { getViewOptions } = useGetViewOptions(tagMappings.Currency.toString());
 
   const handleSearch = (newSearchParams) => {
+    setRefresh(!refresh);
+    console.log("newSearchParams", refresh);
     setSearchParams(newSearchParams);
   };
+  useEffect(() => {}, [refresh]);
 
   return (
     <div id="Currency_main" className="">
