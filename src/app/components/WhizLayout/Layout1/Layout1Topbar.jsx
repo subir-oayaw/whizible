@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Box,
@@ -9,8 +9,13 @@ import {
   MenuItem,
   IconButton,
   useMediaQuery,
-  Typography
+  Typography,
+  Menu,
+  ListItemIcon
 } from "@mui/material";
+import Person from "@mui/icons-material/Person";
+import Settings from "@mui/icons-material/Settings";
+
 import { useNavigate } from "react-router-dom";
 import { NotificationProvider } from "app/contexts/NotificationContext";
 import useAuth from "app/hooks/useAuth";
@@ -20,17 +25,12 @@ import { WhizMenu, WhizSearchBox } from "app/components";
 import { NotificationBar } from "app/components/NotificationBar";
 import { themeShadows } from "app/components/WhizTheme/themeColors";
 import { topBarHeight } from "app/utils/constant";
-
-import {
-  Home,
-  Menu,
-  Person,
-  Settings,
-  WebAsset,
-  MailOutline,
-  StarOutline,
-  PowerSettingsNew
-} from "@mui/icons-material";
+import HomeOutlined from "@mui/icons-material/HomeOutlined";
+import MailOutline from "@mui/icons-material/MailOutline";
+import StarOutline from "@mui/icons-material/StarOutline";
+import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
+import Globe from "@mui/icons-material/Language"; // Import the globe icon
+import { useTranslation } from "react-i18next";
 
 // STYLED COMPONENTS
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -93,6 +93,17 @@ const Layout1Topbar = () => {
   const userdata = JSON.parse(sessionStorage.getItem("user"));
   const location = useLocation();
   const navigate = useNavigate();
+  const [selectedPath, setSelectedPath] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const { i18n } = useTranslation(); // Initialize i18n for translation
+
+  useEffect(() => {
+    // Retrieve the selected path from sessionStorage
+    const storedPath = sessionStorage.getItem("selectedPath");
+    setSelectedPath(storedPath || "");
+  }, [location.pathname]); // Update whenever the URL changes
+
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
@@ -115,104 +126,63 @@ const Layout1Topbar = () => {
       window.location.href = mailtoLink;
     }
   };
+
   const handleHome = () => {
     navigate("/");
   };
-  // Determine the label based on the current URL path
-  const path = location.pathname.split("/")[1];
-  let label;
-  switch (path) {
-    case "InitiativeManagement":
-      label = "Initiative";
-      break;
-    case "Warehouse":
-      label = "Warehouse";
-      break;
-    case "CompletedInitiativesList":
-      label = "Completed Initiatives";
-      break;
-    case "WithdrawnInitiatives":
-      label = "Withdrawn Initiatives";
-      break;
-    case "Actions":
-      label = "Action Items";
-      break;
-    case "ConvertedInitiatives":
-      label = "Converted Initiatives";
-      break;
-    case "Reallocation":
-      label = "Initiative Management";
-      break;
-    case "ExternalAudit":
-      label = "External Audit";
-      break;
-    case "InitiativeStatusManagement":
-      label = "Initiative Status Management";
-      break;
-    case "InitiativePrioritization":
-      label = "Initiative Prioritization";
-      break;
-    case "InitiativeProgress":
-      label = "Initiative Progress";
-      break;
-    case "InitiativeLinking":
-      label = "Initiative Linking";
-      break;
-    case "ManComPrioritization":
-      label = "Man-Com Prioritization";
-      break;
-    case "currency":
-      label = "Currency";
-      break;
-    default:
-      label = "Under Construction";
-      break;
-  }
+
+  // Handle language menu open
+  const handleLanguageMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  // Handle language change
+  const handleLanguageChange = (lang) => {
+    i18n.changeLanguage(lang);
+    setAnchorEl(null);
+  };
 
   return (
     <TopbarRoot>
       <TopbarContainer>
-        <Box display="flex">
-          <StyledIconButton onClick={handleSidebarToggle}>
-            <Menu />
-          </StyledIconButton>
-
-          <IconBox>
-            <StyledIconButton onClick={handleMailClick}>
-              <MailOutline />
-            </StyledIconButton>
-
-            <StyledIconButton>
-              <Home onClick={handleHome} />
-            </StyledIconButton>
-
-            {/* <StyledIconButton></StyledIconButton> */}
-          </IconBox>
-        </Box>
-
         {/* Center URL display */}
-        <Box display="flex" alignItems="center" justifyContent="center">
-          <Typography variant="body1" color="inherit">
-            {label}
+        <Box width="100%" sx={{ paddingLeft: 2 }}>
+          <Typography
+            variant="body1"
+            color="inherit"
+            sx={{ fontWeight: "bold", fontSize: "1.25rem" }}
+          >
+            {selectedPath && (
+              <Typography variant="body2" color="inherit" sx={{ marginLeft: 1, fontSize: "1rem" }}>
+                {selectedPath}
+              </Typography>
+            )}
           </Typography>
         </Box>
 
         <Box display="flex" alignItems="center">
-          {/* <WhizSearchBox /> */}
+          <NotificationProvider>
+            <HomeOutlined onClick={handleHome} sx={{ mr: 2 }} />
+          </NotificationProvider>
+          <NotificationProvider>
+            <MailOutline onClick={handleMailClick} sx={{ mr: 2 }} />
+          </NotificationProvider>
+          <NotificationProvider>
+            <StarOutline sx={{ mr: 2 }} />
+          </NotificationProvider>
+          <NotificationProvider>
+            <NotificationBar sx={{ mr: 2 }} />
+          </NotificationProvider>
 
-          <NotificationProvider>
-            <StarOutline />
-          </NotificationProvider>
-          <NotificationProvider>
-            <NotificationBar />
-          </NotificationProvider>
-          {/* <ShoppingCart /> */}
+          <StyledIconButton onClick={handleLanguageMenuClick} sx={{ mr: 2 }}>
+            <Globe />
+          </StyledIconButton>
 
           <WhizMenu
             menuButton={
               <UserMenu>
                 <Hidden xsDown>
-                  <Span>
+                  <Span sx={{ whiteSpace: "nowrap" }}>
                     Hi <strong>{userdata?.employeeName}</strong>
                   </Span>
                 </Hidden>
@@ -224,8 +194,8 @@ const Layout1Topbar = () => {
             }
           >
             <StyledItem>
-              <Link to="/">
-                <Home />
+              <Link to="/landingPage">
+                <HomeOutlined />
                 <Span>Home</Span>
               </Link>
             </StyledItem>
@@ -247,6 +217,40 @@ const Layout1Topbar = () => {
               <Span>Logout</Span>
             </StyledItem>
           </WhizMenu>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={() => setAnchorEl(null)}
+            PaperProps={{ sx: { maxHeight: 200, width: 150 } }}
+          >
+            <MenuItem onClick={() => handleLanguageChange("en")}>
+              <ListItemIcon>
+                <span role="img" aria-label="English">
+                  🇬🇧
+                </span>
+              </ListItemIcon>
+              <Typography variant="body2">English</Typography>
+            </MenuItem>
+            {/* <MenuItem onClick={() => handleLanguageChange("es")}>
+              <ListItemIcon>
+                <span role="img" aria-label="Spanish">
+                  🇪🇸
+                </span>
+              </ListItemIcon>
+              <Typography variant="body2">Español</Typography>
+            </MenuItem> */}
+            <MenuItem onClick={() => handleLanguageChange("mr")}>
+              <ListItemIcon>
+                <span role="img" aria-label="Marathi">
+                  🇲🇹
+                </span>
+              </ListItemIcon>
+              <Typography variant="body2">Marathi</Typography>
+            </MenuItem>
+
+            {/* Add more languages as needed */}
+          </Menu>
         </Box>
       </TopbarContainer>
     </TopbarRoot>

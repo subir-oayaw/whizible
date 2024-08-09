@@ -64,7 +64,7 @@ export default function JwtRegister() {
 
     try {
       register(values.email, values.username, values.password);
-      navigate("/");
+      navigate("/landingPage");
       setLoading(false);
     } catch (e) {
       console.log(e);

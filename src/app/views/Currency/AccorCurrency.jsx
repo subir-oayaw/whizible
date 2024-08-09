@@ -1,16 +1,14 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Checkbox,
-  FormControlLabel,
-  Link
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React, { useState } from "react";
 import { Label, TextField, Stack, DefaultButton } from "@fluentui/react";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useTranslation } from "react-i18next";
 
 const AccorCurrency = ({ onClose, onSearch }) => {
+  const { t } = useTranslation();
+
   const RApproach = {
     filter_CurrencyCode: "",
     filter_CurrencyName: "",
@@ -54,21 +52,17 @@ const AccorCurrency = ({ onClose, onSearch }) => {
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          Advanced Search
+          {t("AdvancedSearch")}
         </AccordionSummary>
         <AccordionDetails>
           <div className="row">
             {[
-              { id: "filter_CurrencyCode", label: "Currency Code", placeholder: "ac1234" },
-              { id: "filter_CurrencyName", label: "Currency Name", placeholder: "Indian" },
-              { id: "filter_CurrencySymbol", label: "Currency Symbol", placeholder: "Rs." },
-              {
-                id: "filter_ConversionRate",
-                label: "Conversion Rate (Value Vs. Base Currency)",
-                placeholder: "10"
-              },
-              { id: "filter_Major", label: "Major", placeholder: "10" },
-              { id: "filter_Minor", label: "Minor", placeholder: "10" }
+              { id: "filter_CurrencyCode", label: t("CurrencyCode"), placeholder: "ac1234" },
+              { id: "filter_CurrencyName", label: t("CurrencyName"), placeholder: "Indian" },
+              { id: "filter_CurrencySymbol", label: t("CurrencySymbol"), placeholder: "Rs." },
+              { id: "filter_ConversionRate", label: t("ConversionRate"), placeholder: "10" },
+              { id: "filter_Major", label: t("Major"), placeholder: "10" },
+              { id: "filter_Minor", label: t("Minor"), placeholder: "10" }
             ].map(({ id, label, placeholder }, index) => (
               <div key={id} className={`col-sm-${index < 4 ? "4" : "3"} mb-2`}>
                 <Label htmlFor={id}>{label}</Label>
@@ -91,21 +85,21 @@ const AccorCurrency = ({ onClose, onSearch }) => {
               <DefaultButton
                 id="ClearSearchBtn"
                 className="underline_btn"
-                text="Clear Search"
+                text={t("ClearSearch")}
                 onClick={handleClearSearch}
                 styles={{ root: { backgroundColor: "#9e9e9e", color: "#fff" } }}
               />
               <DefaultButton
                 id="SaveSearchBtn"
                 className="underline_btn"
-                text="Save and Search"
+                text={t("SaveAndSearch")}
                 onClick={handleSaveAndSearch}
                 styles={{ root: { backgroundColor: "#4caf50", color: "#fff" } }}
               />
               <DefaultButton
                 id="SearchBtn"
                 className="borderbtnbgblue"
-                text="Search"
+                text={t("Search")}
                 onClick={handleSaveAndSearch}
                 styles={{ root: { backgroundColor: "#2196f3", color: "#fff" } }}
               />
@@ -113,7 +107,7 @@ const AccorCurrency = ({ onClose, onSearch }) => {
                 id="CloseSearchBtn"
                 className="underline_btn"
                 onClick={onClose}
-                text="Close"
+                text={t("Close")}
                 styles={{ root: { backgroundColor: "#f44336", color: "#fff" } }}
               />
             </div>

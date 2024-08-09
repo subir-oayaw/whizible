@@ -64,28 +64,36 @@ export default function Sidenav({ children, isHovered }) {
   };
 
   const handleSearch = (event) => {
-    const term = event.target.value.toLowerCase();
+    const term = event?.target?.value?.toLowerCase();
     setSearchTerm(term);
 
     if (term === "") {
       setFilteredNavigations(navigations);
     } else {
-      const filtered = navigations
-        .map((navItem) => {
-          const filteredChildren = navItem.children.filter((child) =>
-            child.name.toLowerCase().includes(term)
-          );
+      const filterItems = (items) => {
+        return items
+          .map((item) => {
+            if (item.tagName.toLowerCase().includes(term)) {
+              // If the parent matches, return it with all its children
+              return item;
+            }
 
-          if (filteredChildren.length > 0) {
-            return {
-              ...navItem,
-              children: filteredChildren
-            };
-          }
-          return null;
-        })
-        .filter((item) => item !== null);
+            if (item.children && item.children.length > 0) {
+              const filteredChildren = filterItems(item.children);
 
+              if (filteredChildren.length > 0) {
+                // If any children match, return the parent with the filtered children
+                return { ...item, children: filteredChildren };
+              }
+            }
+
+            // If no match, return null
+            return null;
+          })
+          .filter((item) => item !== null);
+      };
+
+      const filtered = filterItems(navigations);
       setFilteredNavigations(filtered);
     }
   };
@@ -117,7 +125,7 @@ export default function Sidenav({ children, isHovered }) {
 
   return (
     <Fragment>
-      {/* <StyledSpan mode={mode} className="sidenavHoverShow">
+      <StyledSpan mode={mode} className="sidenavHoverShow">
         <input
           type="text"
           placeholder="Search..."
@@ -125,7 +133,7 @@ export default function Sidenav({ children, isHovered }) {
           onChange={handleSearch}
           style={{ margin: "1rem", padding: "0.005rem", width: "calc(100% - 2rem)" }}
         />
-      </StyledSpan> */}
+      </StyledSpan>
       <StyledScrollBar options={{ suppressScrollX: true }}>
         <WhizVerticalNav items={filteredNavigations} isHovered={isHovered} mode={mode} />
         {children}

@@ -49,8 +49,9 @@ export default function Breadcrumb({ routeSegments }) {
 
       <Breadcrumbs
         separator={<Icon sx={{ color: hint }}>navigate_next</Icon>}
-        sx={{ display: "flex", alignItems: "center", position: "relative" }}>
-        <NavLink to="/">
+        sx={{ display: "flex", alignItems: "center", position: "relative" }}
+      >
+        <NavLink to="/landingPage">
           <StyledIcon color="primary">home</StyledIcon>
         </NavLink>
 

@@ -19,35 +19,34 @@ const InitiativeTable = () => {
       key: "title",
       name: "Initiative Title",
       fieldName: "title",
-
+      isMultiline: true,
+      isMultiline: true,
+      isMultiline: true,
       isResizable: true
     },
     {
       key: "nature",
       name: "Nature of Initiative",
       fieldName: "nature",
-
       isResizable: true
     },
     {
       key: "group",
       name: "Business Group/Organization Unit",
       fieldName: "group",
-
       isResizable: true
     },
     {
       key: "convertedTo",
       name: "Converted To",
       fieldName: "convertedTo",
-
       isResizable: true
     },
     { key: "vendor", name: "Vendor", fieldName: "vendor", isResizable: true },
     {
       key: "action",
       name: "Action",
-
+      isMultiline: true,
       isResizable: true,
       onRender: (item) => (
         <div>

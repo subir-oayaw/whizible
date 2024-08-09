@@ -55,6 +55,8 @@ const ManComPrioritization = Loadable(lazy(() => import("app/views/ManComPriorit
 const InitiativeLinking = Loadable(lazy(() => import("app/views/InitiativeLinking")));
 const Program = Loadable(lazy(() => import("app/views/Program")));
 const ProjectMain = Loadable(lazy(() => import("app/views/ProjectMain")));
+const LandingPage = Loadable(lazy(() => import("app/views/LandingPage")));
+
 const routes = [
   {
     element: (
@@ -95,6 +97,8 @@ const routes = [
       { path: "/AuditTypeDefinition", element: <AuditTypeDefinition /> },
       { path: "/DocumentsCategory", element: <DocumentsCategory /> },
       { path: "/DepartmentMaster", element: <DepartmentMaster /> },
+      { path: "/", element: <LandingPage /> },
+      { path: "/landingPage", element: <LandingPage /> },
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }
     ]
@@ -105,9 +109,6 @@ const routes = [
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
 
-  { path: "/EditPage", element: <EditPage initiativesID="adadadasdsadasdsad" /> },
-
-  { path: "/", element: <Navigate to="InitiativeManagement" /> },
   { path: "*", element: <NotFound /> }
 ];
 

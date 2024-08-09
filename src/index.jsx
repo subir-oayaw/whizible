@@ -12,6 +12,7 @@ import { initReactI18next } from "react-i18next";
 // Import translations
 import translations_en from "./locales/en/translation.json"; // English translations
 import translations_fr from "./locales/fr/translation.json";
+import translations_mr from "./locales/mr/translation.json";
 // third party style
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 
@@ -21,7 +22,8 @@ i18n
   .init({
     resources: {
       en: { translation: translations_en },
-      fr: { translation: translations_fr }
+      fr: { translation: translations_fr },
+      mr: { translation: translations_mr }
       // Add resources for other languages here
     },
     lng: "en", // default language

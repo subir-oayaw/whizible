@@ -45,7 +45,7 @@ function LoginPage() {
   const token = sessionStorage.getItem("access_token");
   useEffect(() => {
     if (token) {
-      navigate("/InitiativeManagement");
+      navigate("/landingPage");
     }
   }, [token]);
   const handleUsernameChange = (e) => {
@@ -104,7 +104,7 @@ function LoginPage() {
   };
 
   const signin = () => {
-    navigate("/InitiativeManagement");
+    navigate("/landingPage");
   };
   const calculatePasswordStrength = () => {
     const strength = {
@@ -160,20 +160,24 @@ function LoginPage() {
         return "danger";
     }
   };
-
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
   return (
     <Container fluid className="p-0 login-container" style={{ width: "100%", height: "100vh" }}>
-      {/* <Row className="w-100 m-0">
-        <Dropdown className="position-absolute top-0 start-0 mt-2 ml-3">
-          <Dropdown.Toggle variant="success" id="language-dropdown">
-            {t("language")}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => changeLanguage("en")}>{t("english")}</Dropdown.Item>
-            <Dropdown.Item onClick={() => changeLanguage("f")}>{t("french")}</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </Row> */}
+      <Row className="w-100 m-0">
+        <Col>
+          <Dropdown className="position-absolute top-0 start-0 mt-2 ml-3">
+            <Dropdown.Toggle variant="success" id="language-dropdown">
+              {t("language")}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => changeLanguage("en")}>{t("english")}</Dropdown.Item>
+              <Dropdown.Item onClick={() => changeLanguage("mr")}>{t("french")}</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Col>
+      </Row>
       <Row className="w-100 m-0">
         <Col
           md={6}
