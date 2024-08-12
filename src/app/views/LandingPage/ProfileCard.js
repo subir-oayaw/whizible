@@ -3,10 +3,39 @@ import { Stack, Text, Persona, PersonaSize } from "@fluentui/react";
 import { Carousel } from "react-bootstrap";
 import profImg1 from "../../../assets/img/profImg1.jpg";
 import profImg2 from "../../../assets/Images/Loginframe.png";
-import { use } from "echarts";
+import { FaPlus, FaBirthdayCake, FaExclamationCircle } from "react-icons/fa";
+
+// Sample data for carousel items
+const carouselItems = [
+  {
+    title: "New Initiative Created",
+    text: "A new Initiative created. Let's get started!",
+    icon: <FaPlus />, // Use react-icons component
+    bannerColor: "grey"
+  },
+  {
+    title: "Birthday",
+    text: "It's Madhuri's Birthday!",
+    icon: <FaBirthdayCake />, // Use react-icons component
+    bannerColor: "#0078d4"
+  },
+  {
+    title: "Approval Alert",
+    text: "Today one approval is pending. Kindly review and approve.",
+    icon: <FaExclamationCircle />, // Use react-icons component
+    bannerColor: "red"
+  },
+  {
+    title: "New Initiative Created",
+    text: "A new initiative created. Let's get started!",
+    icon: <FaPlus />, // Use react-icons component
+    bannerColor: "green"
+  }
+];
 
 const user = JSON.parse(sessionStorage.getItem("user"));
 console.log("user", user);
+
 const ProfileCard = () => (
   <Stack
     horizontal
@@ -65,49 +94,40 @@ const ProfileCard = () => (
       }}
     >
       <Carousel indicators={false} controls={false} interval={3000}>
-        <Carousel.Item>
-          <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
-            <Text variant="large">New Initiative Created</Text>
-            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
-              "A new Initiative created. Let's get started!"
-            </Text>
-          </Stack>
-        </Carousel.Item>
-        <Carousel.Item>
-          <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
-            <img
-              src={profImg2}
-              alt="Description"
-              style={{ width: 50, height: 50, borderRadius: "50%" }}
-            />
-            <Text variant="large" styles={{ root: { color: "#0078d4" } }}>
-              Birthday
-            </Text>
-            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
-              "It's Madhuri's Birthday!"
-            </Text>
-          </Stack>
-        </Carousel.Item>
-        <Carousel.Item>
-          <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
-            <Text variant="large" styles={{ root: { color: "red" } }}>
-              Approval Alert
-            </Text>
-            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
-              "Today one approval is pending. Kindly review and approve."
-            </Text>
-          </Stack>
-        </Carousel.Item>
-        <Carousel.Item>
-          <Stack horizontalAlign="center" verticalAlign="center" tokens={{ childrenGap: 10 }}>
-            <Text variant="large" styles={{ root: { color: "green" } }}>
-              New Initiative Created
-            </Text>
-            <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
-              "A new initiative created. Let's get started!"
-            </Text>
-          </Stack>
-        </Carousel.Item>
+        {carouselItems.map((item, index) => (
+          <Carousel.Item key={index}>
+            <Stack
+              verticalAlign="center"
+              tokens={{ childrenGap: 10 }}
+              styles={{
+                root: {
+                  backgroundColor: item.bannerColor,
+                  padding: "10px",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
+                }
+              }}
+            >
+              <Stack
+                horizontal
+                verticalAlign="center"
+                horizontalAlign="center"
+                tokens={{ childrenGap: 10 }}
+              >
+                {item.icon}
+                <Text variant="large" styles={{ root: { color: "white" } }}>
+                  {item.title}
+                </Text>
+              </Stack>
+              <Text
+                variant="small"
+                styles={{ root: { color: "#f0f0f0", marginTop: "8px", textAlign: "center" } }}
+              >
+                {item.text}
+              </Text>
+            </Stack>
+          </Carousel.Item>
+        ))}
       </Carousel>
     </Stack>
   </Stack>
