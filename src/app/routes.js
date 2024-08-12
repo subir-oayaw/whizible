@@ -27,6 +27,7 @@ const ProfilePage = Loadable(lazy(() => import("app/views/Profile/Profile")));
 const InitiativeStatusManagement = Loadable(
   lazy(() => import("app/views/InitiativeStatusManagement/index"))
 );
+const LoadingPage = Loadable(lazy(() => import("../app/views/LoadingPage")));
 const UnderConstruction = Loadable(lazy(() => import("app/views/UnderConstruction")));
 const Warehouse = Loadable(lazy(() => import("app/views/Warehouse/Warehouse")));
 const ExternalAudit = Loadable(lazy(() => import("app/views/ExternalAudit")));
@@ -67,6 +68,7 @@ const routes = [
     children: [
       ...materialRoutes,
       // dashboard route
+
       { path: "/analytics", element: <Analytics />, auth: authRoles.admin },
       { path: "/InitiativeManagement", element: <InitiativeManagement />, auth: authRoles.admin },
       { path: "/Warehouse", element: <Warehouse /> },
@@ -108,7 +110,7 @@ const routes = [
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
-
+  { path: "/LoadingPage", element: <LoadingPage /> },
   { path: "*", element: <NotFound /> }
 ];
 
