@@ -56,7 +56,9 @@ const InitiativeLinking = Loadable(lazy(() => import("app/views/InitiativeLinkin
 const Program = Loadable(lazy(() => import("app/views/Program")));
 const ProjectMain = Loadable(lazy(() => import("app/views/ProjectMain")));
 const LandingPage = Loadable(lazy(() => import("app/views/LandingPage")));
-
+const ProgramList = Loadable(lazy(() => import("app/views/Programs/ProgramList/index")));
+const ProjectList = Loadable(lazy(() => import("app/views/Programs/ProjectList/index")));
+const MilestoneProgress = Loadable(lazy(() => import("app/views/Programs/MilestoneProgress")));
 const routes = [
   {
     element: (
@@ -99,8 +101,9 @@ const routes = [
       { path: "/DepartmentMaster", element: <DepartmentMaster /> },
       { path: "/", element: <LandingPage /> },
       { path: "/landingPage", element: <LandingPage /> },
-      // e-chart route
-      { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }
+      { path: "/programlist", element: <ProgramList /> },
+      { path: "/projectlist", element: <ProjectList /> },
+      { path: "/milestoneprogress", element: <MilestoneProgress /> }
     ]
   },
 
