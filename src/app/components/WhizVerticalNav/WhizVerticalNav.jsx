@@ -152,6 +152,15 @@ const WhizVerticalNav = ({ items, isHovered, mode }) => {
       case "Currency":
         navigate("/currency");
         break;
+      case "Projects":
+        navigate("/projectlist");
+        break;
+      case "Program":
+        navigate("/programlist");
+        break;
+      case "Project Health Sheet Approval":
+        navigate("/milestoneprogress");
+        break;
       default:
         navigate("/under-construction");
         break;
