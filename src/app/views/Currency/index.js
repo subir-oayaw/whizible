@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pivot, PivotItem } from "@fluentui/react";
+import { Pivot, PivotItem, Spinner, SpinnerSize, Stack } from "@fluentui/react"; // Import Spinner
 import CurrencyTable from "./CurrencyTable";
 import useCurrencyMaster from "app/hooks/CurrencyMaster/useCurrencyMaster";
 import AccorCurrency from "./AccorCurrency";
@@ -27,6 +27,7 @@ const CurrencyInfo = () => {
     console.log("newSearchParams", refresh);
     setSearchParams(newSearchParams);
   };
+
   useEffect(() => {}, [refresh]);
 
   return (
@@ -40,13 +41,23 @@ const CurrencyInfo = () => {
         onSearch={handleSearch} // Pass the handleSearch function as a prop
       /> */}
       <div>
-        {currencyData && (
+        {loading ? (
+          <Stack
+            verticalAlign="center"
+            horizontalAlign="center"
+            styles={{ root: { minHeight: "100vh" } }}
+          >
+            <Spinner size={SpinnerSize.large} label={t("Loading...")} ariaLive="assertive" />
+          </Stack>
+        ) : currencyData ? (
           <CurrencyTable
             currencyData={currencyData}
             onSearch={handleSearch}
             onClose={() => console.log(t("closed"))} // Use translation
             getViewOptions={getViewOptions}
           />
+        ) : (
+          error && <div>{t("Error fetching data")}</div> // Handle error state
         )}
       </div>
     </div>

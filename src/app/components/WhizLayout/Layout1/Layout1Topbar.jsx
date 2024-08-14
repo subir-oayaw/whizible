@@ -101,8 +101,15 @@ const Layout1Topbar = () => {
   useEffect(() => {
     // Retrieve the selected path from sessionStorage
     const storedPath = sessionStorage.getItem("selectedPath");
-    setSelectedPath(storedPath || "");
-  }, [location.pathname]); // Update whenever the URL changes
+
+    // Check if the current URL is either '/' or '/landingPage'
+    if (location.pathname === "" || location.pathname === "/landingPage") {
+      console.log("first");
+      setSelectedPath("setSelectedPath", selectedPath);
+    } else {
+      setSelectedPath(storedPath || "");
+    }
+  }, [location.pathname]);
 
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });

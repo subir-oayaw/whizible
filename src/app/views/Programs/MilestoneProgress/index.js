@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pivot, PivotItem } from "@fluentui/react";
+import { Pivot, PivotItem, Spinner, SpinnerSize } from "@fluentui/react"; // Import Spinner
 import CurrencyTable from "./CurrencyTable";
 import useCurrencyMaster from "app/hooks/CurrencyMaster/useCurrencyMaster";
 import AccorCurrency from "./AccorCurrency";
@@ -7,7 +7,7 @@ import useGetViewOptions from "app/hooks/useGetViewOptions";
 import tagMappings from "../../../../app/TagNames/tag";
 import { useTranslation } from "react-i18next"; // Import useTranslation
 
-const Index = () => {
+const CurrencyInfo = () => {
   const { t } = useTranslation(); // Initialize translation function
   const [refresh, setRefresh] = useState(true);
   const [searchParams, setSearchParams] = useState({
@@ -27,6 +27,7 @@ const Index = () => {
     console.log("newSearchParams", refresh);
     setSearchParams(newSearchParams);
   };
+
   useEffect(() => {}, [refresh]);
 
   return (
@@ -40,17 +41,21 @@ const Index = () => {
         onSearch={handleSearch} // Pass the handleSearch function as a prop
       /> */}
       <div>
-        {currencyData && (
+        {loading ? (
+          <Spinner size={SpinnerSize.large} label={t("Loading...")} ariaLive="assertive" />
+        ) : currencyData ? (
           <CurrencyTable
             currencyData={currencyData}
             onSearch={handleSearch}
             onClose={() => console.log(t("closed"))} // Use translation
             getViewOptions={getViewOptions}
           />
+        ) : (
+          error && <div>{t("Error fetching data")}</div> // Handle error state
         )}
       </div>
     </div>
   );
 };
 
-export default Index;
+export default CurrencyInfo;

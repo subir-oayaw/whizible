@@ -217,7 +217,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
     },
     {
       key: "actions",
-      name: t("actions"),
+      name: t("Actions"),
       fieldName: "actions",
       minWidth: 100,
       maxWidth: 150,
@@ -282,7 +282,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
                       setDrawerVisible(true);
                     }
                   }}
-                  text={t("add")}
+                  text={t("Add")}
                   disabled={!canAdd}
                   styles={{
                     root: { backgroundColor: canAdd ? "#1976d2" : "#ccc", color: "#fff" }
@@ -293,7 +293,7 @@ const CurrencyTable = ({ currencyData, onSearch, onClose, getViewOptions }) => {
             <Tooltip title={!canDelete ? t("no_rights_delete") : ""}>
               <span>
                 <PrimaryButton
-                  text={t("delete")}
+                  text={t("Delete")}
                   onClick={() => {
                     if (!canDelete) {
                       handleDisabledClick(t("no_rights_delete"));

@@ -11,25 +11,25 @@ const carouselItems = [
     title: "New Initiative Created",
     text: "A new Initiative created. Let's get started!",
     icon: <FaPlus />, // Use react-icons component
-    bannerColor: "grey"
+    bannerColor: "#fff3cd"
   },
   {
     title: "Birthday",
     text: "It's Madhuri's Birthday!",
     icon: <FaBirthdayCake />, // Use react-icons component
-    bannerColor: "#0078d4"
+    bannerColor: "#d4edda"
   },
   {
     title: "Approval Alert",
     text: "Today one approval is pending. Kindly review and approve.",
     icon: <FaExclamationCircle />, // Use react-icons component
-    bannerColor: "red"
+    bannerColor: "#f8d7da"
   },
   {
     title: "New Initiative Created",
     text: "A new initiative created. Let's get started!",
     icon: <FaPlus />, // Use react-icons component
-    bannerColor: "green"
+    bannerColor: "#d4edda"
   }
 ];
 
@@ -115,13 +115,13 @@ const ProfileCard = () => (
                 tokens={{ childrenGap: 10 }}
               >
                 {item.icon}
-                <Text variant="large" styles={{ root: { color: "white" } }}>
+                <Text variant="large" styles={{ root: { color: "black" } }}>
                   {item.title}
                 </Text>
               </Stack>
               <Text
                 variant="small"
-                styles={{ root: { color: "#f0f0f0", marginTop: "8px", textAlign: "center" } }}
+                styles={{ root: { color: "black", marginTop: "8px", textAlign: "center" } }}
               >
                 {item.text}
               </Text>

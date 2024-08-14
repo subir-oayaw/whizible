@@ -1,10 +1,21 @@
 import React, { useState } from "react";
-import { Label, TextField, Stack, DefaultButton } from "@fluentui/react";
+import { Label, TextField, Stack, DefaultButton, Dropdown } from "@fluentui/react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useTranslation } from "react-i18next";
+import currencySymbolMap from "currency-symbol-map";
+import currencyCodes from "currency-codes";
+
+// Function to get currency symbol options
+const getCurrencySymbolOptions = () => {
+  return currencyCodes.codes().map((code) => {
+    const symbol = currencySymbolMap(code);
+    const currencyName = currencyCodes.code(code).currency;
+    return { key: symbol, text: `${symbol} - ${currencyName} (${code})` };
+  });
+};
 
 const AccorCurrency = ({ onClose, onSearch }) => {
   const { t } = useTranslation();
@@ -19,12 +30,20 @@ const AccorCurrency = ({ onClose, onSearch }) => {
   };
 
   const [formValues, setFormValues] = useState(RApproach);
+  const currencySymbolOptions = getCurrencySymbolOptions();
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormValues((prevValues) => ({
       ...prevValues,
       [id]: value
+    }));
+  };
+
+  const handleDropdownChange = (event, option) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      filter_CurrencySymbol: option.key
     }));
   };
 
@@ -59,7 +78,6 @@ const AccorCurrency = ({ onClose, onSearch }) => {
             {[
               { id: "filter_CurrencyCode", label: t("CurrencyCode"), placeholder: "ac1234" },
               { id: "filter_CurrencyName", label: t("CurrencyName"), placeholder: "Indian" },
-              { id: "filter_CurrencySymbol", label: t("CurrencySymbol"), placeholder: "Rs." },
               { id: "filter_ConversionRate", label: t("ConversionRate"), placeholder: "10" },
               { id: "filter_Major", label: t("Major"), placeholder: "10" },
               { id: "filter_Minor", label: t("Minor"), placeholder: "10" }
@@ -79,6 +97,17 @@ const AccorCurrency = ({ onClose, onSearch }) => {
                 />
               </div>
             ))}
+
+            <div className="col-sm-4 mb-2">
+              <Label htmlFor="filter_CurrencySymbol">{t("CurrencySymbol")}</Label>
+              <Dropdown
+                id="filter_CurrencySymbol"
+                selectedKey={formValues.filter_CurrencySymbol}
+                onChange={handleDropdownChange}
+                placeholder={t("SelectSymbol")}
+                options={currencySymbolOptions}
+              />
+            </div>
           </div>
           <div className="row">
             <div className="col-sm-12 d-flex justify-content-end gap-3 mt-3">
