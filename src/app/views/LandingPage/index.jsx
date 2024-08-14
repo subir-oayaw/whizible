@@ -48,8 +48,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={{ padding: "24px", backgroundColor: "#F9F9F9", minHeight: "100vh" }}>
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "20px" }}>
+    <div style={{ padding: "2px", backgroundColor: "#F9F9F9", minHeight: "100vh" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "2px" }}>
         <button
           onClick={toggleDraggable}
           style={{
