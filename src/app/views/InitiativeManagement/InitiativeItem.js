@@ -35,7 +35,7 @@ const InitiativeItem = ({
     stageOrder,
     maxStage,
     comments,
-    inboxForInitiativeDetails
+    initiativeListStageDetails
   } = initiative;
 
   // State for managing drawers and editing
@@ -48,10 +48,10 @@ const InitiativeItem = ({
   const [stagesCompleted, setStagesCompleted] = useState(0);
   // Ref for the reply textarea
   const replyTextareaRef = useRef(null);
-
+  console.log("initiativeListStageDetails", initiative);
   useEffect(() => {
-    if (inboxForInitiativeDetails) {
-      const stageDetails = inboxForInitiativeDetails || [];
+    if (initiativeListStageDetails) {
+      const stageDetails = initiativeListStageDetails || [];
       setTotalStages(stageDetails.length);
       const completedStages = stageDetails.reduce(
         (count, stage) => (stage.isStageApproved ? count : count),
@@ -59,7 +59,7 @@ const InitiativeItem = ({
       );
       setStagesCompleted(completedStages);
     }
-  }, [inboxForInitiativeDetails]);
+  }, [initiativeListStageDetails]);
 
   // Function to open comment drawer
   const openCommentDrawer = () => {
@@ -92,7 +92,7 @@ const InitiativeItem = ({
     return `${day}/${month}/${year}`;
   };
 
-  console.log("stages1", inboxForInitiativeDetails);
+  console.log("stages1", initiativeListStageDetails);
 
   return (
     <>
@@ -131,7 +131,7 @@ const InitiativeItem = ({
                 Current Stage :{" "}
                 <strong style={{ color: "grey" }}>
                   {" "}
-                  {inboxForInitiativeDetails[0].requestStage}
+                  {initiativeListStageDetails[0]?.requestStage}
                 </strong>
               </Typography>
             </div>
@@ -142,7 +142,7 @@ const InitiativeItem = ({
               </Typography>
             </div>
           </Box>
-          <CustomProgressBar stages={inboxForInitiativeDetails} />
+          <CustomProgressBar stages={initiativeListStageDetails} />
           <Box
             sx={{
               display: "flex",

@@ -13,7 +13,7 @@ const useGetViewOptions = (tagid) => {
         const accessToken = sessionStorage.getItem("access_token");
         const response = await axios.get(
           process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 +
-            `/api/PageLevelAcess?tagId=${tagid}&roleID=${roleID}`,
+            `/api/PageAccess/Get?tagId=${tagid}&roleID=${roleID}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`
@@ -25,8 +25,7 @@ const useGetViewOptions = (tagid) => {
         if (response.status !== 200) {
           throw new Error("Failed to fetch dashboard data");
         }
-        setGetViewOptions(response.data.data.lstPageLevelAcess);
-        console.log("first44", response.data.data.lstPageLevelAcess);
+        setGetViewOptions(response.data.data.lstPageAcess);
       } catch (error) {
         setError(error.message);
         console.error("Error fetching dashboard data:", error);

@@ -15,7 +15,7 @@ const useInitiative = () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
         const response = await axios.get(
-          `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/Dashboard?LastActionName=Approved&employeeId=${employeeId}`,
+          `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeList/Get?alterType=ToDoList&employeeId=${employeeId}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`
@@ -27,7 +27,7 @@ const useInitiative = () => {
           throw new Error("Failed to fetch dashboard data");
         }
 
-        setDashboardData(response.data.data.inboxForInitiative);
+        setDashboardData(response.data.data.initiativeList);
         toast.success("Dashboard data fetched successfully");
       } catch (error) {
         setError(error.message);

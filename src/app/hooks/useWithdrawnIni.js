@@ -12,7 +12,7 @@ const useWithdrawnIni = () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
         const response = await axios.get(
-          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + `/api/WithdrawnIni`,
+          process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 + `/api/WithdrawnIni/Get`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`
