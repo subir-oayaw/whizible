@@ -13,7 +13,7 @@ const useSidebar = () => {
         const accessToken = sessionStorage.getItem("access_token");
         const response = await axios.get(
           process.env.REACT_APP_BASEURL_ACCESS_CONTROL1 +
-            `/api/Navigation?employeeId=${employeeId}`,
+            `/api/Navigation/Get?employeeId=${employeeId}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`

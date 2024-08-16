@@ -10,7 +10,7 @@ const usePostCurrencyMaster = () => {
     setLoading(true);
     try {
       const accessToken = sessionStorage.getItem("access_token");
-      const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/CurrencyMaster`;
+      const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/CurrencyMaster/Add`;
       const response = await axios.post(url, currencyData, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
