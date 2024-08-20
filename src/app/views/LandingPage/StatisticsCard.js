@@ -9,7 +9,7 @@ import {
   faPlaneSlash
 } from "@fortawesome/free-solid-svg-icons";
 
-const StatisticsCard = () => (
+const StatisticsCard = ({ userProfileData }) => (
   <Stack
     styles={{
       root: {
@@ -64,7 +64,7 @@ const StatisticsCard = () => (
             />
 
             <Text variant="large" styles={{ root: { fontWeight: "bold" } }}>
-              05
+              {userProfileData?.inbox}
             </Text>
             <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
               Inbox
@@ -100,7 +100,7 @@ const StatisticsCard = () => (
           >
             <FontAwesomeIcon icon={faPause} style={{ fontSize: "28px", color: "#0078d4" }} />
             <Text variant="large" styles={{ root: { fontWeight: "bold" } }}>
-              03
+              {userProfileData?.draft}
             </Text>
             <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
               Draft
@@ -136,7 +136,7 @@ const StatisticsCard = () => (
           >
             <FontAwesomeIcon icon={faClock} style={{ fontSize: "28px", color: "#0078d4" }} />
             <Text variant="large" styles={{ root: { fontWeight: "bold" } }}>
-              08
+              {userProfileData?.watchList}
             </Text>
             <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
               Watchlist
@@ -171,7 +171,7 @@ const StatisticsCard = () => (
           >
             <FontAwesomeIcon icon={faPlaneSlash} style={{ fontSize: "28px", color: "#0078d4" }} />
             <Text variant="large" styles={{ root: { fontWeight: "bold" } }}>
-              01
+              {userProfileData?.ageing}
             </Text>
             <Text variant="small" styles={{ root: { color: "#6c757d" } }}>
               Ageing

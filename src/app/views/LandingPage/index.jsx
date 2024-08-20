@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import ProfileCard from "./ProfileCard";
 import StatisticsCard from "./StatisticsCard";
@@ -8,6 +8,8 @@ import QuickInbox from "./QuickInbox";
 import MyTimeline from "./MyTimeline";
 import { FaSync, FaRandom, FaCamera, FaLock, FaUnlock } from "react-icons/fa";
 import { captureFullPageScreenshot } from "../Action/screenshotUtils";
+
+import stats from "../../hooks/landingpage/stats"; // Import the stats function
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -24,6 +26,21 @@ const Dashboard = () => {
   const [layout, setLayout] = useState(defaultLayout);
   const [isDraggable, setIsDraggable] = useState(false); // State to control drag
   const [screenshotLoading, setScreenshotLoading] = useState(false);
+  const [userProfileData, setUserProfileData] = useState(null); // State to store fetched data
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await stats(); // Call the stats function
+        setUserProfileData(data.listLandingDBStatistics[0]); // Store the data in state
+        console.log("stats", data.listLandingDBStatistics[0]);
+      } catch (error) {
+        console.error("Failed to fetch user profile data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const toggleDraggable = () => {
     setIsDraggable((prev) => !prev);
@@ -95,7 +112,7 @@ const Dashboard = () => {
             background: "none",
             border: "none",
             cursor: "pointer",
-             fontSize: "15px",
+            fontSize: "15px",
             color: "#0078d4"
           }}
         >
@@ -113,10 +130,10 @@ const Dashboard = () => {
         isResizable={isDraggable} // Control resizable state
       >
         <div key="profile" style={{ backgroundColor: "#fff", padding: "10px" }}>
-          <ProfileCard />
+          <ProfileCard userProfileData={userProfileData} />
         </div>
         <div key="statistics" style={{ backgroundColor: "#fff", padding: "10px" }}>
-          <StatisticsCard />
+          <StatisticsCard userProfileData={userProfileData} />
         </div>
         <div key="alert" style={{ backgroundColor: "#fff", padding: "10px" }}>
           <AlertNotification />

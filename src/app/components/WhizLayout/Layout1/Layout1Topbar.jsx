@@ -97,7 +97,7 @@ const Layout1Topbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { i18n } = useTranslation(); // Initialize i18n for translation
-
+  const storedImage = sessionStorage.getItem("UserProfilePic");
   useEffect(() => {
     // Retrieve the selected path from sessionStorage
     const storedPath = sessionStorage.getItem("selectedPath");

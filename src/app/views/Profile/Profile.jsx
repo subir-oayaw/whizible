@@ -70,11 +70,13 @@ const ProfilePage = () => {
   const fetchProfileData = async () => {
     try {
       const accessToken = sessionStorage.getItem("access_token");
-
       const user = await fetchUserProfile(accessToken);
       sessionStorage.setItem("user", JSON.stringify(user));
       setProfileData(user);
-      setImage(user.profileImage || null); // Assuming `profileImage` is the key in the fetched data
+
+      // Check if UserProfilePic is present in sessionStorage
+      const storedImage = sessionStorage.getItem("UserProfilePic");
+      setImage(storedImage || user.profileImage || null);
     } catch (error) {
       console.error("Failed to fetch user profile:", error);
     }
@@ -95,13 +97,15 @@ const ProfilePage = () => {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const formData = new FormData();
-      formData.append("image", file);
-
       try {
-        const result = await uploadImage(formData);
+        const result = await uploadImage(file);
         console.log("Image uploaded successfully:", result);
-        setImage(result.imageUrl || URL.createObjectURL(file));
+
+        const imageUrl = result.imageUrl || URL.createObjectURL(file);
+        setImage(imageUrl);
+
+        // Store the new image URL in sessionStorage
+        sessionStorage.setItem("UserProfilePic", imageUrl);
 
         // Update profile data after image upload
         await fetchProfileData();

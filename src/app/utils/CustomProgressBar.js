@@ -9,13 +9,16 @@ const CustomProgressBar = ({ stages }) => {
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
+    console.log("Checking stage:", stages);
     if (stages) {
       const stageDetails = stages.inboxForInitiativeDetails || [];
       setTotalStages(stageDetails.length);
-      const completedStages = stageDetails.reduce(
-        (count, stage) => (stage.isStageApproved ? count + 1 : count),
-        0
-      );
+
+      const completedStages = stageDetails.filter((stage) => {
+        console.log("Checking stage:111", stageDetails);
+        return stage.isStageApproved === 1;
+      }).length;
+
       setStagesCompleted(completedStages);
     }
   }, [stages]);

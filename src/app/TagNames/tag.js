@@ -1,6 +1,6 @@
 const tagMappings = {
   "Initiative Management": 2164,
-  Initiative: 2173,
+  Initiative: 2182,
   "Converted Initiatives": 2318,
   "Completed Initiatives": 2333,
   "Withdrawn Initiatives": 2315,

@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from "react";
 import InitiativeList from "./InitiativeList";
-import { Container, Typography, Box, Pagination, IconButton } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Box,
+  Tooltip,
+  Pagination,
+  IconButton,
+  Modal,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from "@mui/material";
 import "./InitiativeManagement.css";
+import { PrimaryButton } from "@fluentui/react";
 import SearchIcon from "../../../assets/img/serachlist-icn.svg";
 import SearchList from "../../utils/SearchList";
 import useInitiative from "../../hooks/useInitiative";
@@ -11,19 +25,33 @@ import { ViewList, ViewModule } from "@mui/icons-material"; // Import icons for 
 import { Button, Menu, MenuItem } from "@mui/material";
 import { SortByAlpha, TrendingUp, CalendarToday } from "@mui/icons-material";
 import SearchIcon1 from "../../../assets/img/search-icn.svg";
+import useGetViewOptions from "app/hooks/useGetViewOptions";
+import tagMappings from "../../../app/TagNames/tag";
+import { useTranslation } from "react-i18next";
+
 const InitiativeManagement = () => {
-  const { dashboardData, loading, error } = useInitiative();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentFilter, setCurrentFilter] = useState("T");
+  const { dashboardData, loading, error } = useInitiative(currentPage, currentFilter);
   const [initiatives, setInitiatives] = useState([]);
   const [finitiatives, setfInitiatives] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentFilter, setCurrentFilter] = useState("All");
+
+  const [openModal, setOpenModal] = useState(false);
+
   const [showForm, setShowForm] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [initiativesID, SetinitiativesID] = useState(false);
   const [isListView, setIsListView] = useState(true); // State for list and card view toggle
   const [sortAnchorEl, setSortAnchorEl] = useState(null);
-  console.log("initiativeId", initiativesID);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const { getViewOptions } = useGetViewOptions(tagMappings.Initiative.toString());
+  const viewPermission = getViewOptions && getViewOptions[0] ? getViewOptions[0] : {};
+  const { a: canAdd, e: canEdit, d: canDelete } = viewPermission;
+  const { t } = useTranslation();
+  console.log("viewPermission", viewPermission);
   const startEditing = () => {
     setIsEditing(true);
   };
@@ -39,7 +67,6 @@ const InitiativeManagement = () => {
   useEffect(() => {
     if (dashboardData) {
       setInitiatives(dashboardData);
-      filterInitiatives("All", dashboardData);
     }
   }, [dashboardData]);
 
@@ -61,59 +88,25 @@ const InitiativeManagement = () => {
   const handleCloseForm = () => {
     setShowForm(false);
   };
-
+  const handleDisabledClick = (message) => {
+    setModalMessage(message);
+    setModalOpen(true);
+  };
   const calculateFilterCounts = (data) => {
     const counts = {
-      all: data.length,
-      inbox: data.length,
-      watchlist: 0,
-      draft: 0
+      inbox: data[0]?.toDolIstCount,
+      watchlist: data[0]?.watchlistCount,
+      draft: data[0]?.draftCount
     };
-
-    data.forEach((initiative) => {
-      switch (initiative.flag) {
-        case "watchlist":
-          counts.watchlist += 1;
-          break;
-        case "draft":
-          counts.draft += 1;
-          break;
-        case "inbox":
-          counts.inbox += 1;
-          break;
-        default:
-          break;
-      }
-    });
 
     return counts;
   };
 
   const filterCounts = calculateFilterCounts(initiatives);
 
-  const filterInitiatives = (filter, data = initiatives) => {
-    let filteredInitiatives = [];
-
-    switch (filter) {
-      case "Inbox":
-        filteredInitiatives = data.filter((initiative) => initiative.flag === "inbox");
-        break;
-      case "Watchlist":
-        filteredInitiatives = data.filter((initiative) => initiative.flag === "watchlist");
-        break;
-      case "Draft":
-        filteredInitiatives = data.filter((initiative) => initiative.flag === "draft");
-        break;
-      default:
-        filteredInitiatives = [...data];
-        break;
-    }
-
-    setCurrentFilter(filter);
-    setfInitiatives(() => filteredInitiatives);
-    setCurrentPage(1);
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
-
   const totalPages = Math.ceil(finitiatives.length / 5);
 
   const handlePageChange = (event, value) => {
@@ -158,25 +151,11 @@ const InitiativeManagement = () => {
                 <div id="intFilters" className="init_filters">
                   <ul className="list-unstyled init_filtersList d-flex pt-3 mb-0">
                     <li
-                      id="ImFltr-All"
-                      data-bs-toggle="tooltip"
-                      className={currentFilter === "All" ? "active" : ""}
-                      data-bs-original-title="All"
-                      onClick={() => filterInitiatives("All")}
-                    >
-                      <a className="">
-                        <span id="FltrCountAll" className="fltrcount">
-                          {filterCounts.all}
-                        </span>
-                        <span className="fltrtitle">All</span>
-                      </a>
-                    </li>
-                    <li
                       id="ImFltr-Inbox"
                       data-bs-toggle="tooltip"
                       className={currentFilter === "Inbox" ? "active" : ""}
                       data-bs-original-title="Inbox"
-                      onClick={() => filterInitiatives("Inbox")}
+                      onClick={() => setCurrentFilter("T")}
                     >
                       <a>
                         <span id="FltrCountInbox" className="fltrcount">
@@ -190,7 +169,7 @@ const InitiativeManagement = () => {
                       data-bs-toggle="tooltip"
                       className={currentFilter === "Watchlist" ? "active" : ""}
                       data-bs-original-title="Watchlist"
-                      onClick={() => filterInitiatives("Watchlist")}
+                      onClick={() => setCurrentFilter("W")}
                     >
                       <a>
                         <span id="FltrCountWatchlist" className="fltrcount">
@@ -204,7 +183,7 @@ const InitiativeManagement = () => {
                       data-bs-toggle="tooltip"
                       className={currentFilter === "Draft" ? "active" : ""}
                       data-bs-original-title="Draft"
-                      onClick={() => filterInitiatives("Draft")}
+                      onClick={() => setCurrentFilter("D")}
                     >
                       <a>
                         <span id="FltrCountDraft" className="fltrcount">
@@ -237,6 +216,7 @@ const InitiativeManagement = () => {
                       />
                     </a>
                   </div>
+
                   <div className="me-3" onClick={handleShowForm}>
                     <img
                       src={SearchIcon}
@@ -282,13 +262,31 @@ const InitiativeManagement = () => {
                       </MenuItem>
                     </Menu>
                   </div>
+                  <Tooltip title={!canAdd ? t("no_rights_add") : ""}>
+                    <span>
+                      <PrimaryButton
+                        onClick={() => {
+                          if (!canAdd) {
+                            handleDisabledClick(t("no_rights_add"));
+                          } else {
+                            setDrawerVisible(true);
+                          }
+                        }}
+                        text={t("Add")}
+                        disabled={!canAdd}
+                        styles={{
+                          root: { backgroundColor: canAdd ? "#1976d2" : "#ccc", color: "#fff" }
+                        }}
+                      />
+                    </span>
+                  </Tooltip>
                 </div>
               </div>
             </div>
           </div>
           {showForm && <SearchList onClose={handleCloseForm} />}
           <InitiativeList
-            initiatives={finitiatives.slice((currentPage - 1) * 5, currentPage * 5)}
+            initiatives={initiatives}
             page={currentPage}
             setIsEditing={setIsEditing}
             isEditing={isEditing}
@@ -298,7 +296,9 @@ const InitiativeManagement = () => {
             handleSearchChange={handleSearchChange}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
-            isListView={isListView} // Pass the state to determine view mode
+            isListView={isListView}
+            canEdit={canEdit}
+            handleDisabledClick={handleDisabledClick}
           />
           {finitiatives.length > 5 && (
             <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
@@ -314,6 +314,22 @@ const InitiativeManagement = () => {
           )}
         </>
       )}
+      <Dialog
+        open={modalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Notice"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">{modalMessage}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

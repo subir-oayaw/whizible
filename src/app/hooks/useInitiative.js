@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const useInitiative = () => {
+const useInitiative = (currentPage, currentFilter) => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,7 +15,7 @@ const useInitiative = () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
         const response = await axios.get(
-          `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeList/Get?alterType=ToDoList&employeeId=${employeeId}`,
+          `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeList/Get?alterType=${currentFilter}&employeeId=${employeeId}&PageNo=${currentPage}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`
@@ -39,7 +39,7 @@ const useInitiative = () => {
     };
 
     fetchData();
-  }, [employeeId]);
+  }, [currentPage, currentFilter, employeeId]); // Include currentPage and currentFilter in the dependency array
 
   return { dashboardData, loading, error };
 };
