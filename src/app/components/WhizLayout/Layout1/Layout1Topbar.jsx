@@ -97,15 +97,14 @@ const Layout1Topbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { i18n } = useTranslation(); // Initialize i18n for translation
-
+  const storedImage = sessionStorage.getItem("UserProfilePic");
   useEffect(() => {
     // Retrieve the selected path from sessionStorage
     const storedPath = sessionStorage.getItem("selectedPath");
 
     // Check if the current URL is either '/' or '/landingPage'
     if (location.pathname === "" || location.pathname === "/landingPage") {
-      console.log("first");
-      setSelectedPath("setSelectedPath", selectedPath);
+      setSelectedPath("Home");
     } else {
       setSelectedPath(storedPath || "");
     }
@@ -115,16 +114,16 @@ const Layout1Topbar = () => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
 
-  const handleSidebarToggle = () => {
-    let { layout1Settings } = settings;
-    let mode;
-    if (isMdScreen) {
-      mode = layout1Settings.leftSidebar.mode === "close" ? "mobile" : "close";
-    } else {
-      mode = layout1Settings.leftSidebar.mode === "full" ? "close" : "full";
-    }
-    updateSidebarMode({ mode });
-  };
+  // const handleSidebarToggle = () => {
+  //   let { layout1Settings } = settings;
+  //   let mode;
+  //   if (isMdScreen) {
+  //     mode = layout1Settings.leftSidebar.mode === "close" ? "mobile" : "close";
+  //   } else {
+  //     mode = layout1Settings.leftSidebar.mode === "full" ? "close" : "full";
+  //   }
+  //   updateSidebarMode({ mode });
+  // };
 
   // Function to handle mailto
   const handleMailClick = () => {
@@ -194,7 +193,7 @@ const Layout1Topbar = () => {
                   </Span>
                 </Hidden>
                 <Box display="flex" flexDirection="column" alignItems="center">
-                  <Avatar src={user?.avatar} sx={{ cursor: "pointer" }} />
+                  <Avatar src={storedImage} sx={{ cursor: "pointer" }} />
                   <Span sx={{ fontSize: 12, color: "grey" }}>{userdata?.roleName}</Span>
                 </Box>
               </UserMenu>

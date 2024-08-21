@@ -35,7 +35,9 @@ const InitiativeList = ({
   handleSearchChange,
   searchTerm,
   setSearchTerm,
-  isListView // Prop to determine if it's list view or card view
+  isListView,
+  canEdit,
+  handleDisabledClick
 }) => {
   const [currentPage, setCurrentPage] = useState(page); // State for current page
 
@@ -43,7 +45,7 @@ const InitiativeList = ({
   const [currentCardPage1, setCurrentCardPage1] = useState(1);
   const [currentCardPage2, setCurrentCardPage2] = useState(1);
   const [currentCardPage3, setCurrentCardPage3] = useState(1);
-
+  console.log("initiatives", initiatives);
   // Filter initiatives based on search term
   const filteredInitiatives = initiatives.filter((initiative) =>
     initiative?.title?.toLowerCase().includes(searchTerm?.toLowerCase())
@@ -136,6 +138,8 @@ const InitiativeList = ({
                   isEditing={isEditing}
                   startEditing={startEditing}
                   stopEditing={stopEditing}
+                  canEdit={canEdit}
+                  handleDisabledClick={handleDisabledClick}
                 />
               ))}
             </tbody>
@@ -201,6 +205,7 @@ const InitiativeList = ({
                         isEditing={isEditing}
                         startEditing={startEditing}
                         stopEditing={stopEditing}
+                        canEdit={canEdit}
                       />
                     ))}
                 </div>
@@ -265,6 +270,7 @@ const InitiativeList = ({
                         isEditing={isEditing}
                         startEditing={startEditing}
                         stopEditing={stopEditing}
+                        canEdit={canEdit}
                       />
                     ))}
                 </div>
@@ -329,6 +335,7 @@ const InitiativeList = ({
                         isEditing={isEditing}
                         startEditing={startEditing}
                         stopEditing={stopEditing}
+                        canEdit={canEdit}
                       />
                     ))}
                 </div>

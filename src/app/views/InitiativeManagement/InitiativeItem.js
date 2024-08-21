@@ -1,17 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Typography, IconButton, Tooltip, Drawer, Box, Divider } from "@mui/material";
+import {
+  Typography,
+  IconButton,
+  Tooltip,
+  Drawer,
+  Box,
+  Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button
+} from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FlagIcon from "@mui/icons-material/Flag";
 import EditIcon from "@mui/icons-material/Edit";
 import CommentIcon from "@mui/icons-material/Comment";
-import Button from "@mui/material/Button"; // Import Button from Material-UI
 import "./InitiativeItem.css";
 import { Icon } from "@fluentui/react/lib/Icon";
 import { PrimaryButton } from "@fluentui/react/lib/Button"; // Import Fluent UI Button
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import CustomProgressBar from "app/utils/CustomProgressBar";
 import CommentsSection from "./CommentsSection";
-// import InitiativeHistoryDrawer from "./InitiativeHistoryDrawer";
 
 const InitiativeItem = ({
   initiative,
@@ -35,7 +46,8 @@ const InitiativeItem = ({
     stageOrder,
     maxStage,
     comments,
-    initiativeListStageDetails
+    initiativeListStageDetails,
+    canEdit
   } = initiative;
 
   // State for managing drawers and editing
@@ -44,31 +56,18 @@ const InitiativeItem = ({
   const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
   const [expandedCommentIndex, setExpandedCommentIndex] = useState(-1);
   const [comment, setComment] = useState(null); // Initialize comments with null
-  const [totalStages, setTotalStages] = useState(0);
+
   const [stagesCompleted, setStagesCompleted] = useState(0);
-  // Ref for the reply textarea
+  const [openModal, setOpenModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [dewdate, setDewdate] = useState(0);
+  const [cstageName, setCStageName] = useState(0);
+  const [totalStages, setTotalStages] = useState(0);
   const replyTextareaRef = useRef(null);
-  console.log("initiativeListStageDetails", initiative);
-  useEffect(() => {
-    if (initiativeListStageDetails) {
-      const stageDetails = initiativeListStageDetails || [];
-      setTotalStages(stageDetails.length);
-      const completedStages = stageDetails.reduce(
-        (count, stage) => (stage.isStageApproved ? count : count),
-        0
-      );
-      setStagesCompleted(completedStages);
-    }
-  }, [initiativeListStageDetails]);
 
   // Function to open comment drawer
   const openCommentDrawer = () => {
     setCommentDrawerOpen(true);
-  };
-
-  // Function to close comment drawer
-  const closeCommentDrawer = () => {
-    setCommentDrawerOpen(false);
   };
 
   // Function to open flag drawer
@@ -76,12 +75,22 @@ const InitiativeItem = ({
     setFlagDrawerOpen(true);
   };
 
-  const calculateDaysSince = (dateString) => {
-    const currentDate = new Date();
-    const givenDate = new Date(dateString);
-    const timeDifference = currentDate.getTime() - givenDate.getTime();
-    const daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
-    return daysDifference;
+  // Function to handle when user doesn't have edit rights
+  const handleDisabledClick = (message) => {
+    setModalMessage(message);
+    setOpenModal(true);
+  };
+
+  // Function to close the modal
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  // Function to calculate the number of days since a given date
+  const calculateDaysSince = (date) => {
+    const now = new Date();
+    const diff = now - date;
+    return Math.floor(diff / (1000 * 60 * 60 * 24));
   };
 
   // Function to format date as dd/mm/yy
@@ -91,9 +100,7 @@ const InitiativeItem = ({
     const year = date.getFullYear().toString().slice(-2);
     return `${day}/${month}/${year}`;
   };
-
-  console.log("stages1", initiativeListStageDetails);
-
+  console.log("initiativeListStageDetails", initiative);
   return (
     <>
       <CommentsSection
@@ -115,7 +122,7 @@ const InitiativeItem = ({
         <td style={{ textAlign: "start" }}>
           <Typography variant="body2">{processName}</Typography>
           <Typography variant="body2" color="textSecondary">
-            {calculateDaysSince(createdOn)}
+            {formatDate(new Date(createdOn))}
           </Typography>
         </td>
         <td>
@@ -127,22 +134,32 @@ const InitiativeItem = ({
             }}
           >
             <div className="left-side">
-              <Typography variant="body2" className="due-in" color="textSecondary">
-                Current Stage :{" "}
-                <strong style={{ color: "grey" }}>
-                  {" "}
-                  {initiativeListStageDetails[0]?.requestStage}
-                </strong>
+              <Typography
+                variant="body2"
+                className="due-in"
+                color="textSecondary"
+                style={{ fontSize: "0.8rem" }}
+              >
+                Current Stage : <strong style={{ color: "grey" }}> {cstageName}</strong>
               </Typography>
             </div>
             <div className="right-side">
-              <Typography variant="body2" className="due-in" color="textSecondary">
-                Due In :{" "}
-                <strong style={{ color: "grey" }}>{calculateDaysSince(createdOn)} Days</strong>
+              <Typography
+                variant="body2"
+                className="due-in"
+                color="textSecondary"
+                style={{ fontSize: "0.8rem" }}
+              >
+                Due In : <strong style={{ color: "grey" }}>{dewdate} Days</strong>
               </Typography>
             </div>
           </Box>
-          <CustomProgressBar stages={initiativeListStageDetails} />
+          <CustomProgressBar
+            stages={initiativeListStageDetails}
+            setDewdate={setDewdate}
+            setCStageName={setCStageName}
+            percentageOfComplete={initiative?.percentageOfComplete}
+          />
           <Box
             sx={{
               display: "flex",
@@ -151,12 +168,23 @@ const InitiativeItem = ({
             }}
           >
             <div className="left-side">
-              <Typography variant="body2" className="due-in" color="textSecondary">
-                <strong style={{ color: "grey" }}> {stagesCompleted} </strong> stages completed
+              <Typography
+                variant="body2"
+                className="due-in"
+                color="textSecondary"
+                style={{ fontSize: "0.8rem" }}
+              >
+                <strong style={{ color: "grey" }}> {initiative?.percentageOfComplete} </strong>{" "}
+                stages completed
               </Typography>
             </div>
             <div className="right-side">
-              <Typography variant="body2" className="due-in" color="textSecondary">
+              <Typography
+                variant="body2"
+                className="due-in"
+                color="textSecondary"
+                style={{ fontSize: "0.8rem" }}
+              >
                 & 0 More stages...
               </Typography>
             </div>
@@ -168,11 +196,15 @@ const InitiativeItem = ({
               <div className="initiative-actions">
                 {/* Edit Icon */}
                 <div className="icon-button-container">
-                  <Tooltip title="Edit">
+                  <Tooltip title={!canEdit ? "No Rights to edit" : ""}>
                     <IconButton
                       onClick={() => {
-                        startEditing();
-                        SetinitiativesID(instanceId);
+                        if (canEdit) {
+                          startEditing();
+                          SetinitiativesID(instanceId);
+                        } else {
+                          handleDisabledClick("No rights to edit");
+                        }
                       }}
                     >
                       <EditIcon />
@@ -205,6 +237,24 @@ const InitiativeItem = ({
           </div>
         </td>
       </tr>
+
+      {/* Modal for showing disabled edit message */}
+      <Dialog
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Action Not Allowed"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">{modalMessage}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary" autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
