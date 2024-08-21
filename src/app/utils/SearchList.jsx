@@ -8,9 +8,10 @@ const SearchList = ({ onClose }) => {
       <div className="search-list-box">
         <Stack
           tokens={{ childrenGap: 20 }}
-          styles={{ root: { padding: 20, border: "1px solid #ccc", background: "#f2f2f2" } }}
+          styles={{ root: { padding: 20, border: "1px solid #ccc", background: "white" } }} // White background for Stack
         >
-          <h4>Advanced Search</h4>
+          <h4 style={{ backgroundColor: "#f2f2f2", padding: "10px" }}>Advanced Search</h4>{" "}
+          {/* Background color for h4 */}
           <SearchAdvanceForm onClose={onClose} />
         </Stack>
       </div>

@@ -56,11 +56,13 @@ const InitiativeItem = ({
   const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
   const [expandedCommentIndex, setExpandedCommentIndex] = useState(-1);
   const [comment, setComment] = useState(null); // Initialize comments with null
-  const [totalStages, setTotalStages] = useState(0);
+
   const [stagesCompleted, setStagesCompleted] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-
+  const [dewdate, setDewdate] = useState(0);
+  const [cstageName, setCStageName] = useState(0);
+  const [totalStages, setTotalStages] = useState(0);
   const replyTextareaRef = useRef(null);
 
   // Function to open comment drawer
@@ -132,21 +134,32 @@ const InitiativeItem = ({
             }}
           >
             <div className="left-side">
-              <Typography variant="body2" className="due-in" color="textSecondary">
-                Current Stage :{" "}
-                <strong style={{ color: "grey" }}>
-                  {" "}
-                  {initiativeListStageDetails[0]?.requestStage}
-                </strong>
+              <Typography
+                variant="body2"
+                className="due-in"
+                color="textSecondary"
+                style={{ fontSize: "0.8rem" }}
+              >
+                Current Stage : <strong style={{ color: "grey" }}> {cstageName}</strong>
               </Typography>
             </div>
             <div className="right-side">
-              <Typography variant="body2" className="due-in" color="textSecondary">
-                Due In : <strong style={{ color: "grey" }}>{initiative?.dueinDays} Days</strong>
+              <Typography
+                variant="body2"
+                className="due-in"
+                color="textSecondary"
+                style={{ fontSize: "0.8rem" }}
+              >
+                Due In : <strong style={{ color: "grey" }}>{dewdate} Days</strong>
               </Typography>
             </div>
           </Box>
-          <CustomProgressBar stages={initiativeListStageDetails} />
+          <CustomProgressBar
+            stages={initiativeListStageDetails}
+            setDewdate={setDewdate}
+            setCStageName={setCStageName}
+            percentageOfComplete={initiative?.percentageOfComplete}
+          />
           <Box
             sx={{
               display: "flex",
@@ -155,13 +168,23 @@ const InitiativeItem = ({
             }}
           >
             <div className="left-side">
-              <Typography variant="body2" className="due-in" color="textSecondary">
+              <Typography
+                variant="body2"
+                className="due-in"
+                color="textSecondary"
+                style={{ fontSize: "0.8rem" }}
+              >
                 <strong style={{ color: "grey" }}> {initiative?.percentageOfComplete} </strong>{" "}
                 stages completed
               </Typography>
             </div>
             <div className="right-side">
-              <Typography variant="body2" className="due-in" color="textSecondary">
+              <Typography
+                variant="body2"
+                className="due-in"
+                color="textSecondary"
+                style={{ fontSize: "0.8rem" }}
+              >
                 & 0 More stages...
               </Typography>
             </div>

@@ -104,8 +104,7 @@ const Layout1Topbar = () => {
 
     // Check if the current URL is either '/' or '/landingPage'
     if (location.pathname === "" || location.pathname === "/landingPage") {
-      console.log("first");
-      setSelectedPath("setSelectedPath", selectedPath);
+      setSelectedPath("Home");
     } else {
       setSelectedPath(storedPath || "");
     }
@@ -115,16 +114,16 @@ const Layout1Topbar = () => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
 
-  const handleSidebarToggle = () => {
-    let { layout1Settings } = settings;
-    let mode;
-    if (isMdScreen) {
-      mode = layout1Settings.leftSidebar.mode === "close" ? "mobile" : "close";
-    } else {
-      mode = layout1Settings.leftSidebar.mode === "full" ? "close" : "full";
-    }
-    updateSidebarMode({ mode });
-  };
+  // const handleSidebarToggle = () => {
+  //   let { layout1Settings } = settings;
+  //   let mode;
+  //   if (isMdScreen) {
+  //     mode = layout1Settings.leftSidebar.mode === "close" ? "mobile" : "close";
+  //   } else {
+  //     mode = layout1Settings.leftSidebar.mode === "full" ? "close" : "full";
+  //   }
+  //   updateSidebarMode({ mode });
+  // };
 
   // Function to handle mailto
   const handleMailClick = () => {

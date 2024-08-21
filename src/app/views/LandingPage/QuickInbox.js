@@ -6,36 +6,44 @@ import { Chart as ChartJS, RadialLinearScale, ArcElement, Tooltip, Legend } from
 // Register Chart.js components
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
-const polarAreaChartData = {
-  labels: ["Label 1", "Label 2", "Label 3"],
-  datasets: [
-    {
-      data: [10, 20, 30],
-      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-      borderWidth: 1
-    }
-  ]
-};
+const QuickInbox = ({ qinbox }) => {
+  console.log("qinbox", qinbox);
 
-const QuickInbox = () => (
-  <Stack
-    styles={{
-      root: {
-        backgroundColor: "white",
-        padding: "8px",
-        borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        flex: 1
+  // Extracting labels and data from qinbox.listLandingDBQinbox
+  const labels = qinbox?.listLandingDBQinbox?.map((item) => item.natureofDemand) || [];
+  const data = qinbox?.listLandingDBQinbox?.map((item) => item.countOfInitiative) || [];
+
+  const polarAreaChartData = {
+    labels,
+    datasets: [
+      {
+        data,
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"], // Add more colors if needed
+        borderWidth: 1
       }
-    }}
-  >
-    <Text variant="medium" styles={{ root: { fontWeight: "bold", marginBottom: "16px" } }}>
-      Quick InBox
-    </Text>
-    <div style={{ width: "100%", height: "300px" }}>
-      <PolarArea data={polarAreaChartData} />
-    </div>
-  </Stack>
-);
+    ]
+  };
+
+  return (
+    <Stack
+      styles={{
+        root: {
+          backgroundColor: "white",
+          padding: "8px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          flex: 1
+        }
+      }}
+    >
+      <Text variant="medium" styles={{ root: { fontWeight: "bold", marginBottom: "16px" } }}>
+        Quick InBox
+      </Text>
+      <div style={{ width: "100%", height: "300px" }}>
+        <PolarArea data={polarAreaChartData} />
+      </div>
+    </Stack>
+  );
+};
 
 export default QuickInbox;
