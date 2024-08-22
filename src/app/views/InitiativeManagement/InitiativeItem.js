@@ -46,6 +46,8 @@ const InitiativeItem = ({
     stageOrder,
     maxStage,
     comments,
+    completedStage,
+    employeeName,
     initiativeListStageDetails,
     canEdit
   } = initiative;
@@ -115,7 +117,7 @@ const InitiativeItem = ({
           <div className="initiative-title">
             <Typography variant="body1">{title}</Typography>
             <Typography variant="body2" color="textSecondary">
-              {originator}
+              {employeeName}
             </Typography>
           </div>
         </td>
@@ -176,8 +178,7 @@ const InitiativeItem = ({
                 color="textSecondary"
                 style={{ fontSize: "0.6rem" }}
               >
-                <strong style={{ color: "grey" }}> {initiative?.percentageOfComplete} </strong>{" "}
-                stages completed
+                <strong style={{ color: "grey" }}> {completedStage} </strong> stages completed
               </Typography>
             </div>
             <div className="right-side" style={{ textAlign: "right" }}>

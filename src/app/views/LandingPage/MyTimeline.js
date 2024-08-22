@@ -121,34 +121,36 @@ const MyTimeline = ({ mTimeline, prevMonth, prevYear, setPrevMonth, setPrevYear 
         My Timeline
       </Text>
       <Stack>
-        <Stack
-          horizontal
-          verticalAlign="center"
-          tokens={{ childrenGap: 20 }}
-          styles={{
-            root: {
-              marginBottom: "16px",
-              "@media (max-width: 768px)": {
-                flexDirection: "column",
-                childrenGap: 10
-              }
-            }
-          }}
-        >
-          <Calendar
-            onChange={handleDateChange}
-            value={date}
-            tileContent={(props) => tileContent(props, highlightedDates)}
-            tileClassName={(props) => tileClassName(props, highlightedDates)}
-            onActiveStartDateChange={handleActiveStartDateChange}
-            style={{
-              width: "100%",
-              "@media (max-width: 768px)": {
-                width: "100%"
+        <div style={{ width: "100%", height: "400px" }}>
+          <Stack
+            horizontal
+            verticalAlign="center"
+            tokens={{ childrenGap: 20 }}
+            styles={{
+              root: {
+                marginBottom: "16px",
+                "@media (max-width: 768px)": {
+                  flexDirection: "column",
+                  childrenGap: 10
+                }
               }
             }}
-          />
-        </Stack>
+          >
+            <Calendar
+              onChange={handleDateChange}
+              value={date}
+              tileContent={(props) => tileContent(props, highlightedDates)}
+              tileClassName={(props) => tileClassName(props, highlightedDates)}
+              onActiveStartDateChange={handleActiveStartDateChange}
+              style={{
+                width: "100%",
+                "@media (max-width: 768px)": {
+                  width: "100%"
+                }
+              }}
+            />
+          </Stack>
+        </div>
       </Stack>
     </Stack>
   );
