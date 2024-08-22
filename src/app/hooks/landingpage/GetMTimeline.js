@@ -1,12 +1,20 @@
 import axios from "axios";
 
-const GetMTimeline = async () => {
+const GetMTimeline = async (year, month) => {
   const accessToken = sessionStorage.getItem("access_token");
   const userdata = JSON.parse(sessionStorage.getItem("user"));
   const employeeId = userdata?.employeeId;
+
+  // Get today's date
+  const today = new Date();
+  const years = today.getFullYear();
+  const months = today.getMonth() + 1; // Months are zero-based
+
   try {
     const userProfileResponse = await axios.get(
-      `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/LandingPageDB/GetMTimeline?logID=${employeeId}&year=2024&month=4`,
+      `${
+        process.env.REACT_APP_BASEURL_ACCESS_CONTROL1
+      }/api/LandingPageDB/GetMTimeline?logID=${employeeId}&year=${month}&month=${year + 1}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`

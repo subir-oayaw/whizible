@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Tooltip } from "@mui/material";
 import "./customProgressBar.css";
+import InitiativeDetailsModal from "app/views/InitiativeManagement/InitiativeDetailsModal";
 
 const CustomProgressBar = ({ stages, setDewdate, setCStageName, percentageOfComplete }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -34,12 +35,12 @@ const CustomProgressBar = ({ stages, setDewdate, setCStageName, percentageOfComp
       <Box className="progress-container">
         <Box className="progress-bar-wrapper" onClick={handleClick}>
           {stages?.map((stage, index) => (
-            <Tooltip key={index} title={`Stage ${index + 1}: ${stage.title}`}>
+            <Tooltip key={index} title={`Stage ${index + 1}: ${stage.requestStage}`}>
               <div
                 id={`stg-bar-${index + 1}`}
                 className={getStageClass(stage)}
                 data-bs-toggle="tooltip"
-                aria-label={`Stage ${index + 1}: ${stage.title}`}
+                aria-label={`Stage ${index + 1}: ${stage.requestStage}`}
               >
                 {stage.isCurrentStage === 1 && (
                   <a

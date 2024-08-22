@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Stack, Text } from "@fluentui/react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-
-// Helper function to map color codes
+import "./MyTimeline.css";
 const getColorCode = (timelineEntry) => {
   if (timelineEntry.isRed) return "red";
   if (timelineEntry.isGreen) return "green";
@@ -11,28 +10,95 @@ const getColorCode = (timelineEntry) => {
   return null;
 };
 
-const getTileClassName = ({ date, view }, highlightedDates) => {
+const tileContent = ({ date, view }, highlightedDates) => {
   if (view === "month") {
     const matchingDate = highlightedDates?.find(
-      (d) => d.date.toDateString() === date.toDateString()
+      (d) =>
+        d.date.getDate() === date.getDate() &&
+        d.date.getMonth() === date.getMonth() &&
+        d.date.getFullYear() === date.getFullYear()
     );
     if (matchingDate) {
-      return `highlight-${matchingDate.color}`;
+      return (
+        <div className="highlighted-date">
+          <div
+            className="circle"
+            style={{
+              backgroundColor: matchingDate.color
+            }}
+          >
+            {date.getDate()}
+          </div>
+        </div>
+      );
     }
   }
   return null;
 };
 
-const MyTimeline = ({ mTimeline }) => {
+const tileClassName = ({ date, view }, highlightedDates) => {
+  if (view === "month") {
+    const matchingDate = highlightedDates?.find(
+      (d) =>
+        d.date.getDate() === date.getDate() &&
+        d.date.getMonth() === date.getMonth() &&
+        d.date.getFullYear() === date.getFullYear()
+    );
+    if (matchingDate) {
+      return "highlighted-date";
+    }
+  }
+  return null;
+};
+
+const MyTimeline = ({ mTimeline, prevMonth, prevYear, setPrevMonth, setPrevYear }) => {
+  const [date, setDate] = useState(new Date());
+
+  useEffect(() => {}, [mTimeline]);
+
   const highlightedDates = mTimeline?.landingDBMTimeline
     ?.map((entry) => {
       const color = getColorCode(entry);
       if (color) {
-        return { date: new Date(entry.year, entry.monthName - 1, entry.day), color };
+        return {
+          date: new Date(
+            entry.year,
+            new Date(Date.parse(entry.monthName + " 1, 2021")).getMonth(),
+            entry.day
+          ),
+          color
+        };
       }
       return null;
     })
     .filter(Boolean);
+
+  const handleDateChange = (newDate) => {
+    const newMonth = newDate.getMonth();
+    const newYear = newDate.getFullYear();
+
+    if (newMonth !== prevMonth || newYear !== prevYear) {
+      console.log(`Month changed to: ${newMonth}`);
+      console.log(`Year changed to: ${newYear}`);
+      setPrevMonth(newMonth);
+      setPrevYear(newYear);
+    }
+
+    setDate(newDate);
+    console.log(`Selected Date: ${newDate.toDateString()}`);
+  };
+
+  const handleActiveStartDateChange = ({ activeStartDate }) => {
+    const newMonth = activeStartDate.getMonth();
+    const newYear = activeStartDate.getFullYear();
+
+    if (newMonth !== prevMonth || newYear !== prevYear) {
+      console.log(`Month changed to: ${newMonth + 1}`);
+      console.log(`Year changed to: ${newYear}`);
+      setPrevMonth(newMonth);
+      setPrevYear(newYear);
+    }
+  };
 
   return (
     <Stack
@@ -46,7 +112,7 @@ const MyTimeline = ({ mTimeline }) => {
           maxWidth: "100%",
           boxSizing: "border-box",
           "@media (max-width: 768px)": {
-            padding: "12px" // Adjust padding on smaller screens
+            padding: "12px"
           }
         }
       }}
@@ -55,30 +121,36 @@ const MyTimeline = ({ mTimeline }) => {
         My Timeline
       </Text>
       <Stack>
-        <Stack
-          horizontal
-          verticalAlign="center"
-          tokens={{ childrenGap: 20 }}
-          styles={{
-            root: {
-              marginBottom: "16px",
-              "@media (max-width: 768px)": {
-                flexDirection: "column", // Stack the calendar vertically on smaller screens
-                childrenGap: 10 // Adjust gap between elements
-              }
-            }
-          }}
-        >
-          <Calendar
-            tileClassName={(props) => getTileClassName(props, highlightedDates)}
-            style={{
-              width: "100%", // Make sure the calendar takes up full width
-              "@media (max-width: 768px)": {
-                width: "100%" // Ensure full width on smaller screens
+        <div style={{ width: "100%", height: "400px" }}>
+          <Stack
+            horizontal
+            verticalAlign="center"
+            tokens={{ childrenGap: 20 }}
+            styles={{
+              root: {
+                marginBottom: "16px",
+                "@media (max-width: 768px)": {
+                  flexDirection: "column",
+                  childrenGap: 10
+                }
               }
             }}
-          />
-        </Stack>
+          >
+            <Calendar
+              onChange={handleDateChange}
+              value={date}
+              tileContent={(props) => tileContent(props, highlightedDates)}
+              tileClassName={(props) => tileClassName(props, highlightedDates)}
+              onActiveStartDateChange={handleActiveStartDateChange}
+              style={{
+                width: "100%",
+                "@media (max-width: 768px)": {
+                  width: "100%"
+                }
+              }}
+            />
+          </Stack>
+        </div>
       </Stack>
     </Stack>
   );

@@ -3,14 +3,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const useInitiative = (currentPage, currentFilter) => {
+const useInitiative = (currentPage, currentFilter, filters) => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const userdata = JSON.parse(sessionStorage.getItem("user"));
   const employeeId = userdata?.employeeId;
-
+  console.log("filters", filters);
   useEffect(() => {
+    console.log("searchFilters9999", filters);
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
@@ -39,7 +40,7 @@ const useInitiative = (currentPage, currentFilter) => {
     };
 
     fetchData();
-  }, [currentPage, currentFilter, employeeId]); // Include currentPage and currentFilter in the dependency array
+  }, [currentPage, currentFilter, employeeId, filters]); // Include currentPage and currentFilter in the dependency array
 
   return { dashboardData, loading, error };
 };

@@ -20,7 +20,10 @@ export const uploadImage = async (imageData) => {
       }
     );
 
-    if (!response.ok) {
+    if (response.status === 204) {
+      // Handle the 204 No Content response
+      return 204;
+    } else if (!response.ok) {
       const errorResponse = await response.json();
       throw new Error(
         `Failed to upload image: ${errorResponse.errors?.formFile?.[0] || "Unknown error"}`

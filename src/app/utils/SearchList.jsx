@@ -2,7 +2,7 @@ import React from "react";
 import { Stack } from "@fluentui/react";
 import SearchAdvanceForm from "./SearchAdvanceForm";
 
-const SearchList = ({ onClose }) => {
+const SearchList = ({ onClose, searchFilters, onSearch }) => {
   return (
     <div className="search-list-container">
       <div className="search-list-box">
@@ -12,7 +12,7 @@ const SearchList = ({ onClose }) => {
         >
           <h4 style={{ backgroundColor: "#f2f2f2", padding: "10px" }}>Advanced Search</h4>{" "}
           {/* Background color for h4 */}
-          <SearchAdvanceForm onClose={onClose} />
+          <SearchAdvanceForm onClose={onClose} searchFilters={searchFilters} onSearch={onSearch} />
         </Stack>
       </div>
     </div>
