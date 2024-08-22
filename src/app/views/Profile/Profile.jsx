@@ -4,6 +4,7 @@ import { mergeStyles } from "@fluentui/react/lib/Styling";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { uploadImage } from "../../hooks/userProfile/useProfileImage";
 import fetchUserProfile from "../../hooks/fetchUserProfile";
+import { red } from "@mui/material/colors";
 
 const profileContainerStyles = mergeStyles({
   maxWidth: 1200,
@@ -66,7 +67,7 @@ const verticalBarStyles = mergeStyles({
 const ProfilePage = () => {
   const [profileData, setProfileData] = React.useState(null);
   const [image, setImage] = React.useState(null);
-
+  const [refresh, setRefresh] = React.useState(true);
   const fetchProfileData = async () => {
     try {
       const accessToken = sessionStorage.getItem("access_token");
@@ -81,6 +82,7 @@ const ProfilePage = () => {
       console.error("Failed to fetch user profile:", error);
     }
   };
+  React.useEffect(() => {}, [refresh]);
 
   React.useEffect(() => {
     fetchProfileData();
@@ -95,20 +97,14 @@ const ProfilePage = () => {
   };
 
   const handleImageUpload = async (e) => {
+    console.log("result1");
     const file = e.target.files[0];
     if (file) {
       try {
         const result = await uploadImage(file);
-        console.log("Image uploaded successfully:", result);
-
-        const imageUrl = result.imageUrl || URL.createObjectURL(file);
-        setImage(imageUrl);
-
-        // Store the new image URL in sessionStorage
-        sessionStorage.setItem("UserProfilePic", imageUrl);
-
-        // Update profile data after image upload
-        await fetchProfileData();
+        console.log("result", result);
+        fetchProfileData();
+        setRefresh(!refresh);
       } catch (error) {
         console.error("Image upload failed:", error);
       }

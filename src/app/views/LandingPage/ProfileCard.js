@@ -1,23 +1,24 @@
 import React from "react";
 import { Stack, Text, Persona, PersonaSize } from "@fluentui/react";
 import { Carousel } from "react-bootstrap";
-import { FaPlus, FaBirthdayCake, FaExclamationCircle } from "react-icons/fa";
-import profImg1 from "../../../assets/img/profImg1.jpg";
-import profImg2 from "../../../assets/Images/Loginframe.png";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import CommentIcon from "@mui/icons-material/Comment";
+import FlagIcon from "@mui/icons-material/Flag";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Function to map typeID to icon and bannerColor
 const getIconAndColor = (typeID) => {
   switch (typeID) {
     case 3:
     case 5:
-      return { icon: <FaPlus />, bannerColor: "#fff3cd" };
+      return { icon: <NotificationsIcon style={{ color: "#ffc107" }} />, bannerColor: "#fff3cd" };
     case 4:
-      return { icon: <FaExclamationCircle />, bannerColor: "#f8d7da" };
+      return { icon: <FlagIcon style={{ color: "#ffc107" }} />, bannerColor: "#f8d7da" };
     case 1:
     case 2:
-      return { icon: <FaPlus />, bannerColor: "#d4edda" };
+      return { icon: <CommentIcon style={{ color: "#ffc107" }} />, bannerColor: "#d4edda" };
     default:
-      return { icon: <FaPlus />, bannerColor: "#e2e3e5" };
+      return { icon: <NotificationsIcon style={{ color: "#ffc107" }} />, bannerColor: "#e2e3e5" };
   }
 };
 

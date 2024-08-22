@@ -1,7 +1,10 @@
 import React from "react";
 import { Stack, Text } from "@fluentui/react";
 import { Carousel } from "react-bootstrap";
-import "./AlertNotification.css"; // Assuming you're adding custom styles here
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import CommentIcon from "@mui/icons-material/Comment";
+import FlagIcon from "@mui/icons-material/Flag";
+import "./AlertNotification.css";
 
 const AlertNotification = ({ alertNot }) => {
   console.log("alertNot", alertNot);
@@ -11,7 +14,8 @@ const AlertNotification = ({ alertNot }) => {
       description: item.initiative ? item.initiative : "No initiative associated",
       date: item.date ? item.date : "No date available",
       color: getColor(item.alertType),
-      backgroundColor: getBackgroundColor(item.alertType)
+      backgroundColor: getBackgroundColor(item.alertType),
+      IconComponent: getIconComponent(item.alertType)
     })) || [];
 
   function getColor(alertType) {
@@ -37,6 +41,19 @@ const AlertNotification = ({ alertNot }) => {
         return "#d4edda";
       default:
         return "#f1f1f1";
+    }
+  }
+
+  function getIconComponent(alertType) {
+    switch (alertType) {
+      case "Alert":
+        return NotificationsIcon;
+      case "Flag":
+        return FlagIcon;
+      case "Comment":
+        return CommentIcon;
+      default:
+        return null; // You can return a default icon or null
     }
   }
 
@@ -89,9 +106,12 @@ const AlertNotification = ({ alertNot }) => {
                   }
                 }}
               >
-                <Text variant="large" styles={{ root: { color: notification.color } }}>
-                  {notification.title}
-                </Text>
+                <Stack horizontal verticalAlign="center" tokens={{ childrenGap: 8 }}>
+                  <notification.IconComponent style={{ color: "#ffc107", fontSize: 24 }} />
+                  <Text variant="large" styles={{ root: { color: notification.color } }}>
+                    {notification.title}
+                  </Text>
+                </Stack>
                 <Text variant="medium" styles={{ root: { color: "#6c757d" } }}>
                   {notification.description}
                 </Text>

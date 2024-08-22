@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Label, TextField, Stack, DefaultButton } from "@fluentui/react";
+import { Label, Dropdown, TextField, Stack, DefaultButton, DatePicker } from "@fluentui/react";
 
-const SearchAdvanceForm = ({ onClose }) => {
+const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
   const initialState = {
     initiativeCode: "",
-    initiativeFrom: "",
-    initiativeTo: "",
+    initiativeFrom: null,
+    initiativeTo: null,
     lastAction: "",
     submittedBy: "",
     natureOfInitiative: "",
@@ -19,11 +19,18 @@ const SearchAdvanceForm = ({ onClose }) => {
 
   const [formValues, setFormValues] = useState(initialState);
 
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
+  const handleInputChange = (e, option) => {
+    const { id } = e.target;
     setFormValues((prevValues) => ({
       ...prevValues,
-      [id]: value
+      [id]: option ? option.key : e.target.value
+    }));
+  };
+
+  const handleDateChange = (date, id) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [id]: date
     }));
   };
 
@@ -31,124 +38,217 @@ const SearchAdvanceForm = ({ onClose }) => {
     setFormValues(initialState);
   };
 
+  const handleSearchClick = () => {
+    if (onSearch) {
+      onSearch(formValues); // Pass formValues to the parent component
+    }
+  };
+
+  const fieldStyle = {
+    width: "100%",
+    height: "36px" // Ensures consistent height
+  };
+
   return (
     <div className="above-form-container">
       <Stack tokens={{ childrenGap: 15 }}>
-        <Stack horizontal wrap tokens={{ childrenGap: 20 }}>
+        {/* First Row of Three Fields */}
+        <Stack horizontal tokens={{ childrenGap: 20 }}>
           <Stack.Item grow={1}>
             <Label htmlFor="initiativeCode">Initiative Code</Label>
             <TextField
               id="initiativeCode"
+              placeholder="Enter Initiative Code"
               value={formValues.initiativeCode}
               onChange={handleInputChange}
-              placeholder="Add Initiative Code"
+              styles={fieldStyle}
             />
           </Stack.Item>
           <Stack.Item grow={1}>
             <Label htmlFor="initiativeFrom">Initiative From</Label>
-            <TextField
+            <DatePicker
               id="initiativeFrom"
+              placeholder="Select Start Date"
+              ariaLabel="Select Start Date"
               value={formValues.initiativeFrom}
-              onChange={handleInputChange}
-              placeholder="Select Date"
+              onSelectDate={(date) => handleDateChange(date, "initiativeFrom")}
+              styles={fieldStyle}
             />
           </Stack.Item>
           <Stack.Item grow={1}>
             <Label htmlFor="initiativeTo">Initiative To</Label>
-            <TextField
+            <DatePicker
               id="initiativeTo"
+              placeholder="Select End Date"
+              ariaLabel="Select End Date"
               value={formValues.initiativeTo}
-              onChange={handleInputChange}
-              placeholder="Select Date"
+              onSelectDate={(date) => handleDateChange(date, "initiativeTo")}
+              styles={fieldStyle}
             />
           </Stack.Item>
+        </Stack>
+
+        {/* Second Row of Three Fields */}
+        <Stack horizontal tokens={{ childrenGap: 20 }}>
           <Stack.Item grow={1}>
             <Label htmlFor="lastAction">Last Action</Label>
-            <TextField
+            <Dropdown
               id="lastAction"
-              value={formValues.lastAction}
-              onChange={handleInputChange}
               placeholder="Select Last Action"
+              options={
+                searchFilters.initiativeActionFilter?.map((action) => ({
+                  key: action.actioID,
+                  text: action.actionName
+                })) || []
+              }
+              onChange={handleInputChange}
+              selectedKey={formValues.lastAction}
+              styles={fieldStyle}
             />
           </Stack.Item>
           <Stack.Item grow={1}>
             <Label htmlFor="submittedBy">Submitted By</Label>
-            <TextField
+            <Dropdown
               id="submittedBy"
-              value={formValues.submittedBy}
-              onChange={handleInputChange}
               placeholder="Select Submitted By"
+              options={
+                searchFilters.initiativeSubmittedFilter?.map((submitter) => ({
+                  key: submitter.employeeID,
+                  text: submitter.submittedBy
+                })) || []
+              }
+              onChange={handleInputChange}
+              selectedKey={formValues.submittedBy}
+              styles={fieldStyle}
             />
           </Stack.Item>
           <Stack.Item grow={1}>
             <Label htmlFor="natureOfInitiative">Nature of Initiative</Label>
-            <TextField
+            <Dropdown
               id="natureOfInitiative"
-              value={formValues.natureOfInitiative}
-              onChange={handleInputChange}
               placeholder="Select Nature of Initiative"
+              options={
+                searchFilters.initiativeNOIFilter?.map((nature) => ({
+                  key: nature.natureofDemandID,
+                  text: nature.natureofDemand
+                })) || []
+              }
+              onChange={handleInputChange}
+              selectedKey={formValues.natureOfInitiative}
+              styles={fieldStyle}
             />
           </Stack.Item>
+        </Stack>
+
+        {/* Third Row of Three Fields */}
+        <Stack horizontal tokens={{ childrenGap: 20 }}>
           <Stack.Item grow={1}>
             <Label htmlFor="selectStage">Select Stage</Label>
-            <TextField
+            <Dropdown
               id="selectStage"
-              value={formValues.selectStage}
-              onChange={handleInputChange}
               placeholder="Select Stage"
+              options={
+                searchFilters.initiativeRequestStageFilter?.map((stage) => ({
+                  key: stage.requestStageID,
+                  text: stage.requestStage
+                })) || []
+              }
+              onChange={handleInputChange}
+              selectedKey={formValues.selectStage}
+              styles={fieldStyle}
             />
           </Stack.Item>
           <Stack.Item grow={1}>
             <Label htmlFor="vendor">Vendor</Label>
-            <TextField
+            <Dropdown
               id="vendor"
-              value={formValues.vendor}
-              onChange={handleInputChange}
               placeholder="Select Vendor"
+              options={
+                searchFilters.initiativeVendorFilter?.map((vendor) => ({
+                  key: vendor.vendorID,
+                  text: vendor.vendorNameAbbr
+                })) || []
+              }
+              onChange={handleInputChange}
+              selectedKey={formValues.vendor}
+              styles={fieldStyle}
             />
           </Stack.Item>
           <Stack.Item grow={1}>
             <Label htmlFor="priority">Priority</Label>
-            <TextField
+            <Dropdown
               id="priority"
-              value={formValues.priority}
-              onChange={handleInputChange}
               placeholder="Select Priority"
+              options={
+                searchFilters.initiativePriorityFilter?.map((priority) => ({
+                  key: priority.priorityID,
+                  text: priority.priority
+                })) || []
+              }
+              onChange={handleInputChange}
+              selectedKey={formValues.priority}
+              styles={fieldStyle}
             />
           </Stack.Item>
+        </Stack>
+
+        {/* Fourth Row of Three Fields */}
+        <Stack horizontal tokens={{ childrenGap: 20 }}>
           <Stack.Item grow={1}>
             <Label htmlFor="initiativeCategory">Initiative Category</Label>
-            <TextField
+            <Dropdown
               id="initiativeCategory"
-              value={formValues.initiativeCategory}
-              onChange={handleInputChange}
               placeholder="Select Initiative Category"
+              options={
+                searchFilters.initiativeRequestTypeFilter?.map((category) => ({
+                  key: category.requestTypeID,
+                  text: category.requestType
+                })) || []
+              }
+              onChange={handleInputChange}
+              selectedKey={formValues.initiativeCategory}
+              styles={fieldStyle}
             />
           </Stack.Item>
           <Stack.Item grow={1}>
             <Label htmlFor="businessGroup">Business Group</Label>
-            <TextField
+            <Dropdown
               id="businessGroup"
-              value={formValues.businessGroup}
-              onChange={handleInputChange}
               placeholder="Select Business Group"
+              options={
+                searchFilters.initiativeBusinessGroupFilter?.map((group) => ({
+                  key: group.businessGroupID,
+                  text: group.businessGroup
+                })) || []
+              }
+              onChange={handleInputChange}
+              selectedKey={formValues.businessGroup}
+              styles={fieldStyle}
             />
           </Stack.Item>
           <Stack.Item grow={1}>
             <Label htmlFor="organizationUnit">Organization Unit</Label>
-            <TextField
+            <Dropdown
               id="organizationUnit"
-              value={formValues.organizationUnit}
-              onChange={handleInputChange}
               placeholder="Select Organization Unit"
+              options={
+                searchFilters.initiativeLocationFilter?.map((unit) => ({
+                  key: unit.organizationUnitID,
+                  text: unit.organizationUnitName
+                })) || []
+              }
+              onChange={handleInputChange}
+              selectedKey={formValues.organizationUnit}
+              styles={fieldStyle}
             />
           </Stack.Item>
         </Stack>
+
         <Stack horizontal tokens={{ childrenGap: 15 }} horizontalAlign="end">
           <DefaultButton text="Clear Search" onClick={handleClearSearch} />
-          <DefaultButton text="Save and Search" />
+          <DefaultButton text="Save and Search" onClick={handleSearchClick} />
           <DefaultButton text="Close" onClick={onClose} />
-          <DefaultButton text="Search" />
+          <DefaultButton text="Search" onClick={handleSearchClick} />
         </Stack>
       </Stack>
     </div>

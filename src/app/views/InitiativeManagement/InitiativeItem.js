@@ -130,7 +130,8 @@ const InitiativeItem = ({
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center"
+              alignItems: "center",
+              width: "100%" // Ensure the container takes full width
             }}
           >
             <div className="left-side">
@@ -138,22 +139,23 @@ const InitiativeItem = ({
                 variant="body2"
                 className="due-in"
                 color="textSecondary"
-                style={{ fontSize: "0.8rem" }}
+                style={{ fontSize: "0.6rem" }}
               >
                 Current Stage : <strong style={{ color: "grey" }}> {cstageName}</strong>
               </Typography>
             </div>
-            <div className="right-side">
+            <div className="right-side" style={{ textAlign: "right" }}>
               <Typography
                 variant="body2"
                 className="due-in"
                 color="textSecondary"
-                style={{ fontSize: "0.8rem" }}
+                style={{ fontSize: "0.6rem" }}
               >
                 Due In : <strong style={{ color: "grey" }}>{dewdate} Days</strong>
               </Typography>
             </div>
           </Box>
+
           <CustomProgressBar
             stages={initiativeListStageDetails}
             setDewdate={setDewdate}
@@ -172,18 +174,18 @@ const InitiativeItem = ({
                 variant="body2"
                 className="due-in"
                 color="textSecondary"
-                style={{ fontSize: "0.8rem" }}
+                style={{ fontSize: "0.6rem" }}
               >
                 <strong style={{ color: "grey" }}> {initiative?.percentageOfComplete} </strong>{" "}
                 stages completed
               </Typography>
             </div>
-            <div className="right-side">
+            <div className="right-side" style={{ textAlign: "right" }}>
               <Typography
                 variant="body2"
                 className="due-in"
                 color="textSecondary"
-                style={{ fontSize: "0.8rem" }}
+                style={{ fontSize: "0.6rem" }}
               >
                 & 0 More stages...
               </Typography>

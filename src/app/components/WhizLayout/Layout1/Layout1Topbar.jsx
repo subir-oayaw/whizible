@@ -114,16 +114,16 @@ const Layout1Topbar = () => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
 
-  // const handleSidebarToggle = () => {
-  //   let { layout1Settings } = settings;
-  //   let mode;
-  //   if (isMdScreen) {
-  //     mode = layout1Settings.leftSidebar.mode === "close" ? "mobile" : "close";
-  //   } else {
-  //     mode = layout1Settings.leftSidebar.mode === "full" ? "close" : "full";
-  //   }
-  //   updateSidebarMode({ mode });
-  // };
+  const handleSidebarToggle = () => {
+    let { layout1Settings } = settings;
+    let mode;
+    if (isMdScreen) {
+      mode = layout1Settings.leftSidebar.mode === "close" ? "mobile" : "close";
+    } else {
+      mode = layout1Settings.leftSidebar.mode === "full" ? "close" : "full";
+    }
+    updateSidebarMode({ mode });
+  };
 
   // Function to handle mailto
   const handleMailClick = () => {
@@ -193,7 +193,7 @@ const Layout1Topbar = () => {
                   </Span>
                 </Hidden>
                 <Box display="flex" flexDirection="column" alignItems="center">
-                  <Avatar src={storedImage} sx={{ cursor: "pointer" }} />
+                  <Avatar src={storedImage} sx={{ cursor: "pointer", width: 30, height: 30 }} />
                   <Span sx={{ fontSize: 12, color: "grey" }}>{userdata?.roleName}</Span>
                 </Box>
               </UserMenu>

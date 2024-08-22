@@ -24,12 +24,20 @@ const QuickInbox = ({ qinbox }) => {
     ]
   };
 
+  const options = {
+    plugins: {
+      legend: {
+        position: "bottom"
+      }
+    }
+  };
+
   return (
     <Stack
       styles={{
         root: {
           backgroundColor: "white",
-          padding: "8px",
+          padding: "16px", // Adjust padding if needed
           borderRadius: "8px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           flex: 1
@@ -39,8 +47,10 @@ const QuickInbox = ({ qinbox }) => {
       <Text variant="medium" styles={{ root: { fontWeight: "bold", marginBottom: "16px" } }}>
         Quick InBox
       </Text>
-      <div style={{ width: "100%", height: "300px" }}>
-        <PolarArea data={polarAreaChartData} />
+      <div style={{ width: "100%", height: "400px" }}>
+        {" "}
+        {/* Increased height */}
+        <PolarArea data={polarAreaChartData} options={options} />
       </div>
     </Stack>
   );

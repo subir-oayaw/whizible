@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Tooltip } from "@mui/material";
 import "./customProgressBar.css";
+import InitiativeDetailsModal from "app/views/InitiativeManagement/InitiativeDetailsModal";
 
 const CustomProgressBar = ({ stages, setDewdate, setCStageName, percentageOfComplete }) => {
   const [openModal, setOpenModal] = useState(false);

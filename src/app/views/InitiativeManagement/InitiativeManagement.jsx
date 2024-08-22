@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import InitiativeList from "./InitiativeList";
 import {
   Container,
-  Typography,
   Box,
   Tooltip,
   Pagination,
@@ -12,93 +11,127 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Button,
+  Menu,
+  MenuItem
 } from "@mui/material";
-import "./InitiativeManagement.css";
 import { PrimaryButton } from "@fluentui/react";
 import SearchIcon from "../../../assets/img/serachlist-icn.svg";
 import SearchList from "../../utils/SearchList";
 import useInitiative from "../../hooks/useInitiative";
 import { WhizLoading } from "app/components";
 import EditPage from "./Edit/EditPage";
-import { ViewList, ViewModule } from "@mui/icons-material"; // Import icons for list and card view
-import { Button, Menu, MenuItem } from "@mui/material";
-import { SortByAlpha, TrendingUp, CalendarToday } from "@mui/icons-material";
+import { ViewList, ViewModule, SortByAlpha, TrendingUp, CalendarToday } from "@mui/icons-material";
 import SearchIcon1 from "../../../assets/img/search-icn.svg";
 import useGetViewOptions from "app/hooks/useGetViewOptions";
 import tagMappings from "../../../app/TagNames/tag";
 import { useTranslation } from "react-i18next";
+import fetchFilters from "../../hooks/SearchFilters/filters"; // Assume this is the correct import
 
 const InitiativeManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFilter, setCurrentFilter] = useState("T");
-  const { dashboardData, loading, error } = useInitiative(currentPage, currentFilter);
+  const [filters, setFilters] = useState(null);
+  const [searchFilters, setSearchFilters] = useState(null);
+  const { dashboardData, loading, error } = useInitiative(currentPage, currentFilter, filters);
   const [initiatives, setInitiatives] = useState([]);
   const [finitiatives, setfInitiatives] = useState([]);
-
   const [openModal, setOpenModal] = useState(false);
-
   const [showForm, setShowForm] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [initiativesID, SetinitiativesID] = useState(false);
-  const [isListView, setIsListView] = useState(true); // State for list and card view toggle
+  const [isListView, setIsListView] = useState(true);
   const [sortAnchorEl, setSortAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [totalPages, setTotalPages] = useState(1); // Manage total pages with state
+
   const { getViewOptions } = useGetViewOptions(tagMappings.Initiative.toString());
   const viewPermission = getViewOptions && getViewOptions[0] ? getViewOptions[0] : {};
   const { a: canAdd, e: canEdit, d: canDelete } = viewPermission;
   const { t } = useTranslation();
-  console.log("viewPermission", viewPermission);
-  const startEditing = () => {
-    setIsEditing(true);
+
+  const loadFilters = async () => {
+    try {
+      const data = await fetchFilters(); // Call the imported filters function
+      console.log("Filters", data);
+      setSearchFilters(data); // Store the data in state
+    } catch (error) {
+      console.error("Failed to fetch filters:", error);
+    }
   };
 
-  // Function to stop editing
-  const stopEditing = () => {
-    setIsEditing(false);
-  };
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to first page when search term changes
-  };
+  useEffect(() => {
+    loadFilters(); // Correctly call the function
+  }, []);
+
   useEffect(() => {
     if (dashboardData) {
       setInitiatives(dashboardData);
     }
   }, [dashboardData]);
 
+  useEffect(() => {
+    // Update totalPages when initiatives or currentFilter change
+    if (initiatives.length > 0) {
+      const counts = {
+        T: initiatives[0]?.toDolIstCount,
+        W: initiatives[0]?.watchlistCount,
+        D: initiatives[0]?.draftCount
+      };
+      const totalCount = counts[currentFilter] || 0;
+      setTotalPages(Math.ceil(totalCount / 5));
+    }
+  }, [initiatives, currentFilter]);
+
+  const startEditing = () => {
+    setIsEditing(true);
+  };
+
+  const stopEditing = () => {
+    setIsEditing(false);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
   const handleShowForm = () => {
     setShowForm(!showForm);
   };
+
   const handleSortOpen = (event) => {
     setSortAnchorEl(event.currentTarget);
   };
+
   const handleSortSelect = (option) => {
-    // Implement sorting logic based on selected option
     console.log("Sorting by:", option);
     handleSortClose();
   };
-  // Handle sorting dropdown close
+
   const handleSortClose = () => {
     setSortAnchorEl(null);
   };
+
   const handleCloseForm = () => {
     setShowForm(false);
   };
+
   const handleDisabledClick = (message) => {
     setModalMessage(message);
     setModalOpen(true);
   };
+
   const calculateFilterCounts = (data) => {
     const counts = {
       inbox: data[0]?.toDolIstCount,
       watchlist: data[0]?.watchlistCount,
       draft: data[0]?.draftCount
     };
-
     return counts;
   };
 
@@ -107,26 +140,23 @@ const InitiativeManagement = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-  const totalPages = Math.ceil(finitiatives.length / 5);
+  const onSearch = (filters) => {
+    setFilters(filters);
 
+    setCurrentPage(1); // Reset page to 1 for new search results
+  };
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
 
   if (loading) {
-    return (
-      <div>
-        {" "}
-        <WhizLoading />
-      </div>
-    );
+    return <WhizLoading />;
   }
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-  // Toggle between list and card view
   const toggleView = () => {
     setIsListView((prevView) => !prevView);
   };
@@ -155,7 +185,9 @@ const InitiativeManagement = () => {
                       data-bs-toggle="tooltip"
                       className={currentFilter === "Inbox" ? "active" : ""}
                       data-bs-original-title="Inbox"
-                      onClick={() => setCurrentFilter("T")}
+                      onClick={() => {
+                        setCurrentFilter("T");
+                      }}
                     >
                       <a>
                         <span id="FltrCountInbox" className="fltrcount">
@@ -169,7 +201,9 @@ const InitiativeManagement = () => {
                       data-bs-toggle="tooltip"
                       className={currentFilter === "Watchlist" ? "active" : ""}
                       data-bs-original-title="Watchlist"
-                      onClick={() => setCurrentFilter("W")}
+                      onClick={() => {
+                        setCurrentFilter("W");
+                      }}
                     >
                       <a>
                         <span id="FltrCountWatchlist" className="fltrcount">
@@ -183,7 +217,9 @@ const InitiativeManagement = () => {
                       data-bs-toggle="tooltip"
                       className={currentFilter === "Draft" ? "active" : ""}
                       data-bs-original-title="Draft"
-                      onClick={() => setCurrentFilter("D")}
+                      onClick={() => {
+                        setCurrentFilter("D");
+                      }}
                     >
                       <a>
                         <span id="FltrCountDraft" className="fltrcount">
@@ -284,7 +320,13 @@ const InitiativeManagement = () => {
               </div>
             </div>
           </div>
-          {showForm && <SearchList onClose={handleCloseForm} />}
+          {showForm && (
+            <SearchList
+              onClose={handleCloseForm}
+              searchFilters={searchFilters}
+              onSearch={onSearch}
+            />
+          )}
           <InitiativeList
             initiatives={initiatives}
             page={currentPage}
@@ -300,18 +342,17 @@ const InitiativeManagement = () => {
             canEdit={canEdit}
             handleDisabledClick={handleDisabledClick}
           />
-          {finitiatives.length > 5 && (
-            <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
-                variant="outlined"
-                shape="rounded"
-              />
-            </Box>
-          )}
+
+          <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+              variant="outlined"
+              shape="rounded"
+            />
+          </Box>
         </>
       )}
       <Dialog
