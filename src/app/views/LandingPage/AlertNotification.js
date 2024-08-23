@@ -10,7 +10,7 @@ const AlertNotification = ({ alertNot }) => {
   console.log("alertNot", alertNot);
   const notifications =
     alertNot?.landingDBAlertNot?.map((item) => ({
-      title: `[${item.alertType}] ${item.typeDescription}`,
+      title: ` ${item.typeDescription}`,
       description: item.initiative ? item.initiative : "No initiative associated",
       date: item.date ? item.date : "No date available",
       color: getColor(item.alertType),

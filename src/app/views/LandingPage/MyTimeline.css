@@ -8,7 +8,7 @@
   left: 50%;
   transform: translate(-50%, -80%); /* Adjust the transform to fine-tune the position */
   background-color: inherit;
-  border-radius: 50%;
+  border-radius: 0%;
   height: 24px;
   width: 24px;
   display: flex;

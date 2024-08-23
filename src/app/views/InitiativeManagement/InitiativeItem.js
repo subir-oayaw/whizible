@@ -13,6 +13,7 @@ import {
   DialogTitle,
   Button
 } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FlagIcon from "@mui/icons-material/Flag";
 import EditIcon from "@mui/icons-material/Edit";
@@ -116,9 +117,16 @@ const InitiativeItem = ({
         <td>
           <div className="initiative-title">
             <Typography variant="body1">{title}</Typography>
-            <Typography variant="body2" color="textSecondary">
-              {employeeName}
-            </Typography>
+            <Box display="flex" alignItems="center">
+              <Avatar
+                // src={}
+                alt={employeeName}
+                sx={{ width: 24, height: 24, marginRight: 1 }}
+              />
+              <Typography variant="body2" color="textSecondary">
+                {employeeName}
+              </Typography>
+            </Box>
           </div>
         </td>
         <td style={{ textAlign: "start" }}>
@@ -163,6 +171,7 @@ const InitiativeItem = ({
             setDewdate={setDewdate}
             setCStageName={setCStageName}
             percentageOfComplete={initiative?.percentageOfComplete}
+            initiative={initiative}
           />
           <Box
             sx={{
