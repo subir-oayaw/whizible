@@ -3,10 +3,13 @@ import { Stack, Text } from "@fluentui/react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./MyTimeline.css";
+import { Modal, Box, Typography, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
 const getColorCode = (timelineEntry) => {
-  if (timelineEntry.isRed) return "red";
-  if (timelineEntry.isGreen) return "green";
-  if (timelineEntry.isBlue) return "blue";
+  if (timelineEntry.isRed) return "#f8d7da";
+  if (timelineEntry.isGreen) return "#77e0b6";
+  if (timelineEntry.isBlue) return "#fff3cd";
   return null;
 };
 
@@ -53,6 +56,8 @@ const tileClassName = ({ date, view }, highlightedDates) => {
 
 const MyTimeline = ({ mTimeline, prevMonth, prevYear, setPrevMonth, setPrevYear }) => {
   const [date, setDate] = useState(new Date());
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedEntry, setSelectedEntry] = useState(null);
 
   useEffect(() => {}, [mTimeline]);
 
@@ -66,7 +71,8 @@ const MyTimeline = ({ mTimeline, prevMonth, prevYear, setPrevMonth, setPrevYear 
             new Date(Date.parse(entry.monthName + " 1, 2021")).getMonth(),
             entry.day
           ),
-          color
+          color,
+          initiativeTitle: entry.initiativeTitle
         };
       }
       return null;
@@ -84,6 +90,18 @@ const MyTimeline = ({ mTimeline, prevMonth, prevYear, setPrevMonth, setPrevYear 
       setPrevYear(newYear);
     }
 
+    const matchingDate = highlightedDates?.find(
+      (d) =>
+        d.date.getDate() === newDate.getDate() &&
+        d.date.getMonth() === newDate.getMonth() &&
+        d.date.getFullYear() === newDate.getFullYear()
+    );
+
+    if (matchingDate) {
+      setSelectedEntry(matchingDate);
+      setModalOpen(true);
+    }
+
     setDate(newDate);
     console.log(`Selected Date: ${newDate.toDateString()}`);
   };
@@ -98,6 +116,11 @@ const MyTimeline = ({ mTimeline, prevMonth, prevYear, setPrevMonth, setPrevYear 
       setPrevMonth(newMonth);
       setPrevYear(newYear);
     }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedEntry(null);
   };
 
   return (
@@ -152,6 +175,40 @@ const MyTimeline = ({ mTimeline, prevMonth, prevYear, setPrevMonth, setPrevYear 
           </Stack>
         </div>
       </Stack>
+
+      <Modal open={modalOpen} onClose={handleCloseModal}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2
+          }}
+        >
+          <IconButton
+            aria-label="close"
+            onClick={handleCloseModal}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500]
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" component="h2" gutterBottom>
+            {selectedEntry?.date.toDateString()}
+          </Typography>
+          <Typography variant="body1">{selectedEntry?.initiativeTitle}</Typography>
+        </Box>
+      </Modal>
     </Stack>
   );
 };
