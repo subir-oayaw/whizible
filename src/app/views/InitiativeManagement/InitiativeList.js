@@ -145,7 +145,7 @@ const InitiativeList = ({
             </tbody>
           </Table>
           {/* Pagination for List View */}
-          {filteredInitiatives.length > ITEMS_PER_PAGE && (
+          {/* {filteredInitiatives.length > ITEMS_PER_PAGE && (
             <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
               <Pagination
                 count={totalPages}
@@ -156,7 +156,7 @@ const InitiativeList = ({
                 shape="rounded"
               />
             </Box>
-          )}
+          )} */}
         </>
       ) : (
         <Grid container spacing={3}>
