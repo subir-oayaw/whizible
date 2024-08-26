@@ -183,11 +183,9 @@ const InitiativeManagement = () => {
                     <li
                       id="ImFltr-Inbox"
                       data-bs-toggle="tooltip"
-                      className={currentFilter === "Inbox" ? "active" : ""}
+                      className={currentFilter === "T" ? "active" : ""}
                       data-bs-original-title="Inbox"
-                      onClick={() => {
-                        setCurrentFilter("T");
-                      }}
+                      onClick={() => setCurrentFilter("T")}
                     >
                       <a>
                         <span id="FltrCountInbox" className="fltrcount">
@@ -199,7 +197,7 @@ const InitiativeManagement = () => {
                     <li
                       id="ImFltr-Watchlist"
                       data-bs-toggle="tooltip"
-                      className={currentFilter === "Watchlist" ? "active" : ""}
+                      className={currentFilter === "W" ? "active" : ""}
                       data-bs-original-title="Watchlist"
                       onClick={() => {
                         setCurrentFilter("W");
@@ -215,7 +213,7 @@ const InitiativeManagement = () => {
                     <li
                       id="ImFltr-Draft"
                       data-bs-toggle="tooltip"
-                      className={currentFilter === "Draft" ? "active" : ""}
+                      className={currentFilter === "D" ? "active" : ""}
                       data-bs-original-title="Draft"
                       onClick={() => {
                         setCurrentFilter("D");

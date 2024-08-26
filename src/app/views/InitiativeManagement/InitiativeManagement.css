@@ -6,13 +6,21 @@
 
 .init_filtersList li {
   border: 1px solid #b3b3b3;
-  border-radius: 5px;
+  border-radius: 50%;
+  padding: 10px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
 }
 
 .init_filtersList li a {
   text-decoration: none;
   color: #414042;
   display: block;
+  text-align: center;
 }
 
 .init_filtersList li:hover,
@@ -29,29 +37,56 @@
 .init_filtersList li.active a span.fltrcount {
   background: #414042;
 }
+.init_filtersList .active {
+  background-color: #007bff; /* Change to your desired color */
+  color: #fff; /* Text color for the active filter */
+  border-radius: 5px; /* Rounded corners */
+  border-width: 7px; /* Explicitly set the border width */
+  border-style: solid; /* Define the border style */
+  border-color: #004080; /* Darker border color */
+}
+
+.init_filtersList .active a {
+  color: inherit; /* Ensure the link text inherits the color */
+  text-decoration: none; /* Remove underline from the link */
+}
+
+.init_filtersList li a {
+  padding: 8px 12px; /* Add padding for better click area */
+  display: block;
+}
+
+.init_filtersList li:not(.active) a:hover {
+  background-color: #e0e0e0; /* Change background on hover for non-active items */
+  border-radius: 5px; /* Match the active state border radius */
+  border: 2px solid transparent;
+}
 
 .init_filtersList li:nth-child(1) a span.fltrcount {
-  background: #81cf09;
+  background: #81cf09; /* Green */
 }
 
 .init_filtersList li:nth-child(2) a span.fltrcount {
-  background: #2b55ce;
+  background: #2b55ce; /* Blue */
 }
 
 .init_filtersList li:nth-child(3) a span.fltrcount {
-  background: #f55d30;
+  background: #f55d30; /* Orange */
 }
 
 .init_filtersList li:nth-child(4) a span.fltrcount {
-  background: #f5c330;
+  background: #f5c330; /* Yellow */
 }
 
-.init_filtersList li.active a {
-  font-weight: 600;
+.init_filtersList li.active {
+  box-shadow: 0 0 15px 5px rgba(255, 255, 0, 0.6); /* Glowing effect */
+}
+
+.init_filtersList li.active a span.fltrcount {
+  background: yellow; /* Glowing bulb color */
 }
 
 span.fltrcount {
-  /* Auto layout */
   padding: 6px 8px;
   gap: 10px;
   width: 36px;
@@ -59,10 +94,17 @@ span.fltrcount {
   display: inline-block;
   background: #b3b3b3;
   color: #ffffff;
+  border-radius: 50%; /* Make the count a circle */
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 span.fltrtitle {
-  padding: 10px;
+  padding-top: 5px;
+  display: block;
+  text-align: center;
 }
 
 /*End Top Filters*/

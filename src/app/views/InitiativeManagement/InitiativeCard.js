@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import "./InitiativeCard.css"; // Custom CSS for card styles
-import CustomProgressBar from "app/utils/CustomProgressBar";
+// import CustomProgressBar from "app/utils/CustomProgressBar";
 // import InitiativeHistoryDrawer from "./InitiativeHistoryDrawer";
 import {
   Card,
@@ -24,7 +24,7 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
   const { title, createdOn, inboxForInitiativeDetails, instanceId, originator } = initiative;
   const [anchorEl, setAnchorEl] = useState(null);
   const [commentDrawerOpen, setCommentDrawerOpen] = useState(false);
-
+  console.log("InitiativeCard", initiative);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -80,7 +80,6 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
               <Typography variant="h6" component="div">
                 {initiative.title}
               </Typography>
-              {/* Dots Icon */}
               <IconButton
                 aria-label="more"
                 aria-controls="menu-card"
@@ -89,7 +88,6 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
               >
                 <MoreVertIcon />
               </IconButton>
-              {/* Dropdown Menu */}
               <Menu
                 id="menu-card"
                 anchorEl={anchorEl}
@@ -102,16 +100,16 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
                 <MenuItem onClick={handleDiscussions}>Discussions</MenuItem>
               </Menu>
             </Box>
-            {/* Other content of the card */}
+
             <Typography variant="body2" color="text.secondary">
-              {initiative.nature}
+              Nature of Demand: {initiative.natureofDemandID}
             </Typography>
 
             <Box sx={{ display: "flex", alignItems: "center", marginTop: "8px" }}>
               <Typography variant="body2" className="due-in" color="textSecondary">
                 Current Stage:{" "}
                 <strong style={{ color: "grey" }}>
-                  {inboxForInitiativeDetails[0]?.requestStage}
+                  {initiative.initiativeListStageDetails[0]?.stageName}
                 </strong>
               </Typography>
               <Typography
@@ -121,12 +119,16 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
                 style={{ textAlign: "right", flex: 1 }}
               >
                 Due In:{" "}
-                <strong style={{ color: "grey" }}>{calculateDaysSince(createdOn)} Days</strong>
+                <strong style={{ color: "grey" }}>
+                  {calculateDaysSince(initiative.createdOn)} Days
+                </strong>
               </Typography>
             </Box>
-            <div className="stagesLegendContainer">
-              <CustomProgressBar stages={inboxForInitiativeDetails} />
-            </div>
+
+            {/* <div className="stagesLegendContainer">
+              <CustomProgressBar stages={initiative.initiativeListStageDetails} />
+            </div> */}
+
             <Box
               sx={{
                 display: "flex",
@@ -136,7 +138,8 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
               }}
             >
               <Typography variant="body2" className="due-in" color="textSecondary">
-                <strong style={{ color: "grey" }}>{stagesCompleted}</strong> stages completed
+                <strong style={{ color: "grey" }}>{initiative.completedStage}</strong> stages
+                completed
               </Typography>
               <Typography
                 variant="body2"
@@ -144,25 +147,25 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
                 color="textSecondary"
                 style={{ textAlign: "right" }}
               >
-                & 0 More stages...
+                & {initiative.totalNoOfStage - initiative.completedStage} more stages...
               </Typography>
             </Box>
           </div>
           <Divider sx={{ my: 2 }} /> {/* Horizontal line */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Avatar src={originator?.profileImageUrl} alt={originator?.name} />
+            <Avatar src={initiative.originator?.profileImageUrl} alt={initiative.originatorName} />
             <Typography variant="body2" color="textSecondary" style={{ marginLeft: "8px" }}>
-              Created By: {originator?.name}
+              Created By: {initiative.originatorName}
             </Typography>
           </Box>
         </CardContent>
       </Card>
+
       <CommentSection
-        initiativeId={instanceId}
+        initiativeId={initiative.id}
         commentDrawerOpen={commentDrawerOpen}
         setCommentDrawerOpen={setCommentDrawerOpen}
       />
-      {/* <InitiativeHistoryDrawer isOpen={setHistoryDrawerOpen} onClose={setHistoryDrawerOpen} /> */}
     </>
   );
 };

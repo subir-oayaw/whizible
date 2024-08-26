@@ -101,7 +101,6 @@ const Layout1Topbar = () => {
   useEffect(() => {
     // Retrieve the selected path from sessionStorage
     const storedPath = sessionStorage.getItem("selectedPath");
-
     // Check if the current URL is either '/' or '/landingPage'
     if (location.pathname === "" || location.pathname === "/landingPage") {
       setSelectedPath("Home");
