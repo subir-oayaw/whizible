@@ -58,6 +58,8 @@ const ProjectMain = Loadable(lazy(() => import("app/views/ProjectMain")));
 const LandingPage = Loadable(lazy(() => import("app/views/LandingPage")));
 const ProgramList = Loadable(lazy(() => import("app/views/Programs/ProgramList/index")));
 const ProjectList = Loadable(lazy(() => import("app/views/Programs/ProjectList/index")));
+const LoadingPage = Loadable(lazy(() => import("../app/views/LoadingPage")));
+
 const MilestoneProgress = Loadable(lazy(() => import("app/views/Programs/MilestoneProgress")));
 const routes = [
   {
@@ -80,6 +82,7 @@ const routes = [
       { path: "/InitiativePrioritization", element: <InitiativePrioritization /> },
       { path: "/ExternalAudit", element: <ExternalAudit /> },
       { path: "/actions", element: <ActionItems /> },
+
       {
         path: "/under-construction",
         element: <UnderConstruction />
@@ -103,11 +106,13 @@ const routes = [
       { path: "/landingPage", element: <LandingPage /> },
       { path: "/programlist", element: <ProgramList /> },
       { path: "/projectlist", element: <ProjectList /> },
+
       { path: "/milestoneprogress", element: <MilestoneProgress /> }
     ]
   },
 
   // session pages route
+  { path: "/LoadingPage", element: <LoadingPage /> },
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },

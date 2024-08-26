@@ -40,7 +40,7 @@ export default function Sidenav({ children, isHovered }) {
 
   const { SidebarData: navigations, loading, error } = useSidebar();
   const [filteredNavigations, setFilteredNavigations] = useState([]);
-
+  console.log("useSidebar");
   useEffect(() => {
     if (navigations) {
       setFilteredNavigations(navigations);

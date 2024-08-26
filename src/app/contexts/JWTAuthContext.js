@@ -116,52 +116,6 @@ export const AuthProvider = ({ children }) => {
     initialize();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const url = window.location.href;
-        const codeMatch = url.match(/[?&]code=([^&]+)/);
-        const stateMatch = url.match(/[?&]state=([^&]+)/);
-        const code = codeMatch ? codeMatch[1] : null;
-        const state = stateMatch ? stateMatch[1] : null;
-
-        if (code && state) {
-          const redirectUri = process.env.REACT_APP_REDIRECT_URI;
-          const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
-
-          const response = await axios.get(
-            `${baseurlAccessControl}/api/Authentication/GetToken?code=${code}&state=${state}&redirectUri=${encodeURIComponent(
-              redirectUri
-            )}`
-          );
-
-          const { accessToken } = response.data;
-
-          if (accessToken) {
-            sessionStorage.setItem("access_token", accessToken);
-
-            const user = await fetchUserProfile(accessToken);
-            sessionStorage.setItem("user", JSON.stringify(user));
-
-            dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user } });
-
-            toast.success("Login successful");
-            navigate("/landingPage");
-          } else {
-            dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
-            toast.error("Login failed. Please retry.");
-          }
-        }
-      } catch (err) {
-        console.error("Initialization failed", err);
-        dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
-        toast.error("Login failed. Please retry.");
-      } finally {
-        setShowLoader(false);
-      }
-    })();
-  }, []);
-
   if (showLoader) return <LoadingPage />;
 
   return (
