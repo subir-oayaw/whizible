@@ -14,7 +14,7 @@ export default function WhizLogo({ mode }) {
         src={logoSrc}
         alt="Winsights Logo"
         className="mb-2 img-fluid"
-        style={{ maxWidth: "50px", paddingRight: "10px" }}
+        style={{ maxWidth: "60px", paddingRight: "10px" }}
       />
     </>
   );

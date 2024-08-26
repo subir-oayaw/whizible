@@ -4,7 +4,7 @@ import { Input, Button as FluentButton, Link } from "@fluentui/react-components"
 import ReCAPTCHA from "react-google-recaptcha";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./LoginPage.css"; // Assuming your CSS is in LoginPage.css
-import logo from "../../../assets/Images/winitiative-logo.svg";
+import logo from "../../../assets/img/whiz_logo.png";
 import logo1 from "../../../assets/img/login.svg";
 import customerImage from "../../../assets/Images/customer_img.png";
 import girlImage from "../../../assets/Images/gril1.png";
@@ -259,20 +259,25 @@ function LoginPage() {
         >
           <div className="inner-box">
             <div className="w-100" style={{ maxWidth: "400px" }}>
-              <div className="text-center mb-4">
+              <div className="text-center mb-4 d-flex justify-content-between">
                 <img
                   src={logo}
                   alt="Winsights Logo"
                   className="mb-2 img-fluid"
-                  style={{ maxWidth: "250px", borderRight: "1px solid #ccc", paddingRight: "10px" }}
+                  style={{
+                    width: "60%",
+                    borderRight: "1px solid #ccc",
+                    paddingRight: "10px"
+                  }}
                 />
                 <img
                   src={logo1}
                   alt="Another Logo"
                   className="mb-2 img-fluid"
-                  style={{ maxWidth: "250px" }}
+                  style={{ width: "30%" }}
                 />
               </div>
+
               {showForgotPassword ? (
                 <Form onSubmit={handleForgotPassword}>
                   <Form.Group controlId="formBasicUsername" className="mb-2">
