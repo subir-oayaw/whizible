@@ -28,11 +28,9 @@ const useInitiativeCardViewDraft = (currentPage, currentFilter, filters) => {
         }
         console.log("dashboardData12", response.data.data);
         setDashboardData1(response.data.data.listInitiativeCardDraftEntity);
-        toast.success("Dashboard data fetched successfully");
       } catch (error) {
         setError(error.message);
         console.error("Error fetching dashboard data:", error);
-        toast.error("Failed to fetch dashboard data");
       } finally {
         setLoading(false);
       }

@@ -107,8 +107,9 @@ const InitiativeCard2 = ({ dashboardData1, startEditing }) => {
               aria-controls="menu-card"
               aria-haspopup="true"
               onClick={handleClick}
+              size="small" /* Smaller icon button */
             >
-              <MoreVertIcon />
+              <MoreVertIcon fontSize="small" />
             </IconButton>
 
             <Menu id="menu-card" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
@@ -124,23 +125,18 @@ const InitiativeCard2 = ({ dashboardData1, startEditing }) => {
           <Typography variant="body2" color="textSecondary">
             Process Name: {processName}
           </Typography>
+          {/* Consider removing or condensing the following lines */}
           <Typography variant="body2" color="textSecondary">
             Created On: {new Date(createdOn).toLocaleDateString()}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             Stages Completed: {stagesCompleted}/{totalStages}
           </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Remaining Stages: {noOfStageRemain}
-          </Typography>
-          <Divider sx={{ my: 2 }} /> {/* Horizontal line */}
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Box sx={{ ml: 2 }}></Box>
-          </Box>
+          {/* <Divider sx={{ my: 1 }} />  */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Avatar
               src={originator?.profileImageUrl}
-              sx={{ cursor: "pointer", width: 30, height: 30 }}
+              sx={{ cursor: "pointer", width: 24, height: 24 }} /* Smaller avatar */
               alt={originator?.name}
             />
             <Typography variant="body2" color="textSecondary" style={{ marginLeft: "8px" }}>

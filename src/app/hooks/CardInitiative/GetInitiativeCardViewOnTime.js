@@ -29,11 +29,9 @@ const useInitiativeCardViewOnTime = (currentPage, currentFilter, filters) => {
 
         setDashboardData2(response.data.data.listInitiativeCardOnTimeEntity);
         console.log("dashboardData12", response.data.data);
-        toast.success("Dashboard data fetched successfully");
       } catch (error) {
         setError(error.message);
         console.error("Error fetching dashboard data:", error);
-        toast.error("Failed to fetch dashboard data");
       } finally {
         setLoading(false);
       }

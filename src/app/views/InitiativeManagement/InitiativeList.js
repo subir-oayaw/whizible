@@ -326,7 +326,6 @@ const InitiativeList = ({
                 <CardContent>
                   <div className="d-flex justify-content-between align-items-center mb-3">
                     <div className="d-flex justify-content-between w-100">
-                      s
                       <span
                         id="delayed-initiatives-text"
                         className="text-secondary cursor-pointer"
