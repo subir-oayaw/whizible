@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const GetConvertedIniGraphByConvertedTo = (searchParams) => {
-  const [Graph, setGraph] = useState(null);
+  const [ConvertedIni1, setConvertedIni1] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -23,7 +24,7 @@ const GetConvertedIniGraphByConvertedTo = (searchParams) => {
           throw new Error("Failed to fetch currency data");
         }
         console.log("currencyData1", response.data);
-        setGraph(response.data.data);
+        setConvertedIni1(response.data.data);
       } catch (error) {
         setError(error.message);
         console.error("Error fetching currency data:", error);
@@ -35,7 +36,7 @@ const GetConvertedIniGraphByConvertedTo = (searchParams) => {
     fetchData();
   }, [searchParams]); // Depend on searchParams
 
-  return { Graph, loading, error };
+  return { ConvertedIni1, loading, error };
 };
 
 export default GetConvertedIniGraphByConvertedTo;

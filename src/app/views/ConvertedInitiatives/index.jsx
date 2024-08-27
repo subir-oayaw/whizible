@@ -3,7 +3,6 @@ import { Pivot, PivotItem } from "@fluentui/react";
 import CompletedInitiatives from "./CompletedInitiatives";
 
 const CompletedInitiativesList = () => {
-  console.log("first");
   return (
     <div id="initiative-management" className="container">
       <Pivot>

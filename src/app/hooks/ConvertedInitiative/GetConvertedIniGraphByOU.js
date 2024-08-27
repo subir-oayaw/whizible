@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const GetConvertedIniGraphByOU = (searchParams) => {
-  const [ByOUData, setByOUData] = useState(null);
+  const [ConvertedIni3, setConvertedIni3] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,8 +22,8 @@ const GetConvertedIniGraphByOU = (searchParams) => {
         if (response.status !== 200) {
           throw new Error("Failed to fetch currency data");
         }
-        console.log("currencyData1", response.data);
-        setByOUData(response.data.data);
+        console.log("currencyData199", response.data.data.listConvertedIniByOU);
+        setConvertedIni3(response.data.data);
       } catch (error) {
         setError(error.message);
         console.error("Error fetching currency data:", error);
@@ -35,7 +35,7 @@ const GetConvertedIniGraphByOU = (searchParams) => {
     fetchData();
   }, [searchParams]); // Depend on searchParams
 
-  return { ByOUData, loading, error };
+  return { ConvertedIni3, loading, error };
 };
 
 export default GetConvertedIniGraphByOU;
