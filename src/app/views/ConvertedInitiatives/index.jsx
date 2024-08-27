@@ -7,7 +7,12 @@ const CompletedInitiativesList = () => {
     <div id="initiative-management" className="container">
       <Pivot>
         <PivotItem headerText="Completed Initiatives">
-          <CompletedInitiatives />
+          <CompletedInitiatives
+            convertedIni={convertedIni}
+            Graph={Graph}
+            NOIData={NOIData}
+            ByOUData={ByOUData}
+          />
         </PivotItem>
       </Pivot>
     </div>

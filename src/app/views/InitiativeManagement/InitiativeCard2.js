@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-
 import "./InitiativeCard2.css"; // Custom CSS for card styles
 import CustomProgressBar from "app/utils/CustomProgressBar";
-// import InitiativeHistoryDrawer from "./InitiativeHistoryDrawer";
 import {
   Card,
   CardContent,
@@ -12,18 +10,35 @@ import {
   Menu,
   MenuItem,
   Divider,
-  Avatar
+  Avatar,
+  Chip
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert"; // Import icon for the vertical dots
 import CommentSection from "./CommentsSection";
 
-const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing }) => {
+const InitiativeCard2 = ({ dashboardData1, startEditing }) => {
   const [stagesCompleted, setStagesCompleted] = useState(0);
   const [totalStages, setTotalStages] = useState(0);
-  const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
-  const { title, createdOn, inboxForInitiativeDetails, instanceId, originator } = initiative;
   const [anchorEl, setAnchorEl] = useState(null);
   const [commentDrawerOpen, setCommentDrawerOpen] = useState(false);
+
+  console.log("Extract3", dashboardData1);
+
+  // Extract data from dashboardData2
+  const {
+    title,
+    createdOn,
+    demandCode,
+    employeeName,
+    alertType,
+    processName,
+    percentageOfComplete,
+    completedStage,
+    noOfStageRemain,
+    totalNoOfStage,
+    instanceId,
+    originator
+  } = dashboardData1 || {};
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -39,13 +54,11 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
 
   const handleInitiativeHistory = () => {
     // Implement action for Initiative History
-    // Example: open offcanvas for initiative history
     handleClose();
   };
 
   const handleFlagInitiative = () => {
     // Implement action for Flag Initiative
-    // Example: open offcanvas for flagging initiative
     handleClose();
   };
 
@@ -63,96 +76,71 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
   };
 
   useEffect(() => {
-    if (inboxForInitiativeDetails) {
-      const stageDetails = inboxForInitiativeDetails || [];
-      setTotalStages(stageDetails.length);
-      const completedStages = stageDetails.filter((stage) => stage.isStageApproved).length;
-      setStagesCompleted(completedStages);
-    }
-  }, [inboxForInitiativeDetails]);
+    setTotalStages(totalNoOfStage || 0);
+    setStagesCompleted(completedStage || 0);
+  }, [totalNoOfStage, completedStage]);
+
+  // Render "No data" if dashboardData2 is empty or null
+  if (!dashboardData1) {
+    return (
+      <Card className="initiative-card2">
+        <CardContent className="card-content">
+          <Typography variant="h6" component="div">
+            No data
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <>
-      <Card className="initiative-card2 ">
+      <Card className="initiative-card2">
         <CardContent className="card-content">
-          <div className="content">
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Typography variant="h6" component="div">
-                {initiative.title}
-              </Typography>
-              {/* Dots Icon */}
-              <IconButton
-                aria-label="more"
-                aria-controls="menu-card"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              {/* Dropdown Menu */}
-              <Menu
-                id="menu-card"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleViewEdit}>View/Edit</MenuItem>
-                <MenuItem onClick={handleInitiativeHistory}>Initiative History</MenuItem>
-                <MenuItem onClick={handleFlagInitiative}>Flag Initiative</MenuItem>
-                <MenuItem onClick={handleDiscussions}>Discussions</MenuItem>
-              </Menu>
-            </Box>
-            {/* Other content of the card */}
-            <Typography variant="body2" color="text.secondary">
-              {initiative.nature}
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Typography variant="h6" component="div">
+              {title || "No Title"}
             </Typography>
 
-            <Box sx={{ display: "flex", alignItems: "center", marginTop: "8px" }}>
-              <Typography variant="body2" className="due-in" color="textSecondary">
-                Current Stage:{" "}
-                <strong style={{ color: "grey" }}>
-                  {inboxForInitiativeDetails[0]?.requestStage}
-                </strong>
-              </Typography>
-              <Typography
-                variant="body2"
-                className="due-in"
-                color="textSecondary"
-                style={{ textAlign: "right", flex: 1 }}
-              >
-                Due In:{" "}
-                <strong style={{ color: "grey" }}>{calculateDaysSince(createdOn)} Days</strong>
-              </Typography>
-            </Box>
-            <div className="stagesLegendContainer">
-              <CustomProgressBar stages={inboxForInitiativeDetails} />
-            </div>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginTop: "8px"
-              }}
+            <IconButton
+              aria-label="more"
+              aria-controls="menu-card"
+              aria-haspopup="true"
+              onClick={handleClick}
+              size="small" /* Smaller icon button */
             >
-              <Typography variant="body2" className="due-in" color="textSecondary">
-                <strong style={{ color: "grey" }}>{stagesCompleted}</strong> stages completed
-              </Typography>
-              <Typography
-                variant="body2"
-                className="due-in"
-                color="textSecondary"
-                style={{ textAlign: "right" }}
-              >
-                & 0 More stages...
-              </Typography>
-            </Box>
-          </div>
-          <Divider sx={{ my: 2 }} /> {/* Horizontal line */}
+              <MoreVertIcon fontSize="small" />
+            </IconButton>
+
+            <Menu id="menu-card" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+              <MenuItem onClick={handleViewEdit}>View/Edit</MenuItem>
+              <MenuItem onClick={handleInitiativeHistory}>Initiative History</MenuItem>
+              <MenuItem onClick={handleFlagInitiative}>Flag Initiative</MenuItem>
+              <MenuItem onClick={handleDiscussions}>Discussions</MenuItem>
+            </Menu>
+          </Box>
+          <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+            Demand Code: {demandCode}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            Process Name: {processName}
+          </Typography>
+          {/* Consider removing or condensing the following lines */}
+          <Typography variant="body2" color="textSecondary">
+            Created On: {new Date(createdOn).toLocaleDateString()}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            Stages Completed: {stagesCompleted}/{totalStages}
+          </Typography>
+          {/* <Divider sx={{ my: 1 }} />  */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Avatar src={originator?.profileImageUrl} alt={originator?.name} />
+            <Avatar
+              src={originator?.profileImageUrl}
+              sx={{ cursor: "pointer", width: 24, height: 24 }} /* Smaller avatar */
+              alt={originator?.name}
+            />
             <Typography variant="body2" color="textSecondary" style={{ marginLeft: "8px" }}>
-              Created By: {originator?.name}
+              Created By: {employeeName || "Unknown"}
             </Typography>
           </Box>
         </CardContent>
@@ -162,9 +150,8 @@ const InitiativeCard = ({ initiative, setIsEditing, startEditing, stopEditing })
         commentDrawerOpen={commentDrawerOpen}
         setCommentDrawerOpen={setCommentDrawerOpen}
       />
-      {/* <InitiativeHistoryDrawer isOpen={setHistoryDrawerOpen} onClose={setHistoryDrawerOpen} /> */}
     </>
   );
 };
 
-export default InitiativeCard;
+export default InitiativeCard2;

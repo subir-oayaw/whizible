@@ -3,16 +3,24 @@ import { TooltipHost, IconButton } from "@fluentui/react";
 import EditIcon from "@mui/icons-material/Edit";
 import HistoryIcon from "@mui/icons-material/History";
 import CommentIcon from "@mui/icons-material/Comment";
-import initiatives from "./dummyData"; // Import the dummy data
 import FluentTable from "../../components/FluentTable";
 
-const InitiativeTable = () => {
+const InitiativeTable = ({ convertedIni }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // Simulate fetching data from an API or file
-    setData(initiatives);
-  }, []);
+    // Check if convertedIni contains data and map it accordingly
+    if (convertedIni?.listConvertedIni) {
+      const mappedData = convertedIni.listConvertedIni.map((item) => ({
+        title: item.title,
+        nature: item.natureofDemand,
+        group: item.businessGroup, // Adjust this field if it has a different name
+        convertedTo: item.convertedTo, // Adjust this field if it has a different name
+        vendor: item.vendor // Adjust this field if it has a different name
+      }));
+      setData(mappedData);
+    }
+  }, [convertedIni]);
 
   const columns = [
     {
@@ -43,7 +51,7 @@ const InitiativeTable = () => {
       minWidth: 100,
       isResizable: true
     },
-    { key: "vendor", name: "Vendor", fieldName: "vendor", minWidth: 100, isResizable: true },
+    { key: "vendorID", name: "Vendor", fieldName: "vendorID", minWidth: 100, isResizable: true },
     {
       key: "action",
       name: "Action",

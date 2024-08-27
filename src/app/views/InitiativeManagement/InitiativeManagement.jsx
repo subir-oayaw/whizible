@@ -28,6 +28,9 @@ import useGetViewOptions from "app/hooks/useGetViewOptions";
 import tagMappings from "../../../app/TagNames/tag";
 import { useTranslation } from "react-i18next";
 import fetchFilters from "../../hooks/SearchFilters/filters"; // Assume this is the correct import
+import GetInitiativeCardViewDraft from "../../hooks/CardInitiative/GetInitiativeCardViewDraft";
+import GetInitiativeCardViewDelayed from "../../hooks/CardInitiative/GetInitiativeCardViewDelayed";
+import GetInitiativeCardViewOnTime from "../../hooks/CardInitiative/GetInitiativeCardViewOnTime";
 
 const InitiativeManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,6 +56,12 @@ const InitiativeManagement = () => {
   const viewPermission = getViewOptions && getViewOptions[0] ? getViewOptions[0] : {};
   const { a: canAdd, e: canEdit, d: canDelete } = viewPermission;
   const { t } = useTranslation();
+  const { dashboardData1, Drafloading, Draferror } = GetInitiativeCardViewDraft(currentPage);
+  const { dashboardData3, Delayedloading, Delayederror } =
+    GetInitiativeCardViewDelayed(currentPage);
+  const { dashboardData2, OnTimeloading, OnTimeerror } = GetInitiativeCardViewOnTime(currentPage);
+  console.log("dashboardData1", dashboardData1, dashboardData2, dashboardData3);
+  // Conditionally use the data based on `isListView`
 
   const loadFilters = async () => {
     try {
@@ -329,6 +338,9 @@ const InitiativeManagement = () => {
           )}
           <InitiativeList
             initiatives={initiatives}
+            dashboardData1={dashboardData1}
+            dashboardData2={dashboardData2}
+            dashboardData3={dashboardData3}
             page={currentPage}
             setIsEditing={setIsEditing}
             isEditing={isEditing}
@@ -343,16 +355,18 @@ const InitiativeManagement = () => {
             handleDisabledClick={handleDisabledClick}
           />
 
-          <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={handlePageChange}
-              color="primary"
-              variant="outlined"
-              shape="rounded"
-            />
-          </Box>
+          {isListView && (
+            <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+                variant="outlined"
+                shape="rounded"
+              />
+            </Box>
+          )}
         </>
       )}
       <Dialog
