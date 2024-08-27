@@ -70,7 +70,7 @@ const barOptions = {
   maintainAspectRatio: false // Disable aspect ratio to allow custom height
 };
 
-const InitiativeCharts = () => {
+const InitiativeCharts = (Graph, NOIData, ByOUData) => {
   const orgUnitBarData = {
     labels: ["Org Unit 1", "Org Unit 2", "Org Unit 3", "Org Unit 4"],
     datasets: [

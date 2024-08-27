@@ -6,7 +6,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import initiatives from "./dummyData"; // Import the dummy data
 import FluentTable from "../../components/FluentTable";
 
-const InitiativeTable = () => {
+const InitiativeTable = (convertedIni) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {

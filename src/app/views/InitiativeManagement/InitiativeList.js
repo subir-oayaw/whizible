@@ -26,6 +26,12 @@ const ITEMS_PER_PAGE = 5; // Number of items per page
 
 const InitiativeList = ({
   initiatives,
+  dashboardData1,
+  dashboardData2,
+  dashboardData3,
+  cardViewDraftData,
+  cardViewDelayedData,
+  cardViewOnTimeData,
   page,
   setIsEditing,
   isEditing,
@@ -47,17 +53,17 @@ const InitiativeList = ({
   const [currentCardPage3, setCurrentCardPage3] = useState(1);
   console.log("initiatives", initiatives);
   // Filter initiatives based on search term
-  const filteredInitiatives = initiatives.filter((initiative) =>
+  const filteredInitiatives = initiatives?.filter((initiative) =>
     initiative?.title?.toLowerCase().includes(searchTerm?.toLowerCase())
   );
 
   // Pagination Logic
-  const totalItems = filteredInitiatives.length;
+  const totalItems = filteredInitiatives?.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const initiativesToShow = filteredInitiatives.slice(startIndex, endIndex);
+  const initiativesToShow = filteredInitiatives?.slice(startIndex, endIndex);
 
   // Handle page change for list view
   const handlePageChange = (event, value) => {
@@ -128,7 +134,7 @@ const InitiativeList = ({
               </TableRow>
             </TableHead>
             <tbody>
-              {initiativesToShow.map((initiative) => (
+              {initiativesToShow?.map((initiative) => (
                 <InitiativeItem
                   key={initiative.id}
                   initiative={initiative}
@@ -160,47 +166,56 @@ const InitiativeList = ({
         </>
       ) : (
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={4}>
-            <Card
-              sx={{
-                backgroundColor: "#e7edf0",
-                borderTop: "5px solid #3f51b5",
-                borderBottom: "none"
-              }}
-              className="card-list-container"
-            >
-              <CardContent>
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <div className="search-box position-relative">
-                    <input
-                      id="InitMangntSrchInput"
-                      className="search-text"
-                      type="text"
-                      placeholder="Search"
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                    />
-                    <a id="initgrid-srch-title" className="search-btn" href="javascript:void(0);">
-                      <img
-                        src={SearchIcon}
-                        alt="Search"
-                        data-bs-toggle="tooltip"
-                        aria-label="Search"
-                        data-bs-original-title="Search"
-                      />
-                    </a>
+          {dashboardData2 && (
+            <Grid item xs={12} sm={4}>
+              <Card
+                sx={{
+                  backgroundColor: "#e7edf0",
+                  borderTop: "5px solid #3f51b5",
+                  borderBottom: "none"
+                }}
+                className="card-list-container"
+              >
+                <CardContent>
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div className="d-flex justify-content-between w-100">
+                      <span
+                        id="delayed-initiatives-text"
+                        className="text-secondary cursor-pointer"
+                        style={{ fontWeight: "bold", fontSize: "1.15" }} // 1.15 is equivalent to 20px
+                      >
+                        On time initiatives
+                      </span>
+                      <div className="search-box position-relative">
+                        <input
+                          id="InitMangntSrchInput"
+                          className="search-text"
+                          type="text"
+                          placeholder="Search"
+                          value={searchTerm}
+                          onChange={handleSearchChange}
+                        />
+                        <a
+                          id="initgrid-srch-title"
+                          className="search-btn"
+                          href="javascript:void(0);"
+                        >
+                          <img
+                            src={SearchIcon}
+                            alt="Search"
+                            data-bs-toggle="tooltip"
+                            aria-label="Search"
+                            data-bs-original-title="Search"
+                          />
+                        </a>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="card-container">
-                  {initiativesToShow
-                    .slice(
-                      (currentCardPage1 - 1) * ITEMS_PER_PAGE,
-                      currentCardPage1 * ITEMS_PER_PAGE
-                    )
-                    .map((initiative) => (
+                  <div className="card-container">
+                    {dashboardData2.map((initiative) => (
                       <InitiativeCard
                         key={initiative.id}
-                        initiative={initiative}
+                        dashboardData2={initiative}
                         setIsEditing={setIsEditing}
                         isEditing={isEditing}
                         startEditing={startEditing}
@@ -208,9 +223,9 @@ const InitiativeList = ({
                         canEdit={canEdit}
                       />
                     ))}
-                </div>
-                {/* Pagination for Card Column 1 */}
-                {filteredInitiatives.length > ITEMS_PER_PAGE && (
+                  </div>
+                  {/* Pagination for Card Column 1 */}
+
                   <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
                     <Pagination
                       count={Math.ceil(filteredInitiatives.length / ITEMS_PER_PAGE)}
@@ -221,51 +236,60 @@ const InitiativeList = ({
                       shape="rounded"
                     />
                   </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Card
-              sx={{
-                backgroundColor: "#e7edf0",
-                borderTop: "5px solid #f55c30",
-                borderBottom: "none"
-              }}
-              className="card-list-container"
-            >
-              <CardContent>
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <div className="search-box position-relative">
-                    <input
-                      id="InitMangntSrchInput"
-                      className="search-text"
-                      type="text"
-                      placeholder="Search"
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                    />
-                    <a id="initgrid-srch-title" className="search-btn" href="javascript:void(0);">
-                      <img
-                        src={SearchIcon}
-                        alt="Search"
-                        data-bs-toggle="tooltip"
-                        aria-label="Search"
-                        data-bs-original-title="Search"
-                      />
-                    </a>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+          {dashboardData3 && (
+            <Grid item xs={12} sm={4}>
+              <Card
+                sx={{
+                  backgroundColor: "#e7edf0",
+                  borderTop: "5px solid #f55c30",
+                  borderBottom: "none"
+                }}
+                className="card-list-container"
+              >
+                <CardContent>
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div className="d-flex justify-content-between w-100">
+                      <span
+                        id="delayed-initiatives-text"
+                        className="text-secondary cursor-pointer"
+                        style={{ fontWeight: "bold", fontSize: "1.15" }} // 1.15 is equivalent to 20px
+                      >
+                        Delayed Initiatives
+                      </span>
+                      <div className="search-box position-relative">
+                        <input
+                          id="InitMangntSrchInput"
+                          className="search-text"
+                          type="text"
+                          placeholder="Search"
+                          value={searchTerm}
+                          onChange={handleSearchChange}
+                        />
+                        <a
+                          id="initgrid-srch-title"
+                          className="search-btn"
+                          href="javascript:void(0);"
+                        >
+                          <img
+                            src={SearchIcon}
+                            alt="Search"
+                            data-bs-toggle="tooltip"
+                            aria-label="Search"
+                            data-bs-original-title="Search"
+                          />
+                        </a>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="card-container">
-                  {initiativesToShow
-                    .slice(
-                      (currentCardPage2 - 1) * ITEMS_PER_PAGE,
-                      currentCardPage2 * ITEMS_PER_PAGE
-                    )
-                    .map((initiative) => (
+                  <div className="card-container">
+                    {dashboardData3.map((initiative) => (
                       <InitiativeCard1
                         key={initiative.id}
-                        initiative={initiative}
+                        dashboardData3={initiative}
                         setIsEditing={setIsEditing}
                         isEditing={isEditing}
                         startEditing={startEditing}
@@ -273,9 +297,8 @@ const InitiativeList = ({
                         canEdit={canEdit}
                       />
                     ))}
-                </div>
-                {/* Pagination for Card Column 2 */}
-                {filteredInitiatives.length > ITEMS_PER_PAGE && (
+                  </div>
+                  {/* Pagination for Card Column 2 */}
                   <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
                     <Pagination
                       count={Math.ceil(filteredInitiatives.length / ITEMS_PER_PAGE)}
@@ -286,51 +309,60 @@ const InitiativeList = ({
                       shape="rounded"
                     />
                   </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Card
-              sx={{
-                backgroundColor: "#e7edf0",
-                borderTop: "5px solid #f5c330",
-                borderBottom: "none"
-              }}
-              className="card-list-container"
-            >
-              <CardContent>
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <div className="search-box position-relative">
-                    <input
-                      id="InitMangntSrchInput"
-                      className="search-text"
-                      type="text"
-                      placeholder="Search"
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                    />
-                    <a id="initgrid-srch-title" className="search-btn" href="javascript:void(0);">
-                      <img
-                        src={SearchIcon}
-                        alt="Search"
-                        data-bs-toggle="tooltip"
-                        aria-label="Search"
-                        data-bs-original-title="Search"
-                      />
-                    </a>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+          {dashboardData1 && (
+            <Grid item xs={12} sm={4}>
+              <Card
+                sx={{
+                  backgroundColor: "#e7edf0",
+                  borderTop: "5px solid #f5c330",
+                  borderBottom: "none"
+                }}
+                className="card-list-container"
+              >
+                <CardContent>
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div className="d-flex justify-content-between w-100">
+                      <span
+                        id="delayed-initiatives-text"
+                        className="text-secondary cursor-pointer"
+                        style={{ fontWeight: "bold", fontSize: "1.15" }} // 1.15 is equivalent to 20px
+                      >
+                        Not started initiatives (Draft)
+                      </span>
+                      <div className="search-box position-relative">
+                        <input
+                          id="InitMangntSrchInput"
+                          className="search-text"
+                          type="text"
+                          placeholder="Search"
+                          value={searchTerm}
+                          onChange={handleSearchChange}
+                        />
+                        <a
+                          id="initgrid-srch-title"
+                          className="search-btn"
+                          href="javascript:void(0);"
+                        >
+                          <img
+                            src={SearchIcon}
+                            alt="Search"
+                            data-bs-toggle="tooltip"
+                            aria-label="Search"
+                            data-bs-original-title="Search"
+                          />
+                        </a>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="card-container">
-                  {initiativesToShow
-                    .slice(
-                      (currentCardPage3 - 1) * ITEMS_PER_PAGE,
-                      currentCardPage3 * ITEMS_PER_PAGE
-                    )
-                    .map((initiative) => (
+                  <div className="card-container">
+                    {dashboardData1.map((initiative) => (
                       <InitiativeCard2
                         key={initiative.id}
-                        initiative={initiative}
+                        dashboardData1={initiative}
                         setIsEditing={setIsEditing}
                         isEditing={isEditing}
                         startEditing={startEditing}
@@ -338,9 +370,9 @@ const InitiativeList = ({
                         canEdit={canEdit}
                       />
                     ))}
-                </div>
-                {/* Pagination for Card Column 3 */}
-                {filteredInitiatives.length > ITEMS_PER_PAGE && (
+                  </div>
+                  {/* Pagination for Card Column 3 */}
+
                   <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
                     <Pagination
                       count={Math.ceil(filteredInitiatives.length / ITEMS_PER_PAGE)}
@@ -351,10 +383,10 @@ const InitiativeList = ({
                       shape="rounded"
                     />
                   </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
         </Grid>
       )}
     </Box>

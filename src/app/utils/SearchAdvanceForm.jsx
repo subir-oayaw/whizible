@@ -18,13 +18,27 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
   };
 
   const [formValues, setFormValues] = useState(initialState);
+  const [filteredLocations, setFilteredLocations] = useState([]);
 
   const handleInputChange = (e, option) => {
     const { id } = e.target;
+    const value = option ? option.key : e.target.value;
+
     setFormValues((prevValues) => ({
       ...prevValues,
-      [id]: option ? option.key : e.target.value
+      [id]: value
     }));
+
+    if (id === "businessGroup") {
+      const selectedGroup = searchFilters.initiativeBusinessGroupFilter.find(
+        (group) => group.businessGroupID === value
+      );
+      setFilteredLocations(selectedGroup ? selectedGroup.initiativeLocationFilter : []);
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        organizationUnit: ""
+      }));
+    }
   };
 
   const handleDateChange = (date, id) => {
@@ -36,25 +50,51 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
 
   const handleClearSearch = () => {
     setFormValues(initialState);
+    setFilteredLocations([]);
   };
 
   const handleSearchClick = () => {
     if (onSearch) {
-      onSearch(formValues); // Pass formValues to the parent component
+      onSearch(formValues);
     }
   };
 
   const fieldStyle = {
     width: "100%",
-    height: "36px" // Ensures consistent height
+    minHeight: "36px"
+  };
+
+  const stackItemStyle = {
+    root: {
+      flexGrow: 1,
+      minWidth: "200px",
+      maxWidth: "300px"
+    }
+  };
+
+  const alignRight = {
+    root: {
+      flexGrow: 1,
+      minWidth: "200px",
+      maxWidth: "300px",
+      alignSelf: "flex-end"
+    }
+  };
+
+  const alignCenter = {
+    root: {
+      flexGrow: 1,
+      minWidth: "200px",
+      maxWidth: "300px",
+      alignSelf: "center"
+    }
   };
 
   return (
     <div className="above-form-container">
       <Stack tokens={{ childrenGap: 15 }}>
-        {/* First Row of Three Fields */}
-        <Stack horizontal tokens={{ childrenGap: 20 }}>
-          <Stack.Item grow={1}>
+        <Stack horizontal tokens={{ childrenGap: 20 }} wrap>
+          <Stack.Item grow styles={stackItemStyle}>
             <Label htmlFor="initiativeCode">Initiative Code</Label>
             <TextField
               id="initiativeCode"
@@ -64,7 +104,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               styles={fieldStyle}
             />
           </Stack.Item>
-          <Stack.Item grow={1}>
+          <Stack.Item grow styles={alignCenter}>
             <Label htmlFor="initiativeFrom">Initiative From</Label>
             <DatePicker
               id="initiativeFrom"
@@ -75,7 +115,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               styles={fieldStyle}
             />
           </Stack.Item>
-          <Stack.Item grow={1}>
+          <Stack.Item grow styles={alignRight}>
             <Label htmlFor="initiativeTo">Initiative To</Label>
             <DatePicker
               id="initiativeTo"
@@ -88,9 +128,8 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
           </Stack.Item>
         </Stack>
 
-        {/* Second Row of Three Fields */}
-        <Stack horizontal tokens={{ childrenGap: 20 }}>
-          <Stack.Item grow={1}>
+        <Stack horizontal tokens={{ childrenGap: 20 }} wrap>
+          <Stack.Item grow styles={stackItemStyle}>
             <Label htmlFor="lastAction">Last Action</Label>
             <Dropdown
               id="lastAction"
@@ -106,7 +145,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               styles={fieldStyle}
             />
           </Stack.Item>
-          <Stack.Item grow={1}>
+          <Stack.Item grow styles={alignCenter}>
             <Label htmlFor="submittedBy">Submitted By</Label>
             <Dropdown
               id="submittedBy"
@@ -122,7 +161,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               styles={fieldStyle}
             />
           </Stack.Item>
-          <Stack.Item grow={1}>
+          <Stack.Item grow styles={alignRight}>
             <Label htmlFor="natureOfInitiative">Nature of Initiative</Label>
             <Dropdown
               id="natureOfInitiative"
@@ -140,9 +179,8 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
           </Stack.Item>
         </Stack>
 
-        {/* Third Row of Three Fields */}
-        <Stack horizontal tokens={{ childrenGap: 20 }}>
-          <Stack.Item grow={1}>
+        <Stack horizontal tokens={{ childrenGap: 20 }} wrap>
+          <Stack.Item grow styles={stackItemStyle}>
             <Label htmlFor="selectStage">Select Stage</Label>
             <Dropdown
               id="selectStage"
@@ -158,7 +196,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               styles={fieldStyle}
             />
           </Stack.Item>
-          <Stack.Item grow={1}>
+          <Stack.Item grow styles={alignCenter}>
             <Label htmlFor="vendor">Vendor</Label>
             <Dropdown
               id="vendor"
@@ -174,7 +212,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               styles={fieldStyle}
             />
           </Stack.Item>
-          <Stack.Item grow={1}>
+          <Stack.Item grow styles={alignRight}>
             <Label htmlFor="priority">Priority</Label>
             <Dropdown
               id="priority"
@@ -192,9 +230,8 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
           </Stack.Item>
         </Stack>
 
-        {/* Fourth Row of Three Fields */}
-        <Stack horizontal tokens={{ childrenGap: 20 }}>
-          <Stack.Item grow={1}>
+        <Stack horizontal tokens={{ childrenGap: 20 }} wrap>
+          <Stack.Item grow styles={stackItemStyle}>
             <Label htmlFor="initiativeCategory">Initiative Category</Label>
             <Dropdown
               id="initiativeCategory"
@@ -210,7 +247,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               styles={fieldStyle}
             />
           </Stack.Item>
-          <Stack.Item grow={1}>
+          <Stack.Item grow styles={alignCenter}>
             <Label htmlFor="businessGroup">Business Group</Label>
             <Dropdown
               id="businessGroup"
@@ -226,15 +263,15 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               styles={fieldStyle}
             />
           </Stack.Item>
-          <Stack.Item grow={1}>
+          <Stack.Item grow styles={alignRight}>
             <Label htmlFor="organizationUnit">Organization Unit</Label>
             <Dropdown
               id="organizationUnit"
               placeholder="Select Organization Unit"
               options={
-                searchFilters.initiativeLocationFilter?.map((unit) => ({
-                  key: unit.organizationUnitID,
-                  text: unit.organizationUnitName
+                filteredLocations.map((unit) => ({
+                  key: unit.locationID,
+                  text: unit.location
                 })) || []
               }
               onChange={handleInputChange}

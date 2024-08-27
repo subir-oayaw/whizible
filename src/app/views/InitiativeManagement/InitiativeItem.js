@@ -48,6 +48,7 @@ const InitiativeItem = ({
     maxStage,
     comments,
     completedStage,
+    noOfStageRemain,
     employeeName,
     initiativeListStageDetails,
     canEdit
@@ -197,7 +198,7 @@ const InitiativeItem = ({
                 color="textSecondary"
                 style={{ fontSize: "0.6rem" }}
               >
-                & 0 More stages...
+                <strong style={{ color: "grey" }}> & {noOfStageRemain} </strong> More stages...
               </Typography>
             </div>
           </Box>
