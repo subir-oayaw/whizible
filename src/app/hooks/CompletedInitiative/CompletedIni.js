@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CompletedIni = (searchParams) => {
-  const [convertedIni, setConvertedIni] = useState(null);
+  const [completedIni, setCompletedIni] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -10,7 +10,7 @@ const CompletedIni = (searchParams) => {
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
-        const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/CompletedIni/Get`;
+        const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/ConvertedIni/Get`;
 
         const response = await axios.get(url, {
           params: {
@@ -27,7 +27,7 @@ const CompletedIni = (searchParams) => {
         }
 
         console.log("Graph Data:", response.data);
-        setConvertedIni(response.data.data);
+        setCompletedIni(response.data.data);
       } catch (error) {
         setError(error.message || "An unexpected error occurred");
         console.error("Error fetching data:", error);
@@ -39,7 +39,7 @@ const CompletedIni = (searchParams) => {
     fetchData();
   }, [searchParams]); // Depend on searchParams
 
-  return { convertedIni, loading, error };
+  return { completedIni, loading, error };
 };
 
 export default CompletedIni;

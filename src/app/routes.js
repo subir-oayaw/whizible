@@ -17,7 +17,9 @@ const JwtRegister = Loadable(lazy(() => import("app/views/sessions/JwtRegister")
 // E-CHART PAGE
 const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart")));
 const ActionItems = Loadable(lazy(() => import("app/views/Action/ActionItems")));
-const CompletedInitiativesList = Loadable(lazy(() => import("app/views/CompletedInitiativesList")));
+const CompletedInitiativesList = Loadable(
+  lazy(() => import("app/views/CompletedInitiativesList/CompletedInitiatives"))
+);
 
 const EditPage = Loadable(lazy(() => import("app/views/InitiativeManagement/Edit/EditPage")));
 const ConvertedInitiatives = Loadable(
