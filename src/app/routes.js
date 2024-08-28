@@ -110,7 +110,7 @@ const routes = [
   },
 
   // session pages route
-  { path: "/LoadingPage/:id", element: <LoadingPage /> },
+  { path: "/LoadingPage", element: <LoadingPage /> },
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },
