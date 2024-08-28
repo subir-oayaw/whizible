@@ -17,8 +17,10 @@ const JwtRegister = Loadable(lazy(() => import("app/views/sessions/JwtRegister")
 // E-CHART PAGE
 const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart")));
 const ActionItems = Loadable(lazy(() => import("app/views/Action/ActionItems")));
-const CompletedInitiativesList = Loadable(lazy(() => import("app/views/CompletedInitiativesList")));
-
+const CompletedInitiativesList = Loadable(
+  lazy(() => import("app/views/CompletedInitiativesList/CompletedInitiatives"))
+);
+const LoadingPage = Loadable(lazy(() => import("app/views/LoadingPage")));
 const EditPage = Loadable(lazy(() => import("app/views/InitiativeManagement/Edit/EditPage")));
 const ConvertedInitiatives = Loadable(
   lazy(() => import("app/views/ConvertedInitiatives/ConvertedInitiatives"))
@@ -108,6 +110,7 @@ const routes = [
   },
 
   // session pages route
+  { path: "/LoadingPage", element: <LoadingPage /> },
   { path: "/session/404", element: <NotFound /> },
   { path: "/signin", element: <JwtLogin /> },
   { path: "/signup", element: <JwtRegister /> },

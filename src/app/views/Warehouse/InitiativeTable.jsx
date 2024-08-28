@@ -1,75 +1,112 @@
 import React, { useState, useEffect } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
+  Typography,
   IconButton,
-  Tooltip
+  Tooltip,
+  Drawer,
+  Box,
+  Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+  Avatar
 } from "@mui/material";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import FlagIcon from "@mui/icons-material/Flag";
 import EditIcon from "@mui/icons-material/Edit";
-import HistoryIcon from "@mui/icons-material/History";
 import CommentIcon from "@mui/icons-material/Comment";
-import initiatives from "./dummyData"; // Import the dummy data
+import FluentTable from "../../components/FluentTable";
+import "./InitiativeTable.css"; // Assuming you have custom styles
 
-const InitiativeTable = () => {
+const InitiativeTable = ({ wareHouseIni }) => {
   const [data, setData] = useState([]);
+  console.log("wareHouseIni1", wareHouseIni);
 
   useEffect(() => {
-    // Simulate fetching data from an API or file
-    setData(initiatives);
-  }, []);
+    if (wareHouseIni?.listConvertedIni) {
+      const mappedData = wareHouseIni.listConvertedIni.map((item) => ({
+        title: item.title,
+        nature: item.natureofDemand,
+        group: item.businessGroup || item.organizationUnit, // Mapping businessGroup or organizationUnit
+        convertedTo: item.convertedTo || "N/A", // Handle empty fields
+        vendor: item.nameOfFirm || "N/A" // Handle vendor mapping
+      }));
+      setData(mappedData);
+    }
+  }, [wareHouseIni]);
 
-  return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead style={{ backgroundColor: "#ccc" }}>
-          <TableRow>
-            <TableCell>Initiative Title</TableCell>
-            <TableCell>Nature of Initiative</TableCell>
-            <TableCell>Business Group/Organization Unit</TableCell>
-            <TableCell>Converted To</TableCell>
-            <TableCell>Vendor</TableCell>
-            <TableCell>Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((initiative, index) => (
-            <TableRow
-              key={initiative.title}
-              style={{ backgroundColor: index % 2 === 0 ? "#f9f9f9" : "#fff" }}
-            >
-              <TableCell>{initiative.title}</TableCell>
-              <TableCell>{initiative.nature}</TableCell>
-              <TableCell>{initiative.group}</TableCell>
-              <TableCell>{initiative.convertedTo}</TableCell>
-              <TableCell>{initiative.vendor}</TableCell>
-              <TableCell>
-                <Tooltip title="Edit">
-                  <IconButton aria-label="edit">
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="History">
-                  <IconButton aria-label="history">
-                    <HistoryIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Comment">
-                  <IconButton aria-label="comment">
-                    <CommentIcon />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+  const columns = [
+    {
+      key: "title",
+      name: "Initiative Title",
+      fieldName: "title",
+      minWidth: 100,
+      isResizable: true
+    },
+    {
+      key: "nature",
+      name: "Nature of Initiative",
+      fieldName: "nature",
+      minWidth: 100,
+      isResizable: true
+    },
+    {
+      key: "group",
+      name: "Business Group/Organization Unit",
+      fieldName: "group",
+      minWidth: 100,
+      isResizable: true
+    },
+    {
+      key: "convertedTo",
+      name: "Converted To",
+      fieldName: "convertedTo",
+      minWidth: 100,
+      isResizable: true
+    },
+    {
+      key: "vendor",
+      name: "Vendor",
+      fieldName: "vendor",
+      minWidth: 100,
+      isResizable: true
+    },
+    {
+      key: "action",
+      name: "Action",
+      minWidth: 100,
+      isResizable: true,
+      onRender: (item) => (
+        <div style={{ display: "flex", gap: "5px" }}>
+          <Tooltip title="Edit">
+            <IconButton size="small">
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Comment">
+            <IconButton size="small">
+              <CommentIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delay">
+            <IconButton size="small">
+              <AccessTimeIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Flag">
+            <IconButton size="small">
+              <FlagIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </div>
+      )
+    }
+  ];
+
+  return <FluentTable columns={columns} items={data} itemsPerPage={5} />;
 };
 
 export default InitiativeTable;

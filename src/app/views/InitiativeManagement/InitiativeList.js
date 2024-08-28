@@ -195,11 +195,7 @@ const InitiativeList = ({
                           value={searchTerm}
                           onChange={handleSearchChange}
                         />
-                        <a
-                          id="initgrid-srch-title"
-                          className="search-btn"
-                          href="javascript:void(0);"
-                        >
+                        <a className="search-btn">
                           <img
                             src={SearchIcon}
                             alt="Search"

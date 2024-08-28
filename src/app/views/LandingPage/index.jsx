@@ -9,7 +9,8 @@ import QuickInbox from "./QuickInbox";
 import MyTimeline from "./MyTimeline";
 import { FaSync, FaRandom, FaCamera, FaLock, FaUnlock } from "react-icons/fa";
 import { captureFullPageScreenshot } from "../Action/screenshotUtils";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import stats from "../../hooks/landingpage/stats";
 import ProfileMessage from "../../hooks/landingpage/ProfileMessage";
 import GetAlertNot from "../../hooks/landingpage/GetAlertNot";
@@ -41,7 +42,7 @@ const Dashboard = () => {
   const [date, setDate] = useState(new Date());
   const [prevMonth, setPrevMonth] = useState(date.getMonth());
   const [prevYear, setPrevYear] = useState(date.getFullYear());
-
+  const [refrsh, setRefresh] = useState(true);
   const fetchStatsData = async () => {
     try {
       const data = await stats();
@@ -105,7 +106,7 @@ const Dashboard = () => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // Months are zero-based
     fetchMTimelineData(year, month);
-  }, []);
+  }, [refrsh]);
   useEffect(() => {
     fetchMTimelineData(prevMonth, prevYear);
   }, [prevMonth, prevYear]);
@@ -152,7 +153,10 @@ const Dashboard = () => {
           <FaRandom />
         </button>
         <button
-          onClick={() => console.log("Refresh data")}
+          onClick={() => {
+            setRefresh(!refrsh);
+            toast.success("Refething latest data");
+          }}
           style={{
             background: "none",
             border: "none",

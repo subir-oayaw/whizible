@@ -18,7 +18,7 @@ const QuickInbox = ({ qinbox }) => {
     datasets: [
       {
         data,
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"], // Add more colors if needed
+        backgroundColor: ["#f8d7da", "#36A2EB", "#FFCE56", "#4BC0C0"], // Add more colors if needed
         borderWidth: 1
       }
     ]

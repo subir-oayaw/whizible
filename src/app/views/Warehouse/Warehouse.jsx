@@ -1,13 +1,21 @@
 import React from "react";
 import InitiativeTable from "./InitiativeTable";
 import InitiativeCharts from "./InitiativeCharts";
+import WareHouseIni from "../../hooks/WareHouse/WareHouseIni"; // Ensure that you use the correct hook name
+import GetConvertedIniGraphByNOI from "../../hooks/WareHouse/GetConvertedIniGraphByNOI";
+import GetConvertedIniGraphByOU from "../../hooks/WareHouse/GetConvertedIniGraphByOU";
+import GetConvertedIniGraphByConvertedTo from "../../hooks/WareHouse/GetConvertedIniGraphByConvertedTo";
 
 const Warehouse = () => {
+  const { wareHouseIni } = WareHouseIni();
+  const { ConvertedIni2 } = GetConvertedIniGraphByNOI();
+  const { ConvertedIni3 } = GetConvertedIniGraphByOU();
+  const { ConvertedIni1 } = GetConvertedIniGraphByConvertedTo();
   return (
     <div className="container">
-      <InitiativeCharts />
+      <InitiativeCharts Graph={ConvertedIni3} NOIData={ConvertedIni2} ByOUData={ConvertedIni1} />
       <div className="mb-2"></div>
-      <InitiativeTable />
+      <InitiativeTable wareHouseIni={wareHouseIni} />
     </div>
   );
 };

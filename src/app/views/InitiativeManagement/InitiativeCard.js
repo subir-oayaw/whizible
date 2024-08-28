@@ -119,19 +119,19 @@ const InitiativeCard = ({ dashboardData2, startEditing }) => {
               <MenuItem onClick={handleDiscussions}>Discussions</MenuItem>
             </Menu>
           </Box>
-          <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+          <Typography variant="body2" color="textSecondary">
             Demand Code: {demandCode}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             Process Name: {processName}
           </Typography>
           {/* Consider removing or condensing the following lines */}
-          <Typography variant="body2" color="textSecondary">
+          {/* <Typography variant="body2" color="textSecondary">
             Created On: {new Date(createdOn).toLocaleDateString()}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             Stages Completed: {stagesCompleted}/{totalStages}
-          </Typography>
+          </Typography> */}
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Avatar

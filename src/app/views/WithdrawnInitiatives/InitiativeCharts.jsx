@@ -129,7 +129,8 @@ const scatterOptions = {
   }
 };
 
-const InitiativeCharts = () => {
+const InitiativeCharts = (Graph, NOIData, ByOUData) => {
+  console.log("InitiativeChartsWWW", Graph, NOIData, ByOUData);
   const orgUnitBarData = {
     labels: ["Org Unit 1", "Org Unit 2", "Org Unit 3", "Org Unit 4"],
     datasets: [
