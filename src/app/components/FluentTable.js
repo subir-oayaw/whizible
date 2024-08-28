@@ -4,10 +4,11 @@ import {
   DetailsListLayoutMode,
   SelectionMode,
   Stack,
-  DefaultButton,
   Text,
   IColumn
 } from "@fluentui/react";
+import Pagination from "@mui/material/Pagination";
+import { Box } from "@mui/material";
 
 const FluentTable = ({ columns, items, itemsPerPage }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,9 +21,6 @@ const FluentTable = ({ columns, items, itemsPerPage }) => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Customize columns to add vertical lines
   const customizedColumns = columns.map((column, index) => ({
@@ -67,19 +65,21 @@ const FluentTable = ({ columns, items, itemsPerPage }) => {
           headerCell: headerStyles.cell // Apply vertical lines to header cells
         }}
       />
-      <Stack horizontal tokens={{ childrenGap: 10 }} verticalAlign="center">
-        <DefaultButton
-          text="Previous"
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 2
+        }}
+      >
+        <Pagination
+          count={Math.ceil(items.length / itemsPerPage)}
+          page={currentPage}
+          onChange={(event, value) => setCurrentPage(value)}
+          color="primary"
         />
-        <Text>{`Page ${currentPage}`}</Text>
-        <DefaultButton
-          text="Next"
-          onClick={() => paginate(currentPage + 1)}
-          disabled={indexOfLastItem >= items.length}
-        />
-      </Stack>
+      </Box>
     </div>
   );
 };
