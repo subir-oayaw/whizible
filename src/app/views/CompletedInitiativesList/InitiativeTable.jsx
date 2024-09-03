@@ -26,8 +26,8 @@ const InitiativeTable = ({ completedIni }) => {
   console.log("completedIni1", completedIni);
 
   useEffect(() => {
-    if (completedIni?.listConvertedIni) {
-      const mappedData = completedIni.listConvertedIni.map((item) => ({
+    if (completedIni?.listCompletedIni) {
+      const mappedData = completedIni.listCompletedIni.map((item) => ({
         title: item.title,
         nature: item.natureofDemand,
         group: item.businessGroup || item.organizationUnit, // Mapping businessGroup or organizationUnit

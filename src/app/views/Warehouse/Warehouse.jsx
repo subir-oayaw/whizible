@@ -11,6 +11,9 @@ const Warehouse = () => {
   const { ConvertedIni2 } = GetConvertedIniGraphByNOI();
   const { ConvertedIni3 } = GetConvertedIniGraphByOU();
   const { ConvertedIni1 } = GetConvertedIniGraphByConvertedTo();
+  console.log("ConvertedIni24", ConvertedIni2);
+  console.log("ConvertedIni241", ConvertedIni3);
+  console.log("ConvertedIni242", ConvertedIni1);
   return (
     <div className="container">
       <InitiativeCharts Graph={ConvertedIni3} NOIData={ConvertedIni2} ByOUData={ConvertedIni1} />

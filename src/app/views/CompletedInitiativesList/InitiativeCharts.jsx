@@ -22,7 +22,7 @@ const InitiativeProgress = ({ nature, count, progressColor }) => {
   return (
     <div className="row mb-2">
       <div className="col-sm-6">
-        <span className="skyTxt iniTxt">{nature} : </span>
+        <span className="skyTxt iniTxt">{nature} </span>
       </div>
       <div className="col-sm-6">
         <ProgressBar now={progressValue} label={`${count}`} style={{ height: "20px" }} />
@@ -38,34 +38,35 @@ const barOptions = {
 };
 
 const InitiativeCharts = ({ Graph, NOIData, ByOUData }) => {
+  console.log("Graph-cc4", Graph, NOIData, ByOUData);
   // Replacing dummy data with actual data
-  const topNaturesData = NOIData?.listConvertedIniByNOIVM?.map((item) => ({
-    nature: item?.natureofDemand,
+  const topNaturesData = NOIData?.listCompletedIniByConvertedToEntity?.map((item) => ({
+    nature: item?.convertedTo,
     count: item?.countOfInitiative,
     progressColor: "#28a745" // Customize colors as needed
   }));
-
+  console.log("Graph-cc1", topNaturesData);
   const orgUnitBarData = {
-    labels: Graph?.listConvertedIniByOU?.map((item) => item.organizationUnit),
+    labels: Graph?.listCompletedIniByOUEntity?.map((item) => item.location),
     datasets: [
       {
         label: "Completed Initiatives",
-        data: Graph?.listConvertedIniByOU?.map((item) => item.countOfInitiative),
+        data: Graph?.listCompletedIniByOUEntity?.map((item) => item.countOfInitiative),
         backgroundColor: "rgba(75,192,192,0.6)"
       }
     ]
   };
 
   const pieData = {
-    labels: ByOUData?.listConvertedIniByConvertedToVM?.map((item) => item.convertedTo),
+    labels: ByOUData?.listCompletedIniByNOIEntity?.map((item) => item.natureofDemand),
     datasets: [
       {
-        data: ByOUData?.listConvertedIniByConvertedToVM?.map((item) => item.countOfInitiative),
+        data: ByOUData?.listCompletedIniByNOIEntity?.map((item) => item.countOfInitiative),
         backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
       }
     ]
   };
-
+  console.log("Graph-cc12", pieData);
   return (
     <Row className="gx-3 gy-3">
       <Col md={4}>

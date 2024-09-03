@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Label, Dropdown, TextField, Stack, DefaultButton, DatePicker } from "@fluentui/react";
 
 const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
@@ -18,7 +18,24 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
   };
 
   const [formValues, setFormValues] = useState(initialState);
-  const [filteredLocations, setFilteredLocations] = useState([]);
+  const [filteredLocations, setFilteredLocations] = useState(
+    searchFilters.initiativeLocationFilter || []
+  );
+
+  useEffect(() => {
+    if (formValues.businessGroup) {
+      const selectedGroup = searchFilters.initiativeBusinessGroupFilter.find(
+        (group) => group.businessGroupID === formValues.businessGroup
+      );
+      setFilteredLocations(selectedGroup ? selectedGroup.initiativeLocationFilter : []);
+    } else {
+      setFilteredLocations(searchFilters.initiativeLocationFilter);
+    }
+  }, [
+    formValues.businessGroup,
+    searchFilters.initiativeLocationFilter,
+    searchFilters.initiativeBusinessGroupFilter
+  ]);
 
   const handleInputChange = (e, option) => {
     const { id } = e.target;
@@ -28,17 +45,6 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
       ...prevValues,
       [id]: value
     }));
-
-    if (id === "businessGroup") {
-      const selectedGroup = searchFilters.initiativeBusinessGroupFilter.find(
-        (group) => group.businessGroupID === value
-      );
-      setFilteredLocations(selectedGroup ? selectedGroup.initiativeLocationFilter : []);
-      setFormValues((prevValues) => ({
-        ...prevValues,
-        organizationUnit: ""
-      }));
-    }
   };
 
   const handleDateChange = (date, id) => {
@@ -50,7 +56,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
 
   const handleClearSearch = () => {
     setFormValues(initialState);
-    setFilteredLocations([]);
+    setFilteredLocations(searchFilters.initiativeLocationFilter);
   };
 
   const handleSearchClick = () => {
@@ -284,8 +290,6 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
         <Stack horizontal tokens={{ childrenGap: 15 }} horizontalAlign="end">
           <DefaultButton text="Clear Search" onClick={handleClearSearch} />
           <DefaultButton text="Save and Search" onClick={handleSearchClick} />
-          <DefaultButton text="Close" onClick={onClose} />
-          <DefaultButton text="Search" onClick={handleSearchClick} />
         </Stack>
       </Stack>
     </div>

@@ -10,7 +10,7 @@ const GetConvertedIniGraphByOU = (searchParams) => {
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
-        const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/ConvertedIni/GetConvertedIniGraphByNOI`;
+        const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/CompletedIni/GetCompletedIniGraphByConverTo`;
 
         const response = await axios.get(url, {
           params: searchParams, // Pass searchParams as query parameters

@@ -12,6 +12,7 @@ const CompletedInitiatives = () => {
   const { ConvertedIni3 } = GetConvertedIniGraphByOU();
   const { ConvertedIni1 } = GetConvertedIniGraphByConvertedTo();
   console.log("CompletedIni", completedIni);
+  console.log("Graph-cc", ConvertedIni3, ConvertedIni2, ConvertedIni1);
   return (
     <div className="container">
       <InitiativeCharts Graph={ConvertedIni3} NOIData={ConvertedIni2} ByOUData={ConvertedIni1} />
