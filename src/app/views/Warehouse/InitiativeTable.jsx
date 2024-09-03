@@ -1,19 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Typography,
-  IconButton,
-  Tooltip,
-  Drawer,
-  Box,
-  Divider,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
-  Avatar
-} from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FlagIcon from "@mui/icons-material/Flag";
 import EditIcon from "@mui/icons-material/Edit";
@@ -23,16 +9,18 @@ import "./InitiativeTable.css"; // Assuming you have custom styles
 
 const InitiativeTable = ({ wareHouseIni }) => {
   const [data, setData] = useState([]);
-  console.log("wareHouseIni1", wareHouseIni);
+  console.log("wareHouseIni", wareHouseIni);
 
   useEffect(() => {
-    if (wareHouseIni?.listConvertedIni) {
-      const mappedData = wareHouseIni.listConvertedIni.map((item) => ({
+    if (wareHouseIni?.listWareHouseIni) {
+      const mappedData = wareHouseIni.listWareHouseIni.map((item) => ({
+        code: item.demandCode,
         title: item.title,
+        status: item.status,
         nature: item.natureofDemand,
-        group: item.businessGroup || item.organizationUnit, // Mapping businessGroup or organizationUnit
-        convertedTo: item.convertedTo || "N/A", // Handle empty fields
-        vendor: item.nameOfFirm || "N/A" // Handle vendor mapping
+        stage: item.requestStage,
+        vendor: item.vendor || "N/A", // Handle vendor mapping
+        initiatedOn: item.initiatedOn || "N/A" // Handle missing initiatedOn field
       }));
       setData(mappedData);
     }
@@ -40,9 +28,23 @@ const InitiativeTable = ({ wareHouseIni }) => {
 
   const columns = [
     {
+      key: "code",
+      name: "Initiative Code",
+      fieldName: "code",
+      minWidth: 100,
+      isResizable: true
+    },
+    {
       key: "title",
       name: "Initiative Title",
       fieldName: "title",
+      minWidth: 100,
+      isResizable: true
+    },
+    {
+      key: "status",
+      name: "Status",
+      fieldName: "status",
       minWidth: 100,
       isResizable: true
     },
@@ -54,16 +56,9 @@ const InitiativeTable = ({ wareHouseIni }) => {
       isResizable: true
     },
     {
-      key: "group",
-      name: "Business Group/Organization Unit",
-      fieldName: "group",
-      minWidth: 100,
-      isResizable: true
-    },
-    {
-      key: "convertedTo",
-      name: "Converted To",
-      fieldName: "convertedTo",
+      key: "stage",
+      name: "Stage Name",
+      fieldName: "stage",
       minWidth: 100,
       isResizable: true
     },
@@ -71,6 +66,13 @@ const InitiativeTable = ({ wareHouseIni }) => {
       key: "vendor",
       name: "Vendor",
       fieldName: "vendor",
+      minWidth: 100,
+      isResizable: true
+    },
+    {
+      key: "initiatedOn",
+      name: "Initiated On",
+      fieldName: "initiatedOn",
       minWidth: 100,
       isResizable: true
     },

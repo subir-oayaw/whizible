@@ -31,7 +31,7 @@ const CustomProgressBar = ({
   useEffect(() => {
     const currentStage = stages?.find((stage) => stage.isCurrentStage === 1);
     if (currentStage) {
-      setCStageName(currentStage.title);
+      setCStageName(currentStage.requestStage);
       setDewdate(currentStage.dueinDays);
     }
   }, [stages, setCStageName, setDewdate]);

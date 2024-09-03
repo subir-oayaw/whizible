@@ -10,7 +10,7 @@ const CompletedIni = (searchParams) => {
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
-        const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/ConvertedIni/Get`;
+        const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/CompletedIni/Get?PageNo=1`;
 
         const response = await axios.get(url, {
           params: {
