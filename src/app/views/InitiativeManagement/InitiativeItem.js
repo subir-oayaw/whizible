@@ -36,7 +36,7 @@ const InitiativeItem = ({
 }) => {
   const {
     title,
-    instanceId,
+    id,
     userId,
     originator,
     processName,
@@ -108,7 +108,7 @@ const InitiativeItem = ({
   return (
     <>
       <CommentsSection
-        initiativeId={instanceId}
+        initiativeId={id}
         commentDrawerOpen={commentDrawerOpen}
         setCommentDrawerOpen={setCommentDrawerOpen}
       />
@@ -212,12 +212,14 @@ const InitiativeItem = ({
                   <Tooltip title={!canEdit ? "No Rights to edit" : ""}>
                     <IconButton
                       onClick={() => {
-                        if (canEdit) {
-                          startEditing();
-                          SetinitiativesID(instanceId);
-                        } else {
-                          handleDisabledClick("No rights to edit");
-                        }
+                        // if (canEdit) {
+                        //   startEditing();
+                        //   SetinitiativesID(id);
+                        // } else {
+                        //   handleDisabledClick("No rights to edit");
+                        // }
+                        startEditing();
+                        SetinitiativesID(id);
                       }}
                     >
                       <EditIcon />

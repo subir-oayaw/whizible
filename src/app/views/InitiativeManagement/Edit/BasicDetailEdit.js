@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
 import { TextField, Dropdown, DatePicker } from "@fluentui/react";
 import { Stack } from "@fluentui/react/lib/Stack";
@@ -41,19 +41,34 @@ const classNames = mergeStyleSets({
   }
 });
 
-function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack }) {
-  const [formDataState, setFormDataState] = useState({
-    natureOfInitiative: "",
-    initiativeCode: "",
-    businessGroup: null,
-    organizationUnit: null,
-    plannedStart: null,
-    plannedEnd: null
-  });
-
+function BasicDetailEdit({
+  initiativeDetail = {},
+  buttonData = [],
+  handleFieldChange,
+  handleGoBack
+}) {
+  const [formDataState, setFormDataState] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [comments, setComments] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (initiativeDetail?.data?.listInitiativeDetailEntity) {
+      // Initialize formDataState with initiativeDetail
+      const initialData = {};
+      initiativeDetail.data.listInitiativeDetailEntity.forEach((field) => {
+        if (field.applicable === 1) {
+          initialData[field.fieldName] = field.controlValue || "";
+        }
+      });
+      console.log("Initialized data:", initialData);
+      setFormDataState(initialData);
+      setLoading(false);
+    } else {
+      console.log("Initiative detail data is missing or incorrect");
+    }
+  }, [initiativeDetail]);
 
   const openModal = (title) => {
     setModalTitle(title);
@@ -79,59 +94,98 @@ function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack
   };
 
   const renderFormElements = () => {
-    return formData?.map((field, index) => {
-      switch (field.type) {
-        case "TextField":
-          return field.display ? (
-            <div key={index} className="col-md-4 mt-2 form-group">
-              <TextField
-                label={field.label}
-                placeholder={field.placeholder}
-                value={formDataState[field.stateKey] || ""}
-                onChange={(ev, newValue) => {
-                  setFormDataState({ ...formDataState, [field.stateKey]: newValue });
-                  handleFieldChange(newValue, field.stateKey);
-                }}
-                required={field.required}
-              />
-            </div>
-          ) : null;
-        case "Dropdown":
-          return field.display ? (
-            <div key={index} className="col-md-4 mt-2 form-group">
-              <Dropdown
-                label={field.label}
-                placeholder={field.placeholder}
-                options={field.options}
-                selectedKey={formDataState[field.stateKey]}
-                onChange={(ev, item) => {
-                  const value = item ? item.key : null;
-                  setFormDataState({ ...formDataState, [field.stateKey]: value });
-                  handleFieldChange(value, field.stateKey);
-                }}
-              />
-            </div>
-          ) : null;
-        case "DatePicker":
-          return field.display ? (
-            <div key={index} className="col-md-4 mt-2 form-group">
-              <DatePicker
-                label={field.label}
-                placeholder={field.placeholder}
-                value={formDataState[field.stateKey]}
-                onSelectDate={(date) => {
-                  setFormDataState({ ...formDataState, [field.stateKey]: date });
-                  handleFieldChange(date, field.stateKey);
-                }}
-                isRequired={field.isRequired}
-              />
-            </div>
-          ) : null;
-        default:
-          return null;
+    // Ensure that listInitiativeDetailEntity is an array and not undefined
+    const fields = Array.isArray(initiativeDetail?.data?.listInitiativeDetailEntity)
+      ? [...initiativeDetail?.data?.listInitiativeDetailEntity]
+      : [];
+
+    // Filter and sort fields
+    const sortedFields = fields
+      .filter((field) => field.applicable === 1)
+      .sort((a, b) => a.pageRowNo - b.pageRowNo || a.pageOrderNo - b.pageOrderNo);
+
+    console.log("Sorted fields:", sortedFields);
+
+    return sortedFields.map((field, index) => {
+      if (field.applicable === 1) {
+        const isRequired = field.mandatory === 1;
+        switch (field.controlType) {
+          case "Text Box":
+            console.log("TextField");
+            return (
+              <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
+                <TextField
+                  label={
+                    <>
+                      <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "}
+                      {field.fieldName}
+                    </>
+                  }
+                  placeholder={field.controlValue}
+                  value={formDataState[field.fieldName] || ""}
+                  onChange={(ev, newValue) => {
+                    setFormDataState({ ...formDataState, [field.fieldName]: newValue });
+                    handleFieldChange(newValue, field.fieldName);
+                  }}
+                  required={isRequired}
+                />
+              </div>
+            );
+          case "Combo Box":
+            return (
+              <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
+                <Dropdown
+                  label={
+                    <>
+                      <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "}
+                      {field.fieldName}
+                    </>
+                  }
+                  placeholder={field.controlValue}
+                  options={field.options || []}
+                  selectedKey={formDataState[field.fieldName]}
+                  onChange={(ev, item) => {
+                    const value = item ? item.key : null;
+                    setFormDataState({ ...formDataState, [field.fieldName]: value });
+                    handleFieldChange(value, field.fieldName);
+                  }}
+                />
+              </div>
+            );
+          case "Date":
+            return (
+              <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
+                <DatePicker
+                  label={
+                    <>
+                      <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "}
+                      {field.fieldName}
+                    </>
+                  }
+                  value={
+                    formDataState[field.fieldName] instanceof Date
+                      ? formDataState[field.fieldName]
+                      : null
+                  }
+                  onSelectDate={(date) => {
+                    setFormDataState({ ...formDataState, [field.fieldName]: date });
+                    handleFieldChange(date, field.fieldName);
+                  }}
+                  isRequired={isRequired}
+                />
+              </div>
+            );
+          default:
+            return null;
+        }
       }
+      return null;
     });
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container-fluid mt-3">
@@ -150,7 +204,7 @@ function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack
                 title="Current Stage"
                 data-bs-placement="bottom"
               >
-                <img src={currentstage} alt="" />
+                <img src={currentstage} alt="Current Stage" />
               </a>
             </div>
             <div className="currStageTxt w_text ps-2">
@@ -182,7 +236,7 @@ function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack
         isOpen={isModalOpen}
         onDismiss={closeModal}
         isBlocking={false}
-        containerClassName={classNames.modal} // Apply custom styles here
+        containerClassName={classNames.modal}
       >
         <div className={classNames.header}>
           <h5 className="modal-title">{modalTitle}</h5>

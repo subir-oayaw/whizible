@@ -9,34 +9,37 @@ import { DatePicker } from "@fluentui/react/lib/DatePicker";
 import { Pagination, Stack } from "@mui/material";
 import "@fluentui/react/dist/css/fabric.css";
 
-function ResourceEdit({ resourcesData }) {
-  const [resources, setResources] = useState(resourcesData);
+function ResourceEdit({ initiativeResource }) {
+  console.log("resourcesData", initiativeResource?.data?.listInitiativeResourceListEntity);
+  const [resources, setResources] = useState(
+    initiativeResource?.data?.listInitiativeResourceListEntity
+  );
   const [editIndex, setEditIndex] = useState(null);
   const [newResource, setNewResource] = useState({
-    role: "",
-    skills: "",
-    inDate: null,
-    outDate: null,
-    fte: ""
+    roleDescription: "",
+    skill: "",
+    tentativeStartDate: null,
+    tentativeEndDate: null,
+    resourceEffort: ""
   });
   const [formErrors, setFormErrors] = useState({
-    role: null,
-    skills: null,
-    inDate: null,
-    outDate: null,
-    fte: null
+    roleDescription: null,
+    skill: null,
+    tentativeStartDate: null,
+    tentativeEndDate: null,
+    resourceEffort: null
   });
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5; // Number of items per page
 
   // Dropdown options
-  const roleOptions = ["Developer", "Designer", "Manager", "Analyst"];
-  const skillOptions = ["React", "JavaScript", "CSS", "HTML"];
+  const roleOptions = ["Develop Lead", "Project Manager", "Delivery Manager", "QA Lead"];
+  const skillOptions = ["Java", "SAP"];
 
   // Calculate pagination
   const lastIndex = currentPage * pageSize;
   const firstIndex = lastIndex - pageSize;
-  const currentResources = resources.slice(firstIndex, lastIndex);
+  const currentResources = resources?.slice(firstIndex, lastIndex);
 
   const handleEditChange = (e, field, index) => {
     const updatedResources = [...resources];
@@ -71,24 +74,24 @@ function ResourceEdit({ resourcesData }) {
     const errors = {};
     let hasErrors = false;
 
-    if (!newResource.role.trim()) {
-      errors.role = "Role is required";
+    if (!newResource.roleDescription.trim()) {
+      errors.roleDescription = "Role Description is required";
       hasErrors = true;
     }
-    if (!newResource.skills.trim()) {
-      errors.skills = "Skills are required";
+    if (!newResource.skill.trim()) {
+      errors.skill = "Skill is required";
       hasErrors = true;
     }
-    if (!newResource.inDate) {
-      errors.inDate = "In Date is required";
+    if (!newResource.tentativeStartDate) {
+      errors.tentativeStartDate = "Tentative Start Date is required";
       hasErrors = true;
     }
-    if (!newResource.outDate) {
-      errors.outDate = "Out Date is required";
+    if (!newResource.tentativeEndDate) {
+      errors.tentativeEndDate = "Tentative End Date is required";
       hasErrors = true;
     }
-    if (!newResource.fte.trim()) {
-      errors.fte = "FTE is required";
+    if (!newResource.resourceEffort.trim()) {
+      errors.resourceEffort = "Resource Effort is required";
       hasErrors = true;
     }
 
@@ -101,18 +104,18 @@ function ResourceEdit({ resourcesData }) {
     // If no errors, add new resource
     setResources([...resources, newResource]);
     setNewResource({
-      role: "",
-      skills: "",
-      inDate: null,
-      outDate: null,
-      fte: ""
+      roleDescription: "",
+      skill: "",
+      tentativeStartDate: null,
+      tentativeEndDate: null,
+      resourceEffort: ""
     });
     setFormErrors({
-      role: null,
-      skills: null,
-      inDate: null,
-      outDate: null,
-      fte: null
+      roleDescription: null,
+      skill: null,
+      tentativeStartDate: null,
+      tentativeEndDate: null,
+      resourceEffort: null
     });
   };
 
@@ -150,16 +153,16 @@ function ResourceEdit({ resourcesData }) {
           </tr>
         </thead>
         <tbody>
-          {currentResources.map((resource, index) => (
+          {currentResources?.map((resource, index) => (
             <tr key={index}>
               {editIndex === index ? (
                 <>
                   <td>
                     <Form.Select
-                      value={resource.role}
-                      onChange={(e) => handleEditChange(e, "role", index)}
+                      value={resource.roleDescription}
+                      onChange={(e) => handleEditChange(e, "roleDescription", index)}
                     >
-                      {roleOptions.map((role, idx) => (
+                      {roleOptions?.map((role, idx) => (
                         <option key={idx} value={role}>
                           {role}
                         </option>
@@ -168,10 +171,10 @@ function ResourceEdit({ resourcesData }) {
                   </td>
                   <td>
                     <Form.Select
-                      value={resource.skills}
-                      onChange={(e) => handleEditChange(e, "skills", index)}
+                      value={resource.skill}
+                      onChange={(e) => handleEditChange(e, "skill", index)}
                     >
-                      {skillOptions.map((skill, idx) => (
+                      {skillOptions?.map((skill, idx) => (
                         <option key={idx} value={skill}>
                           {skill}
                         </option>
@@ -181,33 +184,33 @@ function ResourceEdit({ resourcesData }) {
                   <td>
                     <Form.Control
                       type="text"
-                      value={formatDateToString(resource.inDate)}
-                      onChange={(e) => handleEditChange(e, "inDate", index)}
+                      value={formatDateToString(resource.tentativeStartDate)}
+                      onChange={(e) => handleEditChange(e, "tentativeStartDate", index)}
                     />
                   </td>
                   <td>
                     <Form.Control
                       type="text"
-                      value={formatDateToString(resource.outDate)}
-                      onChange={(e) => handleEditChange(e, "outDate", index)}
+                      value={formatDateToString(resource.tentativeEndDate)}
+                      onChange={(e) => handleEditChange(e, "tentativeEndDate", index)}
                     />
                   </td>
                   <td>
                     <Form.Control
                       type="number"
-                      value={resource.fte}
-                      onChange={(e) => handleEditChange(e, "fte", index)}
+                      value={resource.resourceEffort}
+                      onChange={(e) => handleEditChange(e, "resourceEffort", index)}
                     />
                   </td>
                   <td>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                      <IconButton onClick={() => handleSave(index)} style={{ color: "green" }}>
+                      <IconButton onClick={() => handleSave(index)}>
                         <SaveIcon fontSize="small" />
                       </IconButton>
-                      <IconButton onClick={() => setEditIndex(index)} style={{ color: "orange" }}>
+                      <IconButton onClick={() => setEditIndex(index)}>
                         <EditIcon fontSize="small" />
                       </IconButton>
-                      <IconButton onClick={() => handleDelete(index)} style={{ color: "red" }}>
+                      <IconButton onClick={() => handleDelete(index)}>
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </div>
@@ -215,17 +218,17 @@ function ResourceEdit({ resourcesData }) {
                 </>
               ) : (
                 <>
-                  <td>{resource.role}</td>
-                  <td>{resource.skills}</td>
-                  <td>{formatDateToString(resource.inDate)}</td>
-                  <td>{formatDateToString(resource.outDate)}</td>
-                  <td>{resource.fte}</td>
+                  <td>{resource.roleDescription}</td>
+                  <td>{resource.skill}</td>
+                  <td>{formatDateToString(resource.tentativeStartDate)}</td>
+                  <td>{formatDateToString(resource.tentativeEndDate)}</td>
+                  <td>{resource.resourceEffort}</td>
                   <td>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                      <IconButton onClick={() => setEditIndex(index)} style={{ color: "orange" }}>
+                      <IconButton onClick={() => setEditIndex(index)}>
                         <EditIcon fontSize="small" />
                       </IconButton>
-                      <IconButton onClick={() => handleDelete(index)} style={{ color: "red" }}>
+                      <IconButton onClick={() => handleDelete(index)}>
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </div>
@@ -237,62 +240,70 @@ function ResourceEdit({ resourcesData }) {
           <tr>
             <td>
               <Form.Select
-                value={newResource.role}
-                onChange={(e) => handleNewResourceChange(e, "role")}
-                isInvalid={formErrors.role !== null}
+                value={newResource.roleDescription}
+                onChange={(e) => handleNewResourceChange(e, "roleDescription")}
+                isInvalid={formErrors.roleDescription !== null}
               >
                 <option value="">Select Role...</option>
-                {roleOptions.map((role, idx) => (
+                {roleOptions?.map((role, idx) => (
                   <option key={idx} value={role}>
                     {role}
                   </option>
                 ))}
               </Form.Select>
-              <Form.Control.Feedback type="invalid">{formErrors.role}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {formErrors.roleDescription}
+              </Form.Control.Feedback>
             </td>
             <td>
               <Form.Select
-                value={newResource.skills}
-                onChange={(e) => handleNewResourceChange(e, "skills")}
-                isInvalid={formErrors.skills !== null}
+                value={newResource.skill}
+                onChange={(e) => handleNewResourceChange(e, "skill")}
+                isInvalid={formErrors.skill !== null}
               >
                 <option value="">Select Skill...</option>
-                {skillOptions.map((skill, idx) => (
+                {skillOptions?.map((skill, idx) => (
                   <option key={idx} value={skill}>
                     {skill}
                   </option>
                 ))}
               </Form.Select>
-              <Form.Control.Feedback type="invalid">{formErrors.skills}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">{formErrors.skill}</Form.Control.Feedback>
             </td>
             <td>
               <DatePicker
-                value={newResource.inDate}
-                onSelectDate={(date) => handleDateChange(date, "inDate")}
+                value={newResource.tentativeStartDate}
+                onSelectDate={(date) => handleDateChange(date, "tentativeStartDate")}
                 placeholder="dd/mm/yyyy"
                 isRequired
-                isInvalid={formErrors.inDate !== null}
+                isInvalid={formErrors.tentativeStartDate !== null}
               />
-              <Form.Control.Feedback type="invalid">{formErrors.inDate}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {formErrors.tentativeStartDate}
+              </Form.Control.Feedback>
             </td>
             <td>
               <DatePicker
-                value={newResource.outDate}
-                onSelectDate={(date) => handleDateChange(date, "outDate")}
+                value={newResource.tentativeEndDate}
+                onSelectDate={(date) => handleDateChange(date, "tentativeEndDate")}
                 placeholder="dd/mm/yyyy"
                 isRequired
-                isInvalid={formErrors.outDate !== null}
+                isInvalid={formErrors.tentativeEndDate !== null}
               />
-              <Form.Control.Feedback type="invalid">{formErrors.outDate}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {formErrors.tentativeEndDate}
+              </Form.Control.Feedback>
             </td>
             <td>
               <Form.Control
                 type="number"
-                value={newResource.fte}
-                onChange={(e) => handleNewResourceChange(e, "fte")}
-                isInvalid={formErrors.fte !== null}
+                value={newResource.resourceEffort}
+                onChange={(e) => handleNewResourceChange(e, "resourceEffort")}
+                isInvalid={formErrors.resourceEffort !== null}
               />
-              <Form.Control.Feedback type="invalid">{formErrors.fte}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {formErrors.resourceEffort}
+              </Form.Control.Feedback>
             </td>
             <td>
               <IconButton onClick={handleAddNew} style={{ color: "blue" }}>
@@ -304,7 +315,7 @@ function ResourceEdit({ resourcesData }) {
       </Table>
       <Stack spacing={2} direction="row" justifyContent="flex-end">
         <Pagination
-          count={Math.ceil(resources.length / pageSize)}
+          count={Math.ceil(resources?.length / pageSize)}
           page={currentPage}
           onChange={handlePageChange}
           variant="outlined"
