@@ -93,6 +93,7 @@ const EditPage = ({ initiativesID }) => {
           setInitiativeDetail(detail);
 
           const roi = await GetInitiativeROIList(82);
+          console.log("initiativeROI1", roi);
           setInitiativeROI(roi);
 
           const stage = await GetInitiativeStageList(82);
@@ -211,7 +212,7 @@ const EditPage = ({ initiativesID }) => {
       case "roi":
         return (
           <div className="container-fluid mt-3">
-            <ROIComponent roiData={initiativeROI} />
+            <ROIComponent initiativeROI={initiativeROI} />
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>
         );
@@ -225,14 +226,14 @@ const EditPage = ({ initiativesID }) => {
       case "timelines":
         return (
           <div className="container-fluid mt-3">
-            <TimelinesComponent timelineData={initiativeTimeline} />
+            <TimelinesComponent initiativeTimeline={initiativeTimeline} />
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>
         );
       case "documents":
         return (
           <div className="container-fluid mt-3">
-            <DocumentsComponent documentData={initiativeDocument} />
+            <DocumentsComponent initiativeDocument={initiativeDocument} />
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>
         );

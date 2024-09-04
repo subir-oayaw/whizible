@@ -3,7 +3,7 @@ import { PrimaryButton } from "@fluentui/react/lib/Button";
 import { DatePicker } from "@fluentui/react";
 import TimelineHistoryDrawer from "./TimelineHistoryDrawer"; // Adjust path as needed
 
-const TimelinesComponent = () => {
+const TimelinesComponent = ({ initiativeTimeline }) => {
   const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
   const [historyData, setHistoryData] = useState([]);
 
@@ -75,41 +75,63 @@ const TimelinesComponent = () => {
           >
             <thead>
               <tr>
-                <th>Nature of initiatives</th>
+                <th>Nature of Initiatives</th>
                 <th>Stage</th>
                 <th>Resource/Approver</th>
-                <th width="14%">Planned in date</th>
-                <th width="14%">Planned out date</th>
+                <th width="14%">Planned In Date</th>
+                <th width="14%">Planned Out Date</th>
                 <th width="10%">Planned TAT</th>
-                <th>Actual in date</th>
-                <th>Actual out date</th>
+                <th>Actual In Date</th>
+                <th>Actual Out Date</th>
                 <th className="text-center">Actual TAT</th>
               </tr>
             </thead>
             <tbody className="tbodyROI">
-              <tr className="TRtimelines">
-                <td>Organizational Ap...</td>
-                <td>Start</td>
-                <td>Submitted By : Admin</td>
-                <td>
-                  <DatePicker placeholder="Select Date" ariaLabel="Select a date" />
-                </td>
-                <td>
-                  <DatePicker placeholder="Select Date" ariaLabel="Select a date" />
-                </td>
-                <td className="IMrequired d-flex">
-                  <input
-                    className="form-control input-sm text-center required"
-                    placeholder="00"
-                    type="text"
-                    id="inputROItext1"
-                  />
-                </td>
-                <td>10 Aug 2022</td>
-                <td>10 Aug 2022</td>
-                <td className="text-center">0</td>
-              </tr>
-              {/* Additional rows omitted for brevity */}
+              {initiativeTimeline.data.listInitiativeTimeLineEntity.map((timeline, index) => (
+                <tr key={`timeline-${index}`} className="TRtimelines">
+                  <td>{timeline.natureofDemand}</td>
+                  <td>{timeline.requestStage}</td>
+                  <td>{timeline.stakeHolderNames}</td>
+                  <td>
+                    <DatePicker
+                      value={
+                        timeline.stagePlannedStartDate
+                          ? new Date(timeline.stagePlannedStartDate)
+                          : null
+                      }
+                      ariaLabel="Select a date"
+                    />
+                  </td>
+                  <td>
+                    <DatePicker
+                      value={
+                        timeline.stagePlannedEndDate ? new Date(timeline.stagePlannedEndDate) : null
+                      }
+                      ariaLabel="Select a date"
+                    />
+                  </td>
+                  <td className="IMrequired d-flex">
+                    <input
+                      className="form-control input-sm text-center required"
+                      placeholder="00"
+                      type="text"
+                      value={timeline.plannedDuration || ""}
+                      readOnly
+                    />
+                  </td>
+                  <td>
+                    {timeline.stageInDate
+                      ? new Date(timeline.stageInDate).toLocaleDateString()
+                      : "-"}
+                  </td>
+                  <td>
+                    {timeline.stageOutDate
+                      ? new Date(timeline.stageOutDate).toLocaleDateString()
+                      : "-"}
+                  </td>
+                  <td className="text-center">{timeline.actualDuration || "0"}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

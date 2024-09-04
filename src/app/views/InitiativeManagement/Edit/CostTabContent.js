@@ -11,8 +11,11 @@ import TextField from "@mui/material/TextField";
 import { mergeStyles } from "@fluentui/react/lib/Styling";
 
 const CostTabContent = ({ costData }) => {
+  console.log("costData", costData?.data?.listInitiativeCostListEntity);
   const [selectAllChecked, setSelectAllChecked] = useState(false);
-  const [individualChecks, setIndividualChecks] = useState(costData.map(() => false));
+  const [individualChecks, setIndividualChecks] = useState(
+    costData?.data?.listInitiativeCostListEntity?.map(() => false)
+  );
   const [showDrawer, setShowDrawer] = useState(false);
   const [formState, setFormState] = useState({
     costCategory: "",
@@ -27,7 +30,7 @@ const CostTabContent = ({ costData }) => {
 
   const handleSelectAllChange = (e, checked) => {
     setSelectAllChecked(checked);
-    setIndividualChecks(individualChecks.map(() => checked));
+    setIndividualChecks(individualChecks?.map(() => checked));
   };
 
   const handleIndividualChange = (index, checked) => {
@@ -231,10 +234,10 @@ const CostTabContent = ({ costData }) => {
                         <th>Jan</th>
                         <th>Feb</th>
                         <th>Mar</th>
-                        <th>April</th>
+                        <th>Apr</th>
                         <th>May</th>
-                        <th>June</th>
-                        <th>July</th>
+                        <th>Jun</th>
+                        <th>Jul</th>
                         <th>Aug</th>
                         <th>Sep</th>
                         <th>Oct</th>
@@ -247,143 +250,104 @@ const CostTabContent = ({ costData }) => {
                         <td>2023</td>
                         <td>
                           <input
-                            className="form-control"
-                            placeholder="40.0"
                             type="text"
-                            id="txtmonth1"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
                           />
                         </td>
                         <td>
                           <input
-                            className="form-control"
-                            placeholder="40.0"
                             type="text"
-                            id="txtmonth2"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
                           />
                         </td>
                         <td>
                           <input
-                            className="form-control"
-                            placeholder="40.0"
                             type="text"
-                            id="txtmonth3"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
                           />
                         </td>
                         <td>
                           <input
-                            className="form-control"
-                            placeholder="40.0"
                             type="text"
-                            id="txtmonth4"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
                           />
                         </td>
                         <td>
                           <input
-                            className="form-control"
-                            placeholder="40.0"
                             type="text"
-                            id="txtmonth5"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
                           />
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value=""
+                            onChange={() => {}}
+                          />
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-              </div>
-            )}
-            {!showMonthlyDistribution && (
-              <div id="CostMonthlyTab1" className="tab-pane py-0">
-                {" "}
-                <div className="detailsubtabsbtn mt-1 text-end">
-                  {" "}
-                  <a
-                    href="javascript:;"
-                    className="btn borderbtnbgblue"
-                    data-bs-toggle="tooltip"
-                    id="sv_cost_monthlyBtn"
-                  >
-                    {" "}
-                    Save{" "}
-                  </a>{" "}
-                </div>{" "}
-                <div className="col-sm-12 text-end form-group">
-                  {" "}
-                  <label className="form-label IM_label"></label>{" "}
-                </div>{" "}
-                <div className="table-responsive offTable_wrapper">
-                  {" "}
-                  <table className="table table-striped table-hover mb-0">
-                    {" "}
-                    <thead>
-                      {" "}
-                      <tr>
-                        {" "}
-                        <th>Year</th> <th>Jan</th> <th>Feb</th> <th>Mar</th> <th>April</th>{" "}
-                        <th>May</th> <th>June</th> <th>July</th> <th>Aug</th> <th>Sep</th>{" "}
-                        <th>Oct</th> <th>Nov</th> <th>Dec</th>{" "}
-                      </tr>{" "}
-                    </thead>{" "}
-                    <tbody>
-                      {" "}
-                      <tr>
-                        {" "}
-                        <td>2023</td>{" "}
-                        <td>
-                          {" "}
-                          <input
-                            className="form-control"
-                            placeholder="40.0"
-                            type="text"
-                            id="txtmonth1"
-                          />{" "}
-                        </td>{" "}
-                        <td>
-                          {" "}
-                          <input
-                            className="form-control"
-                            placeholder="40.0"
-                            type="text"
-                            id="txtmonth2"
-                          />{" "}
-                        </td>{" "}
-                        <td>
-                          {" "}
-                          <input
-                            className="form-control"
-                            placeholder="40.0"
-                            type="text"
-                            id="txtmonth3"
-                          />{" "}
-                        </td>{" "}
-                        <td>
-                          {" "}
-                          <input
-                            className="form-control"
-                            placeholder="40.0"
-                            type="text"
-                            id="txtmonth4"
-                          />{" "}
-                        </td>{" "}
-                        <td>
-                          {" "}
-                          <input
-                            className="form-control"
-                            placeholder="40.0"
-                            type="text"
-                            id="txtmonth5"
-                          />{" "}
-                        </td>{" "}
-                        <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>{" "}
-                      </tr>{" "}
-                    </tbody>{" "}
-                  </table>{" "}
-                </div>{" "}
               </div>
             )}
           </div>
@@ -391,99 +355,55 @@ const CostTabContent = ({ costData }) => {
       </div>
     </div>
   );
-  const checkboxStyles = {
-    checkbox: mergeStyles({
-      selectors: {
-        "::after": {
-          content: '"✓"',
-          fontSize: "16px",
-          color: "white"
-        }
-      }
-    }),
-    checkmark: {
-      visibility: "hidden"
-    }
-  };
+
   return (
-    <div className="tab-pane" id="Ini_Cost">
-      <div className="container-fluid">
-        <div className="row align-items-center">
-          <div className="col-12">
-            <Stack horizontal tokens={{ childrenGap: 10 }} horizontalAlign="end">
-              <DefaultButton
-                className="btn closelink add-new1"
-                onClick={openDrawer}
-                iconProps={{ iconName: "Add" }}
-              >
-                Add
-              </DefaultButton>
-              <DefaultButton
-                className="btn closelink add-new1"
-                id="deleteBtn_cost"
-                iconProps={{ iconName: "Delete" }}
-              >
-                Delete
-              </DefaultButton>
-            </Stack>
-          </div>
-        </div>
-      </div>
-
-      <div className="init_grid_panel m-3">
-        <div className="table_wrapper stageGridPanel">
-          <Table striped bordered hover id="init_borderedTbl_Cost">
-            <thead>
-              <tr>
-                <th>
-                  <div className="igph_title position-relative">
-                    <Checkbox
-                      styles={checkboxStyles}
-                      id="dltAllcost"
-                      className="chckHead"
-                      checked={selectAllChecked}
-                      onChange={(e, checked) => handleSelectAllChange(e, checked)}
-                    />
-                  </div>
-                </th>
-                <th className="text-end">Amount</th>
-                <th className="text-end">From Date</th>
-                <th className="text-end">To Date</th>
-                <th className="text-end">Cost Category</th>
-              </tr>
-            </thead>
-            <tbody>
-              {costData.map((cost, index) => (
-                <tr key={index}>
-                  <td>
-                    <Checkbox
-                      styles={checkboxStyles}
-                      id={`chkRow${index + 1}`}
-                      className="dltSingleCost"
-                      checked={individualChecks[index]}
-                      onChange={(e, checked) => handleIndividualChange(index, checked)}
-                    />
-                    <a href="#" className="stageAnchor text-decoration-none ps-1">
-                      {cost.name}
-                    </a>
-                  </td>
-                  <td className="text-end">{cost.amount}</td>
-                  <td className="text-end">{cost.fromDate}</td>
-                  <td className="text-end">{cost.toDate}</td>
-                  <td className="text-end">{cost.category}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
-      </div>
-
-      <Drawer
-        anchor="right"
-        open={showDrawer}
-        onClose={closeDrawer}
-        ModalProps={{ keepMounted: true }}
+    <div>
+      <Stack
+        horizontal
+        horizontalAlign="space-between"
+        verticalAlign="center"
+        style={{ padding: "0 15px" }}
       >
+        <h4>Cost Details</h4>
+        <DefaultButton onClick={openDrawer} text="Add Cost" />
+      </Stack>
+
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>
+              <Checkbox label="" checked={selectAllChecked} onChange={handleSelectAllChange} />
+            </th>
+            <th>Cost Type</th>
+            <th>Cost Category</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {costData?.data?.listInitiativeCostListEntity?.map((cost, index) => (
+            <tr key={index}>
+              <td>
+                <Checkbox
+                  label=""
+                  checked={individualChecks[index]}
+                  onChange={(e, checked) => handleIndividualChange(index, checked)}
+                />
+              </td>
+              <td>{cost.costType}</td>
+              <td>{cost.costCategory}</td>
+              <td>{cost.amount}</td>
+              <td>{cost.description}</td>
+              <td>{cost.startDate}</td>
+              <td>{cost.endDate}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      <Drawer anchor="right" open={showDrawer} onClose={closeDrawer}>
         <DrawerContent />
       </Drawer>
     </div>
