@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const CompletedIni = (searchParams) => {
+const CompletedIni = (currentPage, searchParams) => {
   const [completedIni, setCompletedIni] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,7 +10,7 @@ const CompletedIni = (searchParams) => {
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
-        const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/CompletedIni/Get?PageNo=1`;
+        const url = `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/CompletedIni/Get?PageNo=${currentPage}`;
 
         const response = await axios.get(url, {
           params: {
@@ -37,7 +37,7 @@ const CompletedIni = (searchParams) => {
     };
 
     fetchData();
-  }, [searchParams]); // Depend on searchParams
+  }, [searchParams, currentPage]); // Depend on searchParams
 
   return { completedIni, loading, error };
 };

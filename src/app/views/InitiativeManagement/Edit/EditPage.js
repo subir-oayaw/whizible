@@ -191,7 +191,7 @@ const EditPage = ({ initiativesID }) => {
       case "work-order":
         return (
           <div className="container-fluid mt-3">
-            <WorkOrderTab workOrderData={initiativeWorkOrder} />
+            <WorkOrderTab initiativeWorkOrder={initiativeWorkOrder} />
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>
         );

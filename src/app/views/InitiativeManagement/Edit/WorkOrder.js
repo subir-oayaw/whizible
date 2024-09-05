@@ -8,19 +8,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { DatePicker } from "@fluentui/react/lib/DatePicker";
 
 import "./WorkOrder.css";
-const WorkOrderTab = () => {
-  const [workOrders, setWorkOrders] = useState([
-    {
-      id: 1,
-      number: "9000234",
-      subject: "Lorem Ipsum",
-      date: "10 Aug 2022",
-      vendor: "Vendor1",
-      selected: false
-    }
-    // ... other work orders
-  ]);
 
+const WorkOrderTab = ({ initiativeWorkOrder }) => {
+  // Extract the work orders from initiativeWorkOrder
+  const workOrderList = initiativeWorkOrder.data.listInitiativeWorOrderListEntity.map((order) => ({
+    id: order.ideaID,
+    number: order.workOrderNo,
+    subject: order.location,
+    date: new Date(order.signingDate).toLocaleDateString(), // Format the date as needed
+    vendor: order.vendorName,
+    selected: false
+  }));
+
+  const [workOrders, setWorkOrders] = useState(workOrderList);
   const [selectAll, setSelectAll] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerData, setDrawerData] = useState({
@@ -52,7 +52,19 @@ const WorkOrderTab = () => {
   };
 
   const openDrawer = (data) => {
-    setDrawerData(data);
+    setDrawerData({
+      number: data.number,
+      subject: data.subject,
+      date: new Date(data.date), // Set the date for the DatePicker
+      vendor: data.vendor,
+      initiativeCode: "", // Add additional fields as needed
+      initiativeTitle: "",
+      relationshipManager: "",
+      seniorManagementInstructions: "",
+      backgroundContext: "",
+      approachOverview: "",
+      description: ""
+    });
     setDrawerOpen(true);
   };
 
@@ -76,7 +88,7 @@ const WorkOrderTab = () => {
                 openDrawer({
                   number: "",
                   subject: "",
-                  date: "",
+                  date: new Date(),
                   vendor: "",
                   initiativeCode: "",
                   initiativeTitle: "",
@@ -171,7 +183,7 @@ const WorkOrderTab = () => {
                 label="Date of Issue"
                 value={drawerData.date}
                 onSelectDate={(date) =>
-                  setDrawerData({ ...drawerData, date: date ? date?.toLocaleDateString() : "" })
+                  setDrawerData({ ...drawerData, date: date ? date.toLocaleDateString() : "" })
                 }
                 isRequired={true}
                 placeholder="Select a date"
@@ -187,71 +199,7 @@ const WorkOrderTab = () => {
               />
             </div>
           </div>
-          <div className="form-group row pt-1 mb-3">
-            <div className="col-sm-4 form-group">
-              <TextField
-                label="Initiative Code"
-                value={drawerData.initiativeCode}
-                onChange={(e) => setDrawerData({ ...drawerData, initiativeCode: e.target.value })}
-              />
-            </div>
-            <div className="col-sm-4 form-group">
-              <TextField
-                label="Initiative Title"
-                value={drawerData.initiativeTitle}
-                onChange={(e) => setDrawerData({ ...drawerData, initiativeTitle: e.target.value })}
-              />
-            </div>
-            <div className="col-sm-4 form-group">
-              <TextField
-                label="Relationship Manager"
-                value={drawerData.relationshipManager}
-                onChange={(e) =>
-                  setDrawerData({ ...drawerData, relationshipManager: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className="form-group row pt-1 mb-3">
-            <div className="col-sm-12 form-group">
-              <TextField
-                label="Senior Management Instructions"
-                value={drawerData.seniorManagementInstructions}
-                onChange={(e) =>
-                  setDrawerData({ ...drawerData, seniorManagementInstructions: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className="form-group row pt-1 mb-3">
-            <div className="col-sm-12 form-group">
-              <TextField
-                label="Background / Context"
-                value={drawerData.backgroundContext}
-                onChange={(e) =>
-                  setDrawerData({ ...drawerData, backgroundContext: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className="form-group row pt-1 mb-3">
-            <div className="col-sm-12 form-group">
-              <TextField
-                label="Approach Overview"
-                value={drawerData.approachOverview}
-                onChange={(e) => setDrawerData({ ...drawerData, approachOverview: e.target.value })}
-              />
-            </div>
-          </div>
-          <div className="form-group row pt-1 mb-3">
-            <div className="col-sm-12 form-group">
-              <TextField
-                label="Description"
-                value={drawerData.description}
-                onChange={(e) => setDrawerData({ ...drawerData, description: e.target.value })}
-              />
-            </div>
-          </div>
+          {/* Add the rest of the fields here */}
           <div className="text-end">
             <PrimaryButton
               text="Save"
