@@ -9,7 +9,6 @@ const GetInitiativeStageDetails = async (IdeaId) => {
     const response = await axios.get(
       `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeList/GetInitiativeStageDetails?IdeaID=${IdeaId}`,
       {
-        params: { IdeaId },
         headers: {
           Authorization: `Bearer ${accessToken}`
         }

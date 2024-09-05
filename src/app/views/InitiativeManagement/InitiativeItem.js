@@ -212,14 +212,12 @@ const InitiativeItem = ({
                   <Tooltip title={!canEdit ? "No Rights to edit" : ""}>
                     <IconButton
                       onClick={() => {
-                        // if (canEdit) {
-                        //   startEditing();
-                        //   SetinitiativesID(id);
-                        // } else {
-                        //   handleDisabledClick("No rights to edit");
-                        // }
-                        startEditing();
-                        SetinitiativesID(id);
+                        if (canEdit) {
+                          startEditing();
+                          SetinitiativesID(id);
+                        } else {
+                          handleDisabledClick("No rights to edit");
+                        }
                       }}
                     >
                       <EditIcon />

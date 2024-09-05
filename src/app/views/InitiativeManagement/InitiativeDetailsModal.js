@@ -25,7 +25,8 @@ const InitiativeDetailsModal = ({ open, handleClose, initiative }) => {
     const fetchData = async () => {
       try {
         const result = await GetInitiativeStageDetails(initiative?.ideaIdPk);
-        setData(result?.data?.initiativeStageDetailsEntity[0]); // Getting the first entity from the response
+        console.log("ccccccccccc77", result);
+        setData(result?.data?.initiativeStageDetailsEntity[0]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
