@@ -1,9 +1,7 @@
-// StageComponent.js
-
 import React from "react";
 import Table from "react-bootstrap/Table";
 
-const StageComponent = () => {
+const StageComponent = ({ stageData }) => {
   return (
     <div className="tab-pane" id="Ini_Stage">
       <div className="container-fluid">
@@ -17,19 +15,19 @@ const StageComponent = () => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Nature of demand</th>
-              <th>Order no</th>
-              <th>Stage name</th>
+              <th>Nature of Demand</th>
+              <th>Order No</th>
+              <th>Stage Name</th>
               <th className="text-center">Approvers</th>
             </tr>
           </thead>
           <tbody className="tbodystage">
-            {[...Array(7)].map((_, index) => (
+            {stageData.data.listInitiativeStageListEntity.map((stage, index) => (
               <tr key={`stage-${index}`} className="TR_stages">
-                <td>Organizational Approval</td>
-                <td>{11 + index}</td>
-                <td>Start</td>
-                <td className="text-center">Admin</td>
+                <td>{stage.natureofDemand}</td>
+                <td>{stage.orderno}</td>
+                <td>{stage.requestStage}</td>
+                <td className="text-center">{stage.stakeHolderNames}</td>
               </tr>
             ))}
           </tbody>

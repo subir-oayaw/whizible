@@ -7,7 +7,6 @@ const modalStyles = {
   root: {
     maxWidth: "70vw",
     maxHeight: "70vh",
-
     position: "absolute",
     transform: "translate(-50%, -50%)",
     top: "50%",
@@ -15,7 +14,7 @@ const modalStyles = {
   }
 };
 
-const DocumentsComponent = () => {
+const DocumentsComponent = ({ initiativeDocument }) => {
   // State to manage modal visibility
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
@@ -54,7 +53,6 @@ const DocumentsComponent = () => {
               >
                 Attach URL
               </PrimaryButton>
-              {/* Other buttons as needed */}
             </div>
           </div>
         </div>
@@ -82,8 +80,8 @@ const DocumentsComponent = () => {
           <table className="table_document table table-hover init-stickytable mb-0">
             <thead className="IM_document">
               <tr className="cart-table-head">
-                <th>Documents name</th>
-                <th>Documents category</th>
+                <th>Document name</th>
+                <th>Document category</th>
                 <th>Uploaded by</th>
                 <th>Uploaded date</th>
                 <th>Last modified</th>
@@ -91,25 +89,18 @@ const DocumentsComponent = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="TRDocument">
-                <td>Organizational Approval</td>
-                <td width="26%">
-                  <a
-                    data-bs-toggle="collapse"
-                    data-parent="#accordion"
-                    href="#collapsed_etaildata_One"
-                  >
-                    Functional Specifications
-                  </a>
-                </td>
-                <td>Admin</td>
-                <td>10 Aug 2022</td>
-                <td>25/05/2023</td>
-                <td className="text-center">
-                  <a href="javascript:;">{/* Action icons */}</a>
-                </td>
-              </tr>
-              {/* Additional rows */}
+              {initiativeDocument?.data?.listInitiativeDocumentListEntity?.map((doc, index) => (
+                <tr className="TRDocument" key={index}>
+                  <td>{doc.fileName}</td>
+                  <td>{doc.category}</td>
+                  <td>{doc.uploadedBy}</td>
+                  <td>{new Date(doc.uploadedDate).toLocaleDateString()}</td>
+                  <td>{new Date(doc.updatedDate).toLocaleDateString()}</td>
+                  <td className="text-center">
+                    <a href="javascript:;">{/* Action icons */}</a>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

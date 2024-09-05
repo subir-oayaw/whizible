@@ -36,7 +36,7 @@ const InitiativeItem = ({
 }) => {
   const {
     title,
-    instanceId,
+    id,
     userId,
     originator,
     processName,
@@ -108,7 +108,7 @@ const InitiativeItem = ({
   return (
     <>
       <CommentsSection
-        initiativeId={instanceId}
+        initiativeId={id}
         commentDrawerOpen={commentDrawerOpen}
         setCommentDrawerOpen={setCommentDrawerOpen}
       />
@@ -214,7 +214,7 @@ const InitiativeItem = ({
                       onClick={() => {
                         if (canEdit) {
                           startEditing();
-                          SetinitiativesID(instanceId);
+                          SetinitiativesID(id);
                         } else {
                           handleDisabledClick("No rights to edit");
                         }

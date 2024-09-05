@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
 import { TextField, Dropdown, DatePicker } from "@fluentui/react";
 import { Stack } from "@fluentui/react/lib/Stack";
@@ -7,9 +7,7 @@ import { getTheme, mergeStyleSets } from "@fluentui/react/lib/Styling";
 import "bootstrap/dist/css/bootstrap.min.css";
 import currentstage from "../../../../assets/img/currentstage.svg";
 
-// Get theme to use its spacing
 const theme = getTheme();
-
 const classNames = mergeStyleSets({
   modal: {
     maxWidth: "40vw",
@@ -41,19 +39,33 @@ const classNames = mergeStyleSets({
   }
 });
 
-function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack }) {
-  const [formDataState, setFormDataState] = useState({
-    natureOfInitiative: "",
-    initiativeCode: "",
-    businessGroup: null,
-    organizationUnit: null,
-    plannedStart: null,
-    plannedEnd: null
-  });
-
+function BasicDetailEdit({
+  initiativeDetail = {},
+  buttonData = [],
+  handleFieldChange,
+  handleGoBack
+}) {
+  const [formDataState, setFormDataState] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [comments, setComments] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (initiativeDetail?.data?.listInitiativeDetailEntity) {
+      const initialData = {};
+      initiativeDetail.data.listInitiativeDetailEntity.forEach((field) => {
+        if (field.applicable === 1) {
+          initialData[field.fieldName] = field.controlValue || "";
+        }
+      });
+      console.log("Initialized data:", initialData);
+      setFormDataState(initialData);
+      setLoading(false);
+    } else {
+      console.log("Initiative detail data is missing or incorrect");
+    }
+  }, [initiativeDetail]);
 
   const openModal = (title) => {
     setModalTitle(title);
@@ -63,6 +75,11 @@ function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack
   const closeModal = () => {
     setIsModalOpen(false);
     setComments("");
+  };
+
+  const handleSubmit = () => {
+    console.log("Submitting comment:", comments);
+    closeModal();
   };
 
   const renderDynamicButtons = () => {
@@ -79,59 +96,132 @@ function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack
   };
 
   const renderFormElements = () => {
-    return formData?.map((field, index) => {
-      switch (field.type) {
-        case "TextField":
-          return field.display ? (
-            <div key={index} className="col-md-4 mt-2 form-group">
-              <TextField
-                label={field.label}
-                placeholder={field.placeholder}
-                value={formDataState[field.stateKey] || ""}
-                onChange={(ev, newValue) => {
-                  setFormDataState({ ...formDataState, [field.stateKey]: newValue });
-                  handleFieldChange(newValue, field.stateKey);
-                }}
-                required={field.required}
-              />
-            </div>
-          ) : null;
-        case "Dropdown":
-          return field.display ? (
-            <div key={index} className="col-md-4 mt-2 form-group">
-              <Dropdown
-                label={field.label}
-                placeholder={field.placeholder}
-                options={field.options}
-                selectedKey={formDataState[field.stateKey]}
-                onChange={(ev, item) => {
-                  const value = item ? item.key : null;
-                  setFormDataState({ ...formDataState, [field.stateKey]: value });
-                  handleFieldChange(value, field.stateKey);
-                }}
-              />
-            </div>
-          ) : null;
-        case "DatePicker":
-          return field.display ? (
-            <div key={index} className="col-md-4 mt-2 form-group">
-              <DatePicker
-                label={field.label}
-                placeholder={field.placeholder}
-                value={formDataState[field.stateKey]}
-                onSelectDate={(date) => {
-                  setFormDataState({ ...formDataState, [field.stateKey]: date });
-                  handleFieldChange(date, field.stateKey);
-                }}
-                isRequired={field.isRequired}
-              />
-            </div>
-          ) : null;
-        default:
-          return null;
+    const fields = Array.isArray(initiativeDetail?.data?.listInitiativeDetailEntity)
+      ? [...initiativeDetail?.data?.listInitiativeDetailEntity]
+      : [];
+
+    // Filter applicable fields
+    const applicableFields = fields.filter((field) => field.applicable === 1);
+
+    // Group fields by pageRowNo
+    const groupedFields = applicableFields.reduce((acc, field) => {
+      if (!acc[field.pageRowNo]) {
+        acc[field.pageRowNo] = [];
       }
+      acc[field.pageRowNo].push(field);
+      return acc;
+    }, {});
+
+    // Sort fields within each row by pageOrderNo
+    Object.keys(groupedFields).forEach((rowNo) => {
+      groupedFields[rowNo].sort((a, b) => a.pageOrderNo - b.pageOrderNo);
     });
+
+    // Sort rows by pageRowNo
+    const sortedRows = Object.keys(groupedFields).sort((a, b) => a - b);
+
+    return sortedRows.map((rowNo) => (
+      <div className="row" key={rowNo}>
+        {groupedFields[rowNo].map((field, index) => {
+          const isRequired = field.mandatory === 1;
+          switch (field.controlType) {
+            case "Text Box":
+              return (
+                <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
+                  <TextField
+                    label={
+                      <>
+                        {/* <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "} */}
+                        {field.fieldName}
+                      </>
+                    }
+                    placeholder={field.controlValue}
+                    value={formDataState[field.fieldName] || ""}
+                    onChange={(ev, newValue) => {
+                      setFormDataState({ ...formDataState, [field.fieldName]: newValue });
+                      handleFieldChange(newValue, field.fieldName);
+                    }}
+                    required={isRequired}
+                  />
+                </div>
+              );
+            case "Combo Box":
+              return (
+                <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
+                  <Dropdown
+                    label={
+                      <>
+                        <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "}
+                        {field.fieldName}
+                      </>
+                    }
+                    placeholder={field.controlValue}
+                    options={field.options || []}
+                    selectedKey={formDataState[field.fieldName]}
+                    onChange={(ev, item) => {
+                      const value = item ? item.key : null;
+                      setFormDataState({ ...formDataState, [field.fieldName]: value });
+                      handleFieldChange(value, field.fieldName);
+                    }}
+                  />
+                </div>
+              );
+            case "Date":
+              return (
+                <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
+                  <DatePicker
+                    label={
+                      <>
+                        <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "}
+                        {field.fieldName}
+                      </>
+                    }
+                    value={
+                      formDataState[field.fieldName] instanceof Date
+                        ? formDataState[field.fieldName]
+                        : null
+                    }
+                    onSelectDate={(date) => {
+                      setFormDataState({ ...formDataState, [field.fieldName]: date });
+                      handleFieldChange(date, field.fieldName);
+                    }}
+                    isRequired={isRequired}
+                  />
+                </div>
+              );
+            case "Text Area":
+              return (
+                <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
+                  <TextField
+                    label={
+                      <>
+                        <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "}
+                        {field.fieldName}
+                      </>
+                    }
+                    placeholder={field.controlValue}
+                    value={formDataState[field.fieldName] || ""}
+                    onChange={(ev, newValue) => {
+                      setFormDataState({ ...formDataState, [field.fieldName]: newValue });
+                      handleFieldChange(newValue, field.fieldName);
+                    }}
+                    multiline
+                    autoAdjustHeight
+                    required={isRequired}
+                  />
+                </div>
+              );
+            default:
+              return null;
+          }
+        })}
+      </div>
+    ));
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container-fluid mt-3">
@@ -150,7 +240,7 @@ function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack
                 title="Current Stage"
                 data-bs-placement="bottom"
               >
-                <img src={currentstage} alt="" />
+                <img src={currentstage} alt="Current Stage" />
               </a>
             </div>
             <div className="currStageTxt w_text ps-2">
@@ -171,38 +261,34 @@ function BasicDetailEdit({ formData, buttonData, handleFieldChange, handleGoBack
       <form>
         <div className="form-group row mt-3">
           <div className="col-sm-12 text-end form-group">
-            <label className="form- display: true,label IM_label">
-              (<font color="red">*</font> Mandatory)
+            <label className="pr-3">
+              <span className="text-danger">*</span> Required fields
             </label>
           </div>
+          {renderFormElements()}
         </div>
-        <div className="form-group row mb-2">{renderFormElements()}</div>
       </form>
+
       <Modal
         isOpen={isModalOpen}
         onDismiss={closeModal}
         isBlocking={false}
-        containerClassName={classNames.modal} // Apply custom styles here
+        containerClassName={classNames.modal}
       >
         <div className={classNames.header}>
-          <h5 className="modal-title">{modalTitle}</h5>
-          <button type="button" className="close" aria-label="Close" onClick={closeModal}>
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <span>{modalTitle}</span>
         </div>
         <div className={classNames.body}>
           <TextField
             label="Comments"
-            placeholder="Enter comments"
             value={comments}
             onChange={(ev, newValue) => setComments(newValue)}
-            required
+            multiline
+            autoAdjustHeight
           />
         </div>
         <div className={classNames.footer}>
-          <PrimaryButton onClick={closeModal}>
-            <span>Submit</span>
-          </PrimaryButton>
+          <PrimaryButton onClick={handleSubmit}>Submit</PrimaryButton>
         </div>
       </Modal>
     </div>

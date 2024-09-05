@@ -21,7 +21,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import FluentTable from "../../components/FluentTable";
 import "./InitiativeTable.css"; // Assuming you have custom styles
 
-const InitiativeTable = ({ completedIni }) => {
+const InitiativeTable = ({ completedIni, currentPage, setCurrentPage }) => {
   const [data, setData] = useState([]);
   console.log("completedIni1", completedIni);
 
@@ -106,7 +106,15 @@ const InitiativeTable = ({ completedIni }) => {
     }
   ];
 
-  return <FluentTable columns={columns} items={data} itemsPerPage={5} />;
+  return (
+    <FluentTable
+      columns={columns}
+      items={data}
+      itemsPerPage={5}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+    />
+  );
 };
 
 export default InitiativeTable;

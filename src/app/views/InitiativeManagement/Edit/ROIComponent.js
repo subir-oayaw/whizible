@@ -3,7 +3,8 @@ import { PrimaryButton } from "@fluentui/react/lib/Button";
 import Table from "react-bootstrap/Table";
 import ROIDetailsDrawer from "./ROIDetailsDrawer";
 
-const ROIComponent = () => {
+const ROIComponent = ({ initiativeROI }) => {
+  console.log("initiativeROI", initiativeROI);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -28,7 +29,9 @@ const ROIComponent = () => {
     if (selectAllChecked) {
       setSelectedRows([]);
     } else {
-      const allRows = [...Array(10)].map((_, index) => index + 1);
+      const allRows = initiativeROI?.data?.listInitiativeROIListEntity?.map(
+        (_, index) => index + 1
+      );
       setSelectedRows(allRows);
     }
     setSelectAllChecked(!selectAllChecked);
@@ -89,23 +92,23 @@ const ROIComponent = () => {
             </tr>
           </thead>
           <tbody className="tbodyROI">
-            {[...Array(10)].map((_, index) => (
+            {initiativeROI?.data?.listInitiativeROIListEntity?.map((roi, index) => (
               <tr
                 key={`roi-${index}`}
                 className="TR_ROI"
                 onClick={() =>
                   handleDrawerOpen({
-                    month: "January",
-                    year: "2024",
-                    projectedROI: "6,21,75,838"
+                    month: roi.monthName,
+                    year: roi.roiYear.toString(),
+                    projectedROI: roi.projectedROI.toLocaleString()
                   })
                 }
               >
                 <td>
-                  <a href="javascript:;">January</a>
+                  <a href="javascript:;">{roi.monthName}</a>
                 </td>
-                <td>2024</td>
-                <td>6,21,75,838</td>
+                <td>{roi.roiYear}</td>
+                <td>{roi.projectedROI.toLocaleString()}</td>
                 <td className="text-center">
                   <div className="custom_chckbox">
                     <input
