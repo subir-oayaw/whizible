@@ -6,7 +6,7 @@ const GetInitiativeROIList = async (IdeaId) => {
   const accessToken = sessionStorage.getItem("access_token");
   try {
     const response = await axios.get(
-      `https://pms.whizible.com/INI_API_Main_Dev/api/InitiativeDetail/GetInitiativeROIList`,
+      `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeDetail/GetInitiativeROIList`,
       {
         params: { IdeaId },
         headers: {

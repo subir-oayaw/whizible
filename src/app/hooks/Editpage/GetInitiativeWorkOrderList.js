@@ -6,7 +6,7 @@ const GetInitiativeWorkOrderList = async (IdeaId) => {
   const accessToken = sessionStorage.getItem("access_token");
   try {
     const response = await axios.get(
-      `https://pms.whizible.com/INI_API_Main_Dev/api/InitiativeDetail/GetInitiativeWorkOrderList`,
+      `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeDetail/GetInitiativeWorkOrderList`,
       {
         params: { IdeaId },
         headers: {

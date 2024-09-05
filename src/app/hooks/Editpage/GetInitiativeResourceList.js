@@ -6,7 +6,7 @@ const GetInitiativeResourceList = async (IdeaId) => {
   const accessToken = sessionStorage.getItem("access_token");
   try {
     const response = await axios.get(
-      `https://pms.whizible.com/INI_API_Main_Dev/api/InitiativeDetail/GetInitiativeResourceList`,
+      `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeDetail/GetInitiativeResourceList`,
       {
         params: { IdeaId },
         headers: {

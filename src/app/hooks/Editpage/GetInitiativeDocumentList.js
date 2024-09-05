@@ -7,7 +7,7 @@ const GetInitiativeDocumentList = async (IdeaId, UserId) => {
 
   try {
     const response = await axios.get(
-      `https://pms.whizible.com/INI_API_Main_Dev/api/InitiativeDetail/GetInitiativeDocumentList`,
+      `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeDetail/GetInitiativeDocumentList`,
       {
         params: { IdeaId, UserId },
         headers: {

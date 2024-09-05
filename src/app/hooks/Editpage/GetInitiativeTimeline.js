@@ -6,7 +6,7 @@ const GetInitiativeTimeline = async (IdeaId, UserId) => {
   const accessToken = sessionStorage.getItem("access_token");
   try {
     const response = await axios.get(
-      `https://pms.whizible.com/INI_API_Main_Dev/api/InitiativeDetail/GetInitiativeTimeline`,
+      `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeDetail/GetInitiativeTimeline`,
       {
         params: { IdeaId, UserId },
         headers: {

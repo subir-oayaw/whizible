@@ -7,7 +7,7 @@ const GetInitiativeCostList = async (IdeaId) => {
 
   try {
     const response = await axios.get(
-      `https://pms.whizible.com/INI_API_Main_Dev/api/InitiativeDetail/GetInitiativeCostList`,
+      `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeDetail/GetInitiativeCostList`,
       {
         params: { IdeaId },
         headers: {
