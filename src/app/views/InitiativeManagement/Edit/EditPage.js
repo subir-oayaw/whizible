@@ -223,34 +223,35 @@ const EditPage = ({ initiativesID }) => {
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>
         );
-      case "timelines":
-        return (
-          <div className="container-fluid mt-3">
-            <TimelinesComponent initiativeTimeline={initiativeTimeline} />
-            <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
-          </div>
-        );
-      case "documents":
-        return (
-          <div className="container-fluid mt-3">
-            <DocumentsComponent initiativeDocument={initiativeDocument} />
-            <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
-          </div>
-        );
-      case "workflows":
-        return (
-          <div className="container-fluid mt-3">
-            <WorkflowTabs />
-            <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
-          </div>
-        );
-      case "discussion-thread":
-        return (
-          <div className="container-fluid mt-3">
-            <Discussion initiativeId={initiativesID} />
-            <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
-          </div>
-        );
+      // case "timelines":
+      //   return (
+      //     <div className="container-fluid mt-3">
+      //       <TimelinesComponent initiativeTimeline={initiativeTimeline} />
+      //       <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+      //     </div>
+      //   );
+      // case "documents":
+      //   return (
+      //     <div className="container-fluid mt-3">
+      //       <DocumentsComponent initiativeDocument={initiativeDocument} />
+      //       <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+      //     </div>
+      //   );
+      // case "workflows":
+      //   return (
+      //     <div className="container-fluid mt-3">
+      //       <WorkflowTabs />
+      //       <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+      //     </div>
+      //   );
+      // case "discussion-thread":
+      //   return (
+      //     <div className="container-fluid mt-3">
+      //       <Discussion initiativeId={initiativesID} />
+      //       <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
+      //     </div>
+      //   );
+
       case "initiative-history":
         return (
           <div className="container-fluid mt-3">
