@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Box, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { Table } from "react-bootstrap";
 import "./InitiativeDetailsModal.css";
 import GetInitiativeStageDetails from "../../hooks/GetInitiativeStageDetails/GetInitiativeStageDetails";
 
@@ -36,7 +37,7 @@ const InitiativeDetailsModal = ({ open, handleClose, initiative }) => {
       fetchData();
     }
   }, [initiative?.ideaIdPk]);
-
+  console.log("datainitiative", data);
   return (
     <Modal
       open={open}
@@ -108,6 +109,39 @@ const InitiativeDetailsModal = ({ open, handleClose, initiative }) => {
                     </table>
                   </div>
                 </div>
+              </div>
+              {/* New Table Section */}
+              <div className="d-sec3 px-4 mt-2">
+                <Table striped bordered hover responsive>
+                  <thead>
+                    <tr>
+                      <th>From Stage</th>
+                      <th>To Stage</th>
+
+                      <th>Date</th>
+                      <th>Approved By</th>
+                      <th>Approver List</th>
+                      <th>Is Stage Approved</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data?.initiativeStageApprovalDetailsEntity?.map((stage, index) => (
+                      <tr key={index}>
+                        <td>{stage?.fromStage || "N/A"}</td>
+                        <td>{stage?.toStage || "N/A"}</td>
+
+                        <td>
+                          {stage?.stagePlannedEndDate
+                            ? new Date(stage?.stagePlannedEndDate).toLocaleDateString()
+                            : "N/A"}
+                        </td>
+                        <td>{stage?.approvedBy || "N/A"}</td>
+                        <td>{stage?.approverList || "N/A"}</td>
+                        <td>{stage?.isStageApproved ? "Yes" : "No"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
               </div>
             </div>
           </div>
