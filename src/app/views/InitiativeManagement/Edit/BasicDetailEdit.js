@@ -132,7 +132,7 @@ function BasicDetailEdit({
                     label={
                       <>
                         {/* <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "} */}
-                        {field.fieldName}
+                        {field.label}
                       </>
                     }
                     placeholder={field.controlValue}
@@ -151,8 +151,7 @@ function BasicDetailEdit({
                   <Dropdown
                     label={
                       <>
-                        <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "}
-                        {field.fieldName}
+                        <span style={{ color: isRequired ? "red" : "black" }}>*</span> {field.label}
                       </>
                     }
                     placeholder={field.controlValue}
@@ -170,12 +169,7 @@ function BasicDetailEdit({
               return (
                 <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
                   <DatePicker
-                    label={
-                      <>
-                        <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "}
-                        {field.fieldName}
-                      </>
-                    }
+                    label={<>{field.label}</>}
                     value={
                       formDataState[field.fieldName] instanceof Date
                         ? formDataState[field.fieldName]
@@ -193,17 +187,12 @@ function BasicDetailEdit({
               return (
                 <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
                   <TextField
-                    label={
-                      <>
-                        <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "}
-                        {field.fieldName}
-                      </>
-                    }
+                    label={<>{field.label}</>}
                     placeholder={field.controlValue}
-                    value={formDataState[field.fieldName] || ""}
+                    value={formDataState[field.label] || ""}
                     onChange={(ev, newValue) => {
-                      setFormDataState({ ...formDataState, [field.fieldName]: newValue });
-                      handleFieldChange(newValue, field.fieldName);
+                      setFormDataState({ ...formDataState, [field.label]: newValue });
+                      handleFieldChange(newValue, field.label);
                     }}
                     multiline
                     autoAdjustHeight

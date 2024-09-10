@@ -2,6 +2,11 @@ import React from "react";
 import Table from "react-bootstrap/Table";
 
 const StageComponent = ({ stageData }) => {
+  // Sort the stageData by orderno
+  const sortedStageData = [...stageData.data.listInitiativeStageListEntity].sort(
+    (a, b) => a.orderno - b.orderno
+  );
+
   return (
     <div className="tab-pane" id="Ini_Stage">
       <div className="container-fluid">
@@ -22,7 +27,7 @@ const StageComponent = ({ stageData }) => {
             </tr>
           </thead>
           <tbody className="tbodystage">
-            {stageData.data.listInitiativeStageListEntity.map((stage, index) => (
+            {sortedStageData.map((stage, index) => (
               <tr key={`stage-${index}`} className="TR_stages">
                 <td>{stage.natureofDemand}</td>
                 <td>{stage.orderno}</td>
