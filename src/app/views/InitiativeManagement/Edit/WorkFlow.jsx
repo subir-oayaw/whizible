@@ -7,20 +7,13 @@ import WorkflowConfiguration from "./WorkflowConfiguration";
 import WorkflowApprovers from "./WorkflowApprovers";
 import WorkflowForcePush from "./WorkflowForcePush";
 
-const WorkflowTabs = () => {
-  // Mock data for workflow information
-  const workflowData = {
-    started: "Start date",
-    originator: "Originator name",
-    currentStage: "Current stage",
-    last: "Last date",
-    lastActor: "Last actor",
-    approvers: "Approvers list",
-    time: "Time",
-    actor: "Actor",
-    action: "Action",
-    comments: "Comments"
-  };
+const WorkflowTabs = ({ initiativeWorkFlow }) => {
+  // Destructure data from initiativeWorkFlow
+  const workflowData = initiativeWorkFlow?.data?.listInitiativeWorkflowEntity || [];
+
+  // Get the first and last stage data for displaying the summary
+  const startStage = workflowData[0];
+  const endStage = workflowData[workflowData.length - 1];
 
   return (
     <Tab.Container defaultActiveKey="workflowInfo">
@@ -54,19 +47,15 @@ const WorkflowTabs = () => {
                       <tbody>
                         <tr>
                           <td>Started :</td>
-                          <td className="tital22">{workflowData.started}</td>
+                          <td className="tital22">{startStage?.eventTime || "N/A"}</td>
                         </tr>
                         <tr>
                           <td>Originator :</td>
-                          <td className="tital22">{workflowData.originator}</td>
+                          <td className="tital22">{startStage?.employeeName || "N/A"}</td>
                         </tr>
                         <tr>
                           <td>Current Stage:</td>
-                          <td className="tital22">{workflowData.currentStage}</td>
-                        </tr>
-                        <tr>
-                          <td>Current Stage:</td>
-                          <td className="tital22">{workflowData.currentStage}</td>
+                          <td className="tital22">{endStage?.toStageName || "N/A"}</td>
                         </tr>
                       </tbody>
                     </Table>
@@ -78,15 +67,15 @@ const WorkflowTabs = () => {
                       <tbody>
                         <tr>
                           <td>Last :</td>
-                          <td className="tital22">{workflowData.last}</td>
+                          <td className="tital22">{endStage?.eventTime || "N/A"}</td>
                         </tr>
                         <tr>
                           <td>Last Actor :</td>
-                          <td className="tital22">{workflowData.lastActor}</td>
+                          <td className="tital22">{endStage?.employeeName || "N/A"}</td>
                         </tr>
                         <tr>
                           <td>Approvers :</td>
-                          <td className="tital22">{workflowData.approvers}</td>
+                          <td className="tital22">{endStage?.comments || "N/A"}</td>
                         </tr>
                       </tbody>
                     </Table>
@@ -106,7 +95,7 @@ const WorkflowTabs = () => {
                   style={{ backgroundColor: "#2B55CE" }}
                 >
                   <span className="" id="Wstart1" style={{ color: "white" }}>
-                    Start
+                    {startStage?.fromStageName || "Start"}
                   </span>
                 </div>
                 <div className="text-center workflowmain_stagesshow" style={{ fontSize: "60px" }}>
@@ -117,7 +106,7 @@ const WorkflowTabs = () => {
                   style={{ backgroundColor: "#2B55CE" }}
                 >
                   <span className="" style={{ color: "white" }}>
-                    CEO Approval
+                    {startStage?.toStageName || "CEO Approval"}
                   </span>
                 </div>
                 <div className="text-center workflowmain_stagesshow" style={{ fontSize: "60px" }}>
@@ -128,7 +117,7 @@ const WorkflowTabs = () => {
                   style={{ backgroundColor: "#2B55CE" }}
                 >
                   <span className="" style={{ color: "white" }}>
-                    CFO Approval
+                    {endStage?.toStageName || "CFO Approval"}
                   </span>
                 </div>
                 <div className="text-center workflowmain_stagesshow" style={{ fontSize: "60px" }}>
@@ -140,19 +129,19 @@ const WorkflowTabs = () => {
                   <tbody>
                     <tr>
                       <td>Time :</td>
-                      <td className="tital22">{workflowData.time}</td>
+                      <td className="tital22">{startStage?.eventTime || "N/A"}</td>
                     </tr>
                     <tr>
                       <td>Actor :</td>
-                      <td className="tital22">{workflowData.actor}</td>
+                      <td className="tital22">{startStage?.employeeName || "N/A"}</td>
                     </tr>
                     <tr>
                       <td>Action :</td>
-                      <td className="tital22">{workflowData.action}</td>
+                      <td className="tital22">{startStage?.userActionName || "N/A"}</td>
                     </tr>
                     <tr>
                       <td>Comments :</td>
-                      <td className="tital22">{workflowData.comments}</td>
+                      <td className="tital22">{startStage?.comments || "N/A"}</td>
                     </tr>
                   </tbody>
                 </Table>
@@ -166,9 +155,7 @@ const WorkflowTabs = () => {
             <div className="details-div py-3">
               <div className="row">
                 <div className="details-main-sec">
-                  {/* Replace with Fluent UI DetailsList or other components as per your design */}
                   <div className="d-sec1 px-4">
-                    {/* Example DetailsList */}
                     <div
                       className="tab-pane Initcustmodal page-content bgwhite p-4"
                       id="tblmanageworkflow"
