@@ -1,6 +1,5 @@
-// AuthProvider.js
-
 import React, { createContext, useEffect, useReducer, useState } from "react";
+import { PublicClientApplication } from "@azure/msal-browser";
 import axios from "axios";
 import fetchUserProfile from "../hooks/fetchUserProfile";
 import LoadingPage from "../views/LoadingPage";
@@ -8,8 +7,23 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { initializeIcons } from "@fluentui/react/lib/Icons";
 import { useNavigate } from "react-router-dom";
-// Initialize Fluent UI icons (required step)
+
 initializeIcons();
+
+// MSAL configuration
+const msalConfig = {
+  auth: {
+    clientId: process.env.REACT_APP_MSAL_CLIENT_ID,
+    authority: `https://login.microsoftonline.com/${process.env.REACT_APP_TENANT_ID}`,
+    redirectUri: process.env.REACT_APP_REDIRECT_URI
+  },
+  cache: {
+    cacheLocation: "sessionStorage",
+    storeAuthStateInCookie: false
+  }
+};
+
+const msalInstance = new PublicClientApplication(msalConfig);
 
 const initialState = {
   user: null,
@@ -51,6 +65,7 @@ export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showLoader, setShowLoader] = useState(true);
   const navigate = useNavigate();
+
   const login = async (email, password) => {
     try {
       const response = await axios.post("/api/auth/login", { email, password });
@@ -87,13 +102,27 @@ export const AuthProvider = ({ children }) => {
     toast.success("Logout successful");
   };
 
-  const handleMicrosoftSignIn = () => {
-    const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
-    const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+  // Microsoft login using popup
+  const handleMicrosoftSignIn = async () => {
+    try {
+      const loginResponse = await msalInstance.loginPopup({
+        scopes: ["user.read"],
+        prompt: "select_account"
+      });
 
-    window.location.href =
-      baseurlAccessControl +
-      `/api/Authentication/login?redirectUri=${encodeURIComponent(redirectUri)}`;
+      const accessToken = loginResponse.accessToken;
+      sessionStorage.setItem("access_token", accessToken);
+
+      const user = await fetchUserProfile(accessToken);
+      sessionStorage.setItem("user", JSON.stringify(user));
+
+      dispatch({ type: "LOGIN", payload: { user } });
+      toast.success("Microsoft Login successful");
+      navigate("/landingPage");
+    } catch (error) {
+      console.error("Microsoft login failed", error);
+      toast.error("Microsoft login failed. Please retry.");
+    }
   };
 
   useEffect(() => {
@@ -114,52 +143,6 @@ export const AuthProvider = ({ children }) => {
     };
 
     initialize();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const url = window.location.href;
-        const codeMatch = url.match(/[?&]code=([^&]+)/);
-        const stateMatch = url.match(/[?&]state=([^&]+)/);
-        const code = codeMatch ? codeMatch[1] : null;
-        const state = stateMatch ? stateMatch[1] : null;
-
-        if (code && state) {
-          const redirectUri = process.env.REACT_APP_REDIRECT_URI;
-          const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
-
-          const response = await axios.get(
-            `${baseurlAccessControl}/api/Authentication/GetToken?code=${code}&state=${state}&redirectUri=${encodeURIComponent(
-              redirectUri
-            )}`
-          );
-
-          const { accessToken } = response.data;
-
-          if (accessToken) {
-            sessionStorage.setItem("access_token", accessToken);
-
-            const user = await fetchUserProfile(accessToken);
-            sessionStorage.setItem("user", JSON.stringify(user));
-
-            dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user } });
-
-            toast.success("Login successful");
-            navigate("/landingPage");
-          } else {
-            dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
-            toast.error("Login failed. Please retry.");
-          }
-        }
-      } catch (err) {
-        console.error("Initialization failed", err);
-        dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
-        toast.error("Login failed. Please retry.");
-      } finally {
-        setShowLoader(false);
-      }
-    })();
   }, []);
 
   if (showLoader) return <LoadingPage />;
