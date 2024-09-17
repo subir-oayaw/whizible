@@ -141,7 +141,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               id="lastAction"
               placeholder="Select Last Action"
               options={
-                searchFilters.initiativeActionFilter?.map((action) => ({
+                searchFilters?.initiativeActionFilter?.map((action) => ({
                   key: action.actioID,
                   text: action.actionName
                 })) || []
@@ -157,7 +157,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               id="submittedBy"
               placeholder="Select Submitted By"
               options={
-                searchFilters.initiativeSubmittedFilter?.map((submitter) => ({
+                searchFilters?.initiativeSubmittedFilter?.map((submitter) => ({
                   key: submitter.employeeID,
                   text: submitter.submittedBy
                 })) || []
@@ -173,7 +173,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               id="natureOfInitiative"
               placeholder="Select Nature of Initiative"
               options={
-                searchFilters.initiativeNOIFilter?.map((nature) => ({
+                searchFilters?.initiativeNOIFilter?.map((nature) => ({
                   key: nature.natureofDemandID,
                   text: nature.natureofDemand
                 })) || []
@@ -192,7 +192,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               id="selectStage"
               placeholder="Select Stage"
               options={
-                searchFilters.initiativeRequestStageFilter?.map((stage) => ({
+                searchFilters?.initiativeRequestStageFilter?.map((stage) => ({
                   key: stage.requestStageID,
                   text: stage.requestStage
                 })) || []
@@ -208,7 +208,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               id="vendor"
               placeholder="Select Vendor"
               options={
-                searchFilters.initiativeVendorFilter?.map((vendor) => ({
+                searchFilters?.initiativeVendorFilter?.map((vendor) => ({
                   key: vendor.vendorID,
                   text: vendor.vendorNameAbbr
                 })) || []
@@ -224,7 +224,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               id="priority"
               placeholder="Select Priority"
               options={
-                searchFilters.initiativePriorityFilter?.map((priority) => ({
+                searchFilters?.initiativePriorityFilter?.map((priority) => ({
                   key: priority.priorityID,
                   text: priority.priority
                 })) || []
@@ -243,7 +243,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               id="initiativeCategory"
               placeholder="Select Initiative Category"
               options={
-                searchFilters.initiativeRequestTypeFilter?.map((category) => ({
+                searchFilters?.initiativeRequestTypeFilter?.map((category) => ({
                   key: category.requestTypeID,
                   text: category.requestType
                 })) || []
@@ -259,7 +259,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               id="businessGroup"
               placeholder="Select Business Group"
               options={
-                searchFilters.initiativeBusinessGroupFilter?.map((group) => ({
+                searchFilters?.initiativeBusinessGroupFilter?.map((group) => ({
                   key: group.businessGroupID,
                   text: group.businessGroup
                 })) || []
@@ -275,7 +275,7 @@ const SearchAdvanceForm = ({ onClose, searchFilters, onSearch }) => {
               id="organizationUnit"
               placeholder="Select Organization Unit"
               options={
-                filteredLocations.map((unit) => ({
+                filteredLocations?.map((unit) => ({
                   key: unit.locationID,
                   text: unit.location
                 })) || []

@@ -119,10 +119,13 @@ const InitiativeItem = ({
           <div className="initiative-title">
             <Typography variant="body1">{title}</Typography>
             <Box display="flex" alignItems="center">
+              <Typography variant="body2" color="textSecondary">
+                Created By:
+              </Typography>
               <Avatar
                 // src={}
                 alt={employeeName}
-                sx={{ width: 24, height: 24, marginRight: 1 }}
+                sx={{ width: 15, height: 15, marginRight: 1, marginLeft: 1 }}
               />
               <Typography variant="body2" color="textSecondary">
                 {employeeName}

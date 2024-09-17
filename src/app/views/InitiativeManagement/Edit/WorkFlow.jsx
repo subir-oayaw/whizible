@@ -95,7 +95,7 @@ const WorkflowTabs = ({ initiativeWorkFlow }) => {
                   style={{ backgroundColor: "#2B55CE" }}
                 >
                   <span className="" id="Wstart1" style={{ color: "white" }}>
-                    {startStage?.fromStageName || "Start"}
+                    {startStage?.fromStageName || ""}
                   </span>
                 </div>
                 <div className="text-center workflowmain_stagesshow" style={{ fontSize: "60px" }}>
@@ -106,7 +106,7 @@ const WorkflowTabs = ({ initiativeWorkFlow }) => {
                   style={{ backgroundColor: "#2B55CE" }}
                 >
                   <span className="" style={{ color: "white" }}>
-                    {startStage?.toStageName || "CEO Approval"}
+                    {startStage?.toStageName || ""}
                   </span>
                 </div>
                 <div className="text-center workflowmain_stagesshow" style={{ fontSize: "60px" }}>
@@ -117,12 +117,12 @@ const WorkflowTabs = ({ initiativeWorkFlow }) => {
                   style={{ backgroundColor: "#2B55CE" }}
                 >
                   <span className="" style={{ color: "white" }}>
-                    {endStage?.toStageName || "CFO Approval"}
+                    {endStage?.toStageName || ""}
                   </span>
                 </div>
-                <div className="text-center workflowmain_stagesshow" style={{ fontSize: "60px" }}>
+                {/* <div className="text-center workflowmain_stagesshow" style={{ fontSize: "60px" }}>
                   ↓
-                </div>
+                </div> */}
               </div>
               <div className="col-sm-3">
                 <Table striped bordered hover className="details-table2 mb-0 w-50">
