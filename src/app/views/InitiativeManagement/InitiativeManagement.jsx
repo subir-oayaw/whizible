@@ -242,7 +242,7 @@ const InitiativeManagement = () => {
               </div>
               <div className="col-12 col-sm-5 d-flex justify-content-end">
                 <div className="d-flex align-items-center">
-                  <div className="search-box position-relative me-3">
+                  {/* <div className="search-box position-relative me-3">
                     <input
                       id="InitMangntSrchInput"
                       className="search-text"
@@ -260,7 +260,7 @@ const InitiativeManagement = () => {
                         data-bs-original-title="Search"
                       />
                     </a>
-                  </div>
+                  </div> */}
 
                   <div className="me-3" onClick={handleShowForm}>
                     <img
@@ -276,7 +276,7 @@ const InitiativeManagement = () => {
                     {isListView ? <ViewModule /> : <ViewList />}
                   </IconButton>
 
-                  <div className="d-flex align-items-center">
+                  {/* <div className="d-flex align-items-center">
                     <Button
                       aria-controls="sort-menu"
                       aria-haspopup="true"
@@ -306,7 +306,7 @@ const InitiativeManagement = () => {
                         <CalendarToday /> Initiation Date (DSC)
                       </MenuItem>
                     </Menu>
-                  </div>
+                  </div> */}
                   <Tooltip title={!canAdd ? t("no_rights_add") : ""}>
                     <span>
                       <PrimaryButton

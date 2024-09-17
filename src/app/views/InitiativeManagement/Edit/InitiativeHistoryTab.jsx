@@ -1,68 +1,20 @@
 import React from "react";
-import { Dropdown, DropdownMenuItemType } from "@fluentui/react/lib/Dropdown";
+import { Dropdown } from "@fluentui/react/lib/Dropdown";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
-import { Label, Stack } from "@fluentui/react";
+import { Label } from "@fluentui/react";
 import { Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const InitiativeHistoryTab = () => {
+const InitiativeHistoryTab = ({ initiativeHistory }) => {
+  // Extract the history data from the initiativeHistory prop
+  const historyData = initiativeHistory?.data?.listInitiativeHistoryListEntity || [];
+
   const actionOptions = [
     { key: "select", text: "Select Action Taken" },
     { key: "approved", text: "Approved" },
     { key: "rejected", text: "Rejected" },
     { key: "submitted", text: "Submitted" },
     { key: "system", text: "System" }
-  ];
-
-  const historyData = [
-    {
-      eventTime: "17/07/2023 3:32:02 PM",
-      actionTaken: "Approved",
-      fromStage: "Deployment",
-      toStage: "Completed",
-      approver: "Admin",
-      comments: "Force pushed by Admin"
-    },
-    {
-      eventTime: "17/07/2023 3:32:02 PM",
-      actionTaken: "Approved",
-      fromStage: "CFO Approval",
-      toStage: "Deployment",
-      approver: "Admin",
-      comments: "Force pushed by Admin"
-    },
-    {
-      eventTime: "17/07/2023 3:29:35 PM",
-      actionTaken: "Approved",
-      fromStage: "Start",
-      toStage: "QA Lead Approval",
-      approver: "Admin",
-      comments: "ok"
-    },
-    {
-      eventTime: "06/06/2023 11:06:41 AM",
-      actionTaken: "Submitted",
-      fromStage: "Start",
-      toStage: "Completed",
-      approver: "Admin",
-      comments: "ok"
-    },
-    {
-      eventTime: "17/07/2023 3:32:02 PM",
-      actionTaken: "Rejected",
-      fromStage: "QA Lead Approval",
-      toStage: "Completed",
-      approver: "Admin",
-      comments: "ok"
-    },
-    {
-      eventTime: "06/06/2023 11:05:48 AM",
-      actionTaken: "Submitted",
-      fromStage: "Start",
-      toStage: "Completed",
-      approver: "Admin",
-      comments: "ok"
-    }
   ];
 
   return (
@@ -106,11 +58,11 @@ const InitiativeHistoryTab = () => {
               <tbody className="tbodyHistory">
                 {historyData.map((row, index) => (
                   <tr className="TR_history" key={index}>
-                    <td>{row.eventTime}</td>
-                    <td>{row.actionTaken}</td>
+                    <td>{new Date(row.eventTime).toLocaleString()}</td>
+                    <td>{row.actionType}</td>
                     <td>{row.fromStage}</td>
                     <td>{row.toStage}</td>
-                    <td>{row.approver}</td>
+                    <td>{row.userName}</td>
                     <td>{row.comments}</td>
                   </tr>
                 ))}

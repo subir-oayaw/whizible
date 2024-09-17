@@ -111,7 +111,7 @@ const InitiativeDetailsModal = ({ open, handleClose, initiative }) => {
                 </div>
               </div>
               {/* New Table Section */}
-              <div className="d-sec3 px-4 mt-2">
+              <div className="d-sec3 px-4 mt-4">
                 <Table striped bordered hover responsive>
                   <thead>
                     <tr>

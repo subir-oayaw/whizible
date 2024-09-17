@@ -5,7 +5,7 @@ import { TextField, Dropdown, DatePicker } from "@fluentui/react";
 import { Stack } from "@fluentui/react/lib/Stack";
 import "bootstrap/dist/css/bootstrap.min.css";
 import currentstage from "../../../../assets/img/currentstage.svg";
-import { tabData, formData, buttonData, resourcesData, costData } from "./EditDumy";
+import { tabData, formData, buttonData } from "./EditDumy";
 import ResourceEdit from "./ResourceEdit";
 import BasicDetailEdit from "./BasicDetailEdit";
 import CostTabContent from "./CostTabContent";
@@ -29,11 +29,15 @@ import GetInitiativeResourceList from "../../../hooks/Editpage/GetInitiativeReso
 import GetInitiativeCostList from "../../../hooks/Editpage/GetInitiativeCostList";
 import GetInitiativeWorkOrderList from "../../../hooks/Editpage/GetInitiativeWorkOrderList";
 import GetInitiativeFundList from "../../../hooks/Editpage/GetInitiativeFundList";
+import GetInitiativeDiscussion from "../../../hooks/Editpage/GetInitiativeDiscussion";
+import GetInitiativeHistory from "../../../hooks/Editpage/GetInitiativeHistory";
+import GetInitiativeLinkAccess from "../../../hooks/Editpage/GetInitiativeLinkAccess";
+import GetInitiativeWorkFlow from "../../../hooks/Editpage/GetInitiativeWorkFlow";
 
 const EditPage = ({ initiativesID }) => {
-  const [activeTab, setActiveTab] = useState(tabData[0]?.id); // State to track active tab
-  const [showMore, setShowMore] = useState(false); // State to toggle between show more and show less
-  const [tabsToShow, setTabsToShow] = useState(4); // Default number of tabs to show
+  const [activeTab, setActiveTab] = useState(tabData[0]?.id);
+  const [showMore, setShowMore] = useState(false);
+  const [tabsToShow, setTabsToShow] = useState(4);
   const [formDataState, setFormDataState] = useState({
     natureOfInitiative: "",
     initiativeCode: "",
@@ -52,23 +56,26 @@ const EditPage = ({ initiativesID }) => {
   const [initiativeCost, setInitiativeCost] = useState(null);
   const [initiativeWorkOrder, setInitiativeWorkOrder] = useState(null);
   const [initiativeFund, setInitiativeFund] = useState(null);
+  const [initiativeDiscussion, setInitiativeDiscussion] = useState(null);
+  const [initiativeHistory, setInitiativeHistory] = useState(null);
+  const [initiativeLinkAccess, setInitiativeLinkAccess] = useState(null);
+  const [initiativeWorkFlow, setInitiativeWorkFlow] = useState(null);
 
   const handleGoBack = () => {
-    window.history.back(); // Navigate back in browser history
+    window.history.back();
   };
-  // Update tabsToShow state based on screen size
+
   const updateTabsToShow = () => {
     const width = window.innerWidth;
     if (width >= 1200) {
-      setTabsToShow(10); // Show 10 tabs for large screens
+      setTabsToShow(10);
     } else if (width >= 992) {
-      setTabsToShow(8); // Show 8 tabs for medium-large screens
+      setTabsToShow(8);
     } else {
-      setTabsToShow(4); // Show 4 tabs for smaller screens
+      setTabsToShow(4);
     }
   };
 
-  // Effect to update tabsToShow on mount and window resize
   useEffect(() => {
     updateTabsToShow();
     window.addEventListener("resize", updateTabsToShow);
@@ -77,46 +84,53 @@ const EditPage = ({ initiativesID }) => {
     };
   }, []);
 
-  // Fetch userID
   useEffect(() => {
     const userdata = JSON.parse(sessionStorage.getItem("user"));
     setUserID(userdata?.employeeId);
   }, []);
 
-  // Fetch data based on the active tab
   useEffect(() => {
     if (userID) {
       const fetchData = async () => {
         try {
-          const detail = await GetInitiativeDetail(82, userID);
-
+          const detail = await GetInitiativeDetail(initiativesID, userID);
           setInitiativeDetail(detail);
 
-          const roi = await GetInitiativeROIList(82);
-          console.log("initiativeROI1", roi);
+          const roi = await GetInitiativeROIList(initiativesID);
           setInitiativeROI(roi);
 
-          const stage = await GetInitiativeStageList(82);
+          const stage = await GetInitiativeStageList(initiativesID);
           setInitiativeStage(stage);
 
-          const document = await GetInitiativeDocumentList(82, userID);
+          const document = await GetInitiativeDocumentList(initiativesID, userID);
           setInitiativeDocument(document);
 
-          const timeline = await GetInitiativeTimeline(82, userID);
+          const timeline = await GetInitiativeTimeline(initiativesID, userID);
           setInitiativeTimeline(timeline);
 
-          const resource = await GetInitiativeResourceList(82);
-          console.log("setInitiativeResource", resource);
+          const resource = await GetInitiativeResourceList(initiativesID);
           setInitiativeResource(resource);
 
-          const cost = await GetInitiativeCostList(82);
+          const cost = await GetInitiativeCostList(initiativesID);
           setInitiativeCost(cost);
 
-          const workOrder = await GetInitiativeWorkOrderList(82);
+          const workOrder = await GetInitiativeWorkOrderList(initiativesID);
           setInitiativeWorkOrder(workOrder);
 
-          const fund = await GetInitiativeFundList(82);
+          const fund = await GetInitiativeFundList(initiativesID);
           setInitiativeFund(fund);
+
+          const discussion = await GetInitiativeDiscussion(initiativesID);
+          setInitiativeDiscussion(discussion);
+
+          const history = await GetInitiativeHistory(initiativesID);
+          setInitiativeHistory(history);
+
+          const linkAccess = await GetInitiativeLinkAccess(initiativesID, userID);
+          setInitiativeLinkAccess(linkAccess);
+
+          const workFlow = await GetInitiativeWorkFlow(initiativesID);
+          setInitiativeWorkFlow(workFlow);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -126,17 +140,14 @@ const EditPage = ({ initiativesID }) => {
     }
   }, [userID, initiativesID]);
 
-  // Handler for toggling show more/less tabs
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
 
-  // Handler for changing active tab
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
 
-  // Render tabs with "More..." option for responsiveness
   const renderTabs = () => {
     const displayedTabs = showMore ? tabData : tabData.slice(0, tabsToShow);
 
@@ -160,19 +171,17 @@ const EditPage = ({ initiativesID }) => {
     );
   };
 
-  // Handler for form field changes
   const handleFieldChange = (value, stateKey) => {
     setFormDataState({ ...formDataState, [stateKey]: value });
   };
 
-  // Render content based on active tab
   const renderContent = () => {
     switch (activeTab) {
       case "basic-details":
         return (
           <div className="container-fluid mt-3">
-            <h3>Basic Details</h3>
             <BasicDetailEdit
+              initiativeLinkAccess={initiativeLinkAccess}
               initiativeDetail={initiativeDetail}
               formData={formData}
               buttonData={buttonData}
@@ -240,7 +249,7 @@ const EditPage = ({ initiativesID }) => {
       case "workflows":
         return (
           <div className="container-fluid mt-3">
-            <WorkflowTabs />
+            <WorkflowTabs initiativeWorkFlow={initiativeWorkFlow} />
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>
         );
@@ -251,11 +260,10 @@ const EditPage = ({ initiativesID }) => {
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>
         );
-
       case "initiative-history":
         return (
           <div className="container-fluid mt-3">
-            <InitiativeHistoryTab initiativeId={initiativesID} />
+            <InitiativeHistoryTab initiativeHistory={initiativeHistory} />
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>
         );

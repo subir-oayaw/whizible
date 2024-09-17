@@ -36,12 +36,29 @@ const classNames = mergeStyleSets({
     borderTop: `1px solid ${theme.palette.neutralLight}`,
     display: "flex",
     justifyContent: "flex-end"
+  },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start"
+  },
+  headerRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: theme.spacing.m
+  },
+  buttonRow: {
+    display: "flex",
+    justifyContent: "flex-end",
+    width: "100%",
+    marginTop: theme.spacing.m
   }
 });
 
 function BasicDetailEdit({
+  initiativeLinkAccess,
   initiativeDetail = {},
-  buttonData = [],
   handleFieldChange,
   handleGoBack
 }) {
@@ -83,16 +100,22 @@ function BasicDetailEdit({
   };
 
   const renderDynamicButtons = () => {
-    return buttonData.map((button, index) => {
-      if (button.display) {
-        return (
-          <PrimaryButton key={index} className="topbtnblue" onClick={() => openModal(button.label)}>
-            <span>{button.label}</span>
-          </PrimaryButton>
-        );
+    return (initiativeLinkAccess?.data?.listInitiativeLinkAccessEntity || []).map(
+      (button, index) => {
+        if (button.display === 1) {
+          return (
+            <PrimaryButton
+              key={index}
+              className="topbtnblue mr-1"
+              onClick={() => openModal(button.linkName)}
+            >
+              <span>{button.linkName}</span>
+            </PrimaryButton>
+          );
+        }
+        return null;
       }
-      return null;
-    });
+    );
   };
 
   const renderFormElements = () => {
@@ -129,12 +152,7 @@ function BasicDetailEdit({
               return (
                 <div key={index} className={`col-md-4 mt-2 form-group row-${field.pageRowNo}`}>
                   <TextField
-                    label={
-                      <>
-                        {/* <span style={{ color: isRequired ? "red" : "black" }}>*</span>{" "} */}
-                        {field.label}
-                      </>
-                    }
+                    label={<>{field.label}</>}
                     placeholder={field.controlValue}
                     value={formDataState[field.fieldName] || ""}
                     onChange={(ev, newValue) => {
@@ -189,10 +207,10 @@ function BasicDetailEdit({
                   <TextField
                     label={<>{field.label}</>}
                     placeholder={field.controlValue}
-                    value={formDataState[field.label] || ""}
+                    value={formDataState[field.fieldName] || ""}
                     onChange={(ev, newValue) => {
-                      setFormDataState({ ...formDataState, [field.label]: newValue });
-                      handleFieldChange(newValue, field.label);
+                      setFormDataState({ ...formDataState, [field.fieldName]: newValue });
+                      handleFieldChange(newValue, field.fieldName);
                     }}
                     multiline
                     autoAdjustHeight
@@ -214,50 +232,39 @@ function BasicDetailEdit({
 
   return (
     <div className="container-fluid mt-3">
-      <div className="d-flex align-items-center">
+      <div className={classNames.headerRow}>
         <div className="iniCurrStageTxt">
           <div className="stagesofinititative ps-lg-2 ps-xl-4">
             <small>(Nature Of Initiative)</small>
           </div>
-          <div className="d-flex align-items-center">
-            <div className="currStageImg">
-              <a
-                href="#!"
-                className=""
-                id="current_Imgstage"
-                data-bs-toggle="tooltip"
-                title="Current Stage"
-                data-bs-placement="bottom"
-              >
-                <img src={currentstage} alt="Current Stage" />
-              </a>
-            </div>
-            <div className="currStageTxt w_text ps-2">
-              Current&nbsp;stage&nbsp;:&nbsp;
-              <span className="textstrong main_approval mx-0" id="name_approvalTop">
-                CFO Approval
-              </span>
+          <div className="container-fluid">
+            <div className="d-flex justify-content-end">
+              <div className="d-flex align-items-center">
+                <div className="currStageImg">
+                  <a title="Current Stage" data-bs-placement="bottom">
+                    <img src={currentstage} alt="Current Stage" />
+                  </a>
+                </div>
+                <div className="currStageTxt w_text ps-2">
+                  Current&nbsp;stage&nbsp;:&nbsp;
+                  <span className="textstrong main_approval mx-0" id="name_approvalTop">
+                    CFO Approval
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}>
-          {renderDynamicButtons()}
-          <PrimaryButton className="topbtnblue" onClick={handleGoBack}>
-            <span>Back</span>
-          </PrimaryButton>
-        </Stack>
+      </div>
+      <div className={classNames.buttonRow}>
+        {renderDynamicButtons()}
+        <PrimaryButton className="topbtnblue" onClick={handleGoBack}>
+          <span>Back</span>
+        </PrimaryButton>
       </div>
       <form>
-        <div className="form-group row mt-3">
-          <div className="col-sm-12 text-end form-group">
-            <label className="pr-3">
-              <span className="text-danger">*</span> Required fields
-            </label>
-          </div>
-          {renderFormElements()}
-        </div>
+        <div className={classNames.container}>{renderFormElements()}</div>
       </form>
-
       <Modal
         isOpen={isModalOpen}
         onDismiss={closeModal}
