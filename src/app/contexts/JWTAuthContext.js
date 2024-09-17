@@ -176,6 +176,7 @@ export const AuthProvider = ({ children }) => {
       }}
     >
       <ToastContainer position="top-right" autoClose={5000} />
+
       {children}
     </AuthContext.Provider>
   );

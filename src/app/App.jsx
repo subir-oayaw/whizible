@@ -12,6 +12,7 @@ import routes from "./routes";
 import "../fake-db";
 
 import "./app.css";
+
 export default function App() {
   const content = useRoutes(routes);
 
