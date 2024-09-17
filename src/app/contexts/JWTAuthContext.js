@@ -104,48 +104,35 @@ export const AuthProvider = ({ children }) => {
       `width=${width},height=${height},top=${top},left=${left}`
     );
 
-    const messageListener = async (event) => {
+    const messageListener = (event) => {
       if (event.origin === baseurlAccessControl && event.data) {
-        const { code, state } = event.data;
+        const { accessToken, user } = event.data;
 
-        if (code && state) {
-          try {
-            const response = await axios.get(
-              `${baseurlAccessControl}/api/Authentication/GetToken?code=${code}&state=${state}&redirectUri=${encodeURIComponent(
-                redirectUri
-              )}`
-            );
+        if (accessToken && user) {
+          sessionStorage.setItem("access_token", accessToken);
+          sessionStorage.setItem("user", JSON.stringify(user));
 
-            const { accessToken } = response.data;
+          dispatch({ type: "LOGIN", payload: { user } });
 
-            if (accessToken) {
-              sessionStorage.setItem("access_token", accessToken);
+          toast.success("Login successful");
 
-              const user = await fetchUserProfile(accessToken);
-              sessionStorage.setItem("user", JSON.stringify(user));
-
-              dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user } });
-
-              toast.success("Login successful");
-              navigate("/landingPage");
-            } else {
-              dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
-              toast.error("Login failed. Please retry.");
-            }
-          } catch (err) {
-            console.error("Error during token fetching", err);
-            dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
-            toast.error("Login failed. Please retry.");
+          // Close the popup
+          if (authWindow) {
+            authWindow.close();
           }
-        }
 
-        authWindow.close();
+          // Redirect the main window
+          navigate("/landingPage");
+        } else {
+          toast.error("Login failed. Please retry.");
+        }
       }
     };
 
+    // Add event listener to listen for messages from the popup
     window.addEventListener("message", messageListener);
 
-    // Cleanup event listener on component unmount
+    // Cleanup function to remove the event listener
     return () => {
       window.removeEventListener("message", messageListener);
     };
@@ -172,7 +159,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    (async () => {
+    const handleAuthCode = async () => {
       try {
         const url = window.location.href;
         const codeMatch = url.match(/[?&]code=([^&]+)/);
@@ -214,7 +201,9 @@ export const AuthProvider = ({ children }) => {
       } finally {
         setShowLoader(false);
       }
-    })();
+    };
+
+    handleAuthCode();
   }, []);
 
   if (showLoader) return <LoadingPage />;
