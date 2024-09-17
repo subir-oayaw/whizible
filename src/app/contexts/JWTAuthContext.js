@@ -49,6 +49,7 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showLoader, setShowLoader] = useState(true);
+  const [authWindow, setAuthWindow] = useState(null); // State to store the popup reference
   const navigate = useNavigate();
 
   const login = async (email, password) => {
@@ -96,13 +97,15 @@ export const AuthProvider = ({ children }) => {
     const left = window.screen.width / 2 - width / 2;
     const top = window.screen.height / 2 - height / 2;
 
-    const authWindow = window.open(
+    const newAuthWindow = window.open(
       `${baseurlAccessControl}/api/Authentication/login?redirectUri=${encodeURIComponent(
         redirectUri
       )}`,
       "Microsoft Sign-In",
       `width=${width},height=${height},top=${top},left=${left}`
     );
+
+    setAuthWindow(newAuthWindow); // Store the reference
 
     const messageListener = (event) => {
       if (event.origin === baseurlAccessControl && event.data) {
@@ -111,13 +114,13 @@ export const AuthProvider = ({ children }) => {
         if (accessToken && user) {
           sessionStorage.setItem("access_token", accessToken);
           sessionStorage.setItem("user", JSON.stringify(user));
-
+          localStorage.setItem("access_token", accessToken);
           dispatch({ type: "LOGIN", payload: { user } });
 
           toast.success("Login successful");
 
-          // Close the popup
-          if (authWindow) {
+          // Close the popup if it's still open
+          if (authWindow && !authWindow.closed) {
             authWindow.close();
           }
 
@@ -129,10 +132,8 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    // Add event listener to listen for messages from the popup
     window.addEventListener("message", messageListener);
 
-    // Cleanup function to remove the event listener
     return () => {
       window.removeEventListener("message", messageListener);
     };
@@ -180,23 +181,25 @@ export const AuthProvider = ({ children }) => {
           const { accessToken } = response.data;
 
           if (accessToken) {
-            sessionStorage.setItem("access_token", accessToken);
+            console.log("Access Token from Popup:", accessToken);
 
-            const user = await fetchUserProfile(accessToken);
-            sessionStorage.setItem("user", JSON.stringify(user));
+            // Save the token to localStorage
+            localStorage.setItem("access_token", accessToken);
 
-            dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user } });
+            // Notify the main window
+            if (window.opener) {
+              window.opener.postMessage({ action: "tokenReceived" }, "*");
+            }
 
-            toast.success("Login successful");
-            navigate("/landingPage");
+            // Close the popup
+            window.close();
           } else {
-            dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
+            console.error("No access token received");
             toast.error("Login failed. Please retry.");
           }
         }
       } catch (err) {
         console.error("Initialization failed", err);
-        dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
         toast.error("Login failed. Please retry.");
       } finally {
         setShowLoader(false);
@@ -204,7 +207,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     handleAuthCode();
-  }, []);
+  }, [navigate]);
 
   if (showLoader) return <LoadingPage />;
 
