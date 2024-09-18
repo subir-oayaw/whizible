@@ -33,6 +33,8 @@ import GetInitiativeDiscussion from "../../../hooks/Editpage/GetInitiativeDiscus
 import GetInitiativeHistory from "../../../hooks/Editpage/GetInitiativeHistory";
 import GetInitiativeLinkAccess from "../../../hooks/Editpage/GetInitiativeLinkAccess";
 import GetInitiativeWorkFlow from "../../../hooks/Editpage/GetInitiativeWorkFlow";
+import GetInitiativeRisks from "../../../hooks/Editpage/GetInitiativeRisks";
+import GetInitiativeActioItems from "../../../hooks/Editpage/GetInitiativeActioItems";
 
 const EditPage = ({ initiativesID }) => {
   const [activeTab, setActiveTab] = useState(tabData[0]?.id);
@@ -60,6 +62,8 @@ const EditPage = ({ initiativesID }) => {
   const [initiativeHistory, setInitiativeHistory] = useState(null);
   const [initiativeLinkAccess, setInitiativeLinkAccess] = useState(null);
   const [initiativeWorkFlow, setInitiativeWorkFlow] = useState(null);
+  const [initiativeRisks, setInitiativeRisks] = useState(null);
+  const [initiativeActioItems, setInitiativeActioItems] = useState(null);
 
   const handleGoBack = () => {
     window.history.back();
@@ -131,6 +135,12 @@ const EditPage = ({ initiativesID }) => {
 
           const workFlow = await GetInitiativeWorkFlow(initiativesID);
           setInitiativeWorkFlow(workFlow);
+
+          const risks = await GetInitiativeRisks(initiativesID, userID);
+          setInitiativeRisks(risks);
+
+          const actioItems = await GetInitiativeActioItems(initiativesID, userID);
+          setInitiativeActioItems(actioItems);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -270,7 +280,10 @@ const EditPage = ({ initiativesID }) => {
       case "more-actions":
         return (
           <div className="container-fluid mt-3">
-            <MoreActions initiativeId={initiativesID} />
+            <MoreActions
+              initiativeActioItems={initiativeActioItems}
+              initiativeRisks={initiativeRisks}
+            />
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>
         );

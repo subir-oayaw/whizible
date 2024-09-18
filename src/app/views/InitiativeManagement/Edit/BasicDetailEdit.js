@@ -76,7 +76,6 @@ function BasicDetailEdit({
           initialData[field.fieldName] = field.controlValue || "";
         }
       });
-      console.log("Initialized data:", initialData);
       setFormDataState(initialData);
       setLoading(false);
     } else {
@@ -147,6 +146,11 @@ function BasicDetailEdit({
       <div className="row" key={rowNo}>
         {groupedFields[rowNo].map((field, index) => {
           const isRequired = field.mandatory === 1;
+          const options = field.initiativeDetailDropDownEntity.map((item) => ({
+            key: item.id,
+            text: item.name
+          }));
+
           switch (field.controlType) {
             case "Text Box":
               return (
@@ -173,7 +177,7 @@ function BasicDetailEdit({
                       </>
                     }
                     placeholder={field.controlValue}
-                    options={field.options || []}
+                    options={options}
                     selectedKey={formDataState[field.fieldName]}
                     onChange={(ev, item) => {
                       const value = item ? item.key : null;
@@ -269,18 +273,19 @@ function BasicDetailEdit({
         isOpen={isModalOpen}
         onDismiss={closeModal}
         isBlocking={false}
-        containerClassName={classNames.modal}
+        className={classNames.modal}
       >
         <div className={classNames.header}>
-          <span>{modalTitle}</span>
+          <span className={classNames.header}>{modalTitle}</span>
+          <PrimaryButton onClick={closeModal}>Close</PrimaryButton>
         </div>
         <div className={classNames.body}>
           <TextField
             label="Comments"
+            multiline
+            rows={4}
             value={comments}
             onChange={(ev, newValue) => setComments(newValue)}
-            multiline
-            autoAdjustHeight
           />
         </div>
         <div className={classNames.footer}>

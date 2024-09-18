@@ -37,6 +37,7 @@ const InitiativeItem = ({
   const {
     title,
     id,
+    ideaIdPk,
     userId,
     originator,
     processName,
@@ -222,7 +223,7 @@ const InitiativeItem = ({
                         //   handleDisabledClick("No rights to edit");
                         // }
                         startEditing();
-                        SetinitiativesID(id);
+                        SetinitiativesID(ideaIdPk);
                       }}
                     >
                       <EditIcon />
