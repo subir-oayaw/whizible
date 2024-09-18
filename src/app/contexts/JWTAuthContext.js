@@ -1,3 +1,5 @@
+// AuthProvider.js
+
 import React, { createContext, useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import fetchUserProfile from "../hooks/fetchUserProfile";
@@ -6,7 +8,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { initializeIcons } from "@fluentui/react/lib/Icons";
 import { useNavigate } from "react-router-dom";
-
 // Initialize Fluent UI icons (required step)
 initializeIcons();
 
@@ -43,15 +44,13 @@ const AuthContext = createContext({
   login: () => {},
   logout: () => {},
   register: () => {},
-  handleMicrosoftSignIn: () => {}
+  handleMicrosoftSignIn: () => {} // Ensure all context methods are defined initially
 });
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showLoader, setShowLoader] = useState(true);
-  const [authWindow, setAuthWindow] = useState(null); // State to store the popup reference
   const navigate = useNavigate();
-
   const login = async (email, password) => {
     try {
       const response = await axios.post("/api/auth/login", { email, password });
@@ -92,51 +91,9 @@ export const AuthProvider = ({ children }) => {
     const baseurlAccessControl = process.env.REACT_APP_BASEURL_ACCESS_CONTROL;
     const redirectUri = process.env.REACT_APP_REDIRECT_URI;
 
-    const width = 600;
-    const height = 700;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
-
-    const newAuthWindow = window.open(
-      `${baseurlAccessControl}/api/Authentication/login?redirectUri=${encodeURIComponent(
-        redirectUri
-      )}`,
-      "Microsoft Sign-In",
-      `width=${width},height=${height},top=${top},left=${left}`
-    );
-
-    setAuthWindow(newAuthWindow); // Store the reference
-
-    const messageListener = (event) => {
-      if (event.origin === baseurlAccessControl && event.data) {
-        const { accessToken, user } = event.data;
-
-        if (accessToken && user) {
-          sessionStorage.setItem("access_token", accessToken);
-          sessionStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("access_token", accessToken);
-          dispatch({ type: "LOGIN", payload: { user } });
-
-          toast.success("Login successful");
-
-          // Close the popup if it's still open
-          if (authWindow && !authWindow.closed) {
-            authWindow.close();
-          }
-
-          // Redirect the main window
-          navigate("/landingPage");
-        } else {
-          toast.error("Login failed. Please retry.");
-        }
-      }
-    };
-
-    window.addEventListener("message", messageListener);
-
-    return () => {
-      window.removeEventListener("message", messageListener);
-    };
+    window.location.href =
+      baseurlAccessControl +
+      `/api/Authentication/login?redirectUri=${encodeURIComponent(redirectUri)}`;
   };
 
   useEffect(() => {
@@ -160,7 +117,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const handleAuthCode = async () => {
+    (async () => {
       try {
         const url = window.location.href;
         const codeMatch = url.match(/[?&]code=([^&]+)/);
@@ -181,33 +138,29 @@ export const AuthProvider = ({ children }) => {
           const { accessToken } = response.data;
 
           if (accessToken) {
-            console.log("Access Token from Popup:", accessToken);
+            sessionStorage.setItem("access_token", accessToken);
 
-            // Save the token to localStorage
-            localStorage.setItem("access_token", accessToken);
+            const user = await fetchUserProfile(accessToken);
+            sessionStorage.setItem("user", JSON.stringify(user));
 
-            // Notify the main window
-            if (window.opener) {
-              window.opener.postMessage({ action: "tokenReceived" }, "*");
-            }
+            dispatch({ type: "LOGIN", payload: { isAuthenticated: true, user } });
 
-            // Close the popup
-            window.close();
+            toast.success("Login successful");
+            navigate("/landingPage");
           } else {
-            console.error("No access token received");
+            dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
             toast.error("Login failed. Please retry.");
           }
         }
       } catch (err) {
         console.error("Initialization failed", err);
+        dispatch({ type: "INIT", payload: { isAuthenticated: false, user: null } });
         toast.error("Login failed. Please retry.");
       } finally {
         setShowLoader(false);
       }
-    };
-
-    handleAuthCode();
-  }, [navigate]);
+    })();
+  }, []);
 
   if (showLoader) return <LoadingPage />;
 
@@ -219,11 +172,10 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         register,
-        handleMicrosoftSignIn
+        handleMicrosoftSignIn // Ensure handleMicrosoftSignIn is included in the context value
       }}
     >
       <ToastContainer position="top-right" autoClose={5000} />
-
       {children}
     </AuthContext.Provider>
   );
