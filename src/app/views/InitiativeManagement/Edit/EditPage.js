@@ -35,7 +35,7 @@ import GetInitiativeLinkAccess from "../../../hooks/Editpage/GetInitiativeLinkAc
 import GetInitiativeWorkFlow from "../../../hooks/Editpage/GetInitiativeWorkFlow";
 import GetInitiativeRisks from "../../../hooks/Editpage/GetInitiativeRisks";
 import GetInitiativeActioItems from "../../../hooks/Editpage/GetInitiativeActioItems";
-
+import GetPrioritizationCheckList from "app/hooks/Editpage/GetPrioritizationCheckList";
 const EditPage = ({ initiativesID }) => {
   const [activeTab, setActiveTab] = useState(tabData[0]?.id);
   const [showMore, setShowMore] = useState(false);
@@ -64,6 +64,7 @@ const EditPage = ({ initiativesID }) => {
   const [initiativeWorkFlow, setInitiativeWorkFlow] = useState(null);
   const [initiativeRisks, setInitiativeRisks] = useState(null);
   const [initiativeActioItems, setInitiativeActioItems] = useState(null);
+  const [prioritizationCheckList, setPrioritizationCheckList] = useState(null);
 
   const handleGoBack = () => {
     window.history.back();
@@ -141,6 +142,8 @@ const EditPage = ({ initiativesID }) => {
 
           const actioItems = await GetInitiativeActioItems(initiativesID, userID);
           setInitiativeActioItems(actioItems);
+          const PrioritizationCheckList = await GetPrioritizationCheckList(initiativesID, userID);
+          setPrioritizationCheckList(PrioritizationCheckList);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -283,6 +286,7 @@ const EditPage = ({ initiativesID }) => {
             <MoreActions
               initiativeActioItems={initiativeActioItems}
               initiativeRisks={initiativeRisks}
+              prioritizationCheckList={prioritizationCheckList}
             />
             <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 10 }}></Stack>
           </div>

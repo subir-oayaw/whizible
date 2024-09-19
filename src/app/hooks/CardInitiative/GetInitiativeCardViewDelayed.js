@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const useInitiativeCardViewDelayed = (currentPage, currentFilter, filters) => {
+const useInitiativeCardViewDelayed = (currentCardPage3, currentFilter, filters) => {
   const [dashboardData3, setDashboardData3] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,7 +15,7 @@ const useInitiativeCardViewDelayed = (currentPage, currentFilter, filters) => {
       try {
         const accessToken = sessionStorage.getItem("access_token");
         const response = await axios.get(
-          `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeCardView/GetInitiativeCardViewDelayed?alterType=W&employeeId=${employeeId}&PageNo=${currentPage}`,
+          `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeCardView/GetInitiativeCardViewDelayed?alterType=W&employeeId=${employeeId}&PageNo=${currentCardPage3}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`
@@ -38,7 +38,7 @@ const useInitiativeCardViewDelayed = (currentPage, currentFilter, filters) => {
     };
 
     fetchData();
-  }, [currentPage, currentFilter, employeeId, filters]);
+  }, [currentCardPage3, currentFilter, employeeId, filters]);
 
   return { dashboardData3, loading, error };
 };

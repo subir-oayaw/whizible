@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Pivot, PivotItem } from "@fluentui/react";
 import { PrimaryButton, Stack, Checkbox, TooltipHost } from "@fluentui/react";
 import { Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./MoreActions.css";
 
-const MoreActions = ({ initiativeActioItems, initiativeRisks }) => {
+const MoreActions = ({ initiativeActioItems, initiativeRisks, prioritizationCheckList }) => {
   const [selectedKey, setSelectedKey] = useState("risks");
-
+  console.log("prioritizationCheckList", prioritizationCheckList);
   const handlePivotChange = (item) => {
     setSelectedKey(item.props.itemKey);
   };
@@ -51,6 +51,15 @@ const MoreActions = ({ initiativeActioItems, initiativeRisks }) => {
             })}
           </div>
         ))}
+      </div>
+    );
+  };
+
+  const renderPercentageBar = (value) => {
+    const percentage = Math.max(0, Math.min(100, value)); // Ensure value is between 0 and 100
+    return (
+      <div className="percentage-bar" style={{ width: `${percentage}%`, backgroundColor: "green" }}>
+        {percentage}%
       </div>
     );
   };
@@ -199,8 +208,78 @@ const MoreActions = ({ initiativeActioItems, initiativeRisks }) => {
           )}
 
           {selectedKey === "prioritization" && (
-            <div id="tbl_moreaction_Prioritization" className="tab-pane py-0">
-              <p>This is dummy content for Prioritization checklist.</p>
+            <div id="tbl_moreaction_Prioritization" className="tab-pane active py-0">
+              <div className="card p-3">
+                <div className="row">
+                  <div className="col-6">
+                    <div className="table-responsive table_wrapper">
+                      <Table striped bordered hover className="mb-0">
+                        <thead>
+                          <tr>
+                            <th>Responded By</th>
+                            <th>Priority Checklist</th>
+                            <th>Priority Rating</th>
+                            <th>Stage</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {prioritizationCheckList?.data
+                            ?.listInitiativePrioritizationChecklistEntity?.length > 0 ? (
+                            prioritizationCheckList.data.listInitiativePrioritizationChecklistEntity.map(
+                              (item, index) => (
+                                <tr key={index}>
+                                  <td>{item.respondedBy}</td>
+                                  <td>{item.priorityChecklist}</td>
+                                  <td>{renderPercentageBar(item.priorityRating)}</td>
+                                  <td>{item.stage}</td>
+                                </tr>
+                              )
+                            )
+                          ) : (
+                            <tr>
+                              <td colSpan="4" className="text-center">
+                                No Prioritization Checklist Available
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <h5>Checklist Categories</h5>
+                    <div className="table-responsive table_wrapper">
+                      <Table striped bordered hover className="mb-0">
+                        <thead>
+                          <tr>
+                            <th>Category</th>
+                            <th>Category Rating</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {prioritizationCheckList?.data?.listInitiativeChecklistCategoryEntity
+                            ?.length > 0 ? (
+                            prioritizationCheckList.data.listInitiativeChecklistCategoryEntity.map(
+                              (item, index) => (
+                                <tr key={index}>
+                                  <td>{item.description}</td>
+                                  <td>{renderPercentageBar(item.weightage)}</td>
+                                </tr>
+                              )
+                            )
+                          ) : (
+                            <tr>
+                              <td colSpan="2" className="text-center">
+                                No Checklist Categories Available
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>

@@ -62,7 +62,13 @@ const CustomProgressBar = ({
           ))}
         </Box>
       </Box>
-      <InitiativeDetailsModal open={openModal} handleClose={handleClose} initiative={initiative} />
+      {openModal && (
+        <InitiativeDetailsModal
+          open={openModal}
+          handleClose={handleClose}
+          initiative={initiative}
+        />
+      )}
     </>
   );
 };

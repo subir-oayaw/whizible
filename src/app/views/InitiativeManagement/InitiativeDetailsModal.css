@@ -7,6 +7,7 @@
 .modal-content {
   padding: 20px;
 }
+
 .vertical-line {
   width: 1px;
   height: 100%;
@@ -39,4 +40,24 @@
 
 .font-weight-600 {
   font-weight: 600;
+}
+
+.status-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  /* border: 2px solid #000; */
+  display: inline-block;
+}
+
+.status-approved {
+  background-color: green;
+}
+
+.status-current {
+  background-color: orange;
+}
+
+.status-delayed {
+  background-color: red;
 }
