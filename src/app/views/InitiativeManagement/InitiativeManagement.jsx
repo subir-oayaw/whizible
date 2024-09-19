@@ -34,6 +34,9 @@ import GetInitiativeCardViewOnTime from "../../hooks/CardInitiative/GetInitiativ
 
 const InitiativeManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentCardPage1, setCurrentCardPage1] = useState(1);
+  const [currentCardPage2, setCurrentCardPage2] = useState(1);
+  const [currentCardPage3, setCurrentCardPage3] = useState(1);
   const [currentFilter, setCurrentFilter] = useState("T");
   const [filters, setFilters] = useState(null);
   const [searchFilters, setSearchFilters] = useState(null);
@@ -56,10 +59,18 @@ const InitiativeManagement = () => {
   const viewPermission = getViewOptions && getViewOptions[0] ? getViewOptions[0] : {};
   const { a: canAdd, e: canEdit, d: canDelete } = viewPermission;
   const { t } = useTranslation();
-  const { dashboardData1, Drafloading, Draferror } = GetInitiativeCardViewDraft(currentPage);
-  const { dashboardData3, Delayedloading, Delayederror } =
-    GetInitiativeCardViewDelayed(currentPage);
-  const { dashboardData2, OnTimeloading, OnTimeerror } = GetInitiativeCardViewOnTime(currentPage);
+  const { dashboardData1, Drafloading, Draferror } = GetInitiativeCardViewDraft(
+    currentCardPage1,
+    isListView
+  );
+  const { dashboardData3, Delayedloading, Delayederror } = GetInitiativeCardViewDelayed(
+    currentPage,
+    isListView
+  );
+  const { dashboardData2, OnTimeloading, OnTimeerror } = GetInitiativeCardViewOnTime(
+    currentPage,
+    isListView
+  );
   console.log("dashboardData1", dashboardData1, dashboardData2, dashboardData3);
   // Conditionally use the data based on `isListView`
 
@@ -341,6 +352,12 @@ const InitiativeManagement = () => {
             dashboardData1={dashboardData1}
             dashboardData2={dashboardData2}
             dashboardData3={dashboardData3}
+            currentCardPage1={currentCardPage1}
+            currentCardPage2={currentCardPage2}
+            currentCardPage3={currentCardPage3}
+            setCurrentCardPage1={setCurrentCardPage1}
+            setCurrentCardPage2={setCurrentCardPage2}
+            setCurrentCardPage3={setCurrentCardPage3}
             page={currentPage}
             setIsEditing={setIsEditing}
             isEditing={isEditing}

@@ -37,7 +37,14 @@ const InitiativeDetailsModal = ({ open, handleClose, initiative }) => {
       fetchData();
     }
   }, [initiative?.ideaIdPk]);
-  console.log("datainitiative", data);
+
+  const getStatusClass = (stage) => {
+    if (stage.isStageApproved === 1) return "status-approved";
+    if (stage.isCurrentStage === 1) return "status-current";
+    if (stage.isDelayed === 1) return "status-delayed";
+    return ""; // Default if no condition matches
+  };
+
   return (
     <Modal
       open={open}
@@ -112,24 +119,25 @@ const InitiativeDetailsModal = ({ open, handleClose, initiative }) => {
               </div>
               {/* New Table Section */}
               <div className="d-sec3 px-4 mt-4">
-                <Table striped bordered hover responsive>
+                <Table striped hover responsive>
                   <thead>
                     <tr>
+                      <th>Status</th>
                       <th>From Stage</th>
                       <th>To Stage</th>
-
                       <th>Date</th>
                       <th>Approved By</th>
                       <th>Approver List</th>
-                      <th>Is Stage Approved</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data?.initiativeStageApprovalDetailsEntity?.map((stage, index) => (
                       <tr key={index}>
+                        <td>
+                          <span className={`status-circle ${getStatusClass(stage)}`}></span>
+                        </td>
                         <td>{stage?.fromStage || "N/A"}</td>
                         <td>{stage?.toStage || "N/A"}</td>
-
                         <td>
                           {stage?.stagePlannedEndDate
                             ? new Date(stage?.stagePlannedEndDate).toLocaleDateString()
@@ -137,7 +145,6 @@ const InitiativeDetailsModal = ({ open, handleClose, initiative }) => {
                         </td>
                         <td>{stage?.approvedBy || "N/A"}</td>
                         <td>{stage?.approverList || "N/A"}</td>
-                        <td>{stage?.isStageApproved ? "Yes" : "No"}</td>
                       </tr>
                     ))}
                   </tbody>

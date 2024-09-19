@@ -30,3 +30,13 @@
 .matrix-row .matrix-cell {
   background-color: #fff;
 }
+.percentage-bar {
+  height: 20px; /* Set a height for the bar */
+  background-color: green; /* Set the default background color */
+  color: white; /* Set the text color */
+  text-align: center; /* Center-align text inside the bar */
+  border-radius: 5px; /* Optional: rounded corners */
+  line-height: 20px; /* Optional: match height for vertical centering */
+  min-width: 50px; /* Optional: ensure a minimum width */
+  box-sizing: border-box; /* Include padding/border in the element’s total width and height */
+}

@@ -262,9 +262,9 @@ function BasicDetailEdit({
       </div>
       <div className={classNames.buttonRow}>
         {renderDynamicButtons()}
-        <PrimaryButton className="topbtnblue" onClick={handleGoBack}>
+        {/* <PrimaryButton className="topbtnblue" onClick={handleGoBack}>
           <span>Back</span>
-        </PrimaryButton>
+        </PrimaryButton> */}
       </div>
       <form>
         <div className={classNames.container}>{renderFormElements()}</div>

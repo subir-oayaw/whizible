@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InitiativeItem from "./InitiativeItem";
 import InitiativeCard from "./InitiativeCard";
 import InitiativeCard1 from "./InitiativeCard1";
@@ -29,6 +29,12 @@ const InitiativeList = ({
   dashboardData1,
   dashboardData2,
   dashboardData3,
+  currentCardPage1,
+  currentCardPage2,
+  currentCardPage3,
+  setCurrentCardPage1,
+  setCurrentCardPage2,
+  setCurrentCardPage3,
   cardViewDraftData,
   cardViewDelayedData,
   cardViewOnTimeData,
@@ -48,9 +54,7 @@ const InitiativeList = ({
   const [currentPage, setCurrentPage] = useState(page); // State for current page
 
   // Pagination states for each column in card view
-  const [currentCardPage1, setCurrentCardPage1] = useState(1);
-  const [currentCardPage2, setCurrentCardPage2] = useState(1);
-  const [currentCardPage3, setCurrentCardPage3] = useState(1);
+
   console.log("initiatives", initiatives);
   // Filter initiatives based on search term
   const filteredInitiatives = initiatives?.filter((initiative) =>
@@ -82,6 +86,7 @@ const InitiativeList = ({
   const handleCardPageChange3 = (event, value) => {
     setCurrentCardPage3(value);
   };
+  useEffect(() => {}, [dashboardData1, dashboardData2, dashboardData3]);
 
   // Handle sorting dropdown open
 
@@ -152,17 +157,17 @@ const InitiativeList = ({
           </Table>
           {/* Pagination for List View */}
           {/* {filteredInitiatives.length > ITEMS_PER_PAGE && (
-            <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
-                variant="outlined"
-                shape="rounded"
-              />
-            </Box>
-          )} */}
+              <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                  variant="outlined"
+                  shape="rounded"
+                />
+              </Box>
+            )} */}
         </>
       ) : (
         <Grid container spacing={3}>
