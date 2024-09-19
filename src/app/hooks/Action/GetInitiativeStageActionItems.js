@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Update the function to accept parameters dynamically
 const GetInitiativeStageActionItems = async ({
-  IdeaId,
+  IdeaId = 61,
   employeeId = 61,
   pageNo = 1,
   initiativeTitle,
@@ -16,10 +16,6 @@ const GetInitiativeStageActionItems = async ({
   priority
 }) => {
   const accessToken = sessionStorage.getItem("access_token");
-
-  if (!IdeaId && !initiativeTitle) {
-    throw new Error("Either IdeaId or initiativeTitle must be provided");
-  }
 
   try {
     const response = await axios.get(

@@ -1,101 +1,49 @@
-import React, { useState } from "react";
-import {
-  Pivot,
-  PivotItem,
-  Dropdown,
-  Label,
-  PrimaryButton,
-  TextField,
-  Stack,
-  Icon,
-  DetailsList,
-  DetailsListLayoutMode,
-  SelectionMode,
-  Checkbox
-} from "@fluentui/react";
+import React, { useState, useEffect } from "react";
+import { Pivot, PivotItem, Dropdown, PrimaryButton, Stack, TextField, Icon } from "@fluentui/react";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Pagination from "@mui/material/Pagination";
+import "bootstrap/dist/css/bootstrap.min.css";
+import WatchListConfiguration from "app/hooks/Watch/WatchListConfiguration";
 
 const ExternalAudit = () => {
   const [selectedTab, setSelectedTab] = useState("iniReallocationTab");
-  const [currentApprover, setCurrentApprover] = useState("");
-  const [natureOfInitiative, setNatureOfInitiative] = useState("");
-  const [businessGroup, setBusinessGroup] = useState("");
-  const [stageOfApproval, setStageOfApproval] = useState("");
-  const [initiativeTitle, setInitiativeTitle] = useState("");
+  const [initiativeData, setInitiativeData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(3);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const dropdownOptions = (options) => options.map((option) => ({ key: option, text: option }));
+  const [searchParams, setSearchParams] = useState({
+    InitiativeTitle: "",
+    StatusID: null,
+    NatureofInitiativeId: null,
+    BusinessGroupId: null,
+    OrganizationUnitId: null,
+    InitiativeCode: "",
+    CurrentStageID: null,
+    CurrentStageApprover: ""
+  });
 
-  const currentApproverOptions = dropdownOptions(["James", "Kavya", "Mac", "Nirbhay", "Robin"]);
-  const initiativeOptions = dropdownOptions(["Initiative 1", "Initiative 2", "Initiative 3"]);
-  const businessGroupOptions = dropdownOptions(["Construction", "India International"]);
-  const stageApprovalOptions = dropdownOptions([
-    "CEO Approval",
-    "CFO Approval",
-    "Completed",
-    "Delivery Manager"
-  ]);
+  useEffect(() => {
+    const fetchWatchListData = async () => {
+      try {
+        const response = await WatchListConfiguration({
+          PageNo: currentPage,
+          ...searchParams
+        });
+        setInitiativeData(response.data.listWatchListConfigurationEntity);
+        setTotalPages(Math.ceil(response.data.totalCount / itemsPerPage));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  const columns = [
-    {
-      key: "column1",
-      name: "Stage Status",
-      fieldName: "stageStatus",
-      minWidth: 100,
-      maxWidth: 200,
-      isResizable: true
-    },
-    {
-      key: "column2",
-      name: "Order No.",
-      fieldName: "orderNo",
-      minWidth: 100,
-      maxWidth: 200,
-      isResizable: true
-    },
-    {
-      key: "column3",
-      name: "Stage of Approval",
-      fieldName: "stageOfApproval",
-      minWidth: 100,
-      maxWidth: 200,
-      isResizable: true
-    },
-    {
-      key: "column4",
-      name: "Approvers",
-      fieldName: "approvers",
-      minWidth: 100,
-      maxWidth: 200,
-      isResizable: true
-    },
-    {
-      key: "column5",
-      name: "Delete",
-      fieldName: "delete",
-      minWidth: 50,
-      maxWidth: 100,
-      isResizable: true,
-      onRender: (item) => <Checkbox />
+    if (selectedTab === "watchListConfTab") {
+      fetchWatchListData();
     }
-  ];
+  }, [currentPage, searchParams, selectedTab]);
 
-  const items = [
-    {
-      key: 1,
-      stageStatus: "Pending Stage",
-      orderNo: 4,
-      stageOfApproval: "Deployment",
-      approvers: "James, Kavya"
-    },
-    {
-      key: 2,
-      stageStatus: "Delayed Stage",
-      orderNo: 5,
-      stageOfApproval: "Deployment",
-      approvers: "Mac, Nirbhay"
-    }
-  ];
+  const handlePageChange = (event, value) => setCurrentPage(value);
 
   return (
     <div className="tab-content px-2">
@@ -112,122 +60,258 @@ const ExternalAudit = () => {
         </div>
 
         <div className="tab-content px-2">
-          <div className="tab-pane active" id={selectedTab}>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <h2>Advanced Search</h2>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className="container-fluid">
-                  <div className="row mb-3">
-                    <div className="col-sm-12">
-                      <div className="note-txt">
-                        <span className="note-title">
-                          <Icon iconName="Lightbulb" />{" "}
-                        </span>
-                        Initiative Reallocation helps to manage the approval process such a way that
-                        an initiative is not 'stranded' at any stage. So the approval process
-                        continues smoothly...
+          {selectedTab === "iniReallocationTab" && (
+            <div className="tab-pane active" id="iniReallocationTab">
+              {/* Content for Initiative Reallocation */}
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <h5>Advanced Search</h5>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div className="container-fluid">
+                    <div className="row mb-3">
+                      <div className="col-sm-12">
+                        <div className="note-txt">
+                          <span className="note-title">
+                            <Icon iconName="Lightbulb" />{" "}
+                          </span>
+                          Initiative Reallocation helps to manage the approval process so that an
+                          initiative is not 'stranded' at any stage...
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <Dropdown
+                          label="Select Current Approver"
+                          options={[]} // Add options here
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <Dropdown
+                          label="Nature of Initiative"
+                          options={[]} // Add options here
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <Dropdown
+                          label="Business Group"
+                          options={[]} // Add options here
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <Dropdown
+                          label="Stage of Approval"
+                          options={[]} // Add options here
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <TextField label="Initiative Title" />
+                      </div>
+                      <div className="col-md-6">
+                        <PrimaryButton text="Next" />
                       </div>
                     </div>
                   </div>
-                  <div className="row align-items-center mb-3">
-                    <div className="col-12 col-sm-12">
-                      <Stack tokens={{ childrenGap: 10 }}>
-                        <Stack horizontal tokens={{ childrenGap: 10 }}>
-                          <Dropdown
-                            label="Select Current Approver"
-                            selectedKey={currentApprover}
-                            onChange={(e, option) => setCurrentApprover(option.key)}
-                            options={currentApproverOptions}
-                          />
-                          <Dropdown
-                            label="Nature of Initiative"
-                            selectedKey={natureOfInitiative}
-                            onChange={(e, option) => setNatureOfInitiative(option.key)}
-                            options={initiativeOptions}
-                          />
-                          <Dropdown
-                            label="Business Group"
-                            selectedKey={businessGroup}
-                            onChange={(e, option) => setBusinessGroup(option.key)}
-                            options={businessGroupOptions}
-                          />
-                        </Stack>
+                </AccordionDetails>
+              </Accordion>
+            </div>
+          )}
 
-                        <Stack horizontal tokens={{ childrenGap: 10 }}>
-                          <Dropdown
-                            label="Stage of Approval"
-                            selectedKey={stageOfApproval}
-                            onChange={(e, option) => setStageOfApproval(option.key)}
-                            options={stageApprovalOptions}
-                          />
-                          <TextField
-                            label="Initiative Title"
-                            value={initiativeTitle}
-                            onChange={(e, newValue) => setInitiativeTitle(newValue)}
-                          />
-                          <PrimaryButton text="Next" />
-                        </Stack>
-                      </Stack>
+          {selectedTab === "iniActivateSnoozeTab" && (
+            <div className="tab-pane active" id="iniActivateSnoozeTab">
+              {/* Content for Initiative Activate - Snooze */}
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <h5>Advanced Search</h5>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div className="container-fluid">
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <Dropdown label="Select Initiative" options={[]} />
+                      </div>
+                      <div className="col-md-6">
+                        <Dropdown label="Action" options={[]} />
+                      </div>
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-md-12">
+                        <PrimaryButton text="Activate/Snooze" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </AccordionDetails>
-            </Accordion>
+                </AccordionDetails>
+              </Accordion>
+            </div>
+          )}
 
-            <div className="IR_main_content">
-              <div className="selectedApproverDiv bglightblue mb-4">
-                <div className="container-fluid">
-                  <div className="sApproverDetails d-flex align-items-center justify-content-end">
-                    <span className="text-center">
-                      Selected Approver :{" "}
-                      <img src="profile-pic.jpg" alt="" className="img-fluid approverImg mx-2" />{" "}
-                      Nikhil Adtakar
-                    </span>
-                  </div>
-                </div>
-              </div>
+          {selectedTab === "watchListConfTab" && (
+            <div className="tab-pane active" id="watchListConfTab">
+              {/* Content for Watch List Configuration - Table */}
+              <div className="container-fluid mt-4">
+                <Accordion>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <h5>Advanced Search</h5>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <div className="container-fluid">
+                      <div className="row mb-3">
+                        <div className="col-md-6">
+                          <TextField
+                            label="Initiative Title"
+                            value={searchParams.InitiativeTitle}
+                            onChange={(e, newValue) =>
+                              setSearchParams({ ...searchParams, InitiativeTitle: newValue })
+                            }
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <TextField
+                            label="Initiative Code"
+                            value={searchParams.InitiativeCode}
+                            onChange={(e, newValue) =>
+                              setSearchParams({ ...searchParams, InitiativeCode: newValue })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="row mb-3">
+                        <div className="col-md-6">
+                          <Dropdown
+                            label="Select Status"
+                            selectedKey={searchParams.StatusID}
+                            onChange={(e, option) =>
+                              setSearchParams({ ...searchParams, StatusID: option.key })
+                            }
+                            options={[
+                              { key: null, text: "Select Status" },
+                              { key: 1, text: "Active" },
+                              { key: 2, text: "Inactive" }
+                            ]}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <Dropdown
+                            label="Nature of Initiative"
+                            selectedKey={searchParams.NatureofInitiativeId}
+                            onChange={(e, option) =>
+                              setSearchParams({ ...searchParams, NatureofInitiativeId: option.key })
+                            }
+                            options={[
+                              { key: null, text: "Select Nature" },
+                              { key: 1, text: "Strategic" },
+                              { key: 2, text: "Operational" }
+                            ]}
+                          />
+                        </div>
+                      </div>
+                      <div className="row mb-3">
+                        <div className="col-md-6">
+                          <Dropdown
+                            label="Business Group"
+                            selectedKey={searchParams.BusinessGroupId}
+                            onChange={(e, option) =>
+                              setSearchParams({ ...searchParams, BusinessGroupId: option.key })
+                            }
+                            options={[
+                              { key: null, text: "Select Business Group" },
+                              { key: 1, text: "Group A" },
+                              { key: 2, text: "Group B" }
+                            ]}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <Dropdown
+                            label="Organization Unit"
+                            selectedKey={searchParams.OrganizationUnitId}
+                            onChange={(e, option) =>
+                              setSearchParams({ ...searchParams, OrganizationUnitId: option.key })
+                            }
+                            options={[
+                              { key: null, text: "Select Organization Unit" },
+                              { key: 1, text: "Unit A" },
+                              { key: 2, text: "Unit B" }
+                            ]}
+                          />
+                        </div>
+                      </div>
+                      <div className="row mb-3">
+                        <div className="col-md-6">
+                          <Dropdown
+                            label="Current Stage"
+                            selectedKey={searchParams.CurrentStageID}
+                            onChange={(e, option) =>
+                              setSearchParams({ ...searchParams, CurrentStageID: option.key })
+                            }
+                            options={[
+                              { key: null, text: "Select Current Stage" },
+                              { key: 1, text: "Stage 1" },
+                              { key: 2, text: "Stage 2" }
+                            ]}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <TextField
+                            label="Current Stage Approver"
+                            value={searchParams.CurrentStageApprover}
+                            onChange={(e, newValue) =>
+                              setSearchParams({ ...searchParams, CurrentStageApprover: newValue })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="row mb-3">
+                        <div className="col-md-12">
+                          <PrimaryButton text="Search" onClick={() => setCurrentPage(1)} />
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionDetails>
+                </Accordion>
 
-              <div className="stages-div px-4 pt-3" id="stages-div">
-                <div className="stage-status d-flex justify-content-between">
-                  <div className="stage-title">
-                    <h5 className="mb-0">Legends</h5>
-                  </div>
-                  <div className="stage-content d-flex">
-                    <ul className="list-unstyled main-box">
-                      <li className="d-flex gap-1 ms-3">
-                        <div className="StageboxDiv clearedStage"></div>
-                        <div className="span-clrs">Cleared stage</div>
-                      </li>
-                    </ul>
-                    <ul className="list-unstyled main-box">
-                      <li className="d-flex gap-1 ms-3">
-                        <div className="StageboxDiv pendingStage"></div>
-                        <div className="span-clrs">Pending stage</div>
-                      </li>
-                    </ul>
-                    <ul className="list-unstyled main-box">
-                      <li className="d-flex gap-1 ms-3">
-                        <div className="StageboxDiv currStage"></div>
-                        <div className="span-clrs">Delayed stage</div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+                <table className="table table-bordered table-hover mt-4">
+                  <thead>
+                    <tr>
+                      <th>Initiative Code</th>
+                      <th>Nature of Initiative</th>
+                      <th>Initiative Title</th>
+                      <th>Business Group</th>
+                      <th>Organization Unit</th>
+                      <th>Current Stage</th>
+                      <th>Current Stage Approver</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {initiativeData.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.initiativeCode}</td>
+                        <td>{item.natureofInitiative}</td>
+                        <td>{item.initiativeTitle}</td>
+                        <td>{item.businessGroup}</td>
+                        <td>{item.organizationUnit || "N/A"}</td>
+                        <td>{item.currentStage}</td>
+                        <td>{item.currentStageApprover}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
 
-              <div id="Init-Grid1" className="table-responsive init_grid_panel mx-3">
-                <DetailsList
-                  items={items}
-                  columns={columns}
-                  setKey="set"
-                  layoutMode={DetailsListLayoutMode.fixedColumns}
-                  selectionMode={SelectionMode.none}
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  variant="outlined"
+                  shape="rounded"
+                  className="d-flex justify-content-center mt-4"
                 />
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

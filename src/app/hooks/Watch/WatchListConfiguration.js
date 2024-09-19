@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Update the function to accept dynamic parameters
 const WatchListConfiguration = async ({
-  PageNo = 6,
+  PageNo,
   InitiativeTitle,
   StatusID,
   NatureofInitiativeId,
