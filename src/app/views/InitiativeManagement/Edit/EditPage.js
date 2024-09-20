@@ -193,14 +193,14 @@ const EditPage = ({ initiativesID }) => {
       case "basic-details":
         return (
           <div className="container-fluid mt-3">
-            {/* <BasicDetailEdit
+            <BasicDetailEdit
               initiativeLinkAccess={initiativeLinkAccess}
               initiativeDetail={initiativeDetail}
               formData={formData}
               buttonData={buttonData}
               handleFieldChange={handleFieldChange}
               handleGoBack={handleGoBack}
-            /> */}
+            />
           </div>
         );
       case "resources":

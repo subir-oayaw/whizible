@@ -86,6 +86,7 @@ const InitiativeList = ({
   const handleCardPageChange3 = (event, value) => {
     setCurrentCardPage3(value);
   };
+  console.log("dashboard", dashboardData1, dashboardData2, dashboardData3);
   useEffect(() => {}, [dashboardData1, dashboardData2, dashboardData3]);
 
   // Handle sorting dropdown open
@@ -213,7 +214,7 @@ const InitiativeList = ({
                     </div>
                   </div>
                   <div className="card-container">
-                    {dashboardData2.map((initiative) => (
+                    {dashboardData2?.map((initiative) => (
                       <InitiativeCard
                         key={initiative.id}
                         dashboardData2={initiative}

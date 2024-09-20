@@ -7,14 +7,15 @@ const InitiativeCardViewDelayed = async (currentCardPage3, isListView) => {
 
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeCardView/GetInitiativeCardViewDraft?alterType=W&employeeId=${employeeId}&PageNo=${currentCardPage3}`,
+      `${process.env.REACT_APP_BASEURL_ACCESS_CONTROL1}/api/InitiativeCardView/GetInitiativeCardViewDelayed?alterType=W&employeeId=${employeeId}&PageNo=${currentCardPage3}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }
       }
     );
-    return response.data.data.listInitiativeCardDraftEntity;
+    console.log("dashboard88", response.data.data);
+    return response.data.data.listInitiativeCardDelayedEntity;
   } catch (error) {
     console.error("Error fetching initiative cost list:", error);
     throw new Error("Failed to fetch initiative cost list");

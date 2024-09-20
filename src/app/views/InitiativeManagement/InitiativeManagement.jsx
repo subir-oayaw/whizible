@@ -28,9 +28,9 @@ import useGetViewOptions from "app/hooks/useGetViewOptions";
 import tagMappings from "../../../app/TagNames/tag";
 import { useTranslation } from "react-i18next";
 import fetchFilters from "../../hooks/SearchFilters/filters"; // Assume this is the correct import
-import GetInitiativeCardViewDraft from "../../hooks/CardInitiative/GetInitiativeCardViewDraft";
-import GetInitiativeCardViewDelayed from "../../hooks/CardInitiative/GetInitiativeCardViewDelayed";
-import GetInitiativeCardViewOnTime from "../../hooks/CardInitiative/GetInitiativeCardViewOnTime";
+import InitiativeCardViewDraft from "../../hooks/CardInitiative/GetInitiativeCardViewDraft";
+import InitiativeCardViewDelayed from "app/hooks/CardInitiative/InitiativeCardViewDelayed";
+import InitiativeCardViewOnTime from "../../hooks/CardInitiative/GetInitiativeCardViewOnTime";
 
 const InitiativeManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,19 +59,31 @@ const InitiativeManagement = () => {
   const viewPermission = getViewOptions && getViewOptions[0] ? getViewOptions[0] : {};
   const { a: canAdd, e: canEdit, d: canDelete } = viewPermission;
   const { t } = useTranslation();
-  const { dashboardData1, Drafloading, Draferror } = GetInitiativeCardViewDraft(
-    currentCardPage1,
-    isListView
-  );
-  const { dashboardData3, Delayedloading, Delayederror } = GetInitiativeCardViewDelayed(
-    currentPage,
-    isListView
-  );
-  const { dashboardData2, OnTimeloading, OnTimeerror } = GetInitiativeCardViewOnTime(
-    currentPage,
-    isListView
-  );
-  console.log("dashboardData1", dashboardData1, dashboardData2, dashboardData3);
+  const [dashboardData1, setDashboardData1] = useState(null);
+  const [dashboardData2, setDashboardData2] = useState(null);
+  const [dashboardData3, setDashboardData3] = useState(null);
+
+  // Load data when isListView is true
+  useEffect(() => {
+    if (!isListView) {
+      const fetchData = async () => {
+        try {
+          const data1 = await InitiativeCardViewDraft(currentCardPage1, isListView);
+          const data2 = await InitiativeCardViewOnTime(currentCardPage2, isListView);
+          const data3 = await InitiativeCardViewDelayed(currentCardPage3, isListView);
+          console.log("DashboardData1", data1, data2, data3);
+          setDashboardData1(data1);
+          setDashboardData2(data2);
+          setDashboardData3(data3);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [isListView, currentCardPage1, currentCardPage2, currentCardPage3]);
+
   // Conditionally use the data based on `isListView`
 
   const loadFilters = async () => {

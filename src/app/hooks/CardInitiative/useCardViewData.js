@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import GetInitiativeCardViewDraft from "./GetInitiativeCardViewDraft";
 
-import GetInitiativeCardViewDelayed from "./GetInitiativeCardViewDelayed";
+import GetInitiativeCardViewDelayed from "./InitiativeCardViewDelayed";
 
 import GetInitiativeCardViewOnTime from "./GetInitiativeCardViewOnTime";
 
