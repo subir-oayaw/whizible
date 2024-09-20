@@ -230,7 +230,6 @@ const InitiativeList = ({
 
                   <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
                     <Pagination
-                      count={Math.ceil(filteredInitiatives.length / ITEMS_PER_PAGE)}
                       page={currentCardPage1}
                       onChange={handleCardPageChange1}
                       color="primary"
@@ -303,7 +302,6 @@ const InitiativeList = ({
                   {/* Pagination for Card Column 2 */}
                   <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
                     <Pagination
-                      count={Math.ceil(filteredInitiatives.length / ITEMS_PER_PAGE)}
                       page={currentCardPage2}
                       onChange={handleCardPageChange2}
                       color="primary"
@@ -377,7 +375,6 @@ const InitiativeList = ({
 
                   <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
                     <Pagination
-                      count={Math.ceil(filteredInitiatives.length / ITEMS_PER_PAGE)}
                       page={currentCardPage3}
                       onChange={handleCardPageChange3}
                       color="primary"
